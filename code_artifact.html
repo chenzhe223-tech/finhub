@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F5F3EE" />
+  <meta name="description" content="Global Market Digest · 商业财经杂志风格全球核心资产看板，覆盖现货黄金、白银及中美核心股市指数与多资产配置沙盒。" />
+  <meta property="og:title" content="GLOBAL MARKET DIGEST · 全球核心资产与中美股指全景看板" />
+  <meta property="og:description" content="覆盖现货黄金、白银、上证指数、沪深300、恒生指数及美股三大指数的商业财经杂志风格交互式数据看板。" />
+  <meta property="og:type" content="website" />
+  <title>GLOBAL MARKET DIGEST · 全球核心资产与中美股指全景看板</title>
+  <!-- Google Fonts: Editorial Serif, Clean Sans & Financial Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', '"Noto Serif SC"', 'Georgia', 'serif'],
+            sans: ['Inter', '"Noto Sans SC"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+          },
+          colors: {
+            paper: {
+              bg: '#F5F3EE',
+              card: '#FCFBF8',
+              subtle: '#EFECE4',
+              border: '#E2DDD3',
+              ink: '#1A1A1A',
+              secondary: '#66615B',
+              muted: '#8D867D',
+            },
+            evening: {
+              bg: '#141619',
+              card: '#1C1F24',
+              subtle: '#242830',
+              border: '#2E343F',
+              ink: '#EAE6DF',
+              secondary: '#A8A39B',
+              muted: '#7B7770',
+            },
+            evening: {
+              bg: '#111820',
+              card: '#17212C',
+              subtle: '#1D2936',
+              border: '#273545',
+              ink: '#EAE5DA',
+              secondary: '#A6B0BC',
+              muted: '#748292',
+            },
+            editorial: {
+              gold: '#B8862D',
+              goldLight: '#F9F4E8',
+              cn: '#A63A3A',
+              us: '#24486E',
+              upRed: '#B9382C',
+              downGreen: '#1F6E4E',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* 严格等宽数字，保障财经表格与行情跳动不抖动 */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    /* 弹窗平滑入场 */
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-animate {
+      animation: modalFadeIn 0.2s ease-out;
+    }
+    .dark .masthead-rule {
+      border-top-color: #D4CBB8;
+      border-bottom-color: rgba(212, 203, 184, 0.55);
+    }
+
+    /* 分类双线标识（粗+细） */
+    .rule-gold {
+      border-top: 2.5px solid #B8862D;
+      border-bottom: 1px solid rgba(184, 134, 45, 0.35);
+      height: 5px;
+    }
+    .rule-cn {
+      border-top: 2.5px solid #A63A3A;
+      border-bottom: 1px solid rgba(166, 58, 58, 0.32);
+      height: 5px;
+    }
+    .rule-us {
+      border-top: 2.5px solid #24486E;
+      border-bottom: 1px solid rgba(36, 72, 110, 0.32);
+      height: 5px;
+    }
+    .dark .rule-us {
+      border-top-color: #4E7FB0;
+      border-bottom-color: rgba(78, 127, 176, 0.35);
+    }
+
+    /* 克制的纸媒风格跳动提示 */
+    @keyframes editorialFlashUp {
+      0% { background-color: rgba(185, 56, 44, 0.16); }
+      100% { background-color: transparent; }
+    }
+    @keyframes editorialFlashDown {
+      0% { background-color: rgba(31, 110, 78, 0.16); }
+      100% { background-color: transparent; }
+    }
+    .flash-crimson {
+      animation: editorialFlashUp 0.8s ease-out;
+    }
+    .flash-forest {
+      animation: editorialFlashDown 0.8s ease-out;
+    }
+
+    /* 优雅的财经杂志范围滑块 */
+    input[type="range"].mag-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"].mag-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #16222E;
+      border: 2px solid #FCFBF8;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .dark input[type="range"].mag-slider::-webkit-slider-thumb {
+      background: #D4A34A;
+      border-color: #17212C;
+    }
+    input[type="range"].mag-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+    }
+
+    /* 细腻滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(138, 148, 158, 0.35);
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-paper-bg text-paper-ink dark:bg-evening-bg dark:text-evening-ink font-sans antialiased transition-colors duration-300 min-h-screen flex flex-col overflow-x-hidden selection:bg-editorial-gold/20">
+
+  <!-- ==================== 顶部杂志报头与控制条 (Editorial Masthead) ==================== -->
+  <header class="w-full max-w-[1440px] mx-auto px-4 sm:px-8 pt-5 sm:pt-7 pb-4">
+    
+    <!-- 顶部细眉信息栏 -->
+    <div class="flex flex-wrap items-center justify-between gap-y-2 gap-x-4 text-[11px] tracking-wider uppercase text-paper-secondary dark:text-evening-secondary pb-2.5 border-b border-paper-border dark:border-evening-border">
+      <div class="flex items-center gap-2.5 font-medium">
+        <span class="font-serif font-bold tracking-[0.16em] text-paper-ink dark:text-evening-ink">GLOBAL MARKET DIGEST</span>
+        <span class="text-paper-muted dark:text-evening-muted">·</span>
+        <span class="tracking-normal normal-case">全球核心资产财经特刊</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 tabular-nums">
+        <span id="masthead-datetime">2026年11月24日 星期二 · 11:18 (GMT+8)</span>
+        <span class="text-paper-border dark:text-evening-border">|</span>
+        <span id="masthead-status-badge" class="inline-flex items-center gap-1.5 font-semibold text-paper-ink dark:text-evening-ink">
+          <span id="masthead-status-dot" class="w-1.5 h-1.5 rounded-full bg-editorial-gold"></span>
+          <span id="masthead-status-text">基准快照</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 主报头标题与精简控制组 -->
+    <div class="py-5 sm:py-6 flex flex-col lg:flex-row lg:items-end justify-between gap-5">
+      <div class="max-w-2xl">
+        <h1 class="font-serif text-2xl sm:text-4xl font-bold tracking-tight text-paper-ink dark:text-evening-ink leading-tight">
+          全球核心资产与中美股指全景看板
+        </h1>
+        <p class="mt-2.5 text-sm text-paper-secondary dark:text-evening-secondary leading-relaxed">
+          隔夜美股三大指数放量飙升，A股盘中温和走强而港股震荡整固；与此同时，现货黄金突破 3,650 美元关口，呈现罕见的「权益与避险资产同频共振」格局。
+        </p>
+      </div>
+
+      <!-- 紧凑精致的杂志风控制组 -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <!-- 行情模式 -->
+        <div class="inline-flex items-center rounded border border-paper-border dark:border-evening-border bg-paper-card dark:bg-evening-card p-0.5">
+          <button id="btn-snap" onclick="setLiveMode(false)" class="px-2.5 py-1.5 rounded-sm font-medium transition-colors">基准快照</button>
+          <button id="btn-live" onclick="setLiveMode(true)" class="px-2.5 py-1.5 rounded-sm font-medium transition-colors flex items-center gap-1">
+            <span id="live-dot" class="w-1.5 h-1.5 rounded-full bg-paper-muted"></span>
+            模拟实时
+          </button>
+        </div>
+
+        <!-- 涨跌习惯 -->
+        <button onclick="toggleColorScheme()" class="px-3 py-2 rounded border border-paper-border dark:border-evening-border bg-paper-card dark:bg-evening-card hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors flex items-center gap-1.5 font-medium">
+          <span id="scheme-dots" class="inline-flex items-center gap-0.5">
+            <span class="w-2 h-2 rounded-full bg-[#B9382C]"></span>
+            <span class="w-2 h-2 rounded-full bg-[#1F6E4E]"></span>
+          </span>
+          <span id="scheme-label">红涨绿跌</span>
+        </button>
+
+        <!-- 贵金属计价 -->
+        <button onclick="toggleMetalUnit()" class="px-3 py-2 rounded border border-editorial-gold/40 bg-editorial-goldLight/80 dark:bg-[#231E14] text-[#8E641B] dark:text-[#DFB35C] hover:bg-editorial-goldLight dark:hover:bg-[#2C2518] transition-colors flex items-center gap-1.5 font-medium">
+          <i data-lucide="coins" class="w-3.5 h-3.5"></i>
+          <span id="unit-label">USD/盎司</span>
+        </button>
+
+        <!-- 晨报纸媒 / 晚报深色 -->
+        <button onclick="toggleTheme()" class="px-3 py-2 rounded border border-paper-border dark:border-evening-border bg-paper-card dark:bg-evening-card hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors flex items-center gap-1.5 font-medium">
+          <i id="theme-icon" data-lucide="moon" class="w-3.5 h-3.5"></i>
+          <span id="theme-label">晨报纸媒</span>
+        </button>
+
+        <!-- 分享 / 发布 Web 应用按钮 -->
+        <button onclick="openShareModal()" class="px-3.5 py-2 rounded bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg hover:opacity-90 transition-opacity flex items-center gap-1.5 font-semibold shadow-sm">
+          <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+          <span>分享 / 发布</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 经典报头双细线 -->
+    <div class="masthead-rule w-full"></div>
+  </header>
+
+  <!-- ==================== 主版面内容区域 ==================== -->
+  <main class="flex-1 w-full max-w-[1440px] mx-auto px-4 sm:px-8 pb-12 space-y-10">
+
+    <!-- ==================== SECTION 01 · 贵金属市场 (独立鎏金特写区) ==================== -->
+    <section aria-label="贵金属市场">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+        <div class="flex items-baseline gap-3">
+          <span class="font-serif text-xs font-bold tracking-[0.18em] uppercase text-editorial-gold">SECTION 01</span>
+          <h2 class="font-serif text-xl sm:text-2xl font-bold tracking-tight">贵金属市场</h2>
+          <span class="text-xs text-paper-muted dark:text-evening-muted uppercase tracking-wider hidden sm:inline">Precious Metals · 24H Global Spot</span>
+        </div>
+        <span class="text-xs text-paper-secondary dark:text-evening-secondary tabular-nums">
+          换算汇率基准：USD/CNY = 7.24 · 点击卡片联动深度走势图
+        </span>
+      </div>
+      <div class="rule-gold mb-5"></div>
+
+      <!-- 3栏非对称杂志特写布局 (约 4.5 : 4.5 : 3) -->
+      <div class="grid grid-cols-1 lg:grid-cols-[1.15fr_1.15fr_0.85fr] gap-5 items-stretch">
+        <!-- 现货黄金特写卡片 -->
+        <div id="metal-card-xau"></div>
+        <!-- 现货白银特写卡片 -->
+        <div id="metal-card-xag"></div>
+        <!-- 金银比专题专栏 -->
+        <div class="rounded-md bg-editorial-goldLight/65 dark:bg-[#1A1A17] border border-editorial-gold/30 dark:border-editorial-gold/25 p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 pb-3 border-b border-editorial-gold/20">
+              <div>
+                <span class="text-[10px] font-semibold uppercase tracking-[0.16em] text-editorial-gold block">Special Ratio</span>
+                <h3 class="font-serif text-base font-bold mt-0.5">金银比监控仪</h3>
+              </div>
+              <span id="gsr-tag" class="px-2 py-0.5 text-[11px] font-semibold rounded-sm bg-editorial-gold/15 text-[#8A6118] dark:text-[#E2B55A]">
+                高估区间
+              </span>
+            </div>
+
+            <div class="mt-4 flex items-baseline gap-2 tabular-nums">
+              <span id="gsr-val" class="font-serif text-4xl font-bold tracking-tight">85.37</span>
+              <span class="text-xs text-paper-secondary dark:text-evening-secondary">XAU ÷ XAG</span>
+            </div>
+            <div id="gsr-diff" class="text-xs text-paper-secondary dark:text-evening-secondary tabular-nums mt-1">
+              较前日收盘 +2.20 (+2.64%)
+            </div>
+
+            <!-- 历史区间刻度尺 -->
+            <div class="mt-5">
+              <div class="relative h-2 w-full rounded-full overflow-hidden flex bg-paper-border/70 dark:bg-evening-border">
+                <div class="h-full bg-[#1F6E4E]/75" style="width: 33.33%"></div>
+                <div class="h-full bg-[#5A6572]/45" style="width: 33.33%"></div>
+                <div class="h-full bg-[#B8862D]/85" style="width: 33.34%"></div>
+              </div>
+              <div class="relative h-3">
+                <div id="gsr-marker" class="absolute -top-2.5 -translate-x-1/2 transition-all duration-300" style="left: 75.6%">
+                  <div class="w-3 h-3 rounded-full bg-paper-ink dark:bg-evening-ink border-2 border-paper-card dark:border-evening-card shadow"></div>
+                </div>
+              </div>
+              <div class="flex justify-between text-[10px] text-paper-muted dark:text-evening-muted tabular-nums">
+                <span>40 · 低估</span>
+                <span>60 · 中性</span>
+                <span>80 · 高估</span>
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+
+          <p id="gsr-comment" class="mt-4 pt-3 border-t border-editorial-gold/20 font-serif text-xs leading-relaxed text-paper-secondary dark:text-evening-secondary">
+            “比值站稳 85 上方，显示黄金的货币避险溢价显著跑赢白银工业属性，短期存在比值均值回归观察窗口。”
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 02 & 03 · 中美股市核心指数 (杂志双栏对开页) ==================== -->
+    <section aria-label="中美股市核心指数" class="pt-2">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 items-start">
+        
+        <!-- 左半页：SECTION 02 中国股市 (China Equities) -->
+        <div class="lg:pr-8 lg:border-r border-paper-border dark:border-evening-border">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="flex items-baseline gap-2.5">
+              <span class="font-serif text-xs font-bold tracking-[0.18em] uppercase text-editorial-cn">SECTION 02</span>
+              <h2 class="font-serif text-xl sm:text-2xl font-bold tracking-tight">中国股市</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase rounded-sm bg-editorial-cn/10 text-editorial-cn dark:text-[#E57373] border border-editorial-cn/25">CN / HK</span>
+              <span class="text-[11px] text-paper-muted dark:text-evening-muted">盘中交易</span>
+            </div>
+          </div>
+          <div class="rule-cn mb-4"></div>
+
+          <!-- 列头说明 -->
+          <div class="hidden sm:grid grid-cols-12 gap-2 px-3 pb-2 text-[10px] uppercase tracking-wider text-paper-muted dark:text-evening-muted border-b border-paper-border/80 dark:border-evening-border">
+            <div class="col-span-4">指数名称 / 代码</div>
+            <div class="col-span-3 text-right">最新点位 / 涨跌</div>
+            <div class="col-span-2 text-center">日内走势</div>
+            <div class="col-span-3 text-right">日内振幅区间</div>
+          </div>
+
+          <!-- 中国股指行列表 -->
+          <div id="cn-equities-list" class="divide-y divide-paper-border/80 dark:divide-evening-border"></div>
+        </div>
+
+        <!-- 右半页：SECTION 03 美国股市 (US Equities) -->
+        <div class="lg:pl-8">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="flex items-baseline gap-2.5">
+              <span class="font-serif text-xs font-bold tracking-[0.18em] uppercase text-editorial-us dark:text-[#6699CC]">SECTION 03</span>
+              <h2 class="font-serif text-xl sm:text-2xl font-bold tracking-tight">美国股市</h2>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase rounded-sm bg-editorial-us/10 text-editorial-us dark:text-[#7BAEE0] border border-editorial-us/25">NYSE / NASDAQ</span>
+              <span class="text-[11px] text-paper-muted dark:text-evening-muted">11-23 收盘</span>
+            </div>
+          </div>
+          <div class="rule-us mb-4"></div>
+
+          <!-- 列头说明 -->
+          <div class="hidden sm:grid grid-cols-12 gap-2 px-3 pb-2 text-[10px] uppercase tracking-wider text-paper-muted dark:text-evening-muted border-b border-paper-border/80 dark:border-evening-border">
+            <div class="col-span-4">指数名称 / 代码</div>
+            <div class="col-span-3 text-right">收盘点位 / 涨跌</div>
+            <div class="col-span-2 text-center">日内走势</div>
+            <div class="col-span-3 text-right">日内振幅区间</div>
+          </div>
+
+          <!-- 美国股指行列表 -->
+          <div id="us-equities-list" class="divide-y divide-paper-border/80 dark:divide-evening-border"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 04 · 深度走势与跨市场对比 (Data Journalism Feature) ==================== -->
+    <section aria-label="深度走势与跨市场对比" class="pt-2">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+        <div class="flex items-baseline gap-3">
+          <span class="font-serif text-xs font-bold tracking-[0.18em] uppercase text-paper-secondary dark:text-evening-secondary">SECTION 04</span>
+          <h2 class="font-serif text-xl sm:text-2xl font-bold tracking-tight">深度走势与跨市场对比</h2>
+          <span class="text-xs text-paper-muted dark:text-evening-muted uppercase tracking-wider hidden sm:inline">Data Journalism Feature</span>
+        </div>
+      </div>
+      <div class="border-t-2 border-paper-ink dark:border-evening-ink/70 mb-5"></div>
+
+      <!-- 8:4 图表 + 右侧编辑部解读栏 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- 左侧 8 栏：Chart.js 财经纸媒主图 -->
+        <div class="lg:col-span-8 rounded-md bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border p-5 sm:p-6 flex flex-col">
+          
+          <!-- 顶部下划线式 Tab 与 MA5 开关 -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-paper-border dark:border-evening-border">
+            <div class="flex items-center gap-6 text-sm">
+              <button id="tab-single" onclick="setChartMode('single')" class="pb-2 -mb-[17px] font-semibold border-b-2 transition-colors">
+                单标的深度走势
+              </button>
+              <button id="tab-compare" onclick="setChartMode('compare')" class="pb-2 -mb-[17px] font-semibold border-b-2 transition-colors">
+                跨市场归一化对比 (%)
+              </button>
+            </div>
+
+            <!-- 单标的 MA5 开关 -->
+            <div id="single-chart-tools" class="flex items-center gap-3 text-xs">
+              <button id="btn-ma5" onclick="toggleMA5()" class="px-2.5 py-1 rounded-sm border transition-colors flex items-center gap-1.5 font-medium">
+                <span class="w-2.5 h-0.5 bg-editorial-gold inline-block"></span>
+                MA5 移动均线
+              </button>
+            </div>
+          </div>
+
+          <!-- 当前图表标题与大号数字 -->
+          <div class="py-4 flex flex-wrap items-baseline justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="chart-cat-pill" class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm">贵金属</span>
+                <h3 id="chart-title" class="font-serif text-xl sm:text-2xl font-bold">现货黄金</h3>
+                <span id="chart-code" class="text-xs font-mono text-paper-muted dark:text-evening-muted">XAU/USD</span>
+              </div>
+              <p id="chart-subtitle" class="text-xs text-paper-secondary dark:text-evening-secondary mt-1">
+                24H 现货分时走势 · 虚线为前一日收盘基准线
+              </p>
+            </div>
+            <div id="chart-hero-price-box" class="text-right tabular-nums">
+              <div id="chart-price" class="font-serif text-2xl sm:text-3xl font-bold leading-none">3,657.42</div>
+              <div id="chart-change" class="text-xs font-semibold mt-1">+76.67 (+2.14%)</div>
+            </div>
+          </div>
+
+          <!-- 画布容器 -->
+          <div class="relative flex-1 min-h-[300px] sm:min-h-[360px] w-full">
+            <canvas id="editorialMainChart"></canvas>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-paper-border/70 dark:border-evening-border flex flex-wrap items-center justify-between gap-2 text-[11px] text-paper-muted dark:text-evening-muted">
+            <span id="chart-source-note">注：悬停曲线可查看精确分时报价与相对昨收涨跌幅；跨市场对比模式支持点击图例隐藏/显示单一曲线。</span>
+            <span class="tabular-nums">Source: Global Market Digest · 11-24 11:18</span>
+          </div>
+        </div>
+
+        <!-- 右侧 4 栏：编辑部市场简报 (Editorial Market Brief) -->
+        <aside class="lg:col-span-4 rounded-md bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="pb-3 border-b border-paper-border dark:border-evening-border flex items-center justify-between">
+              <h3 class="font-serif text-base font-bold">关键数据摘要</h3>
+              <span id="brief-ticker" class="text-[11px] font-mono text-paper-muted dark:text-evening-muted">XAU/USD</span>
+            </div>
+
+            <!-- 2x3 纸媒风格关键指标表 -->
+            <div id="brief-stats-grid" class="grid grid-cols-2 gap-x-4 gap-y-4 py-5 border-b border-paper-border dark:border-evening-border tabular-nums">
+              <!-- 动态渲染 -->
+            </div>
+
+            <!-- 编辑部观察 (Editorial Pull Quote) -->
+            <div class="mt-5">
+              <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-editorial-gold mb-2.5">
+                <i data-lucide="feather" class="w-3.5 h-3.5"></i>
+                <span>编辑部观察 · Market Note</span>
+              </div>
+              <blockquote id="editorial-note-box" class="pl-4 border-l-[3px] border-editorial-gold font-serif text-sm leading-7 text-paper-ink dark:text-evening-ink">
+                <!-- 动态渲染 -->
+              </blockquote>
+            </div>
+          </div>
+
+          <!-- 底部快速切换提示 -->
+          <div class="mt-6 pt-4 border-t border-paper-border/70 dark:border-evening-border">
+            <div class="text-[11px] text-paper-muted dark:text-evening-muted mb-2">快速切换分析标的：</div>
+            <div id="quick-switch-pills" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 05 · 跨市场情绪与资产配置沙盒 ==================== -->
+    <section aria-label="跨市场情绪与资产配置沙盒" class="pt-2">
+      <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+        <div class="flex items-baseline gap-3">
+          <span class="font-serif text-xs font-bold tracking-[0.18em] uppercase text-paper-secondary dark:text-evening-secondary">SECTION 05</span>
+          <h2 class="font-serif text-xl sm:text-2xl font-bold tracking-tight">跨市场情绪与资产配置沙盒</h2>
+          <span class="text-xs text-paper-muted dark:text-evening-muted uppercase tracking-wider hidden sm:inline">Sentiment & Portfolio Lab</span>
+        </div>
+      </div>
+      <div class="border-t-2 border-paper-ink dark:border-evening-ink/70 mb-5"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- 左栏 5 栏：跨市场情绪温度计 + 8大核心资产强弱榜 -->
+        <div class="lg:col-span-5 rounded-md bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border p-5 sm:p-6 flex flex-col justify-between space-y-6">
+          
+          <!-- 情绪温度计 -->
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-paper-border dark:border-evening-border">
+              <div>
+                <h3 class="font-serif text-base font-bold">跨市场情绪温度计</h3>
+                <p class="text-[11px] text-paper-muted dark:text-evening-muted">综合美股、A股、港股与黄金避险因子测算</p>
+              </div>
+              <span id="sentiment-regime-tag" class="px-2.5 py-1 rounded-sm text-xs font-semibold bg-paper-subtle dark:bg-evening-subtle text-paper-ink dark:text-evening-ink">
+                风险偏好主导
+              </span>
+            </div>
+
+            <!-- 精致的半圆 SVG 仪表盘 -->
+            <div class="flex flex-col items-center pt-5 pb-2">
+              <div class="relative w-56 h-28 overflow-hidden">
+                <svg viewBox="0 0 220 115" class="w-full h-full">
+                  <defs>
+                    <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#24486E" />
+                      <stop offset="50%" stop-color="#B8862D" />
+                      <stop offset="100%" stop-color="#B9382C" />
+                    </linearGradient>
+                  </defs>
+                  <!-- 底轨 -->
+                  <path d="M 20 105 A 90 90 0 0 1 200 105" fill="none" stroke="currentColor" class="text-paper-border dark:text-evening-border" stroke-width="12" stroke-linecap="round" />
+                  <!-- 渐变轨道 -->
+                  <path d="M 20 105 A 90 90 0 0 1 200 105" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round" stroke-opacity="0.85" />
+                  <!-- 指针组 -->
+                  <g id="sentiment-needle" transform="rotate(50 110 105)" style="transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);">
+                    <line x1="110" y1="105" x2="110" y2="28" stroke="currentColor" class="text-paper-ink dark:text-evening-ink" stroke-width="2.5" stroke-linecap="round" />
+                    <circle cx="110" cy="105" r="5.5" fill="currentColor" class="text-paper-ink dark:text-evening-ink" />
+                  </g>
+                </svg>
+              </div>
+              <div class="flex items-baseline gap-1 -mt-1 tabular-nums">
+                <span id="sentiment-score" class="font-serif text-3xl font-bold">78</span>
+                <span class="text-xs text-paper-muted dark:text-evening-muted">/ 100</span>
+              </div>
+              <div class="w-full max-w-xs flex justify-between text-[10px] text-paper-muted dark:text-evening-muted mt-1">
+                <span>0 · 避险主导</span>
+                <span>50 · 中性</span>
+                <span>100 · 风险偏好</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8大核心资产当日强弱榜 -->
+          <div class="pt-4 border-t border-paper-border dark:border-evening-border">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-serif text-sm font-bold">8大核心资产当日涨跌强弱榜</h4>
+              <span class="text-[10px] text-paper-muted dark:text-evening-muted uppercase tracking-wider">Daily Ranking</span>
+            </div>
+            <div id="asset-ranking-list" class="space-y-2.5 text-xs tabular-nums">
+              <!-- 动态渲染横向条形排行 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏 7 栏：多资产配置回测沙盒 -->
+        <div class="lg:col-span-7 rounded-md bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-paper-border dark:border-evening-border">
+              <div>
+                <h3 class="font-serif text-base font-bold">多资产配置回测沙盒</h3>
+                <p class="text-[11px] text-paper-muted dark:text-evening-muted">调节跨市场资产权重，即时模拟当日组合盈亏与波动特征</p>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                <button onclick="applyPreset(30, 10, 30, 30)" class="px-2.5 py-1 rounded-sm border border-paper-border dark:border-evening-border hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors">全天候</button>
+                <button onclick="applyPreset(50, 15, 20, 15)" class="px-2.5 py-1 rounded-sm border border-paper-border dark:border-evening-border hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors">防御避险</button>
+                <button onclick="applyPreset(15, 5, 35, 45)" class="px-2.5 py-1 rounded-sm border border-paper-border dark:border-evening-border hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors">权益成长</button>
+                <button onclick="normalizePortfolio()" class="px-2.5 py-1 rounded-sm bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg font-semibold hover:opacity-90 transition-opacity">配平至100%</button>
+              </div>
+            </div>
+
+            <!-- 主体：左侧滑块 + 右侧环形图 -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 py-5 items-center">
+              
+              <!-- 权重滑块与本金输入 (7栏) -->
+              <div class="md:col-span-7 space-y-4">
+                <!-- 本金输入 -->
+                <div class="flex items-center justify-between gap-3 pb-3 border-b border-paper-border/70 dark:border-evening-border">
+                  <label for="pf-principal" class="text-xs font-medium text-paper-secondary dark:text-evening-secondary">模拟投资本金 (CNY)</label>
+                  <div class="relative w-40">
+                    <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-paper-muted">¥</span>
+                    <input id="pf-principal" type="number" min="10000" step="10000" value="100000" oninput="updatePrincipal(this.value)"
+                      class="w-full pl-6 pr-2.5 py-1.5 text-right text-sm font-bold tabular-nums rounded-sm bg-paper-bg dark:bg-evening-bg border border-paper-border dark:border-evening-border focus:outline-none focus:border-paper-ink dark:focus:border-editorial-gold" />
+                  </div>
+                </div>
+
+                <!-- 黄金 -->
+                <div>
+                  <div class="flex justify-between text-xs mb-1.5">
+                    <span class="font-medium flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#B8862D]"></span>
+                      黄金 (XAU/USD)
+                      <span id="pf-ret-xau" class="tabular-nums font-semibold"></span>
+                    </span>
+                    <span id="pf-w-xau" class="font-bold tabular-nums">30%</span>
+                  </div>
+                  <input id="slider-xau" type="range" min="0" max="100" value="30" oninput="updateWeight('xau', this.value)" class="mag-slider w-full bg-paper-border dark:bg-evening-border" />
+                </div>
+
+                <!-- 白银 -->
+                <div>
+                  <div class="flex justify-between text-xs mb-1.5">
+                    <span class="font-medium flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#7C8794]"></span>
+                      白银 (XAG/USD)
+                      <span id="pf-ret-xag" class="tabular-nums font-semibold"></span>
+                    </span>
+                    <span id="pf-w-xag" class="font-bold tabular-nums">10%</span>
+                  </div>
+                  <input id="slider-xag" type="range" min="0" max="100" value="10" oninput="updateWeight('xag', this.value)" class="mag-slider w-full bg-paper-border dark:bg-evening-border" />
+                </div>
+
+                <!-- 中国股市 -->
+                <div>
+                  <div class="flex justify-between text-xs mb-1.5">
+                    <span class="font-medium flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#A63A3A]"></span>
+                      中国股市 (沪深300)
+                      <span id="pf-ret-csi300" class="tabular-nums font-semibold"></span>
+                    </span>
+                    <span id="pf-w-csi300" class="font-bold tabular-nums">30%</span>
+                  </div>
+                  <input id="slider-csi300" type="range" min="0" max="100" value="30" oninput="updateWeight('csi300', this.value)" class="mag-slider w-full bg-paper-border dark:bg-evening-border" />
+                </div>
+
+                <!-- 美国股市 -->
+                <div>
+                  <div class="flex justify-between text-xs mb-1.5">
+                    <span class="font-medium flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#24486E]"></span>
+                      美国股市 (标普500)
+                      <span id="pf-ret-spx" class="tabular-nums font-semibold"></span>
+                    </span>
+                    <span id="pf-w-spx" class="font-bold tabular-nums">30%</span>
+                  </div>
+                  <input id="slider-spx" type="range" min="0" max="100" value="30" oninput="updateWeight('spx', this.value)" class="mag-slider w-full bg-paper-border dark:bg-evening-border" />
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] pt-1">
+                  <span class="text-paper-muted dark:text-evening-muted">配置权重合计</span>
+                  <span id="pf-weight-status" class="font-semibold tabular-nums">100% · 已配平</span>
+                </div>
+              </div>
+
+              <!-- 环形占比图 (5栏) -->
+              <div class="md:col-span-5 flex flex-col items-center justify-center">
+                <div class="relative w-44 h-44 sm:w-48 sm:h-48">
+                  <canvas id="portfolioDonutChart"></canvas>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                    <span class="text-[10px] uppercase tracking-wider text-paper-muted dark:text-evening-muted">Total Weight</span>
+                    <span id="pf-donut-label" class="font-serif text-xl font-bold tabular-nums mt-0.5">100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 底部 4 项测算结果栏 -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-paper-border dark:border-evening-border tabular-nums">
+            <div class="p-3 rounded-sm bg-paper-bg/80 dark:bg-evening-bg/70 border border-paper-border/70 dark:border-evening-border">
+              <div class="text-[11px] text-paper-muted dark:text-evening-muted">当日组合收益率</div>
+              <div id="pf-res-ret" class="font-serif text-lg sm:text-xl font-bold mt-1">+2.22%</div>
+            </div>
+            <div class="p-3 rounded-sm bg-paper-bg/80 dark:bg-evening-bg/70 border border-paper-border/70 dark:border-evening-border">
+              <div class="text-[11px] text-paper-muted dark:text-evening-muted">当日预计盈亏</div>
+              <div id="pf-res-pnl" class="font-serif text-lg sm:text-xl font-bold mt-1">+¥2,216</div>
+            </div>
+            <div class="p-3 rounded-sm bg-paper-bg/80 dark:bg-evening-bg/70 border border-paper-border/70 dark:border-evening-border">
+              <div class="text-[11px] text-paper-muted dark:text-evening-muted">日内模拟最大回撤</div>
+              <div id="pf-res-dd" class="font-serif text-lg sm:text-xl font-bold mt-1 text-paper-ink dark:text-evening-ink">-1.18%</div>
+            </div>
+            <div class="p-3 rounded-sm bg-paper-bg/80 dark:bg-evening-bg/70 border border-paper-border/70 dark:border-evening-border">
+              <div class="text-[11px] text-paper-muted dark:text-evening-muted">组合风险评级</div>
+              <div id="pf-res-risk" class="font-serif text-lg sm:text-xl font-bold mt-1 text-editorial-gold">均衡型</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 杂志页脚声明 ==================== -->
+  <footer class="w-full max-w-[1440px] mx-auto px-4 sm:px-8 py-6 border-t border-paper-border dark:border-evening-border text-[11px] text-paper-muted dark:text-evening-muted flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>
+      <span class="font-serif font-semibold text-paper-secondary dark:text-evening-secondary">GLOBAL MARKET DIGEST</span>
+      <span class="mx-2">·</span>
+      <span>基准快照时间：2026年11月24日 11:18 (GMT+8)</span>
+    </div>
+    <div>免责声明：本页面仅作财经数据新闻可视化与跨市场量化演练，不构成任何投资建议。</div>
+  </footer>
+
+  <!-- ==================== 分享与发布模态窗 (Share & Publish Modal) ==================== -->
+  <div id="share-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/55 backdrop-blur-[2px]" onclick="handleModalBackdrop(event)" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="modal-animate w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-md bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border shadow-2xl">
+      <!-- 弹窗报头 -->
+      <div class="px-6 py-4 border-b border-paper-border dark:border-evening-border flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-editorial-gold block">Share &amp; Publish</span>
+          <h2 id="share-modal-title" class="font-serif text-xl font-bold mt-0.5">分享看板与公开发布</h2>
+        </div>
+        <button onclick="closeShareModal()" class="p-2 rounded-sm text-paper-secondary dark:text-evening-secondary hover:bg-paper-subtle dark:hover:bg-evening-subtle transition-colors" aria-label="关闭弹窗">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5">
+        <!-- 1. 复制当前视图链接（携带完整配置参数） -->
+        <div class="p-4 rounded-sm bg-paper-bg/85 dark:bg-evening-bg/80 border border-paper-border dark:border-evening-border">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-serif text-sm font-bold flex items-center gap-2">
+              <i data-lucide="link" class="w-4 h-4 text-editorial-gold"></i>
+              <span>1. 复制当前视图链接</span>
+            </h3>
+            <span class="text-[10px] px-1.5 py-0.5 rounded-sm bg-editorial-gold/15 text-[#8A6118] dark:text-[#DFB35C] font-semibold">URL 状态同步</span>
+          </div>
+          <p class="text-xs text-paper-secondary dark:text-evening-secondary mb-3 leading-relaxed">
+            已自动编码当前的主题、涨跌配色、贵金属单位、选中标的及配置沙盒权重，他人打开链接即可看到完全一致的视角。
+          </p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input id="share-url-input" type="text" readonly class="flex-1 px-3 py-2 text-xs font-mono rounded-sm bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border text-paper-secondary dark:text-evening-secondary focus:outline-none" />
+            <button onclick="copyCurrentViewLink()" class="px-4 py-2 rounded-sm bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg text-xs font-semibold hover:opacity-90 transition-opacity shrink-0">
+              复制视图链接
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 复制今日市场简报（适配微信/朋友圈/Slack） -->
+        <div class="p-4 rounded-sm bg-paper-bg/85 dark:bg-evening-bg/80 border border-paper-border dark:border-evening-border">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <h3 class="font-serif text-sm font-bold flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-editorial-cn"></i>
+              <span>2. 复制今日市场简报</span>
+            </h3>
+            <span class="text-[10px] text-paper-muted dark:text-evening-muted">适配微信 / 朋友圈 / 团队群</span>
+          </div>
+          <textarea id="share-brief-preview" rows="6" readonly class="w-full p-3 text-xs font-mono leading-relaxed rounded-sm bg-paper-card dark:bg-evening-card border border-paper-border dark:border-evening-border text-paper-ink dark:text-evening-ink focus:outline-none resize-none"></textarea>
+          <div class="mt-2.5 flex justify-end">
+            <button onclick="copyMarketBriefing()" class="px-4 py-2 rounded-sm border border-paper-ink dark:border-evening-ink text-xs font-semibold hover:bg-paper-ink hover:text-paper-card dark:hover:bg-evening-ink dark:hover:text-evening-bg transition-colors flex items-center gap-1.5">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>一键复制简报文本</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. 下载独立网页并 1 分钟公开发布 -->
+        <div class="p-4 rounded-sm bg-editorial-goldLight/60 dark:bg-[#1E1C16] border border-editorial-gold/35">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <h3 class="font-serif text-sm font-bold flex items-center gap-2">
+              <i data-lucide="globe" class="w-4 h-4 text-editorial-gold"></i>
+              <span>3. 下载独立网页 (index.html) 随时公开发布</span>
+            </h3>
+            <button onclick="downloadStandaloneHTML()" class="px-3.5 py-1.5 rounded-sm bg-editorial-gold text-white text-xs font-semibold hover:opacity-90 transition-opacity flex items-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>下载 index.html</span>
+            </button>
+          </div>
+          <p class="text-xs text-paper-secondary dark:text-evening-secondary leading-relaxed">
+            本应用为 100% 零后端单文件 HTML，下载后 1 分钟即可免费生成永久公开链接供任何人随时访问：
+          </p>
+          <ol class="mt-2.5 space-y-1 text-[11px] text-paper-secondary dark:text-evening-secondary list-decimal list-inside">
+            <li><strong class="text-paper-ink dark:text-evening-ink">Cloudflare Pages / Netlify Drop</strong>：将下载的 <code class="font-mono">index.html</code> 放入文件夹直接拖拽上传，立即获得 HTTPS 公开网址。</li>
+            <li><strong class="text-paper-ink dark:text-evening-ink">GitHub Pages / Vercel</strong>：新建仓库上传 <code class="font-mono">index.html</code>，开启 Pages 即可长期稳定访问并支持微信直接打开。</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 轻提示 Toast ==================== -->
+  <div id="editorial-toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[60] pointer-events-none opacity-0 translate-y-2 transition-all duration-200 px-4 py-2.5 rounded-sm bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg text-xs font-semibold shadow-lg flex items-center gap-2">
+    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+    <span id="editorial-toast-text">已复制到剪贴板</span>
+  </div>
+                  <p class="text-[11px] text-paper-muted dark:text-evening-muted mt-0.5">${a.enName} · 国际现货</p>
+                </div>
+                <span class="px-2 py-0.5 text-xs font-semibold rounded-sm tabular-nums ${trend.badge}">
+                  ${sign}${a.changePct.toFixed(2)}%
+                </span>
+              </div>
+
+              <!-- 大号衬线核心价位 + 迷你折线图 -->
+              <div class="mt-4 flex items-end justify-between gap-4">
+                <div class="rounded px-1 -mx-1 ${flashMap[id] || ''}">
+                  <div class="flex items-baseline gap-1.5 tabular-nums">
+                    <span class="font-serif text-3xl sm:text-[34px] font-bold tracking-tight leading-none">${fmt(mainPrice, 2)}</span>
+                    <span class="text-xs text-paper-muted dark:text-evening-muted">${getUnitText(a)}</span>
+                  </div>
+                  <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs tabular-nums">
+                    <span class="font-semibold ${trend.text}">${sign}${fmt(mainChange, 2)}</span>
+                    <span class="text-paper-secondary dark:text-evening-secondary px-1.5 py-0.5 rounded-sm bg-paper-subtle dark:bg-evening-subtle text-[11px]">${altLabel}</span>
+                  </div>
+                </div>
+                <div class="w-28 h-11 shrink-0">
+                  ${makeSparkline(a.series, trend.hex, 42, 112)}
+                </div>
+              </div>
+            </div>
+
+            <!-- 日内高低振幅刻度条 -->
+            <div class="mt-5 pt-3.5 border-t border-paper-border/75 dark:border-evening-border">
+              <div class="flex justify-between text-[11px] text-paper-muted dark:text-evening-muted tabular-nums mb-1.5">
+                <span>日内低 ${fmt(mainLow, 2)}</span>
+                <span>振幅 ${(((a.high - a.low) / a.prevClose) * 100).toFixed(2)}%</span>
+                <span>日内高 ${fmt(mainHigh, 2)}</span>
+              </div>
+              <div class="relative h-1.5 w-full rounded-full bg-paper-subtle dark:bg-evening-subtle">
+                <div class="h-full rounded-full transition-all duration-300" style="width:${rangePct}%; background-color:${trend.hex}; opacity:0.65;"></div>
+                <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2 border-paper-card dark:border-evening-card shadow" style="left:${rangePct}%; background-color:${trend.hex};"></div>
+              </div>
+            </div>
+          </article>
+        `;
+      });
+
+      // 更新金银比监控仪
+      const xau = getAsset('xau');
+      const xag = getAsset('xag');
+      const gsr = xau.price / xag.price;
+      const prevGsr = xau.prevClose / xag.prevClose;
+      const diff = gsr - prevGsr;
+      const diffPct = (diff / prevGsr) * 100;
+
+      document.getElementById('gsr-val').textContent = gsr.toFixed(2);
+      document.getElementById('gsr-diff').textContent = `较前日收盘 ${diff >= 0 ? '+' : ''}${diff.toFixed(2)} (${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(2)}%)`;
+
+      const pctPos = Math.min(100, Math.max(0, ((gsr - 40) / 60) * 100));
+      document.getElementById('gsr-marker').style.left = `${pctPos.toFixed(1)}%`;
+
+      const tag = document.getElementById('gsr-tag');
+      const comment = document.getElementById('gsr-comment');
+      if (gsr >= 80) {
+        tag.textContent = '高估区间 (>80)';
+        comment.textContent = `“比值站稳 ${gsr.toFixed(1)}，黄金的货币避险溢价显著跑赢白银工业属性，短期存在白银补涨或比值均值回归观察窗口。”`;
+      } else if (gsr >= 60) {
+        tag.textContent = '历史中性 (60-80)';
+        comment.textContent = `“金银比位于 ${gsr.toFixed(1)} 中性均衡带，贵金属板块的避险定价与工业需求预期保持相对平衡。”`;
+      } else {
+        tag.textContent = '低估区间 (<60)';
+        comment.textContent = `“比值跌破 60，白银展现显著弹性，通常对应全球制造业景气扩张与强风险偏好周期。”`;
+      }
+    }
+
+    // =========================================================================
+    // 5. 渲染 SECTION 02 & 03：中美股市杂志行式数据卡片
+    // =========================================================================
+    function renderEquitySpread(flashMap = {}) {
+      const renderRows = (list, targetId, accentColor) => {
+        const el = document.getElementById(targetId);
+        el.innerHTML = list.map(a => {
+          const isSelected = state.selectedId === a.id;
+          const trend = getTrend(a.change);
+          const sign = a.change >= 0 ? '+' : '';
+          const rangePct = Math.min(100, Math.max(0, ((a.price - a.low) / (a.high - a.low || 1)) * 100));
+
+          return `
+            <div onclick="selectAsset('${a.id}')"
+              class="cursor-pointer px-3 py-4 transition-all duration-150 grid grid-cols-12 gap-3 items-center relative ${
+                isSelected
+                  ? 'bg-paper-card dark:bg-evening-card shadow-sm ring-1 ring-inset ring-paper-ink/80 dark:ring-evening-ink/70 rounded-sm my-1'
+                  : 'hover:bg-paper-card/80 dark:hover:bg-evening-card/60'
+              }">
+              ${isSelected ? `<span class="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r" style="background-color:${accentColor}"></span>` : ''}
+
+              <!-- 名称与代码 -->
+              <div class="col-span-6 sm:col-span-4 min-w-0">
+                <div class="font-serif text-base font-bold truncate">${a.name}</div>
+                <div class="flex items-center gap-1.5 text-[11px] text-paper-muted dark:text-evening-muted mt-0.5">
+                  <span class="font-mono">${a.ticker}</span>
+                  <span class="hidden md:inline truncate">· ${a.enName}</span>
+                </div>
+              </div>
+
+              <!-- 点位与涨跌 -->
+              <div class="col-span-6 sm:col-span-3 text-right tabular-nums rounded px-1 ${flashMap[a.id] || ''}">
+                <div class="font-serif text-lg font-bold leading-tight">${fmt(a.price, 2)}</div>
+                <div class="mt-1 flex items-center justify-end gap-1.5 text-[11px]">
+                  <span class="font-medium ${trend.text}">${sign}${fmt(a.change, 2)}</span>
+                  <span class="px-1.5 py-0.5 rounded-sm font-semibold ${trend.badge}">${sign}${a.changePct.toFixed(2)}%</span>
+                </div>
+              </div>
+
+              <!-- 迷你折线图 -->
+              <div class="col-span-5 sm:col-span-2 h-8 px-1">
+                ${makeSparkline(a.series, trend.hex, 32, 92)}
+              </div>
+
+              <!-- 日内振幅区间进度条 -->
+              <div class="col-span-7 sm:col-span-3 tabular-nums">
+                <div class="flex justify-between text-[10px] text-paper-muted dark:text-evening-muted mb-1">
+                  <span>${fmt(a.low, 0)}</span>
+                  <span>${fmt(a.high, 0)}</span>
+                </div>
+                <div class="relative h-1.5 w-full rounded-full bg-paper-subtle dark:bg-evening-subtle">
+                  <div class="h-full rounded-full transition-all duration-300" style="width:${rangePct}%; background-color:${trend.hex}; opacity:0.65;"></div>
+                  <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-paper-card dark:border-evening-card" style="left:${rangePct}%; background-color:${trend.hex};"></div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      };
+
+      renderRows(assets.filter(a => a.category === 'cn'), 'cn-equities-list', '#A63A3A');
+      renderRows(assets.filter(a => a.category === 'us'), 'us-equities-list', '#24486E');
+    }
+
+    // =========================================================================
+    // 6. 渲染 SECTION 04：Chart.js 财经媒体深度图表 + 右侧编辑部简报
+    // =========================================================================
+    const prevClosePlugin = {
+      id: 'editorialPrevClose',
+      afterDatasetsDraw(chart, _, opts) {
+        if (!opts || !opts.enabled || opts.value == null) return;
+        const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+        const yPos = y.getPixelForValue(opts.value);
+        if (yPos < top || yPos > bottom) return;
+
+        const isDark = state.theme === 'dark';
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = isDark ? 'rgba(166, 176, 188, 0.55)' : 'rgba(90, 101, 114, 0.55)';
+        ctx.moveTo(left, yPos);
+        ctx.lineTo(right, yPos);
+        ctx.stroke();
+
+        const label = `昨收 ${fmt(opts.value, 2)}`;
+        ctx.font = '600 10px Inter, sans-serif';
+        const w = ctx.measureText(label).width + 10;
+        ctx.fillStyle = isDark ? '#273545' : '#EFECE4';
+        ctx.fillRect(left + 4, yPos - 9, w, 18);
+        ctx.fillStyle = isDark ? '#EAE5DA' : '#16222E';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, left + 9, yPos);
+        ctx.restore();
+      }
+    };
+
+    function renderMainChartAndBrief() {
+      const a = getAsset(state.selectedId);
+      const isDark = state.theme === 'dark';
+      const gridColor = isDark ? 'rgba(166, 176, 188, 0.12)' : 'rgba(22, 34, 46, 0.08)';
+      const tickColor = isDark ? '#A6B0BC' : '#5A6572';
+
+      // 更新 Tab 下划线状态
+      const tabSingle = document.getElementById('tab-single');
+      const tabCompare = document.getElementById('tab-compare');
+      const activeTabCls = 'pb-2 -mb-[17px] font-semibold border-b-2 border-paper-ink dark:border-editorial-gold text-paper-ink dark:text-evening-ink transition-colors';
+      const inactiveTabCls = 'pb-2 -mb-[17px] font-medium border-b-2 border-transparent text-paper-muted dark:text-evening-muted hover:text-paper-ink dark:hover:text-evening-ink transition-colors';
+
+      tabSingle.className = state.chartMode === 'single' ? activeTabCls : inactiveTabCls;
+      tabCompare.className = state.chartMode === 'compare' ? activeTabCls : inactiveTabCls;
+      document.getElementById('single-chart-tools').style.display = state.chartMode === 'single' ? 'flex' : 'none';
+
+      // MA5 按钮状态
+      const btnMa5 = document.getElementById('btn-ma5');
+      btnMa5.className = state.showMA5
+        ? 'px-2.5 py-1 rounded-sm border border-editorial-gold bg-editorial-gold/12 text-[#8A6118] dark:text-[#E2B55A] transition-colors flex items-center gap-1.5 font-semibold'
+        : 'px-2.5 py-1 rounded-sm border border-paper-border dark:border-evening-border text-paper-muted dark:text-evening-muted transition-colors flex items-center gap-1.5 font-medium';
+
+      // 渲染右侧编辑部简报 (始终展示当前选中标的)
+      renderEditorialBrief(a);
+
+      // 绘制主图
+      const ctx = document.getElementById('editorialMainChart').getContext('2d');
+      if (mainChart) mainChart.destroy();
+
+      if (state.chartMode === 'single') {
+        const trend = getTrend(a.change);
+        const sign = a.change >= 0 ? '+' : '';
+        const dispPrice = displayMetalVal(a, a.price);
+        const dispChange = displayMetalVal(a, a.change);
+        const dispPrev = displayMetalVal(a, a.prevClose);
+        const seriesData = a.series.map(v => Number(displayMetalVal(a, v).toFixed(2)));
+        const ma5Data = calcMA5(seriesData).map(v => Number(v.toFixed(2)));
+
+        // 更新图表头部
+        const pill = document.getElementById('chart-cat-pill');
+        pill.textContent = a.catLabel;
+        if (a.category === 'metals') pill.className = 'px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-editorial-gold/15 text-[#8A6118] dark:text-[#E2B55A]';
+        else if (a.category === 'cn') pill.className = 'px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-editorial-cn/12 text-editorial-cn dark:text-[#E57373]';
+        else pill.className = 'px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-editorial-us/12 text-editorial-us dark:text-[#7BAEE0]';
+
+        document.getElementById('chart-title').textContent = a.name;
+        document.getElementById('chart-code').textContent = a.ticker;
+        document.getElementById('chart-subtitle').textContent = `日内分时深度走势 (${getUnitText(a)}) · 虚线为前一日收盘基准`;
+        document.getElementById('chart-price').textContent = fmt(dispPrice, 2);
+        document.getElementById('chart-change').textContent = `${sign}${fmt(dispChange, 2)} (${sign}${a.changePct.toFixed(2)}%)`;
+        document.getElementById('chart-change').className = `text-xs font-semibold mt-1 ${trend.text}`;
+
+        const grad = ctx.createLinearGradient(0, 0, 0, 320);
+        grad.addColorStop(0, trend.fill);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+        const datasets = [{
+          label: `${a.name} (${getUnitText(a)})`,
+          data: seriesData,
+          borderColor: trend.hex,
+          backgroundColor: grad,
+          borderWidth: 2.2,
+          fill: true,
+          tension: 0.22,
+          pointRadius: 0,
+          pointHoverRadius: 4.5,
+          pointHoverBackgroundColor: trend.hex
+        }];
+
+        if (state.showMA5) {
+          datasets.push({
+            label: 'MA5 均线',
+            data: ma5Data,
+            borderColor: '#B8862D',
+            borderWidth: 1.4,
+            borderDash: [4, 3],
+            fill: false,
+            tension: 0.28,
+            pointRadius: 0,
+            pointHoverRadius: 3
+          });
+        }
+
+        mainChart = new Chart(ctx, {
+          type: 'line',
+          data: { labels: a.labels, datasets },
+          plugins: [prevClosePlugin],
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                align: 'end',
+                labels: { color: tickColor, boxWidth: 10, usePointStyle: true, font: { size: 11 } }
+              },
+              tooltip: {
+                backgroundColor: isDark ? '#17212C' : '#FCFBF8',
+                titleColor: isDark ? '#EAE5DA' : '#16222E',
+                bodyColor: isDark ? '#A6B0BC' : '#5A6572',
+                borderColor: isDark ? '#273545' : '#DFDBD2',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  label: (c) => {
+                    const v = c.parsed.y;
+                    const p = ((v - dispPrev) / dispPrev) * 100;
+                    return ` ${c.dataset.label}: ${fmt(v, 2)} (${p >= 0 ? '+' : ''}${p.toFixed(2)}%)`;
+                  }
+                }
+              },
+              editorialPrevClose: { enabled: true, value: dispPrev }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { color: gridColor },
+                ticks: { color: tickColor, maxTicksLimit: 7, font: { size: 11 } }
+              },
+              y: {
+                position: 'right',
+                grid: { color: gridColor },
+                border: { display: false },
+                ticks: { color: tickColor, font: { size: 11 }, callback: v => fmt(v, 2) }
+              }
+            }
+          }
+        });
+      } else {
+        // 跨市场归一化对比模式 (6大核心标的)
+        const compareIds = ['xau', 'xag', 'sse', 'csi300', 'spx', 'ixic'];
+        const compareList = compareIds.map(id => getAsset(id));
+
+        const pill = document.getElementById('chart-cat-pill');
+        pill.textContent = '跨市场对比';
+        pill.className = 'px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-sm bg-paper-ink/10 dark:bg-evening-ink/15 text-paper-ink dark:text-evening-ink';
+
+        document.getElementById('chart-title').textContent = '跨市场核心资产日内强弱归一化对比';
+        document.getElementById('chart-code').textContent = 'BASE = 0.00%';
+        document.getElementById('chart-subtitle').textContent = '以各市场前一日收盘价为 0% 基准 · 点击上方图例可独立显隐标的';
+        document.getElementById('chart-price').textContent = '6 大核心标的';
+        document.getElementById('chart-change').textContent = '黄金 · 白银 · 上证 · 沪深300 · 标普 · 纳指';
+        document.getElementById('chart-change').className = 'text-xs font-medium mt-1 text-paper-secondary dark:text-evening-secondary';
+
+        const steps = Array.from({ length: 21 }, (_, i) => `${Math.round((i / 20) * 100)}%`);
+        const datasets = compareList.map(item => {
+          const src = item.series;
+          const norm = steps.map((_, idx) => {
+            const pos = (idx / 20) * (src.length - 1);
+            const lo = Math.floor(pos);
+            const hi = Math.min(src.length - 1, Math.ceil(pos));
+            const val = lo === hi ? src[lo] : src[lo] + (src[hi] - src[lo]) * (pos - lo);
+            return Number((((val - item.prevClose) / item.prevClose) * 100).toFixed(2));
+          });
+          return {
+            label: item.name,
+            data: norm,
+            borderColor: item.color,
+            backgroundColor: item.color,
+            borderWidth: 2,
+            fill: false,
+            tension: 0.24,
+            pointRadius: 0,
+            pointHoverRadius: 4
+          };
+        });
+
+        mainChart = new Chart(ctx, {
+          type: 'line',
+          data: { labels: steps, datasets },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                align: 'start',
+                labels: { color: tickColor, boxWidth: 10, usePointStyle: true, padding: 14, font: { size: 11 } }
+              },
+              tooltip: {
+                backgroundColor: isDark ? '#17212C' : '#FCFBF8',
+                titleColor: isDark ? '#EAE5DA' : '#16222E',
+                bodyColor: isDark ? '#A6B0BC' : '#5A6572',
+                borderColor: isDark ? '#273545' : '#DFDBD2',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  title: items => `日内交易进度 ${items[0].label}`,
+                  label: c => ` ${c.dataset.label}: ${c.parsed.y >= 0 ? '+' : ''}${c.parsed.y.toFixed(2)}%`
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                border: { color: gridColor },
+                ticks: { color: tickColor, maxTicksLimit: 6, font: { size: 11 } }
+              },
+              y: {
+                position: 'right',
+                grid: { color: gridColor },
+                border: { display: false },
+                ticks: { color: tickColor, font: { size: 11 }, callback: v => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%` }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderEditorialBrief(a) {
+      document.getElementById('brief-ticker').textContent = a.ticker;
+      const openVal = displayMetalVal(a, a.open);
+      const highVal = displayMetalVal(a, a.high);
+      const lowVal = displayMetalVal(a, a.low);
+      const prevVal = displayMetalVal(a, a.prevClose);
+      const amplitude = (((a.high - a.low) / a.prevClose) * 100).toFixed(2);
+
+      document.getElementById('brief-stats-grid').innerHTML = `
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">今开 Open</span>
+          <span class="font-serif text-base font-bold mt-0.5 block">${fmt(openVal, 2)}</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">昨收 Prev Close</span>
+          <span class="font-serif text-base font-bold mt-0.5 block">${fmt(prevVal, 2)}</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">日内最高 High</span>
+          <span class="font-serif text-base font-bold mt-0.5 block">${fmt(highVal, 2)}</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">日内最低 Low</span>
+          <span class="font-serif text-base font-bold mt-0.5 block">${fmt(lowVal, 2)}</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">日内振幅 Range</span>
+          <span class="font-serif text-base font-bold mt-0.5 block">${amplitude}%</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-paper-muted dark:text-evening-muted block">波动特征</span>
+          <span class="text-xs font-semibold mt-1 block text-paper-ink dark:text-evening-ink">${a.volFeature}</span>
+        </div>
+      `;
+
+      document.getElementById('editorial-note-box').textContent = `“${a.note}”`;
+
+      // 快速切换胶囊
+      document.getElementById('quick-switch-pills').innerHTML = assets.map(item => {
+        const active = item.id === state.selectedId;
+        return `
+          <button onclick="selectAsset('${item.id}')"
+            class="px-2 py-1 text-[11px] rounded-sm border transition-colors ${
+              active
+                ? 'bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg border-transparent font-semibold'
+                : 'border-paper-border dark:border-evening-border text-paper-secondary dark:text-evening-secondary hover:border-paper-ink/40'
+            }">
+            ${item.name}
+          </button>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 7. 渲染 SECTION 05：情绪温度计、8大资产强弱榜 & 配置沙盒
+    // =========================================================================
+    function renderSentimentAndRanking() {
+      const spx = getAsset('spx');
+      const ixic = getAsset('ixic');
+      const csi = getAsset('csi300');
+      const hsi = getAsset('hsi');
+      const xau = getAsset('xau');
+
+      // 计算综合风险情绪温度 (0-100)
+      const raw = 50 + (spx.changePct * 4.2) + (ixic.changePct * 1.4) + (csi.changePct * 4.0) + (hsi.changePct * 2.0) - (xau.changePct * 1.2);
+      const score = Math.round(Math.min(95, Math.max(10, raw)));
+
+      document.getElementById('sentiment-score').textContent = score;
+      // 映射到仪表盘角度 (-90° ~ +90°)
+      const deg = -90 + (score / 100) * 180;
+      document.getElementById('sentiment-needle').setAttribute('transform', `rotate(${deg.toFixed(1)} 110 105)`);
+
+      const tag = document.getElementById('sentiment-regime-tag');
+      if (score >= 68) tag.textContent = '风险偏好主导 · Risk-On';
+      else if (score >= 42) tag.textContent = '多空均衡 · Neutral';
+      else tag.textContent = '避险情绪升温 · Risk-Off';
+
+      // 8大资产当日涨跌幅排序横向条形榜
+      const sorted = [...assets].sort((a, b) => b.changePct - a.changePct);
+      const maxAbs = Math.max(...sorted.map(a => Math.abs(a.changePct)), 1);
+
+      document.getElementById('asset-ranking-list').innerHTML = sorted.map((item, idx) => {
+        const trend = getTrend(item.change);
+        const sign = item.changePct >= 0 ? '+' : '';
+        const widthPct = Math.max(6, (Math.abs(item.changePct) / maxAbs) * 100);
+
+        return `
+          <div onclick="selectAsset('${item.id}')" class="cursor-pointer group flex items-center gap-2.5 py-0.5 hover:opacity-85">
+            <span class="w-4 text-[10px] font-serif font-bold text-paper-muted dark:text-evening-muted">${String(idx + 1).padStart(2, '0')}</span>
+            <span class="w-20 sm:w-24 font-medium truncate">${item.name}</span>
+            <div class="flex-1 h-2 rounded-full bg-paper-subtle dark:bg-evening-subtle overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-300" style="width:${widthPct.toFixed(1)}%; background-color:${trend.hex}; opacity:0.85;"></div>
+            </div>
+            <span class="w-14 text-right font-semibold ${trend.text}">${sign}${item.changePct.toFixed(2)}%</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderPortfolioSandbox() {
+      const p = state.portfolio;
+      const map = {
+        xau: getAsset('xau'),
+        xag: getAsset('xag'),
+        csi300: getAsset('csi300'),
+        spx: getAsset('spx')
+      };
+
+      const totalW = p.xau + p.xag + p.csi300 + p.spx;
+
+      Object.keys(map).forEach(k => {
+        const a = map[k];
+        const t = getTrend(a.change);
+        const s = a.changePct >= 0 ? '+' : '';
+        document.getElementById(`pf-w-${k}`).textContent = `${p[k]}%`;
+        document.getElementById(`slider-${k}`).value = p[k];
+        const retEl = document.getElementById(`pf-ret-${k}`);
+        retEl.textContent = `${s}${a.changePct.toFixed(2)}%`;
+        retEl.className = `tabular-nums font-semibold ${t.text}`;
+      });
+
+      const statusEl = document.getElementById('pf-weight-status');
+      if (totalW === 100) {
+        statusEl.textContent = '100% · 已精确配平';
+        statusEl.className = 'font-semibold tabular-nums text-[#1F6E4E] dark:text-[#38A173]';
+      } else if (totalW === 0) {
+        statusEl.textContent = '0% · 请分配资产权重';
+        statusEl.className = 'font-semibold tabular-nums text-paper-muted';
+      } else {
+        statusEl.textContent = `${totalW}% · 已自动按比例折算`;
+        statusEl.className = 'font-semibold tabular-nums text-editorial-gold';
+      }
+
+      // 加权收益与模拟日内最大回撤
+      let weightedRet = 0;
+      let weightedDD = 0;
+      let equityShare = 0;
+
+      if (totalW > 0) {
+        weightedRet = (
+          p.xau * map.xau.changePct +
+          p.xag * map.xag.changePct +
+          p.csi300 * map.csi300.changePct +
+          p.spx * map.spx.changePct
+        ) / totalW;
+
+        // 基于各标的日内振幅估算模拟日内最大回撤风险
+        const ddOf = a => ((a.high - a.low) / a.prevClose) * 100 * 0.52;
+        weightedDD = (
+          p.xau * ddOf(map.xau) +
+          p.xag * ddOf(map.xag) +
+          p.csi300 * ddOf(map.csi300) +
+          p.spx * ddOf(map.spx)
+        ) / totalW;
+
+        equityShare = (p.csi300 + p.spx) / totalW;
+      }
+
+      const principal = Number(p.principal) || 0;
+      const pnl = principal * (weightedRet / 100);
+      const pfTrend = getTrend(weightedRet);
+      const sign = weightedRet >= 0 ? '+' : '';
+
+      const resRet = document.getElementById('pf-res-ret');
+      resRet.textContent = `${sign}${weightedRet.toFixed(2)}%`;
+      resRet.className = `font-serif text-lg sm:text-xl font-bold mt-1 ${pfTrend.text}`;
+
+      const resPnl = document.getElementById('pf-res-pnl');
+      resPnl.textContent = `${pnl >= 0 ? '+' : '-'}¥${fmt(Math.abs(pnl), 0)}`;
+      resPnl.className = `font-serif text-lg sm:text-xl font-bold mt-1 ${pfTrend.text}`;
+
+      document.getElementById('pf-res-dd').textContent = `-${weightedDD.toFixed(2)}%`;
+      document.getElementById('pf-donut-label').textContent = `${totalW}%`;
+
+      const riskEl = document.getElementById('pf-res-risk');
+      if (totalW === 0) {
+        riskEl.textContent = '未配置';
+      } else if (equityShare <= 0.35) {
+        riskEl.textContent = '稳健防御';
+      } else if (equityShare <= 0.68) {
+        riskEl.textContent = '均衡配置';
+      } else {
+        riskEl.textContent = '进取成长';
+      }
+
+      // 环形图
+      const ctx = document.getElementById('portfolioDonutChart').getContext('2d');
+      const dataArr = totalW > 0 ? [p.xau, p.xag, p.csi300, p.spx] : [1, 1, 1, 1];
+      const colors = ['#B8862D', '#7C8794', '#A63A3A', '#24486E'];
+
+      if (donutChart) {
+        donutChart.data.datasets[0].data = dataArr;
+        donutChart.update('none');
+      } else {
+        donutChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['黄金', '白银', '中国股市', '美国股市'],
+            datasets: [{ data: dataArr, backgroundColor: colors, borderWidth: 0, hoverOffset: 5 }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '72%',
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: c => {
+                    const tot = c.dataset.data.reduce((x, y) => x + y, 0) || 1;
+                    return ` ${c.label}: ${((c.parsed / tot) * 100).toFixed(1)}%`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // =========================================================================
+    // 8. 全局交互与控制条同步
+    // =========================================================================
+    function syncHeaderControls() {
+      const btnSnap = document.getElementById('btn-snap');
+      const btnLive = document.getElementById('btn-live');
+      const active = 'bg-paper-ink text-paper-card dark:bg-editorial-gold dark:text-evening-bg font-semibold';
+      const inactive = 'text-paper-secondary dark:text-evening-secondary hover:text-paper-ink dark:hover:text-evening-ink';
+
+      btnSnap.className = `px-2.5 py-1.5 rounded-sm transition-colors ${!state.liveMode ? active : inactive}`;
+      btnLive.className = `px-2.5 py-1.5 rounded-sm transition-colors flex items-center gap-1.5 ${state.liveMode ? active : inactive}`;
+
+      const liveDot = document.getElementById('live-dot');
+      liveDot.className = state.liveMode
+        ? 'w-1.5 h-1.5 rounded-full bg-[#E05A4E] animate-pulse'
+        : 'w-1.5 h-1.5 rounded-full bg-paper-muted';
+
+      document.getElementById('masthead-status-text').textContent = state.liveMode ? '模拟实时行情' : '基准快照';
+      document.getElementById('masthead-status-dot').className = state.liveMode
+        ? 'w-1.5 h-1.5 rounded-full bg-[#B9382C] animate-pulse'
+        : 'w-1.5 h-1.5 rounded-full bg-editorial-gold';
+
+      // 涨跌配色
+      document.getElementById('scheme-label').textContent = state.colorScheme === 'cn' ? '红涨绿跌' : '绿涨红跌';
+      document.getElementById('scheme-dots').innerHTML = state.colorScheme === 'cn'
+        ? '<span class="w-2 h-2 rounded-full bg-[#B9382C]"></span><span class="w-2 h-2 rounded-full bg-[#1F6E4E]"></span>'
+        : '<span class="w-2 h-2 rounded-full bg-[#1F6E4E]"></span><span class="w-2 h-2 rounded-full bg-[#B9382C]"></span>';
+
+      // 贵金属单位
+      document.getElementById('unit-label').textContent = state.metalUnit === 'usd' ? 'USD/盎司' : 'CNY/克';
+
+      // 主题按钮
+      document.getElementById('theme-label').textContent = state.theme === 'light' ? '晨报纸媒' : '晚报深色';
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.setAttribute('data-lucide', state.theme === 'light' ? 'moon' : 'sun');
+      lucide.createIcons();
+    }
+
+    function selectAsset(id) {
+      state.selectedId = id;
+      state.chartMode = 'single';
+      renderMetalsSection();
+      renderEquitySpread();
+      renderMainChartAndBrief();
+      syncURLState();
+    }
+
+    function setChartMode(mode) {
+      state.chartMode = mode;
+      renderMainChartAndBrief();
+      syncURLState();
+    }
+
+    function toggleMA5() {
+      state.showMA5 = !state.showMA5;
+      renderMainChartAndBrief();
+      syncURLState();
+    }
+
+    function toggleColorScheme() {
+      state.colorScheme = state.colorScheme === 'cn' ? 'intl' : 'cn';
+      renderAll();
+      syncURLState();
+    }
+
+    function toggleMetalUnit() {
+      state.metalUnit = state.metalUnit === 'usd' ? 'cny' : 'usd';
+      renderAll();
+      syncURLState();
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', state.theme === 'dark');
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) metaTheme.setAttribute('content', state.theme === 'dark' ? '#141619' : '#F5F3EE');
+      renderAll();
+      syncURLState();
+    }
+
+    function updateWeight(key, val) {
+      state.portfolio[key] = Number(val);
+      renderPortfolioSandbox();
+      syncURLState();
+    }
+
+    function updatePrincipal(val) {
+      state.portfolio.principal = Math.max(0, Number(val) || 0);
+      renderPortfolioSandbox();
+      syncURLState();
+    }
+
+    function applyPreset(xau, xag, csi300, spx) {
+      state.portfolio.xau = xau;
+      state.portfolio.xag = xag;
+      state.portfolio.csi300 = csi300;
+      state.portfolio.spx = spx;
+      renderPortfolioSandbox();
+      syncURLState();
+    }
+
+    function selectAsset(id) {
+      state.selectedId = id;
+      state.chartMode = 'single';
+      renderMetalsSection();
+      renderEquitySpread();
+      renderMainChartAndBrief();
+    }
+
+    function setChartMode(mode) {
+      state.chartMode = mode;
+      renderMainChartAndBrief();
+    }
+
+    function toggleMA5() {
+      state.showMA5 = !state.showMA5;
+      renderMainChartAndBrief();
+    }
+
+    function toggleColorScheme() {
+      state.colorScheme = state.colorScheme === 'cn' ? 'intl' : 'cn';
+      renderAll();
+    }
+
+    function toggleMetalUnit() {
+      state.metalUnit = state.metalUnit === 'usd' ? 'cny' : 'usd';
+      renderAll();
+    }
+
+    function toggleTheme() {
+      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', state.theme === 'dark');
+      renderAll();
+    }
+
+    function updateWeight(key, val) {
+      state.portfolio[key] = Number(val);
+      renderPortfolioSandbox();
+    }
+
+    function updatePrincipal(val) {
+      state.portfolio.principal = Math.max(0, Number(val) || 0);
+      renderPortfolioSandbox();
+    }
+
+    function applyPreset(xau, xag, csi300, spx) {
+      state.portfolio.xau = xau;
+      state.portfolio.xag = xag;
+      state.portfolio.csi300 = csi300;
+      state.portfolio.spx = spx;
+      renderPortfolioSandbox();
+    }
+
+    function normalizePortfolio() {
+      const p = state.portfolio;
+      const tot = p.xau + p.xag + p.csi300 + p.spx;
+      if (tot === 0) return applyPreset(25, 25, 25, 25);
+      const a = Math.round((p.xau / tot) * 100);
+      const b = Math.round((p.xag / tot) * 100);
+      const c = Math.round((p.csi300 / tot) * 100);
+      const d = Math.max(0, 100 - a - b - c);
+      applyPreset(a, b, c, d);
+    }
+
+    // =========================================================================
+    // 9. 模拟实时行情引擎
+    // =========================================================================
+    function setLiveMode(enabled) {
+      state.liveMode = enabled;
+      if (liveTimer) {
+        clearInterval(liveTimer);
+        liveTimer = null;
+      }
+
+      if (!enabled) {
+        assets = JSON.parse(JSON.stringify(BENCHMARK_ASSETS));
+        document.getElementById('masthead-datetime').textContent = '2026年11月24日 星期二 · 11:18 (GMT+8)';
+        renderAll();
+      } else {
+        syncHeaderControls();
+        liveTimer = setInterval(tickMarket, 2400);
+      }
+    }
+
+    function tickMarket() {
+      const flashMap = {};
+      const nowStr = new Date().toTimeString().slice(0, 8);
+      document.getElementById('masthead-datetime').textContent = `2026年11月24日 星期二 · ${nowStr} (模拟演练)`;
+
+      assets.forEach(a => {
+        // 美股已收盘降低跳动频率，贵金属与A/港股高频跳动
+        const chance = a.category === 'us' ? 0.25 : 0.8;
+        if (Math.random() > chance) return;
+
+        const drift = (Math.random() - 0.495) * 0.002;
+        const prev = a.price;
+        const next = Number((a.price * (1 + drift)).toFixed(2));
+        a.price = next;
+        a.high = Math.max(a.high, next);
+        a.low = Math.min(a.low, next);
+        a.change = Number((a.price - a.prevClose).toFixed(2));
+        a.changePct = Number(((a.change / a.prevClose) * 100).toFixed(2));
+        a.series[a.series.length - 1] = next;
+
+        flashMap[a.id] = getTrend(next - prev).flash;
+      });
+
+      renderMetalsSection(flashMap);
+      renderEquitySpread(flashMap);
+      renderMainChartAndBrief();
+      renderSentimentAndRanking();
+      renderPortfolioSandbox();
+    }
+
+    // =========================================================================
+    // 10. 初始化渲染
+    // =========================================================================
+    // 10. URL 状态同步、分享弹窗、简报复制与独立 HTML 下载
+    // =========================================================================
+    let toastTimer = null;
+
+    function showToast(msg) {
+      const el = document.getElementById('editorial-toast');
+      document.getElementById('editorial-toast-text').textContent = msg;
+      el.classList.remove('opacity-0', 'translate-y-2');
+      el.classList.add('opacity-100', 'translate-y-0');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add('opacity-0', 'translate-y-2');
+        el.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    /** 兼容 iFrame 与微信浏览器的安全剪贴板复制 */
+    function copyTextSafe(text, successMsg) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-9999px';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) {
+          showToast(successMsg);
+          return;
+        }
+      } catch (e) {
+        // Fallback below
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => {
+          showToast('请手动长按或 Ctrl+C 复制文本框内容');
+        });
+      } else {
+        showToast('请手动长按或 Ctrl+C 复制文本框内容');
+      }
+    }
+
+    /** 将当前看板配置编码为 URL 查询参数 */
+    function buildShareQueryString() {
+      const p = state.portfolio;
+      const params = new URLSearchParams();
+      params.set('theme', state.theme);
+      params.set('scheme', state.colorScheme);
+      params.set('unit', state.metalUnit);
+      params.set('asset', state.selectedId);
+      params.set('mode', state.chartMode);
+      params.set('ma5', state.showMA5 ? '1' : '0');
+      params.set('w', `${p.xau},${p.xag},${p.csi300},${p.spx}`);
+      params.set('cap', String(p.principal));
+      return params.toString();
+    }
+
+    function buildShareURL() {
+      const qs = buildShareQueryString();
+      try {
+        const loc = window.location;
+        if (loc.protocol === 'http:' || loc.protocol === 'https:') {
+          return `${loc.origin}${loc.pathname}?${qs}`;
+        }
+      } catch (e) {}
+      return `https://your-domain.pages.dev/index.html?${qs}`;
+    }
+
+    /** 实时将状态同步至地址栏（在沙盒预览环境中自动降级静默） */
+    function syncURLState() {
+      try {
+        if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+          const newUrl = `${window.location.pathname}?${buildShareQueryString()}`;
+          window.history.replaceState(null, '', newUrl);
+        }
+      } catch (e) {
+        // 沙盒 iframe 下忽略 history API 限制
+      }
+    }
+
+    /** 页面启动时从 URL query 或 hash 还原分享视角 */
+    function hydrateStateFromURL() {
+      try {
+        const raw = window.location.search || (window.location.hash.startsWith('#?') ? window.location.hash.slice(1) : '');
+        if (!raw) return;
+        const params = new URLSearchParams(raw);
+        if (params.get('theme') === 'dark' || params.get('theme') === 'light') {
+          state.theme = params.get('theme');
+          document.documentElement.classList.toggle('dark', state.theme === 'dark');
+        }
+        if (params.get('scheme') === 'cn' || params.get('scheme') === 'intl') {
+          state.colorScheme = params.get('scheme');
+        }
+        if (params.get('unit') === 'usd' || params.get('unit') === 'cny') {
+          state.metalUnit = params.get('unit');
+        }
+        const assetParam = params.get('asset');
+        if (assetParam && BENCHMARK_ASSETS.some(a => a.id === assetParam)) {
+          state.selectedId = assetParam;
+        }
+        if (params.get('mode') === 'single' || params.get('mode') === 'compare') {
+          state.chartMode = params.get('mode');
+        }
+        if (params.get('ma5') === '0' || params.get('ma5') === '1') {
+          state.showMA5 = params.get('ma5') === '1';
+        }
+        const wStr = params.get('w');
+        if (wStr) {
+          const parts = wStr.split(',').map(n => Math.max(0, Math.min(100, Number(n) || 0)));
+          if (parts.length === 4) {
+            state.portfolio.xau = parts[0];
+            state.portfolio.xag = parts[1];
+            state.portfolio.csi300 = parts[2];
+            state.portfolio.spx = parts[3];
+          }
+        }
+        const cap = Number(params.get('cap'));
+        if (!Number.isNaN(cap) && cap >= 0 && params.has('cap')) {
+          state.portfolio.principal = cap;
+          const capInput = document.getElementById('pf-principal');
+          if (capInput) capInput.value = cap;
+        }
+      } catch (e) {
+        // 解析异常时回退默认状态
+      }
+    }
+
+    /** 生成适合微信/朋友圈/工作群分享的今日市场简报 */
+    function generateBriefingText() {
+      const xau = getAsset('xau');
+      const xag = getAsset('xag');
+      const gsr = (xau.price / xag.price).toFixed(2);
+      const sse = getAsset('sse');
+      const csi = getAsset('csi300');
+      const hsi = getAsset('hsi');
+      const spx = getAsset('spx');
+      const ixic = getAsset('ixic');
+      const dji = getAsset('dji');
+
+      const fmtLine = (a, isMetal = false) => {
+        const s = a.changePct >= 0 ? '+' : '';
+        const val = isMetal ? `${fmt(displayMetalVal(a, a.price), 2)} ${getUnitText(a)}` : fmt(a.price, 2);
+        return `· ${a.name}：${val} (${s}${a.changePct.toFixed(2)}%)`;
+      };
+
+      const pfRet = document.getElementById('pf-res-ret')?.textContent || '--';
+      const pfPnl = document.getElementById('pf-res-pnl')?.textContent || '--';
+      const p = state.portfolio;
+
+      return [
+        `【GLOBAL MARKET DIGEST · 全球核心资产日报】`,
+        `基准时间：2026-11-24 11:18 (GMT+8)`,
+        ``,
+        `■ 贵金属市场（金银比 ${gsr}）`,
+        fmtLine(xau, true),
+        fmtLine(xag, true),
+        ``,
+        `■ 中国股市 (CN/HK)`,
+        fmtLine(sse),
+        fmtLine(csi),
+        fmtLine(hsi),
+        ``,
+        `■ 美国股市 (NYSE/NASDAQ)`,
+        fmtLine(spx),
+        fmtLine(ixic),
+        fmtLine(dji),
+        ``,
+        `■ 模拟组合配置 (金${p.xau}%/银${p.xag}%/沪深${p.csi300}%/标普${p.spx}%)`,
+        `· 当日收益率：${pfRet} ｜ 预计盈亏：${pfPnl}`,
+        ``,
+        `查看交互式完整看板：${buildShareURL()}`
+      ].join('\n');
+    }
+
+    function openShareModal() {
+      document.getElementById('share-url-input').value = buildShareURL();
+      document.getElementById('share-brief-preview').value = generateBriefingText();
+      const modal = document.getElementById('share-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeShareModal() {
+      const modal = document.getElementById('share-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function handleModalBackdrop(e) {
+      if (e.target.id === 'share-modal') closeShareModal();
+    }
+
+    function copyCurrentViewLink() {
+      copyTextSafe(document.getElementById('share-url-input').value, '当前视图链接已复制，可直接分享给他人');
+    }
+
+    function copyMarketBriefing() {
+      copyTextSafe(document.getElementById('share-brief-preview').value, '今日市场简报已复制，可直接粘贴到微信或群聊');
+    }
+
+    /** 打包并下载可独立部署的 index.html 文件 */
+    function downloadStandaloneHTML() {
+      try {
+        const clone = document.documentElement.cloneNode(true);
+        // 清理弹窗打开状态与动态生成的 canvas 位图，确保独立打开时从零干净初始化
+        const modal = clone.querySelector('#share-modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+        const toast = clone.querySelector('#editorial-toast');
+        if (toast) {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }
+        clone.querySelectorAll('canvas').forEach(c => {
+          c.removeAttribute('style');
+          c.removeAttribute('width');
+          c.removeAttribute('height');
+        });
+        const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'index.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('已开始下载 index.html，可直接部署至 Cloudflare / Vercel / GitHub Pages');
+      } catch (e) {
+        showToast('下载失败，请尝试右键页面“另存为网页”');
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeShareModal();
+    });
+
+    // =========================================================================
+    // 11. 初始化渲染
+    // =========================================================================
+    function renderAll() {
+      syncHeaderControls();
+      renderMetalsSection();
+      renderEquitySpread();
+      renderMainChartAndBrief();
+      renderSentimentAndRanking();
+      renderPortfolioSandbox();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      hydrateStateFromURL();
+      lucide.createIcons();
+      renderAll();
+    });
+  </script>
+</body>
+</html>
