@@ -1,7 +1,21 @@
 {
   "name": "finhub",
+  "main": "worker.js",
   "compatibility_date": "2026-11-24",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "MARKET_KV",
+      "id": "789b54d87d554b078f12e86853dd42a0"
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "30 0 * * *",
+      "0 7 * * *"
+    ]
   }
 }
