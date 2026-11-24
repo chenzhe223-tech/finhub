@@ -3,7 +3,7 @@
   "main": "worker.js",
   "compatibility_date": "2026-11-24",
   "assets": {
-    "directory": ".",
+    "directory": "public",
     "binding": "ASSETS"
   },
   "kv_namespaces": [
@@ -14,8 +14,7 @@
   ],
   "triggers": {
     "crons": [
-      "30 0 * * *",
-      "0 7 * * *"
+      "*/30 * * * *"
     ]
   }
 }
