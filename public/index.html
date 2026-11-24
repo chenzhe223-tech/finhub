@@ -1,822 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><script data-bard-client-injected="true">(function(firebaseConfig, initialAuthToken, appId) {
-        window.__firebase_config = firebaseConfig;
-        window.__initial_auth_token = initialAuthToken;
-        window.__app_id = appId;
-            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjExNjRiNzdiNDMzZDdhMDAyMWI4NjE4YjhjYTU3ZTMyZGI5MWUxMTMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxNjcxNzkwNTE1MjYxODU4MzYyNiIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjXzY4OTYyZGI4Y2MxMDFmNTdfZ2xvYmFsX2ZpbmFuY2lhbF9kYXNoYm9hcmQuaHRtbC00NTcifSwiZXhwIjoxNzk1NTA4OTQzLCJpYXQiOjE3OTU1MDUzNDMsImFsZyI6IlJTMjU2In0.lD4l9HS-O7c72OdjCzymR6BNAhDAFdq6zIlw2OBy29R2nQhPPFRMWKJDgqPMgrYxNSzmm_xAA2PIXbz2016hgfMcw1Je7lr1OHD3wuGE9HfBX-5Vuyxkbgvt79pD5P4ZtMk5XKieOTCCIsHEIyyWnkQ1tkOrCWEPK8t8iYwBFD3KUbn03EOd3_-6zc_wZjtuDcyll2zuNHBJIJ2gvTrj0PR2BaGn8YXPAsvRtNJnqBPvXBFGhZWhmolUBoGYamm1-lHWiaPXbhrj25-ZcbM1N7N_YiCe1FwobJ7kcsf-8-UPFezgxsE7PNHHuzmsWdE11oKBsldr6_RjNzyqMtRg7A","c_68962db8cc101f57_global_financial_dashboard.html-457")</script><script data-bard-client-injected="true">
-  document.addEventListener('input', (event) => {
-    if (event.target && (event.target.isContentEditable || event.target.hasAttribute('contenteditable'))) {
-      const clonedDoc = document.cloneNode(true);
-      const injectedScripts = clonedDoc.querySelectorAll('[data-bard-client-injected="true"]');
-      injectedScripts.forEach(el => el.remove());
-      window.parent.postMessage({
-        type: 'inlineEdit',
-        html: '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML
-      }, '*');
-    }
-  });
-</script><script data-bard-client-injected="true">(function(){'use strict';window.addEventListener("message",a=>{a.data&&a.data.type==="SUPPLEMENTAL_DATA_UPDATE"&&window.dispatchEvent(new CustomEvent("supplementaldataupdate",{detail:a.data.data}))});}).call(this);
-</script><script data-bard-client-injected="true">(function() {
-  const SCROLL_KEYS = new Set([
-    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-    ' ', 'Spacebar', 'PageUp', 'PageDown', 'Home', 'End',
-  ]);
-  const HORIZONTAL_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
-
-  function isTextEntryTarget(target) {
-    if (!target) return false;
-    const tagName = target.tagName;
-    return tagName === 'INPUT' || tagName === 'TEXTAREA' ||
-        tagName === 'SELECT' || target.isContentEditable === true;
-  }
-
-  // An element absorbs the key only if it both overflows on the axis being
-  // scrolled and is configured to scroll on that axis. The cheap dimension
-  // test runs first because getComputedStyle forces a style recalc, and this
-  // runs on every keypress. Each axis is read from its own longhand: the
-  // 'overflow' shorthand serializes as two values when the axes differ, which
-  // is the common 'overflow-x: hidden; overflow-y: auto' pane.
-  function canScroll(node, horizontal) {
-    const overflows = horizontal ? node.scrollWidth > node.clientWidth
-                                 : node.scrollHeight > node.clientHeight;
-    if (!overflows) return false;
-    const style = window.getComputedStyle(node);
-    const overflow = horizontal ? style.overflowX : style.overflowY;
-    return overflow === 'auto' || overflow === 'scroll';
-  }
-
-  // Walks up from the event target so nested scrollers keep their behavior.
-  // <body> is included because pages that pin the root height make it the
-  // scroll container.
-  function hasScrollableAncestor(target, horizontal) {
-    let node = target;
-    while (node && node !== document.documentElement) {
-      if (canScroll(node, horizontal)) return true;
-      node = node.parentElement;
-    }
-    return false;
-  }
-
-  function rootCanScroll(horizontal) {
-    const scroller = document.scrollingElement || document.documentElement;
-    if (!scroller) return false;
-    // Tolerate a pixel of rounding so subpixel layouts do not look scrollable.
-    return horizontal ? scroller.scrollWidth > window.innerWidth + 1
-                      : scroller.scrollHeight > window.innerHeight + 1;
-  }
-
-  window.addEventListener('keydown', function(event) {
-    if (!SCROLL_KEYS.has(event.key)) return;
-    if (event.defaultPrevented) return;
-    // Alt and Meta turn arrows into browser history navigation, and Ctrl is
-    // reserved for shortcuts, so none of them are scroll intent.
-    if (event.altKey || event.metaKey || event.ctrlKey) return;
-
-    const target = event.target;
-    if (isTextEntryTarget(target)) return;
-
-    // Anything that can still absorb the scroll gets to keep it.
-    const horizontal = HORIZONTAL_KEYS.has(event.key);
-    if (rootCanScroll(horizontal)) return;
-    if (hasScrollableAncestor(target, horizontal)) return;
-
-    event.preventDefault();
-  }, {capture: true, passive: false});
-})();</script><script data-bard-client-injected="true">(function() {
-  // Ensure this script is executed only once
-  if (window.firebaseAuthBridgeScriptLoaded) {
-    return;
-  }
-  window.firebaseAuthBridgeScriptLoaded = true;
-
-  let nextTokenPromiseId = 0;
-
-  // Stores { resolve, reject } for ongoing token requests
-  const pendingTokenPromises = {};
-
-  // Listen for messages from the Host Application
-  window.addEventListener('message', function(event) {
-
-    const messageData = event.data;
-
-  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
-      const { success, token, error, promiseId } = messageData ?? {};
-      if (pendingTokenPromises[promiseId]) {
-        if (success) {
-          pendingTokenPromises[promiseId].resolve(token);
-        } else {
-          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
-        }
-        delete pendingTokenPromises[promiseId];
-      }
-    }
-  });
-
-  // Expose a function for the Generated App to request a new Firebase token
-  window.requestNewFirebaseToken = function() {
-    const currentPromiseId = nextTokenPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingTokenPromises[currentPromiseId] = { resolve, reject };
-    });
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'REQUEST_NEW_FIREBASE_TOKEN',
-        promiseId: currentPromiseId
-      }, '*');
-    } else {
-      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
-      delete pendingTokenPromises[currentPromiseId];
-    }
-    return promise;
-  };
-})();</script><script data-bard-client-injected="true">
-let realOriginalGetUserMedia = null;
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-}
-
-(function() {
-  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
-    try {
-      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
-        get: function() {
-          return undefined; // Or throw an error
-        },
-        configurable: false
-      });
-    } catch (error) {
-      console.error("Error defining prototype getter:", error);
-    }
-  }
-})();
-
-(function() {
-  const pendingMediaResolvers = {};
-  let nextMediaPromiseId = 0;
-
-  function requestMediaPermissions(constraints) {
-    const mediaPromiseId = nextMediaPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingMediaResolvers[mediaPromiseId] = (granted) => {
-        delete pendingMediaResolvers[mediaPromiseId];
-        resolve(granted);
-      };
-    });
-
-    window.parent.postMessage({
-      type: 'requestMediaPermission',
-      constraints: constraints,
-      promiseId: mediaPromiseId,
-    }, '*');
-
-    return promise;
-  }
-
-  let originalGetUserMedia = realOriginalGetUserMedia;
-
-  function interceptGetUserMedia() {
-    if (navigator.mediaDevices) {
-      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-        value: function(constraints) {
-          return requestMediaPermissions(constraints).then((granted) => {
-            if (granted) {
-              if (originalGetUserMedia) {
-                return originalGetUserMedia(constraints);
-              } else {
-                throw new Error("Original getUserMedia not available.");
-              }
-            } else {
-              throw new DOMException('Permission denied', 'NotAllowedError');
-            }
-          });
-        },
-        writable: false,
-        configurable: false
-      });
-    }
-  }
-
-  interceptGetUserMedia();
-
-  const observer = new MutationObserver(function(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'childList' && mutation.addedNodes) {
-        mutation.addedNodes.forEach(node => {
-          if (node === navigator.mediaDevices) {
-            interceptGetUserMedia();
-          }
-        });
-      }
-    }
-  });
-
-  function interceptSpeechRecognition() {
-    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-      return;
-    }
-
-    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const SpeechRecognitionWrapper = function(...args) {
-      const recognizer = new OriginalSpeechRecognition(...args);
-      const originalStart = recognizer.start.bind(recognizer);
-
-      recognizer.start = function() {
-        requestMediaPermissions({ audio: true }).then(granted => {
-          if (granted) {
-            originalStart();
-          } else {
-            const errorEvent = new SpeechRecognitionErrorEvent('error');
-            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
-            recognizer.dispatchEvent(errorEvent);
-          }
-        });
-      };
-
-      return recognizer;
-    };
-
-    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
-    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
-
-    if (window.SpeechRecognition) {
-      window.SpeechRecognition = SpeechRecognitionWrapper;
-    }
-    if (window.webkitSpeechRecognition) {
-      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
-    }
-  }
-
-  interceptSpeechRecognition();
-
-  window.addEventListener('message', function(event) {
-    if (event.data) {
-      if (event.data.type === 'resolveMediaPermission') {
-        const { promiseId, granted } = event.data;
-        if (pendingMediaResolvers[promiseId]) {
-          pendingMediaResolvers[promiseId](granted);
-        }
-      }
-    }
-  });
-
-})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}" data-bard-client-injected="true">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
-function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
-
- Copyright The Closure Library Authors.
- SPDX-License-Identifier: Apache-2.0
-*/
-function A(b,d){function e(){}e.prototype=d.prototype;b.i=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.h=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
-let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
-null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.extensions="";var l=0,t=null,r=null,q=[],F=new TextEncoder,
-G=new TextDecoder;c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*
-16|0;return(f==="x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;
-(g=t)==null||g.postMessage(a)}};Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
-(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
-url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
-</script><script data-bard-client-injected="true">((function(modelInformation) {
-  const originalFetch = window.fetch;
-  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
-  let googleLlmBaseApiUrls = [
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
-  ];
-  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-    );
-  });
-  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-  modelInformation.deprecatedImageTransformModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-    );
-  });
-
-  const pendingFetchResolvers = {};
-  let nextPromiseId = 0;
-
-  function handleStringInput(input, optionsArgument) {
-    const actualUrl = input;
-    const fetchCallArgs = [actualUrl, optionsArgument];
-    const effectiveOptions = optionsArgument || {};
-    const bodyForApiKeyCheck = effectiveOptions.body;
-    const bodyForPostMessage = effectiveOptions.body;
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  function handleRequestInput(input, optionsArgument) {
-    const actualUrl = input.url;
-    const fetchCallArgs = [input, optionsArgument];
-    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (optionsArgument) {
-      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
-      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
-      if ('body' in optionsArgument) {
-        bodyForApiKeyCheck = optionsArgument.body;
-        bodyForPostMessage = optionsArgument.body;
-      } else {
-        bodyForApiKeyCheck = undefined;
-        bodyForPostMessage = input.body;
-      }
-    } else {
-      bodyForApiKeyCheck = undefined;
-      bodyForPostMessage = input.body;
-    }
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  window.fetch = function(input, optionsArgument) {
-    let actualUrl;
-    let fetchCallArgs;
-    let effectiveOptions = {};
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (typeof input === 'string') {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
-    } else if (input instanceof Request) {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
-    } else {
-      return originalFetch.apply(window, [input, optionsArgument]);
-    }
-
-    effectiveOptions.method = effectiveOptions.method || 'GET';
-    if (!effectiveOptions.headers) {
-      effectiveOptions.headers = new Headers();
-    }
-
-
-    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
-      let apiKeyIsNull = true;
-
-      const regex = new RegExp("models/([^:]+)");
-      const modelNameMatch = actualUrl.match(regex);
-      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
-
-
-      try {
-        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
-        const apiKeyParam = urlObject.searchParams.get('key');
-        if (apiKeyParam) {
-          apiKeyIsNull = false;
-        }
-      } catch (e) {
-        // Continue checks even if URL parsing fails
-      }
-
-      if (apiKeyIsNull && effectiveOptions.headers) {
-        const h = new Headers(effectiveOptions.headers);
-        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
-        if (apiKeyHeaderValue) {
-          apiKeyIsNull = false;
-          return originalFetch.apply(window, fetchCallArgs);
-        }
-      }
-
-      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
-        try {
-          const bodyData = JSON.parse(bodyForApiKeyCheck);
-          if (bodyData && bodyData.apiKey) {
-            apiKeyIsNull = false;
-            return originalFetch.apply(window, fetchCallArgs);
-          }
-        } catch (e) {
-          // Ignore JSON parsing errors
-        }
-      }
-
-      if(apiKeyIsNull) {
-        const promiseId = nextPromiseId++;
-        const promise = new Promise((resolve) => {
-          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
-            delete pendingFetchResolvers[promiseId];
-            resolve(resolvedResponse);
-          };
-        });
-
-        let serializedBodyForPostMessage;
-        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
-            serializedBodyForPostMessage = bodyForPostMessage;
-        } else if (bodyForPostMessage instanceof ReadableStream) {
-            serializedBodyForPostMessage = null;
-        } else {
-            try {
-                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
-            } catch (e) {
-                serializedBodyForPostMessage = null;
-            }
-        }
-
-        const messageOptions = {
-            method: effectiveOptions.method,
-            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
-            body: serializedBodyForPostMessage
-        };
-
-        window.parent.postMessage({
-          type: 'requestFetch',
-          url: actualUrl,
-          modelName: modelName,
-          options: messageOptions,
-          promiseId: promiseId,
-        }, '*');
-
-        return promise;
-      }
-      return originalFetch.apply(window, fetchCallArgs);
-    }
-    return originalFetch.apply(window, fetchCallArgs);
-  };
-
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'resolveFetch') {
-      const { promiseId, response } = event.data;
-      if (pendingFetchResolvers[promiseId]) {
-        try {
-          const reconstructedResponse = new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
-          });
-          pendingFetchResolvers[promiseId](reconstructedResponse);
-        } catch (error) {
-          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
-        }
-      }
-    }
-  });
-
-}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image","imageTransformModelName":"gemini-3-pro-image","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image","gemini-3.1-flash-image-preview"],"deprecatedImageTransformModelNames":["gemini-3-pro-image-preview-11-2025"]})</script><script data-bard-client-injected="true">(function() {
-  const OVERLAY_SELECTOR =
-    'dialog[open], [role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"], [role="combobox"]';
-
-  function isVisibleOverlay(element) {
-    if (element.closest('[hidden], [aria-hidden="true"], [inert]')) {
-      return false;
-    }
-    if (window.getComputedStyle(element).visibility === 'hidden') {
-      return false;
-    }
-    for (let cur = element; cur; cur = cur.parentElement) {
-      if (window.getComputedStyle(cur).display === 'none') {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  function hasOpenOverlay() {
-    const candidates = document.querySelectorAll(OVERLAY_SELECTOR);
-    for (let i = 0; i < candidates.length; i++) {
-      if (isVisibleOverlay(candidates[i])) {
-        return true;
-      }
-    }
-    try {
-      if (document.querySelector('[popover]:popover-open')) {
-        return true;
-      }
-    } catch (e) {
-      // Ignore engines that do not support :popover-open.
-    }
-    return false;
-  }
-
-  function isNonEmptySearchInput(target) {
-    return (
-      Boolean(target) &&
-      target.tagName === 'INPUT' &&
-      typeof target.type === 'string' &&
-      target.type.toLowerCase() === 'search' &&
-      typeof target.value === 'string' &&
-      target.value.length > 0
-    );
-  }
-
-  function shouldIgnoreEscape(event) {
-    return (
-      event.key !== 'Escape' ||
-      event.altKey ||
-      event.ctrlKey ||
-      event.metaKey ||
-      event.shiftKey ||
-      event.isComposing ||
-      event.repeat ||
-      event.keyCode === 229 ||
-      isNonEmptySearchInput(event.target)
-    );
-  }
-
-  let shouldIgnoreCaptureState = false;
-
-  window.addEventListener(
-    'keydown',
-    function(event) {
-      if (event.key === 'Escape') {
-        shouldIgnoreCaptureState =
-          hasOpenOverlay() || isNonEmptySearchInput(event.target);
-      }
-    },
-    {capture: true},
-  );
-
-  window.addEventListener('keydown', function(event) {
-    if (
-      shouldIgnoreEscape(event) ||
-      event.defaultPrevented ||
-      shouldIgnoreCaptureState
-    ) {
-      return;
-    }
-    const wasBlockedOnCapture = shouldIgnoreCaptureState;
-    queueMicrotask(function() {
-      if (event.defaultPrevented || wasBlockedOnCapture) {
-        return;
-      }
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({'type': 'escapeKey'}, '*');
-      }
-    });
-  });
-})();</script><script data-bard-client-injected="true">(function() {
-  function normalizeSlug(str) {
-    try {
-      return str
-        .trim()
-        .toLowerCase()
-        .replace(/[^p{L}p{N}s_-]/gu, '')
-        .replace(/s+/g, '-');
-    } catch (e) {
-      return str
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9s_-]/g, '')
-        .replace(/s+/g, '-');
-    }
-  }
-
-  function findTargetElement(hash) {
-    if (!hash || hash === '#') {
-      return null;
-    }
-    const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
-    let decodedId = rawId;
-    try {
-      decodedId = decodeURIComponent(rawId);
-    } catch (e) {
-      // Ignore URI malformed errors.
-    }
-
-    // 1. Direct ID match (raw and decoded).
-    let target = document.getElementById(rawId) || document.getElementById(decodedId);
-    if (target) {
-      return target;
-    }
-
-    // 2. Name attribute match (<a name="...">).
-    try {
-      if (typeof CSS !== 'undefined' && CSS.escape) {
-        target =
-          document.querySelector('[name="' + CSS.escape(rawId) + '"]') ||
-          document.querySelector('[name="' + CSS.escape(decodedId) + '"]');
-      } else {
-        const namedElements = document.getElementsByName(rawId);
-        if (namedElements && namedElements.length > 0) {
-          return namedElements[0];
-        }
-      }
-    } catch (e) {
-      // Ignore querySelector syntax errors.
-    }
-    if (target) {
-      return target;
-    }
-
-    // 3. Match heading text by slug (for Markdown TOCs where headings lack explicit IDs).
-    const targetSlug = normalizeSlug(decodedId);
-    if (targetSlug) {
-      for (const heading of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
-        if (normalizeSlug(heading.textContent || '') === targetSlug) {
-          return heading;
-        }
-      }
-    }
-
-    return null;
-  }
-
-  document.addEventListener('click', function(event) {
-    const target = event.target;
-    const anchor = target && typeof target.closest === 'function' ? target.closest('a') : null;
-    if (!anchor) {
-      return;
-    }
-
-    const href = anchor.getAttribute('href');
-    if (
-      !href ||
-      href.trim().toLowerCase().startsWith('javascript:') ||
-      anchor.hasAttribute('download')
-    ) {
-      return;
-    }
-
-    // Check if the link is an in-page hash / anchor link.
-    if (href.startsWith('#')) {
-      event.preventDefault();
-      const targetElement = findTargetElement(href);
-      if (targetElement) {
-        targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
-      return;
-    }
-
-    // Check if the URL has the same origin/pathname but with a hash.
-    try {
-      const url = new URL(anchor.href, window.location.href);
-      if (
-        url.hash &&
-        url.origin === window.location.origin &&
-        url.pathname === window.location.pathname
-      ) {
-        event.preventDefault();
-        const targetElement = findTargetElement(url.hash);
-        if (targetElement) {
-          targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
-        }
-        return;
-      }
-    } catch (e) {
-      // Fall through if URL parsing fails.
-    }
-
-    // For all external or full navigation links, prevent iframe-level navigation
-    // (which breaks in AGSA WebView or sandboxed iframes) and ensure they open
-    // safely in a new tab/window.
-    if (anchor.target !== '_blank') {
-      event.preventDefault();
-      window.open(anchor.href, '_blank', 'noopener,noreferrer');
-    }
-  }, {capture: true});
-})();</script><script data-bard-client-injected="true">(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
-</script><script data-bard-client-injected="true">(function() {
-  const originalConsoleLog = console.log;
-  const originalConsoleError = console.error;
-
-    /**
-   * Normalizes an error event or a promise rejection reason into a structured error object.
-   * @param {*} errorEventOrReason The error object or reason.
-   * @return {object} Structured error data { message, name, stack }.
-   */
-  function getErrorObject(errorEventOrReason) {
-    if (errorEventOrReason instanceof Error) {
-      return {
-        message: errorEventOrReason.message,
-        name: errorEventOrReason.name,
-        stack: errorEventOrReason.stack,
-      };
-    }
-    // Fallback for non-Error objects.
-    try {
-      return {
-        message: JSON.stringify(errorEventOrReason),
-        name: 'UnknownErrorType',
-        stack: null,
-      };
-    } catch (e) {
-      return {
-        message: String(errorEventOrReason),
-        name: 'UnknownErrorTypeNonStringifiable',
-        stack: null,
-      };
-    }
-  }
-
-  /**
-   * Converts an array of arguments (from log/error) into a single string.
-   * Handles Error objects specially to include their message and stack.
-   * @param {Array<*>} args - Arguments passed to console methods.
-   * @return {string} A string representation of the arguments.
-   */
-  function stringifyArgs(args) {
-    return args
-      .map((arg) => {
-        if (arg instanceof Error) {
-          const {message, stack} = arg;
-          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
-        }
-        if (typeof arg === 'object' && arg !== null) {
-          try {
-            return JSON.stringify(arg);
-          } catch (error) {
-            return '[Circular Object]';
-          }
-        } else {
-          return String(arg);
-        }
-      })
-      .join(' ');
-  }
-
-  console.log = function(...args) {
-    const logString = stringifyArgs(args);
-    window.parent.postMessage({ type: 'log', message: logString }, '*');
-    originalConsoleLog.apply(console, args);
-  };
-
-  console.error = function(...args) {
-    let errorData;
-    if (args.length > 0 && args[0] instanceof Error) {
-      const err = args[0];
-      // If the first arg is an Error, capture its details.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        ...getErrorObject(err),
-        rawArgsString: stringifyArgs(args.slice(1)),
-        timestamp: new Date().toISOString(),
-      };
-    } else {
-      // If not an Error object, treat all args as a general error message.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        message: stringifyArgs(args),
-        name: 'ConsoleLoggedError',
-        stack: null,
-        timestamp: new Date().toISOString(),
-      };
-    }
-    window.parent.postMessage(errorData, '*');
-    originalConsoleError.apply(console, args);
-  };
-
-  // Listen for global unhandled synchronous errors.
-  window.addEventListener('error', function(event) {
-    const errorDetails = event.error ? getErrorObject(event.error) : {
-      message: event.message,
-      name: 'GlobalError',
-      stack: null,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-    };
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'global',
-      ...errorDetails,
-      message: errorDetails.message || event.message,
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-  // Listen for unhandled promise rejections (asynchronous errors).
-  window.addEventListener('unhandledrejection', function(event) {
-    const errorDetails = getErrorObject(event.reason);
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'unhandledrejection',
-      ...errorDetails,
-      message: errorDetails.message || 'Unhandled Promise Rejection',
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-})();</script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>全球金融信息管理平台 · Global Financial Intelligence</title>
   <style>
     /* =========================================================================
@@ -1026,7 +212,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     button { cursor: pointer; }
 
     /* =========================================================================
-       3. 干净优雅的左侧导航栏 (256px 桌面端 + 移动端抽屉)
+       3. 干净优雅的左侧导航栏 (264px 桌面端 + 移动端抽屉)
        ========================================================================= */
     .app-shell {
       display: flex;
@@ -1037,7 +223,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     .sidebar {
       position: fixed;
       top: 0; left: 0; bottom: 0;
-      width: 256px;
+      width: 264px;
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border-hairline);
       display: flex;
@@ -1048,7 +234,163 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     }
 
     .sidebar-top {
-      padding: 20px 18px 14px;
+      padding: 20px 18px 12px;
+      flex-shrink: 0;
+    }
+    .brand-box {
+      padding-bottom: 12px;
+      border-bottom: 3px double var(--border-strong);
+    }
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      color: var(--ink-primary);
+      white-space: nowrap;
+    }
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--accent-gold);
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    .sync-bar {
+      margin-top: 12px;
+      padding: 7px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--ink-secondary);
+      white-space: nowrap;
+    }
+    .sync-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .sync-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22);
+      flex-shrink: 0;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+    .sync-text {
+      white-space: nowrap;
+      font-size: 11.5px;
+      letter-spacing: -0.01em;
+    }
+    .btn-mini {
+      padding: 3px 8px;
+      font-size: 12px;
+      border-radius: 3px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-subtle);
+      color: var(--ink-primary);
+      flex-shrink: 0;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .btn-mini:hover { border-color: var(--border-strong); }
+
+    /* 中部导航区：清晰一二级视觉层级（单行不换行 + 树状引导线） */
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 8px 16px 16px;
+    }
+    .nav-group-block {
+      margin-top: 18px;
+    }
+    .nav-group-block:first-child {
+      margin-top: 4px;
+    }
+    .nav-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding: 0 4px 6px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .nav-group-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .nav-group-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+    .nav-sub-list {
+      margin-left: 10px;
+      padding-left: 12px;
+      border-left: 1.5px solid var(--border-hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid transparent;
+      text-decoration: none;
+      color: var(--ink-secondary);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .nav-item:hover {
+      background: var(--bg-card);
+      color: var(--ink-primary);
+    }
+    .nav-item.active {
+      background: var(--bg-card);
+      color: var(--ink-primary);
+      font-weight: 700;
+      border-left-color: var(--accent-gold);
+      box-shadow: var(--shadow-card);
+    }
+    .nav-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--bg-gold-tint);
+      color: var(--accent-gold-text);
+      border: 1px solid rgba(184, 134, 45, 0.35);
       flex-shrink: 0;
     }
     .brand-box {
@@ -1233,7 +575,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
     /* 主内容区 */
     .main-wrap {
-      margin-left: 256px;
+      margin-left: 264px;
       flex: 1;
       min-width: 0;
     }
@@ -1875,7 +1217,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
   <div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer(false)"></div>
 
   <div class="app-shell">
-    <!-- 左侧固定导航栏 (256px · 协调字号 · 极简双入口底栏) -->
+    <!-- 左侧固定导航栏 (264px · 清晰一二级层级 · 极简双入口底栏) -->
     <aside class="sidebar" id="sidebar">
       <!-- 1. 顶部：品牌与定时同步状态 -->
       <div class="sidebar-top">
@@ -1886,63 +1228,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <div class="sync-bar">
           <div class="sync-left">
             <span class="sync-dot"></span>
-            <span class="sync-text mono" data-i18n="syncSchedule">08:30 / 15:00 自动同步</span>
+            <span class="sync-text mono" data-i18n="syncSchedule">08:30 / 15:00 同步</span>
           </div>
           <button class="btn-mini" id="btn-refresh" onclick="fetchLiveMarket(true)" data-i18n="btnRefresh">刷新</button>
         </div>
       </div>
 
-      <!-- 2. 中部：三层分组内容导航 (15px 杂志级清晰字号) -->
-      <nav class="sidebar-nav" id="sidebar-nav">
-          <div class="nav-group-label">市场行情 · MARKETS</div>
-          
-            <a class="nav-item" href="#sec-metals" data-nav="sec-metals" onclick="setActiveNav('sec-metals');toggleDrawer(false)">
-              <span>贵金属市场</span>
-              
-            </a>
-          
-            <a class="nav-item" href="#sec-equities" data-nav="sec-equities" onclick="setActiveNav('sec-equities');toggleDrawer(false)">
-              <span>中美核心股指</span>
-              
-            </a>
-          
-            <a class="nav-item" href="#sec-fx" data-nav="sec-fx" onclick="setActiveNav('sec-fx');toggleDrawer(false)">
-              <span>人民币汇率兑换</span>
-              
-            </a>
-          
-        
-          <div class="nav-group-label">企业与研报 · EQUITIES &amp; REPORTS</div>
-          
-            <a class="nav-item" href="#sec-ai" data-nav="sec-ai" onclick="setActiveNav('sec-ai');toggleDrawer(false)">
-              <span>AI 与港A龙头</span>
-              
-            </a>
-          
-            <a class="nav-item" href="#sec-reports" data-nav="sec-reports" onclick="setActiveNav('sec-reports');toggleDrawer(false)">
-              <span>上市公司年报中心</span>
-              
-            </a>
-          
-        
-          <div class="nav-group-label">量化与宏观 · ANALYTICS &amp; MACRO</div>
-          
-            <a class="nav-item" href="#sec-chart" data-nav="sec-chart" onclick="setActiveNav('sec-chart');toggleDrawer(false)">
-              <span>深度走势与对比</span>
-              
-            </a>
-          
-            <a class="nav-item" href="#sec-sandbox" data-nav="sec-sandbox" onclick="setActiveNav('sec-sandbox');toggleDrawer(false)">
-              <span>情绪与组合沙盒</span>
-              
-            </a>
-          
-            <a class="nav-item active" href="#sec-macro" data-nav="sec-macro" onclick="setActiveNav('sec-macro');toggleDrawer(false)">
-              <span>世界货币与宏观</span>
-              
-            </a>
-          
-        </nav>
+      <!-- 2. 中部：清晰一二级层级内容导航 -->
+      <nav class="sidebar-nav" id="sidebar-nav"></nav>
 
       <!-- 3. 底部：仅保留「我的归档夹」与「页面设置管理」 -->
       <div class="sidebar-footer">
@@ -1981,29 +1274,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <!-- 8大可排序/可显隐板块 -->
         <main id="sections-root">
           <!-- 1. 贵金属市场 -->
-          
-
-          <!-- 2. 中美核心股指 -->
-          
-
-          <!-- 3. 人民币汇率兑换 -->
-          
-
-          <!-- 4. AI 与港A龙头 -->
-          
-
-          <!-- 5. 上市公司年报中心 -->
-          
-
-          <!-- 6. 深度走势与对比 (原版 8:4 数据新闻布局) -->
-          
-
-          <!-- 7. 情绪与组合沙盒 (原版 2 列布局) -->
-          
-
-          <!-- 8. 世界货币与宏观 -->
-          
-        <section class="sec-block" id="sec-metals">
+          <section class="sec-block" id="sec-metals">
             <div class="sec-head gold">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">MARKETS</span>
@@ -2011,72 +1282,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
               <span class="sec-note mono" id="fx-ref-note">USD/CNY = 7.2400 · 1 oz = 31.1035 g</span>
             </div>
-            <div class="grid-3" id="metals-grid">
-          <div class="metal-card" onclick="selectChartAsset('xau')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title">现货黄金</h3><div class="card-sub mono">XAU/USD</div></div>
-                <span class="pill badge-up">+2.14%</span>
-              </div>
-              <div class="price-row">
-                <div><span class="price-lg">¥851.34</span><span class="price-unit">元/克</span></div>
-                <svg width="78" height="24" viewBox="0 0 78 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 8.7,20.1 15.5,18.2 22.2,16.3 28.9,13.9 35.6,14.6 42.4,11.8 49.1,9.6 55.8,6.8 62.5,3.0 69.3,4.7 76.0,3.1"></polyline></svg>
-              </div>
-              <div class="alt-price-row">
-                <span class="mono up">+17.85</span>
-                <span class="alt-tag">$3,657.42/oz</span>
-              </div>
-              <div class="range-wrap">
-                <div class="range-labels mono"><span>低 $3,578.4</span><span>日内区间</span><span>高 $3,668.9</span></div>
-                <div class="range-track"><div class="range-fill" style="width:87.3149171270718%"></div></div>
-              </div>
-            </div>
-            <div class="card-editorial">央行购金与地缘风险溢价共同推升金价突破 3,650 美元关口，国内人民币克价同步走强。</div>
-          </div>
-        
-          <div class="metal-card" onclick="selectChartAsset('xag')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title">现货白银</h3><div class="card-sub mono">XAG/USD</div></div>
-                <span class="pill badge-down">-0.49%</span>
-              </div>
-              <div class="price-row">
-                <div><span class="price-lg">¥9.97</span><span class="price-unit">元/克</span></div>
-                <svg width="78" height="24" viewBox="0 0 78 24"><polyline fill="none" stroke="var(--down)" stroke-width="1.8" points="2.0,11.1 8.7,7.2 15.5,3.0 22.2,6.2 28.9,10.4 35.6,13.8 42.4,17.1 49.1,14.6 55.8,19.0 62.5,21.0 69.3,17.5 76.0,15.6"></polyline></svg>
-              </div>
-              <div class="alt-price-row">
-                <span class="mono down">-0.05</span>
-                <span class="alt-tag">$42.84/oz</span>
-              </div>
-              <div class="range-wrap">
-                <div class="range-labels mono"><span>低 $42.5</span><span>日内区间</span><span>高 $43.4</span></div>
-                <div class="range-track"><div class="range-fill" style="width:36.26373626373671%"></div></div>
-              </div>
-            </div>
-            <div class="card-editorial">兼具货币避险与光伏/工业需求，短线围绕 43 美元关口震荡蓄势。</div>
-          </div>
-        
-        <div class="metal-card ratio">
-          <div>
-            <div class="card-top">
-              <div><h3 class="card-title">金银比监控仪</h3><div class="card-sub mono">XAU ÷ XAG</div></div>
-              <span class="pill" style="background:var(--bg-card);border:1px solid var(--border-hairline);">偏高区间 (&gt;80)</span>
-            </div>
-            <div class="price-row">
-              <div><span class="price-lg">85.37</span><span class="price-unit">盎司银/盎司金</span></div>
-            </div>
-            <div class="alt-price-row">
-              <span class="mono up">较前日 +2.20</span>
-            </div>
-            <div class="range-wrap">
-              <div class="range-labels mono"><span>40 低估</span><span>60 中性</span><span>80 高估</span><span>100</span></div>
-              <div class="ratio-bar"><div class="ratio-dot" style="left:75.62324929971989%"></div></div>
-            </div>
-          </div>
-          <div class="card-editorial">比值站稳 85 上方，显示黄金货币避险溢价跑赢白银工业属性，短期存在均值回归观察窗口。</div>
-        </div>
-      </div>
-          </section><section class="sec-block" id="sec-equities">
+            <div class="grid-3" id="metals-grid"></div>
+          </section>
+
+          <!-- 2. 中美核心股指 -->
+          <section class="sec-block" id="sec-equities">
             <div class="sec-head cn">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">MARKETS</span>
@@ -2090,59 +1300,20 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                   <strong class="serif" style="font-size:16px;color:var(--accent-cn);" data-i18n="cnEquities">中国股市 · CN / HK</strong>
                   <span class="mono" style="font-size:11px;color:var(--ink-muted);">SSE · CSI300 · HSI</span>
                 </div>
-                <div id="cn-list">
-          <div class="idx-row" onclick="selectChartAsset('sh')">
-            <div><div style="font-weight:600;">上证指数</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">000001.SH</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">3,354.00</div>
-            <div class="mono up" style="text-align:right;font-size:12px;">+0.86%<br><span style="font-size:11px;">+28.60</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 10.0,18.4 18.0,15.2 26.0,17.1 34.0,13.3 42.0,10.1 50.0,11.4 58.0,6.9 66.0,3.0"></polyline></svg></div>
-          </div>
-        
-          <div class="idx-row" onclick="selectChartAsset('csi300')">
-            <div><div style="font-weight:600;">沪深300</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">000300.SH</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">4,035.64</div>
-            <div class="mono up" style="text-align:right;font-size:12px;">+1.04%<br><span style="font-size:11px;">+41.54</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 10.0,17.9 18.0,14.8 26.0,16.6 34.0,12.6 42.0,9.5 50.0,10.8 58.0,5.9 66.0,3.0"></polyline></svg></div>
-          </div>
-        
-          <div class="idx-row" onclick="selectChartAsset('hsi')">
-            <div><div style="font-weight:600;">恒生指数</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">HSI</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">19,714.80</div>
-            <div class="mono down" style="text-align:right;font-size:12px;">-0.38%<br><span style="font-size:11px;">-75.20</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--down)" stroke-width="1.8" points="2.0,3.0 10.0,7.5 18.0,12.9 26.0,9.3 34.0,16.5 42.0,21.0 50.0,17.4 58.0,20.1 66.0,15.6"></polyline></svg></div>
-          </div>
-        </div>
+                <div id="cn-list"></div>
               </div>
               <div class="card" style="border-top:3px solid var(--accent-us);">
                 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
                   <strong class="serif" style="font-size:16px;color:var(--accent-us);" data-i18n="usEquities">美国股市 · US EQUITIES</strong>
                   <span class="mono" style="font-size:11px;color:var(--ink-muted);">SPX · IXIC · DJI</span>
                 </div>
-                <div id="us-list">
-          <div class="idx-row" onclick="selectChartAsset('spx')">
-            <div><div style="font-weight:600;">标普500</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">SPX</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">6,027.22</div>
-            <div class="mono up" style="text-align:right;font-size:12px;">+1.32%<br><span style="font-size:11px;">+78.52</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 10.0,18.2 18.0,15.4 26.0,13.5 34.0,10.5 42.0,11.4 50.0,7.5 58.0,4.9 66.0,3.0"></polyline></svg></div>
-          </div>
-        
-          <div class="idx-row" onclick="selectChartAsset('ixic')">
-            <div><div style="font-weight:600;">纳斯达克</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">IXIC</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">19,343.76</div>
-            <div class="mono up" style="text-align:right;font-size:12px;">+1.85%<br><span style="font-size:11px;">+351.36</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 10.0,18.6 18.0,16.0 26.0,13.7 34.0,11.1 42.0,11.8 50.0,7.9 58.0,4.8 66.0,3.0"></polyline></svg></div>
-          </div>
-        
-          <div class="idx-row" onclick="selectChartAsset('dji')">
-            <div><div style="font-weight:600;">道琼斯</div><div class="mono" style="font-size:11px;color:var(--ink-muted);">DJI</div></div>
-            <div class="mono" style="text-align:right;font-weight:600;font-size:15px;">44,726.72</div>
-            <div class="mono up" style="text-align:right;font-size:12px;">+0.94%<br><span style="font-size:11px;">+416.52</span></div>
-            <div class="idx-spark"><svg width="68" height="24" viewBox="0 0 68 24"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,21.0 10.0,19.0 18.0,16.8 26.0,14.2 34.0,11.6 42.0,12.5 50.0,7.7 58.0,5.0 66.0,3.0"></polyline></svg></div>
-          </div>
-        </div>
+                <div id="us-list"></div>
               </div>
             </div>
-          </section><section class="sec-block" id="sec-fx">
+          </section>
+
+          <!-- 3. 人民币汇率兑换 -->
+          <section class="sec-block" id="sec-fx">
             <div class="sec-head fx">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">MARKETS</span>
@@ -2150,143 +1321,26 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
               <span class="sec-note" data-i18n="secFxNote">同时展示 1 外币兑人民币 与 ¥100 人民币兑外币</span>
             </div>
-            <div class="grid-4" id="fx-grid">
-          <div class="fx-card" onclick="selectFxInConverter('USD')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">美元 (USD)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 USD</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 USD = ¥7.2400</div>
-              <div class="fx-inv">¥100 CNY ≈ 13.81 USD</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0050 (+0.07%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,10.2 22.8,5.4 33.2,7.8 43.6,3.0 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('EUR')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">欧元 (EUR)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 EUR</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 EUR = ¥7.6120</div>
-              <div class="fx-inv">¥100 CNY ≈ 13.14 EUR</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0140 (+0.18%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,11.6 22.8,8.1 33.2,9.9 43.6,5.6 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('JPY')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">日元 (JPY)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">100 JPY</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">100 JPY = ¥4.6850</div>
-              <div class="fx-inv">¥100 CNY ≈ 2,134 JPY</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono down">-0.0160 (-0.34%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--down)" stroke-width="1.8" points="2.0,3.0 12.4,6.7 22.8,9.7 33.2,11.2 43.6,13.5 54.0,15.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('HKD')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">港币 (HKD)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 HKD</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 HKD = ¥0.9302</div>
-              <div class="fx-inv">¥100 CNY ≈ 107.50 HKD</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0006 (+0.06%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,11.0 22.8,7.0 33.2,9.0 43.6,5.0 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('GBP')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">英镑 (GBP)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 GBP</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 GBP = ¥9.1450</div>
-              <div class="fx-inv">¥100 CNY ≈ 10.93 GBP</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0230 (+0.25%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,11.9 22.8,8.7 33.2,6.7 43.6,4.6 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('AUD')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">澳元 (AUD)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 AUD</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 AUD = ¥4.7180</div>
-              <div class="fx-inv">¥100 CNY ≈ 21.20 AUD</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0090 (+0.19%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,11.0 22.8,7.0 33.2,9.7 43.6,5.7 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('CAD')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">加元 (CAD)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 CAD</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 CAD = ¥5.1840</div>
-              <div class="fx-inv">¥100 CNY ≈ 19.29 CAD</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0080 (+0.15%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,10.5 22.8,7.5 33.2,9.0 43.6,6.0 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        
-          <div class="fx-card" onclick="selectFxInConverter('SGD')">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;">
-                <strong class="serif" style="font-size:15px;">新加坡元 (SGD)</strong>
-                <span class="mono" style="font-size:11px;color:var(--ink-muted);">1 SGD</span>
-              </div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:6px;">1 SGD = ¥5.3820</div>
-              <div class="fx-inv">¥100 CNY ≈ 18.58 SGD</div>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;">
-              <span class="mono up">+0.0080 (+0.15%)</span>
-              <svg width="56" height="18" viewBox="0 0 56 18"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,15.0 12.4,10.5 22.8,7.5 33.2,9.0 43.6,6.0 54.0,3.0"></polyline></svg>
-            </div>
-          </div>
-        </div>
+            <div class="grid-4" id="fx-grid"></div>
             <div class="fx-converter">
               <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13.5px;">
                 <strong data-i18n="fxConvLabel">双向实时换算：</strong>
-                <input id="fx-amount" class="input-ctrl mono" type="number" value="100" min="0" step="10" style="width:105px;" oninput="updateFxConverter()">
+                <input id="fx-amount" class="input-ctrl mono" type="number" value="100" min="0" step="10" style="width:105px;" oninput="updateFxConverter()" />
                 <select id="fx-dir" class="input-ctrl" onchange="updateFxConverter()">
                   <option value="cny2fx">人民币 (CNY) → 外币</option>
                   <option value="fx2cny">外币 → 人民币 (CNY)</option>
                 </select>
-                <select id="fx-target" class="input-ctrl" onchange="updateFxConverter()"><option value="USD">美元 (USD)</option><option value="EUR">欧元 (EUR)</option><option value="JPY">日元 (JPY)</option><option value="HKD">港币 (HKD)</option><option value="GBP">英镑 (GBP)</option><option value="AUD">澳元 (AUD)</option><option value="CAD">加元 (CAD)</option><option value="SGD">新加坡元 (SGD)</option></select>
+                <select id="fx-target" class="input-ctrl" onchange="updateFxConverter()"></select>
                 <button class="btn" onclick="setFxAmt(100)">100</button>
                 <button class="btn" onclick="setFxAmt(1000)">1,000</button>
                 <button class="btn" onclick="setFxAmt(10000)">10,000</button>
               </div>
-              <div id="fx-result" class="mono" style="font-size:16px;font-weight:700;color:var(--accent-fx);">¥100.00 CNY ≈ 13.81 USD</div>
+              <div id="fx-result" class="mono" style="font-size:16px;font-weight:700;color:var(--accent-fx);">--</div>
             </div>
-          </section><section class="sec-block" id="sec-ai">
+          </section>
+
+          <!-- 4. AI 与港A龙头 -->
+          <section class="sec-block" id="sec-ai">
             <div class="sec-head ai">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">EQUITIES &amp; REPORTS</span>
@@ -2294,336 +1348,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
               <span class="sec-note" data-i18n="secAiNote">点击公司卡片联动深度走势图，或一键直达年报中心</span>
             </div>
-            <div class="tabs-row" id="ai-tabs">
-        <button class="btn active" onclick="setAiFilter('all')">全部 (18)</button>
-      
-        <button class="btn " onclick="setAiFilter('us_ai')">美股 AI 与科技 (8)</button>
-      
-        <button class="btn " onclick="setAiFilter('hk')">港股科技与制造 (5)</button>
-      
-        <button class="btn " onclick="setAiFilter('cn')">A 股核心与算力 (5)</button>
-      </div>
-            <div class="grid-3" id="ai-grid">
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('aapl')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">苹果</h3><div class="card-sub mono">AAPL</div></div>
-                <span class="pill badge-up">+1.90%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$349.08</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.1 29.2,7.2 42.8,9.2 56.4,4.1 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $5.07T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('AAPL')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('nvda')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">英伟达</h3><div class="card-sub mono">NVDA</div></div>
-                <span class="pill badge-up">+4.85%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$165.05</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.6 29.2,12.2 42.8,8.1 56.4,5.2 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $3.98T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('NVDA')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('msft')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">微软</h3><div class="card-sub mono">MSFT</div></div>
-                <span class="pill badge-up">+1.65%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$492.50</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.7 29.2,10.5 42.8,12.6 56.4,6.2 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $3.66T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('MSFT')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('googl')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">谷歌A</h3><div class="card-sub mono">GOOGL</div></div>
-                <span class="pill badge-up">+2.34%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$282.10</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,13.8 29.2,11.1 42.8,7.2 56.4,5.4 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $3.46T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('GOOGL')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('amzn')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">亚马逊</h3><div class="card-sub mono">AMZN</div></div>
-                <span class="pill badge-up">+2.12%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$255.39</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.5 29.2,10.1 42.8,10.7 56.4,5.9 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $2.76T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('AMZN')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('tsm')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">台积电</h3><div class="card-sub mono">TSM</div></div>
-                <span class="pill badge-up">+3.42%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$363.60</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.9 29.2,10.7 42.8,8.7 56.4,5.5 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $1.88T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('TSM')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('meta')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">Meta</h3><div class="card-sub mono">META</div></div>
-                <span class="pill badge-up">+2.55%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$597.60</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.5 29.2,11.9 42.8,9.6 56.4,6.1 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $1.55T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('META')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card us_ai" onclick="inspectLeaderChart('baba')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">阿里巴巴</h3><div class="card-sub mono">BABA</div></div>
-                <span class="pill badge-up">+1.82%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">$86.04</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,13.8 29.2,9.6 42.8,11.7 56.4,5.5 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: $214B</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('BABA')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card hk" onclick="inspectLeaderChart('tcehy')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">腾讯控股</h3><div class="card-sub mono">00700.HK</div></div>
-                <span class="pill badge-up">+0.35%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">HK$345.20</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,13.7 29.2,3.0 42.8,8.3 56.4,9.4 70.0,7.3"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: HK$3.14T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('00700.HK')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card hk" onclick="inspectLeaderChart('baba_hk')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">阿里巴巴-W</h3><div class="card-sub mono">09988.HK</div></div>
-                <span class="pill badge-down">-0.36%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">HK$82.75</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--down)" stroke-width="1.8" points="2.0,3.0 15.6,9.4 29.2,13.2 42.8,15.8 56.4,18.4 70.0,19.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: HK$1.67T</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-          <div class="ai-card hk" onclick="inspectLeaderChart('meituan')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">美团-W</h3><div class="card-sub mono">03690.HK</div></div>
-                <span class="pill badge-down">-0.85%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">HK$166.50</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--down)" stroke-width="1.8" points="2.0,3.0 15.6,7.4 29.2,11.9 42.8,13.7 56.4,19.0 70.0,16.3"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: HK$1.02T</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-          <div class="ai-card hk" onclick="inspectLeaderChart('xiaomi')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">小米集团-W</h3><div class="card-sub mono">01810.HK</div></div>
-                <span class="pill badge-up">+1.42%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">HK$28.45</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.4 29.2,8.3 42.8,11.9 56.4,4.8 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: HK$710B</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-          <div class="ai-card hk" onclick="inspectLeaderChart('smic')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">中芯国际</h3><div class="card-sub mono">00981.HK</div></div>
-                <span class="pill badge-up">+1.88%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">HK$48.90</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,13.7 29.2,10.1 42.8,6.6 56.4,4.8 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: HK$390B</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-          <div class="ai-card cn" onclick="inspectLeaderChart('moutai')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">贵州茅台</h3><div class="card-sub mono">600519.SH</div></div>
-                <span class="pill badge-up">+0.56%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">¥1,528.00</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.4 29.2,10.1 42.8,11.9 56.4,6.6 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: ¥1.92T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('600519.SH')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card cn" onclick="inspectLeaderChart('catl')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">宁德时代</h3><div class="card-sub mono">300750.SZ</div></div>
-                <span class="pill badge-up">+1.74%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">¥268.40</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.6 29.2,10.1 42.8,7.1 56.4,4.2 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: ¥1.18T</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('300750.SZ')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card cn" onclick="inspectLeaderChart('byd')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">比亚迪</h3><div class="card-sub mono">002594.SZ</div></div>
-                <span class="pill badge-up">+1.19%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">¥289.60</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.6 29.2,10.1 42.8,7.9 56.4,5.7 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: ¥842B</span>
-              <button class="btn-mini" onclick="event.stopPropagation();jumpToCompany('002594.SZ')">年报摘要 →</button>
-            </div>
-          </div>
-        
-          <div class="ai-card cn" onclick="inspectLeaderChart('innolight')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">中际旭创</h3><div class="card-sub mono">300308.SZ</div></div>
-                <span class="pill badge-up">+3.45%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">¥146.80</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,14.0 29.2,9.7 42.8,7.0 56.4,5.0 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: ¥164B</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-          <div class="ai-card cn" onclick="inspectLeaderChart('cambricon')">
-            <div>
-              <div class="card-top">
-                <div><h3 class="card-title" style="font-size:15.5px;">寒武纪</h3><div class="card-sub mono">688256.SH</div></div>
-                <span class="pill badge-up">+3.64%</span>
-              </div>
-              <div class="price-row" style="margin:10px 0 4px;">
-                <span class="mono" style="font-size:20px;font-weight:700;">¥412.50</span>
-                <svg width="72" height="22" viewBox="0 0 72 22"><polyline fill="none" stroke="var(--up)" stroke-width="1.8" points="2.0,19.0 15.6,15.7 29.2,11.3 42.8,8.0 56.4,4.7 70.0,3.0"></polyline></svg>
-              </div>
-            </div>
-            <div class="ai-foot mono">
-              <span>市值: ¥172B</span>
-              <span>走势分析 →</span>
-            </div>
-          </div>
-        
-        <div class="ai-card private">
-          <div>
-            <div class="card-top">
-              <div><h3 class="card-title" style="font-size:15.5px;">Anthropic</h3><div class="card-sub mono">PRIVATE AI · 非公开上市</div></div>
-              <span class="pill" style="background:var(--bg-card);border:1px solid var(--border-hairline);">一级市场</span>
-            </div>
-            <p style="font-size:12px;color:var(--ink-secondary);margin:10px 0 0;line-height:1.5;">
-              Anthropic 尚未公开挂牌交易，无连续二级市场股价；本板块仅统计公开上市科技与 AI 龙头。
-            </p>
-          </div>
-          <div class="ai-foot mono"><span>Status: Private</span><span>Claude Ecosystem</span></div>
-        </div>
-      </div>
-          </section><section class="sec-block" id="sec-reports">
+            <div class="tabs-row" id="ai-tabs"></div>
+            <div class="grid-3" id="ai-grid"></div>
+          </section>
+
+          <!-- 5. 上市公司年报中心 -->
+          <section class="sec-block" id="sec-reports">
             <div class="sec-head ai">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">EQUITIES &amp; REPORTS</span>
@@ -2633,142 +1363,18 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </div>
             <div class="card">
               <div class="search-row">
-                <input id="comp-search" class="search-input" type="text" placeholder="搜索中美港上市公司名称或代码（如：英伟达、NVDA、茅台、600519、腾讯、AAPL）..." oninput="filterCompanyPills()" onkeydown="if(event.key==='Enter') selectFirstFilteredCompany()">
+                <input id="comp-search" class="search-input" type="text" placeholder="搜索中美港上市公司名称或代码（如：英伟达、NVDA、茅台、600519、腾讯、AAPL）..." oninput="filterCompanyPills()" onkeydown="if(event.key==='Enter') selectFirstFilteredCompany()" />
                 <button class="btn gold" onclick="archiveCurrentCompany()" data-i18n="btnArchiveNow">★ 归档整份年报</button>
                 <button class="btn primary" style="background:var(--accent-ai);border-color:var(--accent-ai);" onclick="openPosterModal()" data-i18n="btnGenPoster">🎨 一键信息海报</button>
               </div>
-              <div class="tabs-row" id="comp-pills">
-        <button class="btn active" onclick="selectCompany('NVDA')">英伟达 (NVDA)</button>
-      
-        <button class="btn " onclick="selectCompany('AAPL')">苹果 (AAPL)</button>
-      
-        <button class="btn " onclick="selectCompany('MSFT')">微软 (MSFT)</button>
-      
-        <button class="btn " onclick="selectCompany('GOOGL')">谷歌 (GOOGL)</button>
-      
-        <button class="btn " onclick="selectCompany('AMZN')">亚马逊 (AMZN)</button>
-      
-        <button class="btn " onclick="selectCompany('META')">Meta (META)</button>
-      
-        <button class="btn " onclick="selectCompany('TSM')">台积电 (TSM)</button>
-      
-        <button class="btn " onclick="selectCompany('BABA')">阿里巴巴 (BABA)</button>
-      
-        <button class="btn " onclick="selectCompany('00700.HK')">腾讯控股 (00700.HK)</button>
-      
-        <button class="btn " onclick="selectCompany('600519.SH')">贵州茅台 (600519.SH)</button>
-      
-        <button class="btn " onclick="selectCompany('300750.SZ')">宁德时代 (300750.SZ)</button>
-      
-        <button class="btn " onclick="selectCompany('002594.SZ')">比亚迪 (002594.SZ)</button>
-      </div>
-              <div id="comp-detail">
-        <div class="report-grid">
-          <div>
-            <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;">
-              <div>
-                <strong class="serif" style="font-size:20px;">英伟达</strong>
-                <span class="mono" style="font-size:12px;color:var(--ink-muted);margin-left:6px;">NVDA · NASDAQ</span>
-              </div>
-              <span class="pill" style="background:var(--bg-subtle);">AI 年报智能摘要</span>
+              <div class="tabs-row" id="comp-market-tabs" style="margin-bottom:8px;"></div>
+              <div class="tabs-row" id="comp-pills"></div>
+              <div id="comp-detail"></div>
             </div>
-            <p style="font-size:13.5px;color:var(--ink-secondary);margin:10px 0;line-height:1.6;">数据中心 AI 算力需求爆发式增长，Blackwell 架构全面放量，CUDA 生态构筑深厚护城河。</p>
-            <div class="kpi-grid-4">
-              <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">最新市值</div><div class="mono" style="font-weight:700;margin-top:2px;">$3.98T</div></div>
-              <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">毛利率</div><div class="mono" style="font-weight:700;margin-top:2px;">75.2%</div></div>
-              <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">ROE</div><div class="mono" style="font-weight:700;margin-top:2px;">91.4%</div></div>
-              <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">市盈率 PE</div><div class="mono" style="font-weight:700;margin-top:2px;">44.8x</div></div>
-            </div>
-            <div style="margin-top:10px;">
-              <div style="font-size:12.5px;font-weight:600;margin-bottom:6px;">年报核心要点（点击右侧按钮收入个人摘录夹）：</div>
-              
-                <div class="excerpt-item">
-                  <span>1. 数据中心业务营收占比突破 88%，成为全球 AI 基础设施核心引擎。</span>
-                  <button class="btn-mini" onclick="addExcerpt(0)">+ 摘录</button>
-                </div>
-              
-                <div class="excerpt-item">
-                  <span>2. 毛利率维持在 75% 高位区间，经营现金流创历史新高。</span>
-                  <button class="btn-mini" onclick="addExcerpt(1)">+ 摘录</button>
-                </div>
-              
-                <div class="excerpt-item">
-                  <span>3. 主权 AI 与企业级推理集群成为下一阶段核心增量。</span>
-                  <button class="btn-mini" onclick="addExcerpt(2)">+ 摘录</button>
-                </div>
-              
-            </div>
-          </div>
+          </section>
 
-          <div style="background:var(--bg-page);border:1px solid var(--border-hairline);border-radius:6px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;">
-            <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                <strong class="serif" style="font-size:14.5px;">三年营收与净利润 ($B)</strong>
-                <div style="font-size:11px;display:flex;gap:10px;">
-                  <span><i style="display:inline-block;width:9px;height:9px;background:var(--accent-us);margin-right:4px;"></i>营收</span>
-                  <span><i style="display:inline-block;width:9px;height:9px;background:var(--accent-gold);margin-right:4px;"></i>净利润</span>
-                </div>
-              </div>
-              
-        <svg viewBox="0 0 360 150" style="width:100%;height:150px;display:block;">
-          
-              <rect x="36" y="97.37931034482759" width="32" height="18.620689655172413" rx="3" fill="var(--accent-us)"></rect>
-              <text x="52" y="92.37931034482759" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">27</text>
-              <rect x="74" y="112.96551724137932" width="32" height="3.03448275862069" rx="3" fill="var(--accent-gold)"></rect>
-              <text x="90" y="107.96551724137932" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">4.4</text>
-              <text x="71" y="136" text-anchor="middle" font-size="11" fill="var(--ink-muted)" class="mono">FY23</text>
-            
-              <rect x="144" y="74" width="32" height="42" rx="3" fill="var(--accent-us)"></rect>
-              <text x="160" y="69" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">60.9</text>
-              <rect x="182" y="95.44827586206897" width="32" height="20.551724137931036" rx="3" fill="var(--accent-gold)"></rect>
-              <text x="198" y="90.44827586206897" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">29.8</text>
-              <text x="179" y="136" text-anchor="middle" font-size="11" fill="var(--ink-muted)" class="mono">FY24</text>
-            
-              <rect x="252" y="26" width="32" height="90" rx="3" fill="var(--accent-us)"></rect>
-              <text x="268" y="21" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">130.5</text>
-              <rect x="290" y="65.72413793103448" width="32" height="50.275862068965516" rx="3" fill="var(--accent-gold)"></rect>
-              <text x="306" y="60.724137931034484" text-anchor="middle" font-size="10" fill="var(--ink-primary)" class="mono">72.9</text>
-              <text x="287" y="136" text-anchor="middle" font-size="11" fill="var(--ink-muted)" class="mono">FY25E</text>
-            
-        </svg>
-      
-              <div style="border-top:1px dashed var(--border-hairline);padding-top:10px;margin-top:6px;">
-                <div style="font-size:12px;font-weight:600;margin-bottom:6px;">核心业务营收结构占比</div>
-                
-          <div style="margin-bottom:7px;">
-            <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
-              <span>数据中心 AI</span>
-              <span class="mono" style="font-weight:600;">88%</span>
-            </div>
-            <div class="rank-track"><div class="rank-fill" style="width:88%;background:var(--accent-ai);"></div></div>
-          </div>
-        
-          <div style="margin-bottom:7px;">
-            <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
-              <span>专业游戏视觉</span>
-              <span class="mono" style="font-weight:600;">9%</span>
-            </div>
-            <div class="rank-track"><div class="rank-fill" style="width:9%;background:var(--accent-gold);"></div></div>
-          </div>
-        
-          <div style="margin-bottom:7px;">
-            <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px;">
-              <span>汽车与边缘</span>
-              <span class="mono" style="font-weight:600;">3%</span>
-            </div>
-            <div class="rank-track"><div class="rank-fill" style="width:3%;background:var(--accent-fx);"></div></div>
-          </div>
-        
-              </div>
-            </div>
-            <div style="font-size:11.5px;color:var(--ink-muted);border-top:1px dashed var(--border-hairline);padding-top:8px;margin-top:8px;">
-              点击顶部「一键信息海报」可导出 6 种风格 750×1100 高清研报海报。
-            </div>
-          </div>
-        </div>
-      </div>
-            </div>
-          </section><section class="sec-block" id="sec-chart">
+          <!-- 6. 深度走势与对比 (原版 8:4 数据新闻布局) -->
+          <section class="sec-block" id="sec-chart">
             <div class="sec-head">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">ANALYTICS &amp; MACRO</span>
@@ -2792,11 +1398,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                   </div>
                   <div style="text-align:right;">
                     <span class="mono" style="font-size:20px;font-weight:700;" id="chart-price">3,657.42</span>
-                    <span class="mono up" style="font-size:12px;margin-left:6px;" id="chart-chg">+76.67 (+2.14%)</span>
+                    <span class="mono" style="font-size:12px;margin-left:6px;" id="chart-chg">+76.67 (+2.14%)</span>
                   </div>
                 </div>
                 <div class="chart-svg-wrap">
-                  <svg id="main-chart-svg" style="width:100%;height:100%;display:block;overflow:visible;"><defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--up)" stop-opacity="0.18"></stop><stop offset="100%" stop-color="var(--up)" stop-opacity="0"></stop></linearGradient></defs><line x1="14" y1="262.66668701171875" x2="571.3333740234375" y2="262.66668701171875" stroke="var(--border-hairline)" stroke-dasharray="2,3"></line><text x="577.3333740234375" y="266.66668701171875" font-size="10.5" fill="var(--ink-muted)" class="mono">3,577.2</text><line x1="14" y1="201.5000152587884" x2="571.3333740234375" y2="201.5000152587884" stroke="var(--border-hairline)" stroke-dasharray="2,3"></line><text x="577.3333740234375" y="205.5000152587884" font-size="10.5" fill="var(--ink-muted)" class="mono">3,598.3</text><line x1="14" y1="140.33334350585938" x2="571.3333740234375" y2="140.33334350585938" stroke="var(--border-hairline)" stroke-dasharray="2,3"></line><text x="577.3333740234375" y="144.33334350585938" font-size="10.5" fill="var(--ink-muted)" class="mono">3,619.4</text><line x1="14" y1="79.16667175293034" x2="571.3333740234375" y2="79.16667175293034" stroke="var(--border-hairline)" stroke-dasharray="2,3"></line><text x="577.3333740234375" y="83.16667175293034" font-size="10.5" fill="var(--ink-muted)" class="mono">3,640.5</text><line x1="14" y1="18" x2="571.3333740234375" y2="18" stroke="var(--border-hairline)" stroke-dasharray="2,3"></line><text x="577.3333740234375" y="22" font-size="10.5" fill="var(--ink-muted)" class="mono">3,661.7</text><line x1="14" y1="252.29737465336055" x2="571.3333740234375" y2="252.29737465336055" stroke="var(--ink-muted)" stroke-dasharray="4,4"></line><rect x="18" y="242.29737465336055" width="84" height="17" rx="2" fill="var(--bg-subtle)"></rect><text x="22" y="254.29737465336055" font-size="10" fill="var(--ink-secondary)" class="mono">昨收 3,580.75</text><polygon points="14.0,262.7 14.0,248.7 64.7,237.1 115.3,213.9 166.0,190.8 216.7,161.8 267.3,170.5 318.0,135.7 368.7,109.7 419.3,74.9 470.0,28.6 520.7,48.9 571.3,30.3 571.3,262.7" fill="url(#areaGrad)"></polygon><polyline fill="none" stroke="var(--up)" stroke-width="2.2" points="14.0,248.7 64.7,237.1 115.3,213.9 166.0,190.8 216.7,161.8 267.3,170.5 318.0,135.7 368.7,109.7 419.3,74.9 470.0,28.6 520.7,48.9 571.3,30.3"></polyline><polyline fill="none" stroke="var(--accent-gold)" stroke-width="1.5" stroke-dasharray="4,3" points="216.7,210.5 267.3,194.8 318.0,174.5 368.7,153.7 419.3,130.5 470.0,103.9 520.7,79.6 571.3,58.5"></polyline><circle cx="14" cy="248.6775630362559" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,582.00','+0.03%')" onmouseleave="hideChartTip()"></circle><circle cx="64.66667036576705" cy="237.09416586152105" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,586.00','+0.15%')" onmouseleave="hideChartTip()"></circle><circle cx="115.3333407315341" cy="213.9273715120513" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,594.00','+0.37%')" onmouseleave="hideChartTip()"></circle><circle cx="166.00001109730113" cy="190.76057716258157" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,602.00','+0.59%')" onmouseleave="hideChartTip()"></circle><circle cx="216.6666814630682" cy="161.8020842257444" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,612.00','+0.87%')" onmouseleave="hideChartTip()"></circle><circle cx="267.33335182883525" cy="170.48963210679557" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,609.00','+0.79%')" onmouseleave="hideChartTip()"></circle><circle cx="318.00002219460225" cy="135.73944058259096" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,621.00','+1.12%')" onmouseleave="hideChartTip()"></circle><circle cx="368.6666925603693" cy="109.67679693943751" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,630.00','+1.38%')" onmouseleave="hideChartTip()"></circle><circle cx="419.3333629261364" cy="74.9266054152329" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,642.00','+1.71%')" onmouseleave="hideChartTip()"></circle><circle cx="470.00003329190343" cy="28.593016716293448" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,658.00','+2.16%')" onmouseleave="hideChartTip()"></circle><circle cx="520.6667036576705" cy="48.86396177207945" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,651.00','+1.96%')" onmouseleave="hideChartTip()"></circle><circle cx="571.3333740234375" cy="30.27260930662979" r="6" fill="transparent" style="cursor:crosshair" onmouseenter="showChartTip(event,'现货黄金','3,657.42','+2.14%')" onmouseleave="hideChartTip()"></circle></svg>
+                  <svg id="main-chart-svg" style="width:100%;height:100%;display:block;overflow:visible;"></svg>
                 </div>
                 <div id="compare-legend" class="tabs-row" style="margin:6px 0 0;"></div>
               </div>
@@ -2807,42 +1413,22 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                     <strong class="serif" style="font-size:15px;" data-i18n="keyStats">关键数据摘要</strong>
                     <span class="mono" style="font-size:11px;color:var(--ink-muted);" id="side-stat-code">XAU/USD</span>
                   </div>
-                  <div class="stats-grid-2" id="key-stats-grid">
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">今开 Open</div><div class="mono" style="font-weight:700;">3,586.20</div></div>
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">昨收 Prev</div><div class="mono" style="font-weight:700;">3,580.75</div></div>
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">日内最高 High</div><div class="mono" style="font-weight:700;">3,668.90</div></div>
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">日内最低 Low</div><div class="mono" style="font-weight:700;">3,578.40</div></div>
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">日内振幅 Range</div><div class="mono" style="font-weight:700;">2.53%</div></div>
-        <div class="stat-cell"><div style="font-size:11px;color:var(--ink-muted);">波动特征</div><div style="font-size:12px;font-weight:600;">单边突破 · 避险买盘强劲</div></div>
-      </div>
+                  <div class="stats-grid-2" id="key-stats-grid"></div>
                   <div style="margin-top:10px;padding:10px 12px;background:var(--bg-gold-tint);border-left:3px solid var(--accent-gold);border-radius:3px;">
                     <div class="mono" style="font-size:10.5px;color:var(--accent-gold-text);font-weight:700;margin-bottom:4px;">EDITORIAL NOTE · 编辑部观察</div>
-                    <div id="chart-editorial" style="font-size:12.5px;color:var(--ink-secondary);line-height:1.5;">央行购金与地缘风险溢价共同推升金价突破 3,650 美元关口，国内人民币克价同步走强。</div>
+                    <div id="chart-editorial" style="font-size:12.5px;color:var(--ink-secondary);line-height:1.5;"></div>
                   </div>
                 </div>
                 <div style="margin-top:14px;">
                   <div style="font-size:12px;color:var(--ink-muted);margin-bottom:6px;" data-i18n="quickSwitch">快速切换分析标的：</div>
-                  <div class="tabs-row" id="chart-quick-pills" style="margin-bottom:0;">
-        <button class="btn-mini active" style="background:var(--border-strong);color:var(--bg-card);" onclick="state.selectedAsset='xau';state.chartMode='single';renderMainChart()">现货黄金</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='xag';state.chartMode='single';renderMainChart()">现货白银</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='sh';state.chartMode='single';renderMainChart()">上证指数</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='csi300';state.chartMode='single';renderMainChart()">沪深300</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='hsi';state.chartMode='single';renderMainChart()">恒生指数</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='spx';state.chartMode='single';renderMainChart()">标普500</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='ixic';state.chartMode='single';renderMainChart()">纳斯达克</button>
-      
-        <button class="btn-mini " style="" onclick="state.selectedAsset='dji';state.chartMode='single';renderMainChart()">道琼斯</button>
-      </div>
+                  <div class="tabs-row" id="chart-quick-pills" style="margin-bottom:0;"></div>
                 </div>
               </div>
             </div>
-          </section><section class="sec-block" id="sec-sandbox">
+          </section>
+
+          <!-- 7. 情绪与组合沙盒 (原版 2 列布局) -->
+          <section class="sec-block" id="sec-sandbox">
             <div class="sec-head">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">ANALYTICS &amp; MACRO</span>
@@ -2860,81 +1446,13 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                   </div>
                   <span class="pill" id="sentiment-tag" style="background:var(--bg-subtle);">多空均衡 · Neutral</span>
                 </div>
-                <div style="display:flex;justify-content:center;margin:8px 0 12px;" id="gauge-box">
-        <svg viewBox="0 0 220 125" style="width:220px;height:125px;">
-          <defs><linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--accent-us)"></stop><stop offset="50%" stop-color="var(--accent-gold)"></stop><stop offset="100%" stop-color="var(--up)"></stop></linearGradient></defs>
-          <path d="M 25 105 A 85 85 0 0 1 195 105" fill="none" stroke="var(--bg-subtle)" stroke-width="14" stroke-linecap="round"></path>
-          <path d="M 25 105 A 85 85 0 0 1 195 105" fill="none" stroke="url(#gGrad)" stroke-width="14" stroke-linecap="round"></path>
-          <g transform="translate(110,105) rotate(23.400000000000006)">
-            <line x1="0" y1="0" x2="0" y2="-66" stroke="var(--border-strong)" stroke-width="3" stroke-linecap="round"></line>
-            <circle cx="0" cy="0" r="5" fill="var(--border-strong)"></circle>
-          </g>
-          <text x="110" y="92" text-anchor="middle" font-size="24" font-weight="700" fill="var(--ink-primary)" class="mono">63</text>
-          <text x="110" y="118" text-anchor="middle" font-size="10" fill="var(--ink-muted)" class="mono">0 避险 · 50 中性 · 100 偏好</text>
-        </svg>
-      </div>
+                <div style="display:flex;justify-content:center;margin:8px 0 12px;" id="gauge-box"></div>
                 <div style="border-top:1px solid var(--border-hairline);padding-top:12px;">
                   <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
                     <strong class="serif" style="font-size:14.5px;" data-i18n="rankingTitle">8大核心资产当日强弱榜</strong>
                     <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">DAILY RANKING</span>
                   </div>
-                  <div id="ranking-list">
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">01</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">现货黄金</span>
-          <div class="rank-track"><div class="rank-fill" style="width:100%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+2.14%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">02</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">纳斯达克</span>
-          <div class="rank-track"><div class="rank-fill" style="width:86.40144531311306%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+1.85%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">03</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">标普500</span>
-          <div class="rank-track"><div class="rank-fill" style="width:61.64626385209675%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+1.32%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">04</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">沪深300</span>
-          <div class="rank-track"><div class="rank-fill" style="width:48.57313062918834%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+1.04%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">05</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">道琼斯</span>
-          <div class="rank-track"><div class="rank-fill" style="width:43.9016342000445%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+0.94%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">06</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">上证指数</span>
-          <div class="rank-track"><div class="rank-fill" style="width:40.16711854558165%;background:var(--up);"></div></div>
-          <span class="mono up" style="text-align:right;">+0.86%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">07</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">恒生指数</span>
-          <div class="rank-track"><div class="rank-fill" style="width:17.746821605994437%;background:var(--down);"></div></div>
-          <span class="mono down" style="text-align:right;">-0.38%</span>
-        </div>
-      
-        <div class="rank-row">
-          <span class="mono" style="color:var(--ink-muted);">08</span>
-          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">现货白银</span>
-          <div class="rank-track"><div class="rank-fill" style="width:22.78214839015413%;background:var(--down);"></div></div>
-          <span class="mono down" style="text-align:right;">-0.49%</span>
-        </div>
-      </div>
+                  <div id="ranking-list"></div>
                 </div>
               </div>
 
@@ -2955,61 +1473,20 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                   </div>
                   <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg-subtle);border-radius:4px;">
                     <span style="font-size:12.5px;color:var(--ink-secondary);" data-i18n="capitalLabel">模拟投资本金 (CNY)</span>
-                    <input id="pf-capital" class="input-ctrl mono" type="number" value="100000" step="10000" style="width:120px;text-align:right;font-weight:700;" oninput="renderSandbox()">
+                    <input id="pf-capital" class="input-ctrl mono" type="number" value="100000" step="10000" style="width:120px;text-align:right;font-weight:700;" oninput="renderSandbox()" />
                   </div>
                   <div class="sandbox-top">
-                    <div id="pf-sliders">
-          <div class="slider-row">
-            <div class="slider-head">
-              <span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#B8862D;margin-right:5px;"></i>现货黄金 <span class="mono up">+2.14%</span></span>
-              <span class="mono" style="font-weight:700;">30%</span>
-            </div>
-            <input type="range" min="0" max="100" value="30" oninput="state.pf['xau']=Number(this.value);renderSandbox()">
-          </div>
-        
-          <div class="slider-row">
-            <div class="slider-head">
-              <span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8A847A;margin-right:5px;"></i>现货白银 <span class="mono down">-0.49%</span></span>
-              <span class="mono" style="font-weight:700;">10%</span>
-            </div>
-            <input type="range" min="0" max="100" value="10" oninput="state.pf['xag']=Number(this.value);renderSandbox()">
-          </div>
-        
-          <div class="slider-row">
-            <div class="slider-head">
-              <span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#A63A3A;margin-right:5px;"></i>沪深300 <span class="mono up">+1.04%</span></span>
-              <span class="mono" style="font-weight:700;">30%</span>
-            </div>
-            <input type="range" min="0" max="100" value="30" oninput="state.pf['csi300']=Number(this.value);renderSandbox()">
-          </div>
-        
-          <div class="slider-row">
-            <div class="slider-head">
-              <span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#24486E;margin-right:5px;"></i>标普500 <span class="mono up">+1.32%</span></span>
-              <span class="mono" style="font-weight:700;">30%</span>
-            </div>
-            <input type="range" min="0" max="100" value="30" oninput="state.pf['spx']=Number(this.value);renderSandbox()">
-          </div>
-        </div>
-                    <div style="display:flex;justify-content:center;" id="pf-donut">
-        <svg viewBox="0 0 130 130" style="width:130px;height:130px;">
-          <circle cx="65" cy="65" r="46" fill="none" stroke="var(--bg-subtle)" stroke-width="15"></circle>
-          <circle cx="65" cy="65" r="46" fill="none" stroke="#B8862D" stroke-width="15" stroke-dasharray="86.7 289.0" stroke-dashoffset="0.0" transform="rotate(-90 65 65)"></circle><circle cx="65" cy="65" r="46" fill="none" stroke="#8A847A" stroke-width="15" stroke-dasharray="28.9 289.0" stroke-dashoffset="-86.7" transform="rotate(-90 65 65)"></circle><circle cx="65" cy="65" r="46" fill="none" stroke="#A63A3A" stroke-width="15" stroke-dasharray="86.7 289.0" stroke-dashoffset="-115.6" transform="rotate(-90 65 65)"></circle><circle cx="65" cy="65" r="46" fill="none" stroke="#24486E" stroke-width="15" stroke-dasharray="86.7 289.0" stroke-dashoffset="-202.3" transform="rotate(-90 65 65)"></circle>
-          <text x="65" y="61" text-anchor="middle" font-size="9" fill="var(--ink-muted)" class="mono">TOTAL</text>
-          <text x="65" y="76" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink-primary)" class="mono">100%</text>
-        </svg>
-      </div>
+                    <div id="pf-sliders"></div>
+                    <div style="display:flex;justify-content:center;" id="pf-donut"></div>
                   </div>
                 </div>
-                <div class="kpi-grid-4" id="pf-kpis" style="margin-bottom:0;">
-        <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">当日组合收益率</div><div class="mono up" style="font-weight:700;font-size:15px;margin-top:2px;">+1.30%</div></div>
-        <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">当日预计盈亏</div><div class="mono up" style="font-weight:700;font-size:15px;margin-top:2px;">+¥1,302</div></div>
-        <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">模拟最大回撤</div><div class="mono" style="font-weight:700;font-size:15px;margin-top:2px;">-0.84%</div></div>
-        <div class="kpi-box"><div style="font-size:11px;color:var(--ink-muted);">组合风险评级</div><div style="font-weight:700;font-size:14px;margin-top:2px;">均衡配置</div></div>
-      </div>
+                <div class="kpi-grid-4" id="pf-kpis" style="margin-bottom:0;"></div>
               </div>
             </div>
-          </section><section class="sec-block" id="sec-macro">
+          </section>
+
+          <!-- 8. 世界货币与宏观 -->
+          <section class="sec-block" id="sec-macro">
             <div class="sec-head macro">
               <div class="sec-title-wrap">
                 <span class="sec-kicker">ANALYTICS &amp; MACRO</span>
@@ -3017,77 +1494,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
               <span class="sec-note" data-i18n="secMacroNote">参考 IMF COFER、SWIFT 国际支付、WTO 年度贸易额与名义 GDP</span>
             </div>
-            <div class="grid-2" id="macro-bars">
-        <div class="card">
-          <strong class="serif" style="font-size:15.5px;display:block;margin-bottom:12px;">SWIFT 全球国际支付货币占比 (%)</strong>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">USD</span>
-              <div class="rank-track"><div class="rank-fill" style="width:86.9090909090909%;background:#24486E;"></div></div>
-              <span class="mono" style="text-align:right;">47.8%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">EUR</span>
-              <div class="rank-track"><div class="rank-fill" style="width:40.72727272727272%;background:#51427A;"></div></div>
-              <span class="mono" style="text-align:right;">22.4%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">GBP</span>
-              <div class="rank-track"><div class="rank-fill" style="width:12.545454545454545%;background:#2E6B5E;"></div></div>
-              <span class="mono" style="text-align:right;">6.9%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">CNY</span>
-              <div class="rank-track"><div class="rank-fill" style="width:8.545454545454547%;background:#A63A3A;"></div></div>
-              <span class="mono" style="text-align:right;">4.7%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">JPY</span>
-              <div class="rank-track"><div class="rank-fill" style="width:6.909090909090909%;background:#B8862D;"></div></div>
-              <span class="mono" style="text-align:right;">3.8%</span>
-            </div>
-          
-        </div>
-      
-        <div class="card">
-          <strong class="serif" style="font-size:15.5px;display:block;margin-bottom:12px;">IMF 全球官方外汇储备占比 (%)</strong>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">USD</span>
-              <div class="rank-track"><div class="rank-fill" style="width:89.53846153846155%;background:#24486E;"></div></div>
-              <span class="mono" style="text-align:right;">58.2%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">EUR</span>
-              <div class="rank-track"><div class="rank-fill" style="width:30.461538461538463%;background:#51427A;"></div></div>
-              <span class="mono" style="text-align:right;">19.8%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">JPY</span>
-              <div class="rank-track"><div class="rank-fill" style="width:8.615384615384615%;background:#B8862D;"></div></div>
-              <span class="mono" style="text-align:right;">5.6%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">GBP</span>
-              <div class="rank-track"><div class="rank-fill" style="width:7.538461538461538%;background:#2E6B5E;"></div></div>
-              <span class="mono" style="text-align:right;">4.9%</span>
-            </div>
-          
-            <div class="bar-row">
-              <span class="mono" style="font-weight:700;">CAD</span>
-              <div class="rank-track"><div class="rank-fill" style="width:4.153846153846154%;background:#7A4E2D;"></div></div>
-              <span class="mono" style="text-align:right;">2.7%</span>
-            </div>
-          
-        </div>
-      </div>
+            <div class="grid-2" id="macro-bars"></div>
             <div class="table-wrap">
               <table class="macro-table">
                 <thead>
@@ -3100,86 +1507,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                     <th data-i18n="thTrend">货币趋势与宏观研判</th>
                   </tr>
                 </thead>
-                <tbody id="macro-tbody">
-        <tr>
-          <td><strong>美国 · 美元</strong></td>
-          <td class="num">47.8%</td>
-          <td class="num">58.2%</td>
-          <td class="num">$5.32T</td>
-          <td class="num">$29.18T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">全球结算与储备核心锚定货币，受美联储利率路径主导。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>欧元区 · 欧元</strong></td>
-          <td class="num">22.4%</td>
-          <td class="num">19.8%</td>
-          <td class="num">$6.15T</td>
-          <td class="num">$16.40T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">全球第二大支付与储备货币，受欧洲央行政策与能源成本影响。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>中国 · 人民币</strong></td>
-          <td class="num">4.7%</td>
-          <td class="num">2.3%</td>
-          <td class="num">$6.16T</td>
-          <td class="num">$18.53T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">全球第一大货物贸易国货币，跨境贸易人民币结算稳步提升。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>英国 · 英镑</strong></td>
-          <td class="num">6.9%</td>
-          <td class="num">4.9%</td>
-          <td class="num">$1.54T</td>
-          <td class="num">$3.59T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">传统离岸金融中心货币，利率利差与服务贸易提供支撑。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>日本 · 日元</strong></td>
-          <td class="num">3.8%</td>
-          <td class="num">5.6%</td>
-          <td class="num">$1.48T</td>
-          <td class="num">$4.07T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">核心套息融资货币，对日美利差与日本央行正常化高度敏感。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>加拿大 · 加元</strong></td>
-          <td class="num">2.3%</td>
-          <td class="num">2.7%</td>
-          <td class="num">$1.15T</td>
-          <td class="num">$2.21T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">典型能源与北美贸易联动货币，与原油及美国周期强相关。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>澳大利亚 · 澳元</strong></td>
-          <td class="num">1.6%</td>
-          <td class="num">2.2%</td>
-          <td class="num">$0.72T</td>
-          <td class="num">$1.79T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">大宗商品（铁矿/能源）与亚太工业需求风向标。</td>
-        </tr>
-      
-        <tr>
-          <td><strong>新加坡 · 新元</strong></td>
-          <td class="num">1.2%</td>
-          <td class="num">0.5%</td>
-          <td class="num">$0.94T</td>
-          <td class="num">$0.53T</td>
-          <td style="font-size:12.5px;color:var(--ink-secondary);">采用汇率篮子区间管理机制，亚太区域避险属性突出。</td>
-        </tr>
-      </tbody>
+                <tbody id="macro-tbody"></tbody>
               </table>
             </div>
-          </section></main>
+          </section>
+        </main>
 
         <footer class="footer">
           <span data-i18n="footerBrand">DAVYLAB · 全球金融信息管理平台（中英双语零依赖版）</span>
-          <span class="mono" id="footer-source">基准快照 · 2026-11-24 15:00 (GMT+8)</span>
+          <span class="mono" id="footer-source">自动同步: 每日 08:30 / 15:00 (GMT+8)</span>
         </footer>
       </div>
     </div>
@@ -3187,12 +1523,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
   <!-- Tooltip & Toast -->
   <div class="tooltip" id="tooltip"></div>
-  <div class="toast" id="toast">已导出 index.html，可直接上传至 GitHub</div>
+  <div class="toast" id="toast"></div>
 
   <!-- =========================================================================
        统一「页面设置管理」弹窗 (3页签: 外观与偏好 / 页面布局管理 / 数据与导出)
        ========================================================================= -->
-  <div class="modal-backdrop open" id="settings-modal" onclick="if(event.target===this) closeModal('settings-modal')">
+  <div class="modal-backdrop" id="settings-modal" onclick="if(event.target===this) closeModal('settings-modal')">
     <div class="modal-box">
       <div class="modal-head">
         <div>
@@ -3201,53 +1537,8 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         </div>
         <button class="btn-mini" onclick="closeModal('settings-modal')">✕</button>
       </div>
-      <div class="modal-tabs" id="settings-tabs">
-        <button class="modal-tab-btn " onclick="openSettingsModal('appearance')">外观与偏好</button>
-      
-        <button class="modal-tab-btn " onclick="openSettingsModal('layout')">页面布局管理</button>
-      
-        <button class="modal-tab-btn active" onclick="openSettingsModal('data')">数据与导出</button>
-      </div>
-      <div class="modal-body" id="settings-body">
-          <div class="settings-group" style="padding:14px;background:var(--bg-page);border:1px solid var(--border-hairline);border-radius:6px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-              <div>
-                <div style="font-weight:700;font-size:14px;">实时行情同步与定时抓取</div>
-                <div style="font-size:12.5px;color:var(--ink-secondary);margin-top:4px;">
-                  Cloudflare 定时任务每日 08:30 与 15:00 (GMT+8) 自动抓取；当前状态：
-                  <span class="mono">基准快照 · 2026-11-24 15:00 (GMT+8)</span>
-                </div>
-              </div>
-              <button class="btn primary" onclick="fetchLiveMarket(true)">立即刷新行情</button>
-            </div>
-          </div>
-
-          <div class="settings-group" style="padding:14px;background:var(--bg-page);border:1px solid var(--border-hairline);border-radius:6px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-              <div>
-                <div style="font-weight:700;font-size:14px;">盘面模拟实时跳动</div>
-                <div style="font-size:12.5px;color:var(--ink-secondary);margin-top:4px;">
-                  在非交易时段开启微幅行情跳动演示，便于测试图表与沙盒联动。
-                </div>
-              </div>
-              <button class="btn " onclick="toggleLiveSim();renderSettingsModal()">
-                已关闭 (点击开启)
-              </button>
-            </div>
-          </div>
-
-          <div class="settings-group" style="padding:14px;background:var(--bg-gold-tint);border:1px solid rgba(184,134,45,0.4);border-radius:6px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-              <div>
-                <div style="font-weight:700;font-size:14px;color:var(--accent-gold-text);">导出独立网页文件 (零外部依赖)</div>
-                <div style="font-size:12.5px;color:var(--ink-secondary);margin-top:4px;">
-                  一键下载完整单文件 index.html，可直接上传至 GitHub 仓库或 Cloudflare Pages/Workers 部署。
-                </div>
-              </div>
-              <button class="btn gold" style="font-weight:700;" onclick="downloadStandaloneHTML()">⬇ 一键下载 index.html</button>
-            </div>
-          </div>
-        </div>
+      <div class="modal-tabs" id="settings-tabs"></div>
+      <div class="modal-body" id="settings-body"></div>
     </div>
   </div>
 
@@ -3303,11 +1594,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { id: 'obsidian', zh: '黑金尊享',   en: 'Obsidian Gold',     bg: '#141210', accent: '#D4AF37', descZh: '黑曜石与香槟金',     descEn: 'Obsidian & champagne gold' }
     ];
 
-    // 3层分组导航定义
+    // 3层分组导航定义（一级标题短标签，杜绝换行错行）
     const NAV_GROUPS = [
-      { id: 'markets',   zh: '市场行情 · MARKETS',              en: 'MARKETS' },
-      { id: 'equities',  zh: '企业与研报 · EQUITIES & REPORTS', en: 'EQUITIES & REPORTS' },
-      { id: 'analytics', zh: '量化与宏观 · ANALYTICS & MACRO',  en: 'ANALYTICS & MACRO' }
+      { id: 'markets',   zh: '01 市场行情',   en: '01 MARKETS',   tag: 'MARKETS' },
+      { id: 'equities',  zh: '02 企业与研报', en: '02 CORPORATE', tag: 'CORPORATE' },
+      { id: 'analytics', zh: '03 量化与宏观', en: '03 ANALYTICS', tag: 'MACRO' }
     ];
 
     const DEFAULT_LAYOUT = [
@@ -3394,17 +1685,17 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
     // 6种信息海报视觉风格
     const POSTER_STYLES = [
-      { id:'ft',      name:'财经头版纸媒', bg:'#F5F3EE', card:'#FCFBF8', ink:'#1A1918', sub:'#58544E', accent:'#B8862D', border:'#23211E' },
+      { id:'ft',      name:'财经特刊米白', bg:'#F5F3EE', card:'#FCFBF8', ink:'#1A1918', sub:'#58544E', accent:'#B8862D', border:'#23211E' },
+      { id:'navy',    name:'华尔街深蓝',   bg:'#0F172A', card:'#162036', ink:'#F1F5F9', sub:'#94A3B8', accent:'#60A5FA', border:'#3B82F6' },
       { id:'dark',    name:'黑金私行尊享', bg:'#141210', card:'#1F1C18', ink:'#F5EFE6', sub:'#B5AA99', accent:'#D4AF37', border:'#D4AF37' },
-      { id:'navy',    name:'华尔街深蓝研报', bg:'#0F172A', card:'#162036', ink:'#F1F5F9', sub:'#94A3B8', accent:'#60A5FA', border:'#3B82F6' },
-      { id:'minimal', name:'极简瑞士白卡片', bg:'#FFFFFF', card:'#F8FAFC', ink:'#0F172A', sub:'#475569', accent:'#0F172A', border:'#CBD5E1' },
-      { id:'crimson', name:'朱砂中国红特刊', bg:'#FDF8F6', card:'#FFFFFF', ink:'#1F1A18', sub:'#6B5B55', accent:'#A63A3A', border:'#A63A3A' },
-      { id:'tech',    name:'科技暗夜矩阵', bg:'#0B111A', card:'#121B29', ink:'#E2E8F0', sub:'#8B9BB4', accent:'#34D399', border:'#1E293B' }
+      { id:'minimal', name:'极简瑞士白',   bg:'#FFFFFF', card:'#F8FAFC', ink:'#0F172A', sub:'#475569', accent:'#0F172A', border:'#CBD5E1' },
+      { id:'crimson', name:'朱砂中国红',   bg:'#FDF8F6', card:'#FFFFFF', ink:'#1F1A18', sub:'#6B5B55', accent:'#A63A3A', border:'#A63A3A' },
+      { id:'emerald', name:'翡翠投研绿',   bg:'#F1F5F2', card:'#FAFCFB', ink:'#132A23', sub:'#415F55', accent:'#16654E', border:'#173F33' }
     ];
 
     const I18N = {
       zh: {
-        brandTitle:'全球金融信息台', syncSchedule:'08:30 / 15:00 自动同步', btnRefresh:'刷新',
+        brandTitle:'全球金融信息台', syncSchedule:'08:30 / 15:00 同步', btnRefresh:'刷新',
         btnArchiveBox:'★ 我的归档夹', btnSettings:'⚙ 页面设置管理', btnSettingsShort:'⚙ 设置',
         mastheadKicker:'GLOBAL MARKET DIGEST · 商业财经杂志级综合金融信息平台',
         mastheadTitle:'全球核心资产、上市公司年报与世界货币宏观看板',
@@ -3427,7 +1718,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         modalArchiveTitle:'我的年报归档与内容摘录夹'
       },
       en: {
-        brandTitle:'Global Finance Hub', syncSchedule:'Auto Sync 08:30 / 15:00', btnRefresh:'Sync',
+        brandTitle:'Global Finance Hub', syncSchedule:'08:30/15:00 Sync', btnRefresh:'Sync',
         btnArchiveBox:'★ My Archives', btnSettings:'⚙ Page Settings', btnSettingsShort:'⚙ Settings',
         mastheadKicker:'GLOBAL MARKET DIGEST · EDITORIAL FINANCIAL INTELLIGENCE PLATFORM',
         mastheadTitle:'Global Assets, Annual Reports & World Currency Macro',
@@ -3522,18 +1813,25 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const archCount = state.archives.length + state.excerpts.length;
       document.getElementById('side-archive-badge').textContent = archCount;
 
-      // 3层分组导航
+      // 清晰一二级层级导航（Level 1 单行标题 + Level 2 左侧树状引导线）
       document.getElementById('sidebar-nav').innerHTML = NAV_GROUPS.map(g => {
         const items = state.layout.filter(s => s.visible && s.group === g.id);
         if (!items.length) return '';
         return `
-          <div class="nav-group-label">${state.lang === 'zh' ? g.zh : g.en}</div>
-          ${items.map(s => `
-            <a class="nav-item ${state.activeNav === s.id ? 'active' : ''}" href="#${s.id}" data-nav="${s.id}" onclick="setActiveNav('${s.id}');toggleDrawer(false)">
-              <span>${state.lang === 'zh' ? s.zh : s.en}</span>
-              ${s.id === 'sec-reports' && archCount > 0 ? `<span class="nav-badge">${archCount}</span>` : ''}
-            </a>
-          `).join('')}
+          <div class="nav-group-block">
+            <div class="nav-group-header">
+              <span class="nav-group-title">${state.lang === 'zh' ? g.zh : g.en}</span>
+              <span class="nav-group-tag">${g.tag}</span>
+            </div>
+            <div class="nav-sub-list">
+              ${items.map(s => `
+                <a class="nav-item ${state.activeNav === s.id ? 'active' : ''}" href="#${s.id}" data-nav="${s.id}" onclick="setActiveNav('${s.id}');toggleDrawer(false)">
+                  <span>${state.lang === 'zh' ? s.zh : s.en}</span>
+                  ${s.id === 'sec-reports' && archCount > 0 ? `<span class="nav-badge">${archCount}</span>` : ''}
+                </a>
+              `).join('')}
+            </div>
+          </div>
         `;
       }).join('');
 
@@ -3797,19 +2095,41 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     }
 
     // 6. SECTION 5: 上市公司年报中心
+    function setReportMarketFilter(m) {
+      state.reportMarketFilter = m;
+      filterCompanyPills();
+    }
+
     function filterCompanyPills() {
+      const isZh = state.lang === 'zh';
+      const mTabs = [
+        { id: 'all', label: isZh ? '全部市场 (12)' : 'All Markets (12)' },
+        { id: 'us',  label: isZh ? '美股科技 (7)' : 'US Equities (7)' },
+        { id: 'hk',  label: isZh ? '港股龙头 (2)' : 'HK Equities (2)' },
+        { id: 'cn',  label: isZh ? 'A股核心 (3)' : 'A-Shares (3)' }
+      ];
+      document.getElementById('comp-market-tabs').innerHTML = mTabs.map(tb => `
+        <button class="btn-mini ${state.reportMarketFilter === tb.id ? 'active' : ''}" style="${state.reportMarketFilter === tb.id ? 'background:var(--accent-ai);color:#fff;border-color:var(--accent-ai);' : ''}" onclick="setReportMarketFilter('${tb.id}')">${tb.label}</button>
+      `).join('');
+
       const q = (document.getElementById('comp-search').value || '').trim().toLowerCase();
-      const matched = COMPANY_DB.filter(c =>
-        c.name.toLowerCase().includes(q) || c.enName.toLowerCase().includes(q) || c.ticker.toLowerCase().includes(q)
-      );
+      const matched = COMPANY_DB.filter(c => {
+        const matchMkt = state.reportMarketFilter === 'all' || c.region === state.reportMarketFilter;
+        const matchQ = !q || c.name.toLowerCase().includes(q) || c.enName.toLowerCase().includes(q) || c.ticker.toLowerCase().includes(q);
+        return matchMkt && matchQ;
+      });
       document.getElementById('comp-pills').innerHTML = matched.map(c => `
         <button class="btn ${state.selectedComp.ticker === c.ticker ? 'active' : ''}" onclick="selectCompany('${c.ticker}')">${nm(c)} (${c.ticker})</button>
-      `).join('') || `<span style="font-size:12px;color:var(--ink-muted);">未匹配到公司</span>`;
+      `).join('') || `<span style="font-size:12px;color:var(--ink-muted);">${isZh ? '未匹配到上市公司' : 'No matching company'}</span>`;
     }
 
     function selectFirstFilteredCompany() {
       const q = (document.getElementById('comp-search').value || '').trim().toLowerCase();
-      const found = COMPANY_DB.find(c => c.name.toLowerCase().includes(q) || c.enName.toLowerCase().includes(q) || c.ticker.toLowerCase().includes(q));
+      const found = COMPANY_DB.find(c => {
+        const matchMkt = state.reportMarketFilter === 'all' || c.region === state.reportMarketFilter;
+        const matchQ = !q || c.name.toLowerCase().includes(q) || c.enName.toLowerCase().includes(q) || c.ticker.toLowerCase().includes(q);
+        return matchMkt && matchQ;
+      });
       if (found) selectCompany(found.ticker);
     }
 
@@ -4018,10 +2338,16 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
           if (mPts) html += `<polyline fill="none" stroke="var(--accent-gold)" stroke-width="1.5" stroke-dasharray="4,3" points="${mPts}"/>`;
         }
 
+        // 十字准星线与指示点
+        html += `<line id="chart-xhair-v" x1="0" y1="${pad.top}" x2="0" y2="${pad.top + ph}" stroke="var(--ink-muted)" stroke-width="1" stroke-dasharray="3,3" style="display:none;pointer-events:none;"/>`;
+        html += `<line id="chart-xhair-h" x1="${pad.left}" y1="0" x2="${w - pad.right}" y2="0" stroke="var(--ink-muted)" stroke-width="1" stroke-dasharray="3,3" style="display:none;pointer-events:none;"/>`;
+        html += `<circle id="chart-xhair-dot" cx="0" cy="0" r="4.5" fill="${strokeCol}" stroke="var(--bg-card)" stroke-width="2" style="display:none;pointer-events:none;"/>`;
+
         s.forEach((v, i) => {
           const cx = xOf(i), cy = yOf(v), dp = pct(v, a.prevClose);
-          html += `<circle cx="${cx}" cy="${cy}" r="6" fill="transparent" style="cursor:crosshair"
-            onmouseenter="showChartTip(event,'${nm(a)}','${fmt(v, 2)}','${dp >= 0 ? '+' : ''}${dp.toFixed(2)}%')"
+          html += `<circle cx="${cx}" cy="${cy}" r="9" fill="transparent" style="cursor:crosshair"
+            onmouseenter="showChartTip(event,'${nm(a)}','${fmt(v, 2)}','${dp >= 0 ? '+' : ''}${dp.toFixed(2)}%',${cx.toFixed(1)},${cy.toFixed(1)})"
+            ontouchstart="showChartTip(event,'${nm(a)}','${fmt(v, 2)}','${dp >= 0 ? '+' : ''}${dp.toFixed(2)}%',${cx.toFixed(1)},${cy.toFixed(1)})"
             onmouseleave="hideChartTip()"/>`;
         });
       } else {
@@ -4057,12 +2383,29 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       svg.innerHTML = html;
     }
 
-    function showChartTip(evt, title, val, chg) {
+    function showChartTip(evt, title, val, chg, cx, cy) {
       const tip = document.getElementById('tooltip');
+      const pt = evt.touches ? evt.touches[0] : evt;
       tip.innerHTML = `<strong>${title}</strong><br/><span class="mono">报价: ${val}</span><br/><span class="mono">相对昨收: ${chg}</span>`;
-      tip.style.left = `${Math.min(window.innerWidth - 160, evt.clientX + 12)}px`;
-      tip.style.top = `${evt.clientY + 12}px`;
+      tip.style.left = `${Math.min(window.innerWidth - 160, pt.clientX + 12)}px`;
+      tip.style.top = `${pt.clientY + 12}px`;
       tip.style.display = 'block';
+
+      const xv = document.getElementById('chart-xhair-v');
+      const xh = document.getElementById('chart-xhair-h');
+      const xd = document.getElementById('chart-xhair-dot');
+      if (xv && xh && xd && cx !== undefined) {
+        xv.setAttribute('x1', cx); xv.setAttribute('x2', cx); xv.style.display = 'block';
+        xh.setAttribute('y1', cy); xh.setAttribute('y2', cy); xh.style.display = 'block';
+        xd.setAttribute('cx', cx); xd.setAttribute('cy', cy); xd.style.display = 'block';
+      }
+    }
+    function hideChartTip() {
+      document.getElementById('tooltip').style.display = 'none';
+      ['chart-xhair-v', 'chart-xhair-h', 'chart-xhair-dot'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
     }
     function hideChartTip() { document.getElementById('tooltip').style.display = 'none'; }
 
@@ -4602,5 +2945,5 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       fetchLiveMarket(false);
     });
   </script>
-
-</body></html>
+</body>
+</html>
