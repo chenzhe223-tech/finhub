@@ -1,34 +1,35 @@
 // Cloudflare Worker: 北京时间 08:30 (UTC 00:30) 与 15:00 (UTC 07:00) 自动抓取全市场数据
 const SYMBOLS = [
   // 贵金属
-  { id: 'gold',    ticker: 'GC=F' },
-  { id: 'silver',  ticker: 'SI=F' },
+  { id: 'gold',      ticker: 'GC=F' },
+  { id: 'silver',    ticker: 'SI=F' },
   // 中美股指
-  { id: 'sh',      ticker: '000001.SS' },
-  { id: 'csi300',  ticker: '000300.SS' },
-  { id: 'hsi',     ticker: '^HSI' },
-  { id: 'spx',     ticker: '^GSPC' },
-  { id: 'ixic',    ticker: '^IXIC' },
-  { id: 'dji',     ticker: '^DJI' },
+  { id: 'sh',        ticker: '000001.SS' },
+  { id: 'csi300',    ticker: '000300.SS' },
+  { id: 'hsi',       ticker: '^HSI' },
+  { id: 'spx',       ticker: '^GSPC' },
+  { id: 'ixic',      ticker: '^IXIC' },
+  { id: 'dji',       ticker: '^DJI' },
   // 美股 AI 与互联网龙头
-  { id: 'aapl',    ticker: 'AAPL' },
-  { id: 'nvda',    ticker: 'NVDA' },
-  { id: 'msft',    ticker: 'MSFT' },
-  { id: 'googl',   ticker: 'GOOGL' },
-  { id: 'amzn',    ticker: 'AMZN' },
-  { id: 'tsm',     ticker: 'TSM' },
-  { id: 'meta',    ticker: 'META' },
-  { id: 'baba',    ticker: 'BABA' },
+  { id: 'aapl',      ticker: 'AAPL' },
+  { id: 'nvda',      ticker: 'NVDA' },
+  { id: 'msft',      ticker: 'MSFT' },
+  { id: 'googl',     ticker: 'GOOGL' },
+  { id: 'amzn',      ticker: 'AMZN' },
+  { id: 'tsm',       ticker: 'TSM' },
+  { id: 'meta',      ticker: 'META' },
+  { id: 'anth',      ticker: 'ANT' },
+  { id: 'baba',      ticker: 'BABA' },
   // 港股龙头
-  { id: 'tcehy',   ticker: '0700.HK' },
-  { id: 'baba_hk', ticker: '9988.HK' },
-  { id: 'meituan', ticker: '3690.HK' },
-  { id: 'xiaomi',  ticker: '1810.HK' },
-  { id: 'smic',    ticker: '0981.HK' },
+  { id: 'tcehy',     ticker: '0700.HK' },
+  { id: 'baba_hk',   ticker: '9988.HK' },
+  { id: 'meituan',   ticker: '3690.HK' },
+  { id: 'xiaomi',    ticker: '1810.HK' },
+  { id: 'smic',      ticker: '0981.HK' },
   // A 股核心资产与 AI 龙头
-  { id: 'moutai',  ticker: '600519.SS' },
-  { id: 'catl',    ticker: '300750.SZ' },
-  { id: 'byd',     ticker: '002594.SZ' },
+  { id: 'moutai',    ticker: '600519.SS' },
+  { id: 'catl',      ticker: '300750.SZ' },
+  { id: 'byd',       ticker: '002594.SZ' },
   { id: 'innolight', ticker: '300308.SZ' },
   { id: 'cambricon', ticker: '688256.SS' }
 ];
@@ -74,12 +75,11 @@ async function fetchYahooChart(ticker) {
 async function refreshAllMarketData(env) {
   const assets = {};
   const fx = {};
-  const fetchedAt = new Date().toISOString();
 
-  for (let i = 0; i < SYMBOLS.length; i += 5) await Promise.allSettled(
-    SYMBOLS.slice(i, i + 5).map(async (item) => {
+  await Promise.allSettled(
+    SYMBOLS.map(async (item) => {
       try {
-        assets[item.id] = { ...await fetchYahooChart(item.ticker), fetchedAt, source: 'Yahoo Finance' };
+        assets[item.id] = await fetchYahooChart(item.ticker);
       } catch (err) {
         console.error(`Asset fetch failed [${item.id}]:`, err.message);
       }
@@ -95,12 +95,11 @@ async function refreshAllMarketData(env) {
     }
   } catch (e) {}
 
-  for (let i = 0; i < FX_TICKERS.length; i += 5) await Promise.allSettled(
-    FX_TICKERS.slice(i, i + 5).map(async (item) => {
+  await Promise.allSettled(
+    FX_TICKERS.map(async (item) => {
       try {
         const q = await fetchYahooChart(item.ticker);
         fx[item.code] = {
-          fetchedAt, source: 'Yahoo Finance',
           rate: Number((q.price * item.unit).toFixed(4)),
           prevClose: Number((q.prevClose * item.unit).toFixed(4)),
           high: Number((q.high * item.unit).toFixed(4)),
@@ -111,7 +110,6 @@ async function refreshAllMarketData(env) {
         if (frankfurterRates && frankfurterRates[item.code]) {
           const r = (1 / frankfurterRates[item.code]) * item.unit;
           fx[item.code] = {
-            fetchedAt, source: 'Frankfurter (daily reference rate)',
             rate: Number(r.toFixed(4)),
             prevClose: Number(r.toFixed(4)),
             high: Number(r.toFixed(4)),
@@ -137,11 +135,7 @@ async function refreshAllMarketData(env) {
 
   const payload = {
     updatedAt,
-    source: 'Yahoo Finance / Frankfurter',
-    fetchedAt,
-    refreshStatus: Object.keys(assets).length === SYMBOLS.length && Object.keys(fx).length === FX_TICKERS.length ? 'complete' : 'partial',
-    refreshedAssets: Object.keys(assets).length,
-    refreshedFx: Object.keys(fx).length,
+    source: 'Cloudflare Cron (08:30 / 15:00 BJT)',
     assets: { ...(existing.assets || {}), ...assets },
     fx: { ...(existing.fx || {}), ...fx }
   };
@@ -149,39 +143,29 @@ async function refreshAllMarketData(env) {
   if (env.MARKET_KV && (Object.keys(assets).length > 0 || Object.keys(fx).length > 0)) {
     await env.MARKET_KV.put('latest_snapshot', JSON.stringify(payload));
   }
-  if (!Object.keys(assets).length && !Object.keys(fx).length) return { ...existing, refreshStatus: 'failed', lastAttemptAt: fetchedAt };
   return payload;
 }
 
-// Shared scheduler dispatch table: UTC 00:30 and 07:00; additional jobs may be registered here.
-const JOBS = [{ id: 'finhub-market', times: ['00:30','07:00'], run: refreshAllMarketData }];
-let inFlight;
-function refreshOnce(env) {
-  if (!inFlight) inFlight = refreshAllMarketData(env).finally(() => { inFlight = undefined; });
-  return inFlight;
-}
 export default {
   async scheduled(event, env, ctx) {
-    const slot = new Date(event.scheduledTime).toISOString().slice(11,16);
-    for (const job of JOBS) if (job.times.includes(slot)) ctx.waitUntil(job.run === refreshAllMarketData ? refreshOnce(env) : job.run(env));
+    ctx.waitUntil(refreshAllMarketData(env));
   },
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/market') {
       const force = url.searchParams.get('force') === '1';
       let data = null;
-      if (env.MARKET_KV) {
+      if (!force && env.MARKET_KV) {
         data = await env.MARKET_KV.get('latest_snapshot', { type: 'json' });
       }
-      const age = Date.now() - Date.parse(data?.fetchedAt || '');
-      if (!data || (force && (!Number.isFinite(age) || age >= 300000))) {
-        try { data = await refreshOnce(env); } catch (error) { if (!data) return new Response(JSON.stringify({error:'Market data unavailable'}), {status:503, headers:{'Content-Type':'application/json'}}); data = {...data, refreshStatus:'failed'}; }
+      if (!data) {
+        data = await refreshAllMarketData(env);
       }
       return new Response(JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json; charset=utf-8',
           'Access-Control-Allow-Origin': '*',
-          'Cache-Control': 'no-store'
+          'Cache-Control': 'public, max-age=60'
         }
       });
     }
