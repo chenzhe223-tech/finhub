@@ -20,7 +20,6 @@
       --us: #24486E;
       --fx: #2E6B5E;
       --ai: #4B3F72;
-      --ai-soft: #F2EFF9;
       --macro: #7A4E2D;
       --studio: #2B5B6C;
       --up: #B83227;
@@ -46,7 +45,6 @@
       --us: #6899CC;
       --fx: #56A896;
       --ai: #9B89D9;
-      --ai-soft: #211D2E;
       --macro: #C98A5B;
       --studio: #63A4BC;
       --up: #E05246;
@@ -74,7 +72,6 @@
     .up { color: var(--up); }
     .down { color: var(--down); }
 
-    /* 桌面左侧固定导航 + 手机抽屉 */
     .app-shell { display: flex; min-height: 100vh; }
     .sidebar {
       width: 264px;
@@ -133,29 +130,10 @@
       transition: all 0.14s ease;
     }
     .nav-item:hover { background: var(--surface-alt); color: var(--ink); }
-    .nav-item.active {
-      background: var(--surface-alt);
-      color: var(--ink);
-      font-weight: 600;
-      border-left-color: var(--gold);
-    }
-    .nav-badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: var(--bg);
-      border: 1px solid var(--rule);
-      padding: 1px 6px;
-      border-radius: 10px;
-    }
+    .nav-item.active { background: var(--surface-alt); color: var(--ink); font-weight: 600; border-left-color: var(--gold); }
+    .nav-badge { font-family: var(--font-mono); font-size: 11px; background: var(--bg); border: 1px solid var(--rule); padding: 1px 6px; border-radius: 10px; }
 
-    .side-bottom {
-      padding: 12px;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: var(--surface);
-    }
+    .side-bottom { padding: 12px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 8px; background: var(--surface); }
 
     .btn {
       background: var(--surface);
@@ -183,13 +161,7 @@
       justify-content: space-between;
       gap: 8px;
     }
-    .drawer-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.42);
-      z-index: 115;
-    }
+    .drawer-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 115; }
     .drawer-backdrop.open { display: block; }
 
     .main-area { flex: 1; min-width: 0; }
@@ -215,7 +187,6 @@
     .section-title { margin: 0; font-family: var(--font-serif); font-size: 20px; font-weight: 700; }
     .section-meta { font-size: 12px; color: var(--ink-muted); }
 
-    /* 贵金属 */
     .metals-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
     .metal-card { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--gold); border-radius: 4px; padding: 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
     .metal-card.ratio-card { background: var(--gold-soft); cursor: default; }
@@ -230,13 +201,10 @@
     .gram-tag { font-family: var(--font-mono); font-size: 11px; background: var(--surface-alt); padding: 2px 7px; border-radius: 3px; }
     .range-box { margin-top: 12px; }
     .range-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-muted); margin-bottom: 5px; }
-    .range-track { height: 5px; background: var(--surface-alt); border-radius: 3px; overflow: hidden; }
-    .range-fill { height: 100%; background: var(--gold); border-radius: 3px; }
-    .card-note { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12px; color: var(--ink-muted); line-height: 1.5; min-height: 50px; }
     .ratio-bar { position: relative; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--down) 0%, var(--ink-faint) 50%, var(--gold) 100%); margin: 12px 0 6px; }
     .ratio-dot { position: absolute; top: -3px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 3px solid var(--rule-strong); transform: translateX(-50%); }
+    .card-note { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--rule); font-size: 12px; color: var(--ink-muted); line-height: 1.5; min-height: 50px; }
 
-    /* 中美股市 */
     .two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
     .panel-box { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 16px; box-shadow: var(--shadow); }
     .idx-row { display: grid; grid-template-columns: 1.4fr 1fr 0.9fr 68px; align-items: center; gap: 10px; padding: 11px 8px; border-bottom: 1px solid var(--rule); cursor: pointer; }
@@ -247,7 +215,6 @@
     .idx-val { font-family: var(--font-mono); font-size: 15px; font-weight: 600; text-align: right; }
     .idx-chg { font-family: var(--font-mono); font-size: 12px; text-align: right; }
 
-    /* 双向汇率 */
     .fx-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
     .fx-card { background: var(--surface); border: 1px solid var(--rule); border-top: 2px solid var(--fx); border-radius: 4px; padding: 14px; box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
     .fx-top { display: flex; justify-content: space-between; align-items: baseline; }
@@ -261,7 +228,6 @@
     .fx-input, .fx-select { background: var(--bg); color: var(--ink); border: 1px solid var(--rule); border-radius: 4px; padding: 6px 10px; font-size: 13px; font-family: var(--font-mono); }
     .fx-result { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: var(--fx); }
 
-    /* AI 与港A龙头 + 年报 */
     .filter-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
     .ai-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     .ai-card { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--ai); border-radius: 4px; padding: 15px; box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
@@ -277,7 +243,6 @@
     .kpi-label { font-size: 11px; color: var(--ink-muted); }
     .kpi-val { font-family: var(--font-mono); font-size: 17px; font-weight: 700; margin-top: 2px; }
 
-    /* 深度走势与情绪沙盒 */
     .chart-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; }
     .chart-box, .side-box { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 18px; box-shadow: var(--shadow); }
     .chart-canvas-wrap { width: 100%; height: 270px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 8px 0; }
@@ -287,7 +252,7 @@
     .alloc-head { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
     input[type="range"] { width: 100%; accent-color: var(--rule-strong); cursor: pointer; }
 
-    /* 世界经济宏观全景 + 同维度城市榜 */
+    /* 宏观全景 + 贸易指数 */
     .macro-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .macro-panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 18px; box-shadow: var(--shadow); }
     .dim-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; margin-bottom: 14px; }
@@ -296,15 +261,46 @@
     .city-bar-bg { height: 6px; background: var(--surface-alt); border-radius: 3px; overflow: hidden; margin-top: 4px; }
     .city-bar-fill { height: 100%; background: var(--macro); border-radius: 3px; }
 
+    /* 默认折叠的分类标准说明 */
+    details.fold-box {
+      margin-top: 14px;
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+    }
+    details.fold-box > summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--ink);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.fold-box > summary::-webkit-details-marker { display: none; }
+    details.fold-box .fold-body {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--rule);
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    /* 贸易活跃度与航运指数 */
+    .idx-cards-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .trade-idx-card { background: var(--surface); border: 1px solid var(--rule); border-top: 3px solid var(--fx); border-radius: 4px; padding: 14px; }
+    .trade-idx-val { font-family: var(--font-mono); font-size: 20px; font-weight: 700; margin: 6px 0 4px; }
+
     .table-wrap { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; overflow-x: auto; }
     table.data-table { width: 100%; border-collapse: collapse; min-width: 680px; font-size: 13px; }
     table.data-table th { text-align: left; padding: 10px 12px; background: var(--surface-alt); border-bottom: 1px solid var(--rule-strong); font-size: 12px; color: var(--ink-muted); white-space: nowrap; }
     table.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--rule); }
     table.data-table td.num, table.data-table th.num { text-align: right; font-family: var(--font-mono); }
 
-    /* 资讯集采与制片中枢 */
     .topics-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
-    .topic-card { background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--studio); border-radius: 4px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+    .topic-card { background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--studio); border-radius: 4px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px; cursor: pointer; }
     .topic-card.selected { border-color: var(--studio); background: var(--surface-alt); }
     .topic-title { font-family: var(--font-serif); font-size: 15px; font-weight: 700; margin: 4px 0; }
     .studio-grid { display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 16px; margin-top: 16px; }
@@ -316,11 +312,10 @@
     .modal-backdrop.open { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--rule-strong); border-radius: 6px; max-width: 620px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 20px; }
 
-    /* 手机端精简阅读（隐藏冗长解释与辅助文字） */
     body.mobile-compact .explain-text { display: none; }
 
     @media (max-width: 980px) {
-      .metals-grid, .ai-grid, .topics-grid, .studio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metals-grid, .ai-grid, .topics-grid, .studio-grid, .idx-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .fx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .two-col, .chart-layout, .kpi-grid { grid-template-columns: 1fr; }
     }
@@ -330,7 +325,7 @@
       .sidebar { position: fixed; left: -272px; top: 0; height: 100vh; transition: left 0.2s ease; }
       .sidebar.open { left: 0; }
       .container { padding: 14px 14px 56px; }
-      .metals-grid, .ai-grid, .fx-grid, .topics-grid, .studio-grid, .sandbox-grid { grid-template-columns: 1fr; }
+      .metals-grid, .ai-grid, .fx-grid, .topics-grid, .studio-grid, .sandbox-grid, .idx-cards-grid { grid-template-columns: 1fr; }
       .idx-row { grid-template-columns: 1.3fr 1fr 0.9fr; }
       .idx-row .idx-spark { display: none; }
       .city-row { grid-template-columns: 28px 1.3fr 1fr 1fr; }
@@ -342,7 +337,6 @@
   <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
 
   <div class="app-shell">
-    <!-- 左侧导航栏 -->
     <aside class="sidebar" id="sidebar">
       <div>
         <div class="side-top">
@@ -372,7 +366,7 @@
 
           <div class="nav-group-label">03 · <span data-i18n="grpMacro">量化与宏观</span></div>
           <a class="nav-item" href="#sec-chart" data-sec="sec-chart" data-i18n="navChart">深度走势与沙盒</a>
-          <a class="nav-item" href="#sec-macro" data-sec="sec-macro" data-i18n="navMacro">世界经济与同维度城榜</a>
+          <a class="nav-item" href="#sec-macro" data-sec="sec-macro" data-i18n="navMacro">世界经济宏观全景</a>
           <a class="nav-item" href="#sec-currency" data-sec="sec-currency" data-i18n="navCurrency">世界货币与储备</a>
 
           <div class="nav-group-label">04 · <span data-i18n="grpStudio">资讯与制片</span></div>
@@ -395,7 +389,6 @@
       </div>
     </aside>
 
-    <!-- 主内容区 -->
     <div class="main-area">
       <div class="mobile-bar">
         <button class="btn" onclick="toggleDrawer(true)">☰ <span data-i18n="navTitle">导航</span></button>
@@ -443,7 +436,7 @@
               <span class="section-num">02</span>
               <h2 class="section-title" data-i18n="secEquities">中国与美国核心股指</h2>
             </div>
-            <span class="section-meta explain-text" data-i18n="clickChartHint">点击行联动深度走势图</span>
+            <span class="section-meta explain-text" data-i18n="clickChartHint">点击联动深度走势图</span>
           </div>
           <div class="two-col">
             <div class="panel-box" style="border-top:3px solid var(--cn);">
@@ -515,7 +508,7 @@
           </div>
         </section>
 
-        <!-- SECTION 06: 深度走势与情绪沙盒（保留原版可视化结构） -->
+        <!-- SECTION 06: 深度走势与情绪沙盒 -->
         <section class="section" id="sec-chart">
           <div class="section-head">
             <div class="section-title-wrap">
@@ -534,7 +527,6 @@
                 <div class="toolbar">
                   <button class="btn active" id="modeSingle" data-i18n="btnSingle">单标的</button>
                   <button class="btn" id="modeCompare" data-i18n="btnCompare">归一化对比</button>
-                  <button class="btn active" id="btnMa">MA5</button>
                 </div>
               </div>
               <div class="chart-canvas-wrap">
@@ -555,21 +547,21 @@
           </div>
         </section>
 
-        <!-- SECTION 07: 世界经济宏观全景（含同维度城市榜：都市圈 vs 城市） -->
+        <!-- SECTION 07: 世界经济宏观全景（含 10 年 GDP 折线走势图、国家级人均 GDP + 默认折叠分类标准、同维度城榜、世界贸易与活跃度指数） -->
         <section class="section" id="sec-macro">
           <div class="section-head macro">
             <div class="section-title-wrap">
               <span class="section-num">07</span>
-              <h2 class="section-title" data-i18n="secMacro">世界经济宏观全景（同维度对比）</h2>
+              <h2 class="section-title" data-i18n="secMacro">世界经济宏观全景与贸易活跃度</h2>
             </div>
-            <span class="section-meta explain-text" data-i18n="macroMeta">GDP 十年走势 · 人均与 PPP · 同维度都市圈/城市榜 · 世界贸易</span>
+            <span class="section-meta explain-text" data-i18n="macroMeta">10年GDP走势图 · 国家级人均GDP与PPP · 同维度都市圈/城市榜 · 贸易顺逆差与航运指数</span>
           </div>
 
           <div class="macro-tabs">
-            <button class="btn active" data-mtab="cities" onclick="switchMacroTab('cities')" data-i18n="mtabCities">同维度城市/都市圈 GDP</button>
-            <button class="btn" data-mtab="gdp10" onclick="switchMacroTab('gdp10')" data-i18n="mtabGdp10">各国 GDP 十年走势</button>
-            <button class="btn" data-mtab="ppp" onclick="switchMacroTab('ppp')" data-i18n="mtabPpp">人均 GDP 与购买力(PPP)</button>
-            <button class="btn" data-mtab="trade" onclick="switchMacroTab('trade')" data-i18n="mtabTrade">世界贸易往来</button>
+            <button class="btn active" data-mtab="gdp10" onclick="switchMacroTab('gdp10')" data-i18n="mtabGdp10">10 年 GDP 走势图</button>
+            <button class="btn" data-mtab="ppp" onclick="switchMacroTab('ppp')" data-i18n="mtabPpp">国家级人均 GDP 与 PPP</button>
+            <button class="btn" data-mtab="cities" onclick="switchMacroTab('cities')" data-i18n="mtabCities">同维度城市/都市圈 GDP</button>
+            <button class="btn" data-mtab="trade" onclick="switchMacroTab('trade')" data-i18n="mtabTrade">世界贸易与航运指数</button>
           </div>
 
           <div class="macro-panel" id="macroPanel"></div>
@@ -659,14 +651,9 @@
         <button class="btn" onclick="closeModal('settingsModal')" data-i18n="btnClose">关闭</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;font-size:13px;">
-        <div>
-          <strong>视觉风格（6 种）</strong>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
-            <button class="btn" onclick="setTheme('light')">晨报纸媒</button>
-            <button class="btn" onclick="setTheme('dark')">晚报深色</button>
-          </div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <button class="btn" onclick="setTheme('light')">晨报纸媒</button>
+          <button class="btn" onclick="setTheme('dark')">晚报深色</button>
           <button class="btn" onclick="toggleLang()">中 / 英切换 (CN/EN)</button>
           <button class="btn" onclick="toggleUnit()">贵金属: CNY/克 ↔ USD/盎司</button>
           <button class="btn" onclick="toggleColor()">涨跌色: 红涨绿跌 ↔ 绿涨红跌</button>
@@ -698,7 +685,7 @@
         <strong class="serif" style="font-size:17px;">录入最新财经快讯</strong>
         <button class="btn" onclick="closeModal('newsModal')" data-i18n="btnClose">关闭</button>
       </div>
-      <input type="text" id="customNewsInput" class="fx-input" style="width:100%;margin-bottom:10px;" placeholder="输入一条最新新闻或研报观点，例如：全球算力资本开支继续扩张..." />
+      <input type="text" id="customNewsInput" class="fx-input" style="width:100%;margin-bottom:10px;" placeholder="输入一条最新新闻或研报观点..." />
       <button class="btn active" onclick="addCustomNews()">加入集采并刷新 12 话题</button>
     </div>
   </div>
@@ -720,43 +707,44 @@
       metro: {
         zhTitle: "同维度对比：全球核心都市圈 / 经济都市区（Metro vs. Metro）",
         enTitle: "Same-Dimension: Major Metropolitan Areas (Metro vs. Metro)",
-        zhScope: "口径：大都市圈 / 经济都市区（含核心城与紧密联动经济圈，按同币种换算对比）",
-        enScope: "Scope: Metropolitan / Economic Areas (converted at current USD/CNY)",
+        zhScope: "口径：大都市圈 / 经济都市区（仅与其他都市圈横向对比）",
+        enScope: "Scope: Metropolitan / Economic Areas (metro-to-metro only)",
         items: [
-          { rank: 1, zhName: "纽约大都市圈", enName: "New York Metro", region: "us", gdpUsdB: 2290, perCapUsd: 114200, zhTag: "金融·传媒·AI", enTag: "Finance·Media·AI" },
-          { rank: 2, zhName: "东京都市圈", enName: "Tokyo Metro", region: "ap", gdpUsdB: 2140, perCapUsd: 57600, zhTag: "制造·总部·消费", enTag: "Mfg·HQ·Consumer" },
-          { rank: 3, zhName: "洛杉矶大都市圈", enName: "Los Angeles Metro", region: "us", gdpUsdB: 1290, perCapUsd: 99800, zhTag: "贸易·影视·航天", enTag: "Trade·Media·Aero" },
-          { rank: 4, zhName: "伦敦大都市区", enName: "London Metro", region: "ap", gdpUsdB: 1180, perCapUsd: 96400, zhTag: "国际金融·跨境结算", enTag: "Global Finance·FX" },
-          { rank: 5, zhName: "巴黎大都市区", enName: "Paris Metro", region: "ap", gdpUsdB: 965,  perCapUsd: 78500, zhTag: "奢侈品·航空·科研", enTag: "Luxury·Aero·R&D" },
-          { rank: 6, zhName: "旧金山湾区", enName: "San Francisco Bay Area", region: "us", gdpUsdB: 895, perCapUsd: 118900, zhTag: "大模型·半导体·风投", enTag: "AI·Semis·VC" },
-          { rank: 7, zhName: "芝加哥大都市圈", enName: "Chicago Metro", region: "us", gdpUsdB: 860, perCapUsd: 91200, zhTag: "衍生品·物流·工业", enTag: "Derivatives·Logistics" },
-          { rank: 8, zhName: "上海大都市圈", enName: "Shanghai Metro", region: "cn", gdpUsdB: 845, perCapUsd: 26800, zhTag: "航运·金融·集成电路", enTag: "Shipping·Finance·IC" },
-          { rank: 9, zhName: "广深佛莞都市圈", enName: "Pearl River Delta Metro", region: "cn", gdpUsdB: 810, perCapUsd: 21500, zhTag: "电子制造·智造·外贸", enTag: "Electronics·Mfg·Trade" },
-          { rank: 10, zhName: "京津冀核心都市圈", enName: "Beijing-Tianjin-Hebei Core", region: "cn", gdpUsdB: 720, perCapUsd: 19600, zhTag: "总部·科创·高端制造", enTag: "HQ·Tech·Mfg" }
+          { rank: 1, zhName: "纽约大都市圈", enName: "New York Metro", gdpUsdB: 2290, perCapUsd: 114200, zhTag: "金融·传媒·AI", enTag: "Finance·Media·AI" },
+          { rank: 2, zhName: "东京都市圈", enName: "Tokyo Metro", gdpUsdB: 2140, perCapUsd: 57600, zhTag: "制造·总部·消费", enTag: "Mfg·HQ·Consumer" },
+          { rank: 3, zhName: "洛杉矶大都市圈", enName: "Los Angeles Metro", gdpUsdB: 1290, perCapUsd: 99800, zhTag: "贸易·影视·航天", enTag: "Trade·Media·Aero" },
+          { rank: 4, zhName: "伦敦大都市区", enName: "London Metro", gdpUsdB: 1180, perCapUsd: 96400, zhTag: "国际金融·跨境结算", enTag: "Global Finance·FX" },
+          { rank: 5, zhName: "巴黎大都市区", enName: "Paris Metro", gdpUsdB: 965,  perCapUsd: 78500, zhTag: "奢侈品·航空·科研", enTag: "Luxury·Aero·R&D" },
+          { rank: 6, zhName: "旧金山湾区", enName: "San Francisco Bay Area", gdpUsdB: 895, perCapUsd: 118900, zhTag: "大模型·半导体·风投", enTag: "AI·Semis·VC" },
+          { rank: 7, zhName: "芝加哥大都市圈", enName: "Chicago Metro", gdpUsdB: 860, perCapUsd: 91200, zhTag: "衍生品·物流·工业", enTag: "Derivatives·Logistics" },
+          { rank: 8, zhName: "上海大都市圈", enName: "Shanghai Metro", gdpUsdB: 845, perCapUsd: 26800, zhTag: "航运·金融·集成电路", enTag: "Shipping·Finance·IC" },
+          { rank: 9, zhName: "广深佛莞都市圈", enName: "Pearl River Delta Metro", gdpUsdB: 810, perCapUsd: 21500, zhTag: "电子制造·智造·外贸", enTag: "Electronics·Mfg·Trade" },
+          { rank: 10, zhName: "京津冀核心都市圈", enName: "Beijing-Tianjin-Hebei Core", gdpUsdB: 720, perCapUsd: 19600, zhTag: "总部·科创·高端制造", enTag: "HQ·Tech·Mfg" }
         ]
       },
       city: {
         zhTitle: "同维度对比：单一城市 / 行政市域经济体（City vs. City）",
         enTitle: "Same-Dimension: Single Municipalities / City Proper (City vs. City)",
-        zhScope: "口径：单一城市 / 核心市域行政口径（仅对比市域级别，不与跨州/跨省大都市圈混排）",
-        enScope: "Scope: City Proper / Municipality Level Only (no metro-to-city mixing)",
+        zhScope: "口径：单一城市 / 核心市域行政口径（仅对比市域级别，不与大都市圈混排）",
+        enScope: "Scope: City Proper / Municipality Level Only",
         items: [
-          { rank: 1, zhName: "纽约市（五区市域）", enName: "New York City Proper", region: "us", gdpUsdB: 1210, perCapUsd: 146800, zhTag: "华尔街·资本市场", enTag: "Wall St·Capital" },
-          { rank: 2, zhName: "上海市（市域）", enName: "Shanghai Municipality", region: "cn", gdpUsdB: 745, perCapUsd: 30100, zhTag: "金融中心·港航·AI", enTag: "Finance·Port·AI" },
-          { rank: 3, zhName: "北京市（市域）", enName: "Beijing Municipality", region: "cn", gdpUsdB: 690, perCapUsd: 31600, zhTag: "数字经济·科技总部", enTag: "Digital·Tech HQ" },
-          { rank: 4, zhName: "洛杉矶市（市域）", enName: "Los Angeles City Proper", region: "us", gdpUsdB: 575, perCapUsd: 149500, zhTag: "港口贸易·文娱", enTag: "Port Trade·Media" },
-          { rank: 5, zhName: "深圳市（市域）", enName: "Shenzhen Municipality", region: "cn", gdpUsdB: 525, perCapUsd: 29600, zhTag: "硬件创新·新能源·终端", enTag: "Hardware·EV·Devices" },
-          { rank: 6, zhName: "新加坡（城市经济体）", enName: "Singapore", region: "ap", gdpUsdB: 515, perCapUsd: 86800, zhTag: "亚太枢纽·财富·航运", enTag: "APAC Hub·Wealth" },
-          { rank: 7, zhName: "重庆市（直辖市域）", enName: "Chongqing Municipality", region: "cn", gdpUsdB: 455, perCapUsd: 14200, zhTag: "智能网联车·装备制造", enTag: "Smart EV·Mfg" },
-          { rank: 8, zhName: "广州市（市域）", enName: "Guangzhou Municipality", region: "cn", gdpUsdB: 440, perCapUsd: 23400, zhTag: "商贸会展·汽车·生物", enTag: "Commerce·Auto·Bio" },
-          { rank: 9, zhName: "首尔特别市（市域）", enName: "Seoul Special City", region: "ap", gdpUsdB: 410, perCapUsd: 43800, zhTag: "消费电子·数字服务", enTag: "Electronics·Services" },
-          { rank: 10, zhName: "苏州市（市域）", enName: "Suzhou Municipality", region: "cn", gdpUsdB: 382, perCapUsd: 29500, zhTag: "高端制造·生物医药", enTag: "High-End Mfg·Bio" }
+          { rank: 1, zhName: "纽约市（五区市域）", enName: "New York City Proper", gdpUsdB: 1210, perCapUsd: 146800, zhTag: "华尔街·资本市场", enTag: "Wall St·Capital" },
+          { rank: 2, zhName: "上海市（市域）", enName: "Shanghai Municipality", gdpUsdB: 745, perCapUsd: 30100, zhTag: "金融中心·港航·AI", enTag: "Finance·Port·AI" },
+          { rank: 3, zhName: "北京市（市域）", enName: "Beijing Municipality", gdpUsdB: 690, perCapUsd: 31600, zhTag: "数字经济·科技总部", enTag: "Digital·Tech HQ" },
+          { rank: 4, zhName: "洛杉矶市（市域）", enName: "Los Angeles City Proper", gdpUsdB: 575, perCapUsd: 149500, zhTag: "港口贸易·文娱", enTag: "Port Trade·Media" },
+          { rank: 5, zhName: "深圳市（市域）", enName: "Shenzhen Municipality", gdpUsdB: 525, perCapUsd: 29600, zhTag: "硬件创新·新能源·终端", enTag: "Hardware·EV·Devices" },
+          { rank: 6, zhName: "新加坡（城市经济体）", enName: "Singapore", gdpUsdB: 515, perCapUsd: 86800, zhTag: "亚太枢纽·财富·航运", enTag: "APAC Hub·Wealth" },
+          { rank: 7, zhName: "重庆市（直辖市域）", enName: "Chongqing Municipality", gdpUsdB: 455, perCapUsd: 14200, zhTag: "智能网联车·装备制造", enTag: "Smart EV·Mfg" },
+          { rank: 8, zhName: "广州市（市域）", enName: "Guangzhou Municipality", gdpUsdB: 440, perCapUsd: 23400, zhTag: "商贸会展·汽车·生物", enTag: "Commerce·Auto·Bio" },
+          { rank: 9, zhName: "首尔特别市（市域）", enName: "Seoul Special City", gdpUsdB: 410, perCapUsd: 43800, zhTag: "消费电子·数字服务", enTag: "Electronics·Services" },
+          { rank: 10, zhName: "苏州市（市域）", enName: "Suzhou Municipality", gdpUsdB: 382, perCapUsd: 29500, zhTag: "高端制造·生物医药", enTag: "High-End Mfg·Bio" }
         ]
       }
     };
 
+    // 10 年 GDP 走势数据（2017-2026E，万亿美元）
     const GDP_10Y = {
-      years: ["2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026E"],
+      years: ["2017","2018","2019","2020","2021","2022","2023","2024","2025","2026E"],
       countries: [
         { id: "us", zh: "美国", en: "USA", color: "#24486E", nom: [19.61,20.66,21.54,21.32,23.59,25.74,27.36,28.78,29.82,30.95] },
         { id: "cn", zh: "中国", en: "China", color: "#A63A3A", nom: [12.31,13.89,14.28,14.69,17.82,17.88,17.79,18.75,19.48,20.35] },
@@ -766,21 +754,40 @@
       ]
     };
 
-    const PPP_DATA = [
-      { zh: "美国", en: "USA", nomPc: 89100, pppPc: 89100 },
-      { zh: "新加坡", en: "Singapore", nomPc: 86800, pppPc: 148200 },
-      { zh: "德国", en: "Germany", nomPc: 56800, pppPc: 71400 },
-      { zh: "英国", en: "UK", nomPc: 52100, pppPc: 61900 },
-      { zh: "日本", en: "Japan", nomPc: 34200, pppPc: 53100 },
-      { zh: "中国", en: "China", nomPc: 13800, pppPc: 27400 },
-      { zh: "印度", en: "India", nomPc: 2950,  pppPc: 11600 }
+    // 国家级人均 GDP 与购买力平价（PPP）
+    const NATIONAL_PC_PPP = [
+      { zh: "美国（国家级）", en: "United States", cls: "发达经济体 · Advanced", nomPc: 89100, pppPc: 89100 },
+      { zh: "新加坡（国家级）", en: "Singapore", cls: "发达经济体 · Advanced", nomPc: 86800, pppPc: 148200 },
+      { zh: "德国（国家级）", en: "Germany", cls: "发达经济体 · Advanced", nomPc: 56800, pppPc: 71400 },
+      { zh: "英国（国家级）", en: "United Kingdom", cls: "发达经济体 · Advanced", nomPc: 52100, pppPc: 61900 },
+      { zh: "日本（国家级）", en: "Japan", cls: "发达经济体 · Advanced", nomPc: 34200, pppPc: 53100 },
+      { zh: "中国（国家级）", en: "China", cls: "发展中/新兴市场 · Emerging", nomPc: 13800, pppPc: 27400 },
+      { zh: "印度（国家级）", en: "India", cls: "发展中/新兴市场 · Emerging", nomPc: 2950,  pppPc: 11600 }
     ];
 
-    const TRADE_CORRIDORS = [
-      { zh: "中美双边货物贸易", en: "US–China Goods Trade", totalB: 582, expShare: 24, impShare: 76 },
-      { zh: "中欧双边货物贸易", en: "China–EU Goods Trade", totalB: 785, expShare: 63, impShare: 37 },
-      { zh: "中国—东盟贸易通道", en: "China–ASEAN Corridor", totalB: 982, expShare: 58, impShare: 42 },
-      { zh: "美墨加北美贸易圈", en: "USMCA North America", totalB: 1580, expShare: 49, impShare: 51 }
+    // 世界贸易往来：顺逆差、主要贸易内容、全球贸易商品构成占比
+    const TRADE_ECONOMIES = [
+      { zh: "中国", en: "China", surplusB: 992, mainGoods: "机电/半导体/新能源/消费制成品", mainGoodsEn: "Machinery, Semis, EVs, Consumer Goods" },
+      { zh: "德国", en: "Germany", surplusB: 268, mainGoods: "汽车整车及零部件/机械设备/化工", mainGoodsEn: "Autos, Machinery, Chemicals" },
+      { zh: "日本", en: "Japan", surplusB: -38,  mainGoods: "汽车/半导体材料与设备/精密仪器", mainGoodsEn: "Autos, Semi Materials, Precision" },
+      { zh: "美国", en: "United States", surplusB: -1190, mainGoods: "航空航天/能源/高端芯片与软件服务", mainGoodsEn: "Aero, Energy, High-End Chips & Services" },
+      { zh: "印度", en: "India", surplusB: -270, mainGoods: "精炼油品/珠宝/药品/IT与外包服务", mainGoodsEn: "Refined Fuels, Gems, Pharma, IT" }
+    ];
+
+    const GLOBAL_GOODS_MIX = [
+      { zh: "机电产品、半导体与资本设备", en: "Machinery, Semis & Capital Goods", share: 38.5, color: "var(--us)" },
+      { zh: "能源、矿产与原材料大宗", en: "Energy, Minerals & Raw Materials", share: 21.0, color: "var(--macro)" },
+      { zh: "汽车、运输装备与零部件", en: "Vehicles, Transport & Parts", share: 13.5, color: "var(--cn)" },
+      { zh: "化工、医药与中间品", en: "Chemicals, Pharma & Intermediates", share: 15.0, color: "var(--fx)" },
+      { zh: "纺织、家电与日常消费品", en: "Textiles, Appliances & Consumer Goods", share: 12.0, color: "var(--gold)" }
+    ];
+
+    // 贸易活跃度与航运专业指数
+    const TRADE_ACTIVITY_INDICES = [
+      { code: "BDI", zh: "波罗的海干散货运价指数", en: "Baltic Dry Index", val: "1,745", chg: "+2.4%", zhDesc: "跟踪铁矿石、煤炭、粮食等大宗干散货即期运价，反映上游原材料与海运供需。" },
+      { code: "CCFI", zh: "中国出口集装箱运价指数", en: "China Containerized Freight", val: "1,412.8", chg: "+1.1%", zhDesc: "衡量中国出发集装箱航线综合运价水平，折射制造业出口景气与舱位紧张度。" },
+      { code: "SCFI", zh: "上海出口集装箱运价指数", en: "Shanghai Export Container", val: "2,268.4", chg: "-0.8%", zhDesc: "高频现货集装箱运价风向标，对欧美航线旺季补库与绕行变化敏感。" },
+      { code: "PMI-TRD", zh: "全球制造业与新出口订单景气", en: "Global Mfg & Export Orders", val: "51.4", chg: "+0.6", zhDesc: "高于 50 代表扩张区间，用于交叉验证航运运价是周期回暖还是短期扰动。" }
     ];
 
     const CURRENCY_MACRO = [
@@ -792,20 +799,18 @@
     ];
 
     const REPORTS_DB = [
-      { id: "nvda", name: "英伟达", enName: "NVIDIA", code: "NVDA", mkt: "us", rev: "$130.5B", ni: "$72.9B", gm: "75.0%", pe: "38.2x", rev3y: [27.0, 60.9, 130.5], zhSum: "数据中心 AI 算力与网络互联驱动营收高速增长，毛利率维持高位。" },
-      { id: "anth", name: "Anthropic", enName: "Anthropic", code: "ANT", mkt: "us", rev: "$14.8B (ARR)", ni: "扩规模阶段", gm: "64.5%", pe: "成长定价", rev3y: [1.2, 5.4, 14.8], zhSum: "企业级 Claude API 与云端算力合作放量，研发投入占比保持高强度。" },
-      { id: "aapl", name: "苹果", enName: "Apple", code: "AAPL", mkt: "us", rev: "$391.0B", ni: "$93.7B", gm: "46.2%", pe: "33.5x", rev3y: [394.3, 383.3, 391.0], zhSum: "服务业务毛利与庞大装机量提供稳健现金流，端侧 AI 升级周期受关注。" },
-      { id: "tcehy", name: "腾讯控股", enName: "Tencent", code: "00700.HK", mkt: "hk", rev: "¥660.2B", ni: "¥194.1B", gm: "53.1%", pe: "16.8x", rev3y: [554.6, 609.0, 660.2], zhSum: "视频号、小游戏与企业云/AI 工具带动高毛利业务占比提升，回购力度持续。" },
-      { id: "moutai", name: "贵州茅台", enName: "Kweichow Moutai", code: "600519.SH", mkt: "cn", rev: "¥174.1B", ni: "¥86.2B", gm: "91.8%", pe: "21.4x", rev3y: [127.6, 150.6, 174.1], zhSum: "直销渠道与品牌壁垒支撑超高毛利率与经营现金流质量。" },
-      { id: "catl", name: "宁德时代", enName: "CATL", code: "300750.SZ", mkt: "cn", rev: "¥362.0B", ni: "¥50.7B", gm: "24.4%", pe: "22.1x", rev3y: [328.6, 400.9, 362.0], zhSum: "动力电池与储能电池全球出货领先，海外产能与新产品结构优化。" }
+      { id: "nvda", name: "英伟达", enName: "NVIDIA", code: "NVDA", rev: "$130.5B", ni: "$72.9B", gm: "75.0%", pe: "38.2x", rev3y: [27.0, 60.9, 130.5], zhSum: "数据中心 AI 算力与网络互联驱动营收高速增长，毛利率维持高位。" },
+      { id: "anth", name: "Anthropic", enName: "Anthropic", code: "ANT", rev: "$14.8B (ARR)", ni: "扩规模阶段", gm: "64.5%", pe: "成长定价", rev3y: [1.2, 5.4, 14.8], zhSum: "企业级 Claude API 与云端算力合作放量，研发投入占比保持高强度。" },
+      { id: "tcehy", name: "腾讯控股", enName: "Tencent", code: "00700.HK", rev: "¥660.2B", ni: "¥194.1B", gm: "53.1%", pe: "16.8x", rev3y: [554.6, 609.0, 660.2], zhSum: "视频号、小游戏与企业云/AI 工具带动高毛利业务占比提升。" },
+      { id: "moutai", name: "贵州茅台", enName: "Kweichow Moutai", code: "600519.SH", rev: "¥174.1B", ni: "¥86.2B", gm: "91.8%", pe: "21.4x", rev3y: [127.6, 150.6, 174.1], zhSum: "品牌壁垒与渠道结构支撑超高毛利率与现金流质量。" }
     ];
 
     const INITIAL_DATA = {
-      updatedAt: "2026-11-25 14:35 (GMT+8)",
+      updatedAt: "2026-11-25 14:48 (GMT+8)",
       source: "Cloudflare 自动同步",
       assets: {
-        gold:   { name: "现货黄金", enName: "Spot Gold", code: "XAU", price: 3657.42, prevClose: 3580.75, high: 3668.90, low: 3578.40, zhNote: "避险与央行购金支撑中枢，国内克价同步走强。", enNote: "Safe-haven & CB demand anchor gold.", series: [3582,3590,3602,3615,3628,3642,3657.42] },
-        silver: { name: "现货白银", enName: "Spot Silver", code: "XAG", price: 42.84, prevClose: 43.05, high: 43.42, low: 42.51, zhNote: "兼顾金融与工业需求，短线震荡整固。", enNote: "Dual financial & industrial demand.", series: [43.05,43.20,43.10,42.90,42.75,42.84] },
+        gold:   { name: "现货黄金", enName: "Spot Gold", code: "XAU", price: 3657.42, prevClose: 3580.75, zhNote: "避险与央行购金支撑中枢，国内克价同步走强。", enNote: "Safe-haven & CB demand anchor gold.", series: [3582,3590,3602,3615,3628,3642,3657.42] },
+        silver: { name: "现货白银", enName: "Spot Silver", code: "XAG", price: 42.84, prevClose: 43.05, zhNote: "兼顾金融与工业需求，短线震荡整固。", enNote: "Dual financial & industrial demand.", series: [43.05,43.20,43.10,42.90,42.75,42.84] },
         sh:     { name: "上证指数", enName: "SSE", code: "000001.SH", group: "cn", price: 3342.18, prevClose: 3325.40, series: [3326,3331,3336,3340,3342.18] },
         csi300: { name: "沪深300", enName: "CSI 300", code: "000300.SH", group: "cn", price: 4012.55, prevClose: 3994.10, series: [3995,4002,4009,4015,4012.55] },
         hsi:    { name: "恒生指数", enName: "HSI", code: "HSI", group: "cn", price: 19684.30, prevClose: 19790.00, series: [19785,19740,19710,19684.30] },
@@ -814,10 +819,7 @@
         dji:    { name: "道琼斯", enName: "Dow", code: "DJI", group: "us", price: 44512.60, prevClose: 44310.20, series: [44315,44380,44455,44512.60] },
         nvda:   { name: "英伟达", enName: "NVIDIA", code: "NVDA", group: "leader", market: "us", currency: "$", mcap: "$3.98T", price: 165.05, prevClose: 157.40, series: [158.1,161.2,163.5,165.05] },
         anth:   { name: "Anthropic", enName: "Anthropic", code: "ANT", group: "leader", market: "us", currency: "$", mcap: "$1.07T", price: 81.91, prevClose: 77.59, series: [78.0,79.4,80.8,81.91] },
-        aapl:   { name: "苹果", enName: "Apple", code: "AAPL", group: "leader", market: "us", currency: "$", mcap: "$5.07T", price: 349.08, prevClose: 342.56, series: [343.0,345.8,347.9,349.08] },
-        msft:   { name: "微软", enName: "Microsoft", code: "MSFT", group: "leader", market: "us", currency: "$", mcap: "$3.66T", price: 492.50, prevClose: 484.52, series: [485.0,488.2,490.6,492.50] },
         tcehy:  { name: "腾讯控股", enName: "Tencent", code: "00700.HK", group: "leader", market: "hk", currency: "HK$", mcap: "HK$3.14T", price: 344.60, prevClose: 344.00, series: [344.2,345.0,344.60] },
-        baba_hk:{ name: "阿里-W", enName: "Alibaba HK", code: "09988.HK", group: "leader", market: "hk", currency: "HK$", mcap: "HK$1.67T", price: 82.75, prevClose: 83.05, series: [83.0,82.8,82.75] },
         moutai: { name: "贵州茅台", enName: "Moutai", code: "600519.SH", group: "leader", market: "cn", currency: "¥", mcap: "消费核心", price: 1528.00, prevClose: 1519.50, series: [1520,1524,1528.00] },
         catl:   { name: "宁德时代", enName: "CATL", code: "300750.SZ", group: "leader", market: "cn", currency: "¥", mcap: "电池龙头", price: 268.40, prevClose: 263.80, series: [264.0,266.2,268.40] }
       },
@@ -837,20 +839,18 @@
       leaderFilter: "all",
       selectedReportId: "nvda",
       chartMode: "single",
-      showMa: true,
       selectedAssetKey: "gold",
-      macroTab: "cities",
-      cityDimension: "metro", // metro | city
-      cityCurr: "usd",      // usd | cny
-      gdpMetric: "nom",      // nom | share
+      macroTab: "gdp10", // gdp10 | ppp | cities | trade
+      cityDimension: "metro",
+      cityCurr: "usd",
       weights: { gold: 25, nvda: 30, tcehy: 20, catl: 25 },
       sectionOrder: ["sec-metals","sec-equities","sec-fx","sec-ai","sec-reports","sec-chart","sec-macro","sec-currency","sec-topics","sec-studio"],
       hiddenSections: [],
       archives: [],
       newsList: [
-        "全球 AI 算力与云端资本开支延续扩张，半导体与模型龙头表现活跃",
-        "人民币对美元及主要外币双向波动，跨境贸易与黄金克价联动受关注",
-        "跨国经济体名义 GDP 与购买力平价（PPP）呈现结构性差异，都市圈与单城对比需同口径"
+        "BDI 与集装箱运价指数联动变化，全球大宗商品与制成品贸易节奏受关注",
+        "国家级人均 GDP 与购买力平价（PPP）视角下，发达经济体与新兴市场结构差异显著",
+        "同维度对比都市圈与单一城市经济体量，避免跨地理口径错读"
       ],
       topics: [],
       selectedTopicIdx: 0,
@@ -864,7 +864,7 @@
         brandTitle: "DAVYLAB 金融中枢", btnRefresh: "刷新", grpMarkets: "市场行情",
         navMetals: "贵金属市场", navEquities: "中美核心股指", navFx: "人民币双向汇率",
         grpCorp: "企业与研报", navAi: "AI 与港A龙头", navReports: "上市公司年报",
-        grpMacro: "量化与宏观", navChart: "深度走势与沙盒", navMacro: "世界经济与同维度城榜", navCurrency: "世界货币与储备",
+        grpMacro: "量化与宏观", navChart: "深度走势与沙盒", navMacro: "世界经济宏观全景", navCurrency: "世界货币与储备",
         grpStudio: "资讯与制片", navTopics: "12 话题集采", navStudio: "7-AI 指令与素材包",
         btnArchive: "★ 归档与摘录夹", btnSettings: "⚙ 页面设置管理", navTitle: "导航", btnSettingsShort: "⚙ 设置",
         kicker: "GLOBAL FINANCIAL INTELLIGENCE & CONTENT STUDIO",
@@ -877,8 +877,8 @@
         secReports: "上市公司年报与摘要中心", reportsMeta: "检索中美港龙头 · 一键归档与摘录", btnArchiveReport: "★ 归档当前年报",
         secChart: "深度走势与组合配置沙盒", btnSingle: "单标的", btnCompare: "归一化对比",
         sandboxTitle: "多资产权重模拟", sandboxDesc: "调节四类核心资产权重，观察当日组合加权表现。", portfolioLabel: "加权涨跌",
-        secMacro: "世界经济宏观全景（同维度对比）", macroMeta: "GDP 十年走势 · 人均与 PPP · 同维度都市圈/城市榜 · 世界贸易",
-        mtabCities: "同维度城市/都市圈 GDP", mtabGdp10: "各国 GDP 十年走势", mtabPpp: "人均 GDP 与购买力(PPP)", mtabTrade: "世界贸易往来",
+        secMacro: "世界经济宏观全景与贸易活跃度", macroMeta: "10年GDP走势图 · 国家级人均GDP与PPP · 同维度都市圈/城市榜 · 贸易顺逆差与航运指数",
+        mtabGdp10: "10 年 GDP 走势图", mtabPpp: "国家级人均 GDP 与 PPP", mtabCities: "同维度城市/都市圈 GDP", mtabTrade: "世界贸易与航运指数",
         secCurrency: "世界货币份额与外储格局", currencyMeta: "SWIFT 支付份额 · IMF 官方外汇储备",
         thCurr: "货币 / 经济体", thTrade: "贸易 ($T)", thGdp: "GDP ($T)", thNote: "趋势要点",
         secTopics: "资讯集采与 12 话题自动引擎", btnGenTopics: "↻ 刷新资讯并生成 12 话题", btnAddNews: "+ 录入快讯",
@@ -888,7 +888,7 @@
         brandTitle: "DAVYLAB Hub", btnRefresh: "Sync", grpMarkets: "MARKETS",
         navMetals: "Precious Metals", navEquities: "US & CN Indices", navFx: "CNY FX Matrix",
         grpCorp: "CORP & REPORTS", navAi: "AI & HK/A Leaders", navReports: "Annual Reports",
-        grpMacro: "MACRO & QUANT", navChart: "Charts & Sandbox", navMacro: "World Macro & Cities", navCurrency: "World Currencies",
+        grpMacro: "MACRO & QUANT", navChart: "Charts & Sandbox", navMacro: "World Macro & Trade", navCurrency: "World Currencies",
         grpStudio: "CONTENT STUDIO", navTopics: "12 Auto Topics", navStudio: "7-AI Prompts & Assets",
         btnArchive: "★ Archive Vault", btnSettings: "⚙ Settings & Layout", navTitle: "Menu", btnSettingsShort: "⚙ Set",
         kicker: "GLOBAL FINANCIAL INTELLIGENCE & CONTENT STUDIO",
@@ -901,8 +901,8 @@
         secReports: "Annual Reports & Filing Summaries", reportsMeta: "Search leaders · Archive & clip key metrics", btnArchiveReport: "★ Archive Filing",
         secChart: "Deep Chart & Allocation Sandbox", btnSingle: "Single", btnCompare: "Normalized (%)",
         sandboxTitle: "Portfolio Weight Sandbox", sandboxDesc: "Adjust weights across 4 core assets to preview daily return.", portfolioLabel: "Weighted Return",
-        secMacro: "World Macro & Same-Dimension Cities", macroMeta: "10Y GDP · Per Capita & PPP · Metro vs City · Trade",
-        mtabCities: "Same-Dim Metro / City GDP", mtabGdp10: "10Y GDP Trend", mtabPpp: "Per Capita & PPP", mtabTrade: "Global Trade",
+        secMacro: "World Macro & Trade Activity", macroMeta: "10Y GDP Chart · National Per Capita & PPP · Metro vs City · Trade & Freight Indices",
+        mtabGdp10: "10Y GDP Trend Chart", mtabPpp: "National Per Capita & PPP", mtabCities: "Same-Dim Metro / City GDP", mtabTrade: "Trade & Freight Indices",
         secCurrency: "Currency Shares & FX Reserves", currencyMeta: "SWIFT payments & IMF official reserves",
         thCurr: "Currency / Economy", thTrade: "Trade ($T)", thGdp: "GDP ($T)", thNote: "Trend Note",
         secTopics: "News Pool & 12-Topic Engine", btnGenTopics: "↻ Refresh & 12 Topics", btnAddNews: "+ Add News",
@@ -927,16 +927,12 @@
     function applySectionsOrder() {
       const container = document.querySelector(".container");
       const masthead = container.querySelector(".masthead");
-      state.sectionOrder.forEach(id => {
+      for (let i = state.sectionOrder.length - 1; i >= 0; i--) {
+        const id = state.sectionOrder[i];
         const el = document.getElementById(id);
-        if (!el) return;
+        if (!el) continue;
         el.style.display = state.hiddenSections.includes(id) ? "none" : "";
         container.insertBefore(el, masthead.nextSibling);
-      });
-      // 保持正序排列
-      for (let i = state.sectionOrder.length - 1; i >= 0; i--) {
-        const el = document.getElementById(state.sectionOrder[i]);
-        if (el) container.insertBefore(el, masthead.nextSibling);
       }
     }
 
@@ -1037,11 +1033,9 @@
       const item = state.data.fx[code];
       if (!item) return;
       const u = item.unit || 1;
-      if (dir === "cny2fx") {
-        document.getElementById("fxConvertResult").textContent = `¥${fmt(amt, 2)} CNY ≈ ${fmt((amt / item.rate) * u, code === "JPY" ? 1 : 2)} ${code}`;
-      } else {
-        document.getElementById("fxConvertResult").textContent = `${fmt(amt, 2)} ${code} ≈ ¥${fmt((amt / u) * item.rate, 2)} CNY`;
-      }
+      document.getElementById("fxConvertResult").textContent = dir === "cny2fx"
+        ? `¥${fmt(amt, 2)} CNY ≈ ${fmt((amt / item.rate) * u, code === "JPY" ? 1 : 2)} ${code}`
+        : `${fmt(amt, 2)} ${code} ≈ ¥${fmt((amt / u) * item.rate, 2)} CNY`;
     }
 
     function renderAiLeaders() {
@@ -1061,7 +1055,7 @@
         const mCls = a.market === "hk" ? "mkt-hk" : a.market === "cn" ? "mkt-cn" : "";
         return `<div class="ai-card ${mCls}" onclick="selectChartAsset('${k}')">
           <div>
-            <div class="ai-top"><div><h3 class="ai-name">${nm(a)}</h3><div class="ai-meta mono">${a.code}</div></div><span class="badge ${clsV(p)}">${p >= 0 ? "+" : ""}${p.toFixed(2)}%</span></div>
+            <div class="card-top"><div><h3 class="card-name">${nm(a)}</h3><div class="card-code mono">${a.code}</div></div><span class="badge ${clsV(p)}">${p >= 0 ? "+" : ""}${p.toFixed(2)}%</span></div>
             <div class="ai-price-row"><span class="ai-price">${cur}${fmt(a.price, 2)}</span>${spark(a.series, p >= 0, 72, 22)}</div>
           </div>
           <div class="ai-foot mono"><span>${a.mcap || "--"}</span><span>${cur}${fmt(a.prevClose, 2)}</span></div>
@@ -1073,14 +1067,9 @@
       const q = (document.getElementById("reportSearch")?.value || "").trim().toLowerCase();
       const list = REPORTS_DB.filter(r => !q || r.name.toLowerCase().includes(q) || r.enName.toLowerCase().includes(q) || r.code.toLowerCase().includes(q));
       if (list.length && !list.some(x => x.id === state.selectedReportId)) state.selectedReportId = list[0].id;
-
       document.getElementById("reportCompanyChips").innerHTML = list.map(r =>
-        `<button class="btn ${r.id === state.selectedReportId ? "active" : ""}" onclick="state.selectedReportId='${r.id}';renderReportCompanyList();renderReportDetail()">${nm(r)} (${r.code})</button>`
+        `<button class="btn ${r.id === state.selectedReportId ? "active" : ""}" onclick="state.selectedReportId='${r.id}';renderReportCompanyList()">${nm(r)} (${r.code})</button>`
       ).join("");
-      renderReportDetail();
-    }
-
-    function renderReportDetail() {
       const r = REPORTS_DB.find(x => x.id === state.selectedReportId) || REPORTS_DB[0];
       const maxBar = Math.max(...r.rev3y) || 1;
       document.getElementById("reportDetailView").innerHTML = `
@@ -1120,7 +1109,7 @@
       document.getElementById("archiveBtnNum").textContent = state.archives.length;
       document.getElementById("archiveListBody").innerHTML = state.archives.length
         ? state.archives.map(a => `<div style="padding:8px 0;border-bottom:1px solid var(--rule);"><strong>${a.title}</strong> <span class="mono" style="color:var(--ink-muted);">${a.time}</span><div style="color:var(--ink-muted);margin-top:2px;">${a.detail}</div></div>`).join("")
-        : (state.lang === "zh" ? "暂无归档条目，可在年报中心点击「★ 归档当前年报」。" : "No archived items yet.");
+        : (state.lang === "zh" ? "暂无归档条目。" : "No archived items yet.");
     }
 
     function selectChartAsset(key, isFx = false) {
@@ -1171,11 +1160,40 @@
         let html = `<line x1="${pad.left}" y1="${yOf(0)}" x2="${w - pad.right}" y2="${yOf(0)}" stroke="var(--ink-muted)" stroke-dasharray="3,3" />`;
         seriesArr.forEach((arr, idx) => {
           html += `<polyline fill="none" stroke="${cols[idx]}" stroke-width="2" points="${arr.map((v, i) => `${xOf(i, arr.length)},${yOf(v)}`).join(" ")}" />`;
-          const last = arr[arr.length - 1];
-          html += `<text x="${w - pad.right - 2}" y="${yOf(last) - 3}" text-anchor="end" font-size="10" fill="${cols[idx]}" class="mono">${nm(state.data.assets[keys[idx]])} ${last >= 0 ? "+" : ""}${last.toFixed(1)}%</text>`;
         });
         svg.innerHTML = html;
       }
+    }
+
+    // 10 年 GDP 走势 SVG 折线图
+    function buildGdp10Svg() {
+      const w = 680, h = 230, pad = { top: 16, right: 90, bottom: 26, left: 42 };
+      const pw = w - pad.left - pad.right, ph = h - pad.top - pad.bottom;
+      const allVals = GDP_10Y.countries.flatMap(c => c.nom);
+      const minV = 0, maxV = Math.ceil(Math.max(...allVals) / 5) * 5 || 35;
+      const xOf = i => pad.left + (i / (GDP_10Y.years.length - 1)) * pw;
+      const yOf = v => pad.top + ph - ((v - minV) / (maxV - minV)) * ph;
+
+      let g = "";
+      for (let i = 0; i <= 4; i++) {
+        const val = (maxV * i) / 4, y = yOf(val);
+        g += `<line x1="${pad.left}" y1="${y}" x2="${w - pad.right}" y2="${y}" stroke="var(--rule)" stroke-dasharray="2,3" />`;
+        g += `<text x="${pad.left - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="var(--ink-muted)" class="mono">$${val.toFixed(0)}T</text>`;
+      }
+      GDP_10Y.years.forEach((yr, i) => {
+        g += `<text x="${xOf(i)}" y="${h - 6}" text-anchor="middle" font-size="10" fill="var(--ink-muted)" class="mono">${yr}</text>`;
+      });
+
+      GDP_10Y.countries.forEach(c => {
+        const pts = c.nom.map((v, i) => `${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+        const lastV = c.nom[c.nom.length - 1];
+        const lastX = xOf(c.nom.length - 1), lastY = yOf(lastV);
+        g += `<polyline fill="none" stroke="${c.color}" stroke-width="2.2" points="${pts}" />`;
+        g += `<circle cx="${lastX}" cy="${lastY}" r="3.5" fill="${c.color}" />`;
+        g += `<text x="${lastX + 6}" y="${lastY + 3}" font-size="10" fill="${c.color}" class="mono">${state.lang === "en" ? c.en : c.zh} $${lastV.toFixed(1)}T</text>`;
+      });
+
+      return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:230px;display:block;overflow:visible;">${g}</svg>`;
     }
 
     window.showTip = (e, title, val) => {
@@ -1209,15 +1227,46 @@
 
     function formatCityGdp(gdpUsdB) {
       if (state.cityCurr === "cny") {
-        const cnyTrillion = (gdpUsdB * usdCny()) / 1000;
-        return `¥${fmt(cnyTrillion, 2)}${state.lang === "zh" ? "万亿" : "TCNY"}`;
+        return `¥${fmt((gdpUsdB * usdCny()) / 1000, 2)}${state.lang === "zh" ? "万亿" : "TCNY"}`;
       }
       return gdpUsdB >= 1000 ? `$${fmt(gdpUsdB / 1000, 2)}T` : `$${fmt(gdpUsdB, 0)}B`;
     }
 
     function renderMacro() {
       const panel = document.getElementById("macroPanel");
-      if (state.macroTab === "cities") {
+
+      if (state.macroTab === "gdp10") {
+        panel.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+            <strong class="serif">${state.lang === "zh" ? "主要经济体近 10 年名义 GDP 走势图（2017–2026E, 万亿美元）" : "10-Year Nominal GDP Trend Chart (2017–2026E, $T)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">2017 → 2026E</span>
+          </div>
+          ${buildGdp10Svg()}
+        `;
+      } else if (state.macroTab === "ppp") {
+        panel.innerHTML = `
+          <strong class="serif" style="display:block;margin-bottom:10px;">${state.lang === "zh" ? "国家级人均名义 GDP 与人均购买力平价（PPP）" : "National GDP per Capita vs PPP ($)"}</strong>
+          ${NATIONAL_PC_PPP.map(p => {
+            const mult = p.pppPc / (p.nomPc || 1);
+            return `<div style="padding:10px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div><strong>${state.lang === "en" ? p.en : p.zh}</strong> <span class="badge explain-text">${p.cls}</span></div>
+              <div class="mono" style="font-size:12px;">人均名义: $${fmt(p.nomPc, 0)} | 人均 PPP: <strong>$${fmt(p.pppPc, 0)}</strong> <span class="badge">${mult.toFixed(2)}x</span></div>
+            </div>`;
+          }).join("")}
+          <details class="fold-box">
+            <summary>
+              <span>${state.lang === "zh" ? "世界发达国家与发展中国家分类标准说明（默认折叠，点击展开）" : "Developed vs Developing Economy Criteria (Click to expand)"}</span>
+              <span class="mono">+ / −</span>
+            </summary>
+            <div class="fold-body">
+              国际主流机构（如 IMF《世界经济展望》、世界银行、联合国）划分发达经济体（Advanced Economies）与发展中/新兴市场经济体（Emerging & Developing Economies）时，通常综合考量三项核心标准：<br/>
+              1. <strong>人均收入与生活水平</strong>：高人均国民收入（GNI/GDP）是重要基础，但并非唯一标准。<br/>
+              2. <strong>金融市场与制度成熟度</strong>：资本市场深度、货币自由兑换与国际金融体系融合程度。<br/>
+              3. <strong>经济与出口结构多元化</strong>：高附加值制造业、现代服务业与技术创新占比。因此部分高收入或快速成长经济体在不同机构统计口径下可能归入新兴市场或发展中经济体。
+            </div>
+          </details>
+        `;
+      } else if (state.macroTab === "cities") {
         const dim = CITY_DIMENSIONS[state.cityDimension];
         const maxGdp = Math.max(...dim.items.map(x => x.gdpUsdB)) || 1;
         panel.innerHTML = `
@@ -1239,49 +1288,42 @@
               <span class="mono" style="font-weight:700;color:var(--macro);">#${c.rank}</span>
               <div><strong>${state.lang === "en" ? c.enName : c.zhName}</strong><div class="explain-text" style="font-size:11px;color:var(--ink-muted);">${state.lang === "en" ? c.enTag : c.zhTag}</div></div>
               <div class="mono" style="text-align:right;font-weight:600;">${formatCityGdp(c.gdpUsdB)}</div>
-              <div class="mono" style="text-align:right;font-size:12px;color:var(--ink-muted);">$${fmt(c.perCapUsd / 1000, 1)}k/p</div>
+              <div class="mono" style="text-align:right;font-size:12px;color:var(--ink-muted);">$${fmt(c.perCapUsd / 1000, 1)}k</div>
               <div class="city-bar-col"><div class="city-bar-bg"><div class="city-bar-fill" style="width:${(c.gdpUsdB / maxGdp) * 100}%"></div></div></div>
             </div>
           `).join("")}
         `;
-      } else if (state.macroTab === "gdp10") {
-        const latestIdx = GDP_10Y.years.length - 1;
-        panel.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-            <strong class="serif">${state.lang === "zh" ? "主要经济体近 10 年名义 GDP (2017–2026E, 万亿美元)" : "10-Year Nominal GDP (2017–2026E, $T)"}</strong>
-            <span class="mono" style="font-size:11px;color:var(--ink-muted);">2017 → 2026E</span>
-          </div>
-          ${GDP_10Y.countries.map(c => {
-            const v0 = c.nom[0], v1 = c.nom[latestIdx], growth = ((v1 - v0) / v0) * 100;
-            return `<div style="padding:10px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-              <div><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c.color};margin-right:6px;"></span><strong>${state.lang === "en" ? c.en : c.zh}</strong></div>
-              <div class="mono" style="font-size:12px;">${v0.toFixed(2)}T → <strong>${v1.toFixed(2)}T</strong> <span class="up">(+${growth.toFixed(0)}%)</span></div>
-            </div>`;
-          }).join("")}
-        `;
-      } else if (state.macroTab === "ppp") {
-        panel.innerHTML = `
-          <strong class="serif" style="display:block;margin-bottom:10px;">${state.lang === "zh" ? "人均名义 GDP vs 人均购买力平价 (PPP, 美元)" : "Nominal GDP per Capita vs PPP ($)"}</strong>
-          ${PPP_DATA.map(p => {
-            const mult = p.pppPc / (p.nomPc || 1);
-            return `<div style="padding:10px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-              <strong>${state.lang === "en" ? p.en : p.zh}</strong>
-              <div class="mono" style="font-size:12px;">Nom: $${fmt(p.nomPc, 0)} | PPP: <strong>$${fmt(p.pppPc, 0)}</strong> <span class="badge">${mult.toFixed(2)}x</span></div>
-            </div>`;
-          }).join("")}
-        `;
       } else {
         panel.innerHTML = `
-          <strong class="serif" style="display:block;margin-bottom:10px;">${state.lang === "zh" ? "全球核心双边贸易走廊（年度参考, 十亿美元）" : "Key Global Trade Corridors ($B)"}</strong>
-          ${TRADE_CORRIDORS.map(tr => `
-            <div style="padding:10px 0;border-bottom:1px solid var(--rule);">
-              <div style="display:flex;justify-content:space-between;font-size:13px;"><strong>${state.lang === "en" ? tr.en : tr.zh}</strong><span class="mono">$${fmt(tr.totalB, 0)}B</span></div>
-              <div style="height:7px;background:var(--surface-alt);border-radius:4px;overflow:hidden;margin-top:6px;display:flex;">
-                <div style="width:${tr.expShare}%;background:var(--cn);"></div>
-                <div style="width:${tr.impShare}%;background:var(--us);"></div>
+          <strong class="serif" style="display:block;margin-bottom:10px;">${state.lang === "zh" ? "贸易顺逆差与主要贸易内容" : "Trade Surplus / Deficit & Major Traded Goods"}</strong>
+          ${TRADE_ECONOMIES.map(tr => `
+            <div style="padding:10px 0;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div><strong>${state.lang === "en" ? tr.en : tr.zh}</strong> <span class="explain-text" style="font-size:12px;color:var(--ink-muted);">· ${state.lang === "en" ? tr.mainGoodsEn : tr.mainGoods}</span></div>
+              <span class="mono ${clsV(tr.surplusB)}" style="font-weight:700;">${tr.surplusB >= 0 ? "顺差 +" : "逆差 "}$${fmt(Math.abs(tr.surplusB), 0)}B</span>
+            </div>
+          `).join("")}
+
+          <strong class="serif" style="display:block;margin:16px 0 10px;">${state.lang === "zh" ? "全球贸易商品构成占比" : "Global Traded Goods Composition"}</strong>
+          ${GLOBAL_GOODS_MIX.map(g => `
+            <div style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:12px;"><span>${state.lang === "en" ? g.en : g.zh}</span><span class="mono">${g.share.toFixed(1)}%</span></div>
+              <div style="height:6px;background:var(--surface-alt);border-radius:3px;overflow:hidden;margin-top:3px;">
+                <div style="height:100%;width:${g.share}%;background:${g.color};"></div>
               </div>
             </div>
           `).join("")}
+
+          <strong class="serif" style="display:block;margin:16px 0 8px;">${state.lang === "zh" ? "衡量贸易与航运活跃度的专业指数" : "Trade & Freight Activity Indices"}</strong>
+          <div class="idx-cards-grid">
+            ${TRADE_ACTIVITY_INDICES.map(ix => `
+              <div class="trade-idx-card">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;"><span class="mono" style="font-weight:700;color:var(--fx);">${ix.code}</span><span class="badge">${ix.chg}</span></div>
+                <div class="trade-idx-val">${ix.val}</div>
+                <div style="font-size:12px;font-weight:600;">${state.lang === "en" ? ix.en : ix.zh}</div>
+                <div class="explain-text" style="font-size:11px;color:var(--ink-muted);margin-top:6px;">${ix.zhDesc}</div>
+              </div>
+            `).join("")}
+          </div>
         `;
       }
     }
@@ -1309,15 +1351,15 @@
       state.topics = [
         { angle: "贵金属克价", title: `黄金克价约 ¥${fmt(gGram, 1)}/克：避险与购金逻辑拆解`, ev: `XAU $${fmt(state.data.assets.gold.price, 1)} · USD/CNY ${rate.toFixed(4)}` },
         { angle: "双向汇率", title: `1 美元约 ¥${rate.toFixed(2)}，¥100 换汇与跨境成本敏感度`, ev: `CNY 双向矩阵 · 8 大货币` },
-        { angle: "同维度城榜", title: `都市圈 vs 单一城市：为什么跨国 GDP 对比必须同口径？`, ev: `Metro 榜 vs City 榜同维度对照` },
-        { angle: "名义与 PPP", title: `名义 GDP 与购买力平价（PPP）剪刀差：看懂真实消费力`, ev: `PPP 倍数与汇率折算差异` },
-        { angle: "AI 算力", title: `英伟达 ($${fmt(nvda.price, 1)}) 与 Anthropic ($${fmt(ant.price, 1)})：AI 产业链观察`, ev: `NVDA & ANT 实时行情联动` },
-        { angle: "港股科技", title: `港股科技与平台龙头估值与现金流观察`, ev: `00700.HK · 09988.HK` },
-        { angle: "A 股核心", title: `消费、新能源与算力链：A 股核心资产结构透视`, ev: `600519 · 300750` },
-        { angle: "年报深挖", title: `从年报毛利率与三年营收看龙头护城河变化`, ev: `内置年报摘要库一键归档` },
-        { angle: "世界贸易", title: `全球核心贸易走廊与供应链结构演变`, ev: `中美 · 中欧 · 东盟 · 美墨加` },
-        { angle: "货币份额", title: `SWIFT 支付与 IMF 外储格局：多极化下的观察指标`, ev: `USD / EUR / CNY / GBP / JPY` },
-        { angle: "组合沙盒", title: `跨市场配置沙盒：黄金、美股 AI、港股与 A 股权重推演`, ev: `多资产加权涨跌测算` },
+        { angle: "10年GDP走势", title: `近 10 年 GDP 曲线复盘：主要经济体规模与位次演进`, ev: `2017–2026E 十年走势图` },
+        { angle: "人均与PPP", title: `国家级人均 GDP vs PPP 购买力：看懂真实消费与分类标准`, ev: `含默认折叠的发达/发展中国家标准` },
+        { angle: "同维度城榜", title: `都市圈 vs 单一城市：跨国城市 GDP 必须同维度对比`, ev: `Metro 榜 vs City 榜独立对照` },
+        { angle: "贸易与航运", title: `顺逆差、商品构成与 BDI/CCFI/SCFI 运价信号`, ev: `贸易结构 + 航运活跃度指数` },
+        { angle: "AI 算力", title: `英伟达 ($${fmt(nvda.price, 1)}) 与 Anthropic ($${fmt(ant.price, 1)})：AI 产业链观察`, ev: `NVDA & ANT 行情联动` },
+        { angle: "港股科技", title: `港股科技龙头估值与现金流观察`, ev: `00700.HK 核心指标` },
+        { angle: "A 股核心", title: `消费与新能源龙头基本面透视`, ev: `600519 · 300750` },
+        { angle: "年报深挖", title: `从年报毛利率与三年营收看龙头护城河`, ev: `内置年报摘要库` },
+        { angle: "货币份额", title: `SWIFT 支付与 IMF 外储格局观察`, ev: `USD / EUR / CNY / GBP / JPY` },
         { angle: "热点快评", title: `快讯聚焦：${topNews.slice(0, 26)}...`, ev: `实时资讯池联动` }
       ];
     }
@@ -1329,22 +1371,22 @@
       ).join("");
 
       document.getElementById("topicsGrid").innerHTML = state.topics.map((tp, idx) => `
-        <div class="topic-card ${idx === state.selectedTopicIdx ? "selected" : ""}" onclick="state.selectedTopicIdx=${idx};renderStudioEditors();renderTopicsAndStudio()">
+        <div class="topic-card ${idx === state.selectedTopicIdx ? "selected" : ""}" onclick="state.selectedTopicIdx=${idx};renderTopicsAndStudio()">
           <div>
             <span class="badge">#${String(idx + 1).padStart(2, "0")} · ${tp.angle}</span>
             <h3 class="topic-title">${tp.title}</h3>
-            <div class="explain-text" style="font-size:11px;color:var(--ink-muted);" class="mono">${tp.ev}</div>
+            <div class="explain-text mono" style="font-size:11px;color:var(--ink-muted);">${tp.ev}</div>
           </div>
           <span style="font-size:11px;color:var(--studio);font-weight:600;">${idx === state.selectedTopicIdx ? "✓ 已选中生成指令" : "点击选用"}</span>
         </div>
       `).join("");
 
       document.getElementById("aiToolTabs").innerHTML = AI_TOOLS.map(tool =>
-        `<button class="btn ${state.selectedTool === tool ? "active" : ""}" onclick="state.selectedTool='${tool}';renderStudioEditors();renderTopicsAndStudio()">${tool}</button>`
+        `<button class="btn ${state.selectedTool === tool ? "active" : ""}" onclick="state.selectedTool='${tool}';renderTopicsAndStudio()">${tool}</button>`
       ).join("");
 
       document.getElementById("assetFormatTabs").innerHTML = ASSET_FORMATS.map(fmtObj =>
-        `<button class="btn ${state.selectedFormat === fmtObj.id ? "active" : ""}" onclick="state.selectedFormat='${fmtObj.id}';renderStudioEditors();renderTopicsAndStudio()">${state.lang === "en" ? fmtObj.en : fmtObj.zh}</button>`
+        `<button class="btn ${state.selectedFormat === fmtObj.id ? "active" : ""}" onclick="state.selectedFormat='${fmtObj.id}';renderTopicsAndStudio()">${state.lang === "en" ? fmtObj.en : fmtObj.zh}</button>`
       ).join("");
 
       renderStudioEditors();
@@ -1365,30 +1407,27 @@
 【交付形态】${fmtLabel}
 【创作要求】
 1. 面向国内财经与商业读者，逻辑克制、数据准确、拒绝空话。
-2. 明确区分统计口径（如都市圈与单一城市同维度对比，名义与 PPP 差异）。
-3. 直接输出可直接用于发布或进一步制作${fmtLabel}的结构化内容。`;
+2. 明确区分统计口径（都市圈 vs 单一城市同维度对比，国家级人均名义 vs PPP，以及顺逆差与 BDI/CCFI/SCFI 航运景气）。
+3. 直接输出可用于发布或进一步制作${fmtLabel}的结构化内容。`;
 
       const drafts = {
-        article: `标题：${tp.title}\n\n一、核心观察\n围绕「${tp.ev}」，当前市场呈现明显的结构分化特征。无论跟踪黄金克价、人民币双向汇率，还是对比宏观经济体与核心城市，统一统计维度是得出可靠结论的前提。\n\n二、关键维度拆解\n1. 同维度对比：都市圈与单一城市需分开看，避免跨口径误读。\n2. 资金与基本面：结合财报质量与宏观数据交叉验证。\n\n三、后续跟踪重点\n关注下一轮数据发布与关键点位变化。`,
-        poster: `【一周财经新闻海报文案】\n主标题：${tp.title}\n副标：${tp.ev}\n要点 1：黄金克价与双向汇率波动跟踪\n要点 2：同维度城市/都市圈经济体量对比\n要点 3：全球 AI 与核心资产表现观察`,
-        video: `【金融科普短视频脚本（90秒）】\n00:00-00:15 钩子：为什么直接拿都市圈 GDP 对比单一城市容易算错账？\n00:15-00:55 核心拆解：结合 ${tp.ev}，讲清口径与指标逻辑。\n00:55-01:30 总结：看懂指标背后的真实含义，比盲目盯盘更重要。`,
-        comic: `【财经科普漫画分镜脚本】\n第1格：研究员拿着两把刻度不同的尺子，标着“都市圈”与“单城”。\n第2格：看板跳出 ${tp.ev}，对比清晰呈现。\n第3格：总结金句：同一把尺子量世界，结论才站得住。`,
-        image: `【配图与信息图生图 Prompt】\nEditorial financial magazine infographic illustration, restrained warm paper palette (#F5F3EE, #FCFBF8), deep slate ink (#1A1918), muted gold (#B8862D) and crimson (#A63A3A) accents, clean data cards and structured layout, no clutter, high legibility.`,
-        social: `【多平台分发文案】\n${tp.title}｜${tp.ev}。\n把复杂数据拆成清晰维度，看懂背后的核心逻辑。#财经 #宏观经济 #金融观察`
+        article: `标题：${tp.title}\n\n一、核心观察\n围绕「${tp.ev}」，当前全球经济与市场呈现结构性分化。分析宏观与贸易时，统一统计口径与结合航运指数尤为关键。\n\n二、关键维度拆解\n1. 同维度对比：都市圈与单一城市分开看，国家级人均 GDP 与 PPP 结合看。\n2. 贸易与活跃度：顺逆差、主要商品品类与 BDI/CCFI/SCFI 运价相互印证。\n\n三、后续跟踪重点\n持续关注最新数据与关键指标变化。`,
+        poster: `【一周财经新闻海报文案】\n主标题：${tp.title}\n副标：${tp.ev}\n要点 1：10 年 GDP 走势与国家级人均/PPP\n要点 2：都市圈 vs 单城同维度对比\n要点 3：贸易顺逆差与 BDI/CCFI/SCFI 指数`,
+        video: `【金融科普短视频脚本（90秒）】\n00:00-00:15 开场：为什么跨国对比 GDP 和城市要先看“同一把尺子”？\n00:15-00:55 核心拆解：结合 ${tp.ev}，讲清口径、贸易结构与运价指数。\n00:55-01:30 总结：看懂指标边界，才能看清真实趋势。`,
+        comic: `【财经科普漫画分镜脚本】\n第1格：研究员拿着“都市圈”与“单城”两把同口径刻度尺。\n第2格：看板展示 ${tp.ev} 与运价指数变化。\n第3格：金句收尾：同维度对比，结论更清晰。`,
+        image: `【配图与信息图生图 Prompt】\nEditorial financial magazine infographic illustration, warm paper palette (#F5F3EE, #FCFBF8), deep slate ink (#1A1918), gold (#B8862D) and crimson (#A63A3A) accents, clean charts and structured hierarchy.`,
+        social: `【多平台分发文案】\n${tp.title}｜${tp.ev}。拆解同维度宏观与贸易指标。#财经 #宏观经济 #航运指数`
       };
       document.getElementById("assetDraftArea").value = drafts[state.selectedFormat] || drafts.article;
     }
 
     function copyTextFrom(id) {
-      const el = document.getElementById(id);
-      navigator.clipboard?.writeText(el.value);
+      navigator.clipboard?.writeText(document.getElementById(id).value);
     }
 
     function downloadFullBundle() {
       const tp = state.topics[state.selectedTopicIdx] || state.topics[0];
-      const allText =
-`# ${tp.title}\n\n- 证据锚点：${tp.ev}\n- 导出时间：${state.data.updatedAt}\n\n## 公众号长文\n${["article"]}...\n\n请直接在页面素材草稿框中复制各形态完整内容。`;
-      const blob = new Blob([document.getElementById("assetDraftArea").value + "\n\n---\n\n" + document.getElementById("aiPromptArea").value], { type: "text/markdown;charset=utf-8" });
+      const blob = new Blob([`# ${tp.title}\n\n` + document.getElementById("assetDraftArea").value + "\n\n---\n\n" + document.getElementById("aiPromptArea").value], { type: "text/markdown;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -1397,9 +1436,7 @@
       URL.revokeObjectURL(url);
     }
 
-    window.refreshTopicsAndNews = () => {
-      renderTopicsAndStudio();
-    };
+    window.refreshTopicsAndNews = () => renderTopicsAndStudio();
     window.addCustomNews = () => {
       const val = (document.getElementById("customNewsInput").value || "").trim();
       if (val) {
