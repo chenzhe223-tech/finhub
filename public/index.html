@@ -1704,6 +1704,71 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     .layout-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--bg-canvas); border: 1px solid var(--border-hairline); border-radius: 4px; margin-bottom: 6px; font-size: 13px; }
     .excerpt-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px; background: var(--bg-canvas); border: 1px solid var(--border-hairline); border-radius: 4px; margin-bottom: 8px; font-size: 12.5px; }
 
+    /* 贸易专题海报自定义面板与双栏实时预览布局 */
+    .poster-studio-body.with-custom {
+      display: grid;
+      grid-template-columns: 350px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .poster-custom-panel {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 6px;
+      padding: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+      text-align: left;
+    }
+    .poster-cfg-group {
+      padding: 9px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .poster-cfg-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      margin-bottom: 6px;
+    }
+    .poster-chk-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .poster-chk-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 7px;
+      font-size: 11.5px;
+      border-radius: 4px;
+      border: 1px solid var(--border-hairline);
+      background: var(--bg-canvas);
+      color: var(--ink-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+    .poster-chk-pill input { margin: 0; accent-color: var(--accent-macro); }
+    .poster-chk-pill.checked {
+      border-color: var(--accent-macro);
+      color: var(--ink-primary);
+      font-weight: 600;
+    }
+    .poster-field-inp {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 860px) {
+      .poster-studio-body.with-custom { grid-template-columns: 1fr; }
+      .poster-custom-panel { max-height: none; }
+    }
+
     /* 世界经济宏观全景增量样式 (复用原有变量与卡片规范) */
     .macro-sub-card {
       background: var(--bg-canvas);
@@ -1938,6 +2003,12 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               
                 <a class="nav-link" href="#sec-macro-econ" onclick="state.activeNav='sec-macro-econ';toggleDrawer(false)">
                   <span>世界经济宏观全景</span>
+                  
+                  
+                </a>
+              
+                <a class="nav-link" href="#sec-macro-trade" onclick="state.activeNav='sec-macro-trade';toggleDrawer(false)">
+                  <span>世界贸易往来格局</span>
                   
                   
                 </a>
@@ -2913,7 +2984,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
             </div>
             <div class="card">
-              <div class="scroll-strip" id="macro-tabs"><button class="btn active" onclick="state.macroTab='gdp';renderWorldMacro()">近10年 GDP 走势 (2016–2026E)</button><button class="btn " onclick="state.macroTab='ppp';renderWorldMacro()">人均 GDP 与购买力 (PPP)</button><button class="btn " onclick="state.macroTab='cities';renderWorldMacro()">核心城市 GDP 排名 Top 20</button><button class="btn " onclick="state.macroTab='trade';renderWorldMacro()">世界贸易往来格局</button></div>
+              <div class="scroll-strip" id="macro-tabs"><button class="btn active" onclick="state.macroTab='gdp';renderWorldMacro()">近10年 GDP 走势 (2016–2026E)</button><button class="btn " onclick="state.macroTab='ppp';renderWorldMacro()">人均 GDP 与购买力 (PPP)</button><button class="btn " onclick="state.macroTab='cities';renderWorldMacro()">核心城市 GDP 排名 Top 20</button></div>
               <div id="macro-tab-content">
         <div class="macro-kpis">
           <div class="kpi-box"><div style="font-size:11.5px;color:var(--ink-muted);">全球 GDP 总盘子 (2026E)</div><div class="mono" style="font-size:19px;font-weight:700;margin-top:2px;">$120.5T</div></div>
@@ -2971,6 +3042,18 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </label>
         </div>
       </div>
+            </div>
+          </section>
+          <section class="section" id="sec-macro-trade">
+            <div class="section-head macro">
+              <div class="sec-title-box"><span class="sec-tag">GLOBAL TRADE</span><h2 class="sec-title">世界贸易往来格局</h2></div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="sec-sub mono mobile-hide">WTO / UN Comtrade / UNCTAD</span>
+                <button class="btn primary" onclick="openPosterModal('trade')">🎨 贸易专题海报</button>
+              </div>
+            </div>
+            <div class="card">
+              <div id="macro-trade-content"></div>
             </div>
           </section>
           <section class="section" id="sec-macro-fx">
@@ -3679,7 +3762,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
   <!-- 弹窗 3：6风格高清信息海报工作室 -->
   <div class="modal-backdrop" id="poster-modal">
-    <div class="modal" style="max-width:860px;">
+    <div class="modal" id="poster-modal-dialog" style="max-width:860px;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
         <strong class="serif" style="font-size:18px;">🎨 高清信息海报工作室（6种商业财经风格）</strong>
         <div style="display:flex;gap:6px;">
@@ -3689,8 +3772,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       </div>
       <div class="modal-tabs" id="poster-mode-tabs"></div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;" id="poster-style-tabs"></div>
-      <div style="background:var(--bg-subtle);padding:12px;border-radius:6px;text-align:center;overflow-x:auto;">
-        <canvas id="poster-canvas" width="750" height="1100" style="max-width:100%;height:auto;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.18);"></canvas>
+      <div class="poster-studio-body" id="poster-studio-body">
+        <div class="poster-custom-panel" id="poster-custom-panel" style="display:none;"></div>
+        <div style="background:var(--bg-subtle);padding:12px;border-radius:6px;text-align:center;overflow-x:auto;">
+          <canvas id="poster-canvas" width="750" height="1100" style="max-width:100%;height:auto;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.18);"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -3770,8 +3856,9 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { id: "sec-reports",    group: "corp",    zh: "上市公司年报中心",   en: "Annual Reports",    visible: true },
       { id: "sec-chart",      group: "macro",   zh: "深度走势与对比",     en: "Deep Charts",       visible: true },
       { id: "sec-sandbox",    group: "macro",   zh: "情绪与组合沙盒",     en: "Portfolio Sandbox", visible: true },
-      { id: "sec-macro-econ", group: "macro",   zh: "世界经济宏观全景",   en: "World Economy",     visible: true },
-      { id: "sec-macro-fx",   group: "macro",   zh: "世界货币与储备",     en: "World Currencies",  visible: true },
+      { id: "sec-macro-econ",  group: "macro",   zh: "世界经济宏观全景",   en: "World Economy",      visible: true },
+      { id: "sec-macro-trade", group: "macro",   zh: "世界贸易往来格局",   en: "Global Trade Flows", visible: true },
+      { id: "sec-macro-fx",    group: "macro",   zh: "世界货币与储备",     en: "World Currencies",   visible: true },
       { id: "sec-topics",     group: "studio",  zh: "资讯集采与12选题池", en: "Intel & 12 Topics", visible: true },
       { id: "sec-studio",     group: "studio",  zh: "AI指令与全量素材工坊",en: "AI Prompt & Assets",visible: true }
     ];
@@ -4022,184 +4109,186 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { zh: "旧金山市 (市县合一)",en: "San Francisco (City/County)",ctry: "US", region: "us",  gdpB: 285,  pc: 344600, col: "#24486E", zhTag: "AI大模型/风投中心",     enTag: "AI & VC (City/County)" }
     ];
 
+    /* 2025 全球 8 大双边货物贸易走廊 (中国海关总署 / USTR / Eurostat 2025 全年权威统计, 单位: $B) */
     const TRADE_CORRIDORS = [
-      { zhA: "中国",   enA: "China",    zhB: "东盟",   enB: "ASEAN",   aToB: 568, bToA: 414, colA: "#A63A3A", colB: "#2E6B5E" },
-      { zhA: "美国",   enA: "US",       zhB: "墨西哥", enB: "Mexico",  aToB: 334, bToA: 506, colA: "#24486E", colB: "#B8862D" },
-      { zhA: "中国",   enA: "China",    zhB: "欧盟",   enB: "EU",      aToB: 516, bToA: 269, colA: "#A63A3A", colB: "#4B3F72" },
-      { zhA: "美国",   enA: "US",       zhB: "加拿大", enB: "Canada",  aToB: 356, bToA: 421, colA: "#24486E", colB: "#7A4E2D" },
-      { zhA: "美国",   enA: "US",       zhB: "欧盟",   enB: "EU",      aToB: 370, bToA: 605, colA: "#24486E", colB: "#4B3F72" },
-      { zhA: "中国",   enA: "China",    zhB: "美国",   enB: "US",      aToB: 524, bToA: 164, colA: "#A63A3A", colB: "#24486E" },
-      { zhA: "欧盟",   enA: "EU",       zhB: "英国",   enB: "UK",      aToB: 382, bToA: 215, colA: "#4B3F72", colB: "#3A6B7C" },
-      { zhA: "中国",   enA: "China",    zhB: "日本",   enB: "Japan",   aToB: 152, bToA: 156, colA: "#A63A3A", colB: "#6C757D" }
+      { zhA: "中国",   enA: "China",    zhB: "东盟",   enB: "ASEAN",   aToB: 665, bToA: 389, colA: "#A63A3A", colB: "#2E6B5E" },
+      { zhA: "美国",   enA: "US",       zhB: "欧盟",   enB: "EU",      aToB: 413, bToA: 633, colA: "#24486E", colB: "#4B3F72" },
+      { zhA: "美国",   enA: "US",       zhB: "墨西哥", enB: "Mexico",  aToB: 337, bToA: 534, colA: "#24486E", colB: "#B8862D" },
+      { zhA: "中国",   enA: "China",    zhB: "欧盟",   enB: "EU",      aToB: 560, bToA: 268, colA: "#A63A3A", colB: "#4B3F72" },
+      { zhA: "美国",   enA: "US",       zhB: "加拿大", enB: "Canada",  aToB: 334, bToA: 382, colA: "#24486E", colB: "#7A4E2D" },
+      { zhA: "欧盟",   enA: "EU",       zhB: "英国",   enB: "UK",      aToB: 390, bToA: 179, colA: "#4B3F72", colB: "#3A6B7C" },
+      { zhA: "中国",   enA: "China",    zhB: "美国",   enB: "US",      aToB: 420, bToA: 140, colA: "#A63A3A", colB: "#24486E" },
+      { zhA: "中国",   enA: "China",    zhB: "日本",   enB: "Japan",   aToB: 159, bToA: 163, colA: "#A63A3A", colB: "#6C757D" }
     ];
 
+    /* 2025 主要经济体货物进出口与外贸依存度 (WTO Merchandise Trade 2025) */
     const TRADE_STRUCTURES = [
-      { zh: "中国",   en: "China",          exp: 3.58, imp: 2.58, bal: 992,  open: 31.6 },
-      { zh: "美国",   en: "United States",  exp: 2.06, imp: 3.26, bal: -1202,open: 17.7 },
-      { zh: "德国",   en: "Germany",        exp: 1.69, imp: 1.43, bal: 260,  open: 65.8 },
-      { zh: "日本",   en: "Japan",          exp: 0.72, imp: 0.76, bal: -38,  open: 35.3 },
-      { zh: "韩国",   en: "South Korea",    exp: 0.68, imp: 0.63, bal: 51,   open: 68.9 },
-      { zh: "英国",   en: "United Kingdom", exp: 0.51, imp: 0.81, bal: -298, open: 36.8 },
-      { zh: "法国",   en: "France",         exp: 0.64, imp: 0.73, bal: -88,  open: 42.3 },
-      { zh: "印度",   en: "India",          exp: 0.44, imp: 0.70, bal: -260, open: 26.7 },
-      { zh: "加拿大", en: "Canada",         exp: 0.57, imp: 0.56, bal: 11,   open: 48.5 },
-      { zh: "新加坡", en: "Singapore",      exp: 0.50, imp: 0.44, bal: 62,   open: 177.4 }
+      { zh: "中国",   en: "China",          exp: 3.77, imp: 2.58, bal: 1189, open: 32.6 },
+      { zh: "美国",   en: "United States",  exp: 2.19, imp: 3.51, bal: -1322,open: 18.9 },
+      { zh: "德国",   en: "Germany",        exp: 1.76, imp: 1.54, bal: 221,  open: 69.8 },
+      { zh: "英国",   en: "United Kingdom", exp: 0.56, imp: 0.95, bal: -394, open: 39.2 },
+      { zh: "日本",   en: "Japan",          exp: 0.74, imp: 0.76, bal: -18,  open: 35.7 },
+      { zh: "法国",   en: "France",         exp: 0.69, imp: 0.79, bal: -101, open: 45.1 },
+      { zh: "韩国",   en: "South Korea",    exp: 0.71, imp: 0.63, bal: 77,   open: 71.7 },
+      { zh: "印度",   en: "India",          exp: 0.45, imp: 0.75, bal: -308, open: 28.1 },
+      { zh: "加拿大", en: "Canada",         exp: 0.55, imp: 0.58, bal: -22,  open: 49.4 },
+      { zh: "新加坡", en: "Singapore",      exp: 0.57, imp: 0.51, bal: 61,   open: 192.4 }
     ];
 
-    /* 6.2 全球主要 20 个贸易经济体货物贸易顺逆差基准 (WTO Merchandise Trade 2024, 单位: 十亿美元 $B) */
+    /* 6.2 全球主要 20 个贸易经济体货物贸易顺逆差基准 (WTO Merchandise Trade 2025, 单位: 十亿美元 $B) */
     const TOP20_TRADE_BALANCES = [
-      { code: "CN", zh: "中国",       en: "China",          expB: 3577, impB: 2585, balB: 992,   totB: 6162, openPct: 33.3, yoyPct: 3.8 },
-      { code: "US", zh: "美国",       en: "United States",  expB: 2065, impB: 3359, balB: -1294, totB: 5424, openPct: 18.8, yoyPct: 4.1 },
-      { code: "DE", zh: "德国",       en: "Germany",        expB: 1684, impB: 1424, balB: 260,   totB: 3108, openPct: 67.7, yoyPct: -1.2 },
-      { code: "NL", zh: "荷兰",       en: "Netherlands",    expB: 921,  impB: 836,  balB: 85,    totB: 1757, openPct: 154.1,yoyPct: 0.9 },
-      { code: "JP", zh: "日本",       en: "Japan",          expB: 707,  impB: 745,  balB: -38,   totB: 1452, openPct: 35.7, yoyPct: -0.6 },
-      { code: "KR", zh: "韩国",       en: "South Korea",    expB: 684,  impB: 632,  balB: 52,    totB: 1316, openPct: 70.4, yoyPct: 3.1 },
-      { code: "FR", zh: "法国",       en: "France",         expB: 638,  impB: 726,  balB: -88,   totB: 1364, openPct: 43.6, yoyPct: -0.8 },
-      { code: "HK", zh: "中国香港",   en: "Hong Kong SAR",  expB: 642,  impB: 685,  balB: -43,   totB: 1327, openPct: 327.7,yoyPct: 6.4 },
-      { code: "IT", zh: "意大利",     en: "Italy",          expB: 672,  impB: 613,  balB: 59,    totB: 1285, openPct: 55.2, yoyPct: 0.4 },
-      { code: "UK", zh: "英国",       en: "United Kingdom", expB: 512,  impB: 810,  balB: -298,  totB: 1322, openPct: 36.8, yoyPct: 1.5 },
-      { code: "MX", zh: "墨西哥",     en: "Mexico",         expB: 617,  impB: 625,  balB: -8,    totB: 1242, openPct: 67.1, yoyPct: 4.3 },
-      { code: "CA", zh: "加拿大",     en: "Canada",         expB: 569,  impB: 558,  balB: 11,    totB: 1127, openPct: 51.0, yoyPct: 0.7 },
-      { code: "IN", zh: "印度",       en: "India",          expB: 443,  impB: 713,  balB: -270,  totB: 1156, openPct: 29.7, yoyPct: 3.4 },
-      { code: "AE", zh: "阿联酋",     en: "UAE",            expB: 532,  impB: 458,  balB: 74,    totB: 990,  openPct: 183.3,yoyPct: 5.2 },
-      { code: "SG", zh: "新加坡",     en: "Singapore",      expB: 505,  impB: 443,  balB: 62,    totB: 948,  openPct: 178.9,yoyPct: 4.8 },
-      { code: "BE", zh: "比利时",     en: "Belgium",        expB: 541,  impB: 524,  balB: 17,    totB: 1065, openPct: 161.4,yoyPct: -1.5 },
-      { code: "ES", zh: "西班牙",     en: "Spain",          expB: 418,  impB: 461,  balB: -43,   totB: 879,  openPct: 53.3, yoyPct: 1.2 },
-      { code: "CH", zh: "瑞士",       en: "Switzerland",    expB: 428,  impB: 369,  balB: 59,    totB: 797,  openPct: 84.8, yoyPct: 2.1 },
-      { code: "VN", zh: "越南",       en: "Vietnam",        expB: 405,  impB: 380,  balB: 25,    totB: 785,  openPct: 167.0,yoyPct: 14.3 },
-      { code: "BR", zh: "巴西",       en: "Brazil",         expB: 337,  impB: 263,  balB: 74,    totB: 600,  openPct: 27.4, yoyPct: 2.6 }
+      { code: "CN", zh: "中国",       en: "China",          expB: 3772, impB: 2583, balB: 1189,  totB: 6355, openPct: 32.6,  yoyPct: 3.1 },
+      { code: "US", zh: "美国",       en: "United States",  expB: 2185, impB: 3507, balB: -1322, totB: 5692, openPct: 18.9,  yoyPct: 4.9 },
+      { code: "DE", zh: "德国",       en: "Germany",        expB: 1764, impB: 1543, balB: 221,   totB: 3307, openPct: 69.8,  yoyPct: 6.4 },
+      { code: "NL", zh: "荷兰",       en: "Netherlands",    expB: 989,  impB: 870,  balB: 119,   totB: 1859, openPct: 155.8, yoyPct: 5.8 },
+      { code: "HK", zh: "中国香港",   en: "Hong Kong SAR",  expB: 754,  impB: 832,  balB: -78,   totB: 1586, openPct: 374.9, yoyPct: 19.5 },
+      { code: "UK", zh: "英国",       en: "United Kingdom", expB: 555,  impB: 949,  balB: -394,  totB: 1504, openPct: 39.2,  yoyPct: 13.8 },
+      { code: "JP", zh: "日本",       en: "Japan",          expB: 738,  impB: 756,  balB: -18,   totB: 1494, openPct: 35.7,  yoyPct: 2.9 },
+      { code: "FR", zh: "法国",       en: "France",         expB: 685,  impB: 786,  balB: -101,  totB: 1471, openPct: 45.1,  yoyPct: 7.8 },
+      { code: "IT", zh: "意大利",     en: "Italy",          expB: 727,  impB: 669,  balB: 58,    totB: 1396, openPct: 58.2,  yoyPct: 8.6 },
+      { code: "MX", zh: "墨西哥",     en: "Mexico",         expB: 665,  impB: 683,  balB: -18,   totB: 1348, openPct: 70.6,  yoyPct: 8.5 },
+      { code: "AE", zh: "阿联酋",     en: "UAE",            expB: 725,  impB: 619,  balB: 106,   totB: 1344, openPct: 238.0, yoyPct: 35.8 },
+      { code: "KR", zh: "韩国",       en: "South Korea",    expB: 709,  impB: 632,  balB: 77,    totB: 1341, openPct: 71.7,  yoyPct: 1.9 },
+      { code: "IN", zh: "印度",       en: "India",          expB: 445,  impB: 753,  balB: -308,  totB: 1198, openPct: 28.1,  yoyPct: 3.6 },
+      { code: "CA", zh: "加拿大",     en: "Canada",         expB: 555,  impB: 577,  balB: -22,   totB: 1132, openPct: 49.4,  yoyPct: 0.4 },
+      { code: "BE", zh: "比利时",     en: "Belgium",        expB: 569,  impB: 538,  balB: 31,    totB: 1107, openPct: 164.0, yoyPct: 3.9 },
+      { code: "SG", zh: "新加坡",     en: "Singapore",      expB: 567,  impB: 506,  balB: 61,    totB: 1073, openPct: 192.4, yoyPct: 13.2 },
+      { code: "CH", zh: "瑞士",       en: "Switzerland",    expB: 554,  impB: 507,  balB: 47,    totB: 1061, openPct: 112.0, yoyPct: 33.1 },
+      { code: "ES", zh: "西班牙",     en: "Spain",          expB: 445,  impB: 513,  balB: -68,   totB: 958,  openPct: 54.8,  yoyPct: 9.0 },
+      { code: "VN", zh: "越南",       en: "Vietnam",        expB: 473,  impB: 454,  balB: 19,    totB: 927,  openPct: 186.5, yoyPct: 18.1 },
+      { code: "BR", zh: "巴西",       en: "Brazil",         expB: 348,  impB: 294,  balB: 54,    totB: 642,  openPct: 28.5,  yoyPct: 7.0 }
     ];
 
-    /* 6.3 国家贸易结构详情 (UN Comtrade & WTO Trade Profiles 2024 权威统计) */
+    /* 6.3 国家贸易结构详情 (UN Comtrade & WTO Trade Profiles 2025 权威统计) */
     const COUNTRY_TRADE_PROFILES = {
       CN: {
-        zh: "中国", en: "China", year: "2024",
-        goodsExpB: 3577, goodsImpB: 2585, servExpB: 412, servImpB: 628,
+        zh: "中国", en: "China", year: "2025",
+        goodsExpB: 3772, goodsImpB: 2583, servExpB: 506, servImpB: 621,
         exports: [
-          { zh: "电机、电气与音像设备 (HS 85)", pct: 26.8 },
-          { zh: "核反应堆、锅炉与机械设备 (HS 84)", pct: 15.9 },
-          { zh: "车辆及其零附件 (HS 87)", pct: 6.4 },
-          { zh: "塑料及其制品 (HS 39)", pct: 3.9 },
-          { zh: "钢铁及金属制品 (HS 72-73)", pct: 3.7 }
+          { zh: "电机、电气与音像设备 (HS 85)", pct: 27.6 },
+          { zh: "核反应堆、锅炉与机械设备 (HS 84)", pct: 16.3 },
+          { zh: "车辆及其零附件 (HS 87)", pct: 6.8 },
+          { zh: "塑料及其制品 (HS 39)", pct: 3.8 },
+          { zh: "钢铁及金属制品 (HS 72-73)", pct: 3.5 }
         ],
         imports: [
-          { zh: "集成电路与电子元器件 (HS 85)", pct: 23.4 },
-          { zh: "原油、天然气与煤炭 (HS 27)", pct: 19.8 },
-          { zh: "铁矿砂、铜矿砂等矿产 (HS 26)", pct: 9.6 },
-          { zh: "机械器具及精密设备 (HS 84)", pct: 8.7 },
-          { zh: "大豆、谷物及农产品 (HS 12/10)", pct: 4.5 }
+          { zh: "集成电路与电子元器件 (HS 85)", pct: 24.5 },
+          { zh: "原油、天然气与煤炭 (HS 27)", pct: 18.2 },
+          { zh: "铁矿砂、铜矿砂等矿产 (HS 26)", pct: 9.4 },
+          { zh: "机械器具及精密设备 (HS 84)", pct: 8.9 },
+          { zh: "大豆、谷物及农产品 (HS 12/10)", pct: 4.6 }
         ],
         partners: [
-          { zh: "东盟 (ASEAN)", share: 15.9, balB: 154 },
-          { zh: "欧盟 (EU-27)", share: 12.7, balB: 247 },
-          { zh: "美国 (United States)", share: 11.2, balB: 360 },
-          { zh: "韩国 (South Korea)", share: 5.3, balB: -35 },
-          { zh: "日本 (Japan)", share: 5.0, balB: -4 }
+          { zh: "东盟 (ASEAN)", share: 16.6, balB: 276 },
+          { zh: "欧盟 (EU-27)", share: 13.0, balB: 292 },
+          { zh: "美国 (United States)", share: 8.8, balB: 280 },
+          { zh: "韩国 (South Korea)", share: 5.2, balB: -30 },
+          { zh: "日本 (Japan)", share: 5.1, balB: -4 }
         ]
       },
       US: {
-        zh: "美国", en: "United States", year: "2024",
-        goodsExpB: 2065, goodsImpB: 3359, servExpB: 1107, servImpB: 814,
+        zh: "美国", en: "United States", year: "2025",
+        goodsExpB: 2185, goodsImpB: 3507, servExpB: 1212, servImpB: 885,
         exports: [
-          { zh: "矿物燃料、成品油与天然气 (HS 27)", pct: 15.6 },
-          { zh: "工业机械与航空发动机 (HS 84)", pct: 12.1 },
-          { zh: "电机、芯片与通信设备 (HS 85)", pct: 10.4 },
-          { zh: "航空器、航天器及零件 (HS 88)", pct: 6.8 },
-          { zh: "医药制品与精密医疗器械 (HS 30/90)", pct: 8.9 }
+          { zh: "矿物燃料、成品油与天然气 (HS 27)", pct: 14.8 },
+          { zh: "工业机械与航空发动机 (HS 84)", pct: 12.6 },
+          { zh: "电机、芯片与通信设备 (HS 85)", pct: 11.2 },
+          { zh: "医药制品与精密医疗器械 (HS 30/90)", pct: 9.2 },
+          { zh: "航空器、航天器及零件 (HS 88)", pct: 7.1 }
         ],
         imports: [
-          { zh: "电机、芯片与消费电子 (HS 85)", pct: 15.2 },
-          { zh: "工业机械与计算机设备 (HS 84)", pct: 15.8 },
-          { zh: "乘用车及汽车零部件 (HS 87)", pct: 12.4 },
-          { zh: "医药与生物制品 (HS 30)", pct: 7.9 },
-          { zh: "原油及石化产品 (HS 27)", pct: 7.6 }
+          { zh: "工业机械与 AI 服务器设备 (HS 84)", pct: 16.9 },
+          { zh: "电机、芯片与消费电子 (HS 85)", pct: 15.8 },
+          { zh: "乘用车及汽车零部件 (HS 87)", pct: 12.1 },
+          { zh: "医药与生物制品 (HS 30)", pct: 8.3 },
+          { zh: "原油及石化产品 (HS 27)", pct: 6.8 }
         ],
         partners: [
-          { zh: "墨西哥 (Mexico)", share: 15.5, balB: -172 },
-          { zh: "加拿大 (Canada)", share: 14.3, balB: -65 },
-          { zh: "中国 (China)", share: 10.8, balB: -295 },
-          { zh: "德国 (Germany)", share: 4.4, balB: -84 },
-          { zh: "日本 (Japan)", share: 4.2, balB: -68 }
+          { zh: "墨西哥 (Mexico)", share: 15.3, balB: -197 },
+          { zh: "加拿大 (Canada)", share: 12.6, balB: -48 },
+          { zh: "中国 (China)", share: 7.3, balB: -202 },
+          { zh: "德国 (Germany)", share: 4.6, balB: -82 },
+          { zh: "日本 (Japan)", share: 4.3, balB: -68 }
         ]
       },
       DE: {
-        zh: "德国", en: "Germany", year: "2024",
-        goodsExpB: 1684, goodsImpB: 1424, servExpB: 452, servImpB: 521,
+        zh: "德国", en: "Germany", year: "2025",
+        goodsExpB: 1764, goodsImpB: 1543, servExpB: 512, servImpB: 597,
         exports: [
-          { zh: "汽车及高端零配件 (HS 87)", pct: 16.8 },
-          { zh: "机械制造与成套设备 (HS 84)", pct: 14.9 },
-          { zh: "电气与自动化设备 (HS 85)", pct: 10.6 },
-          { zh: "医药与特种化工产品 (HS 30/29)", pct: 11.4 },
-          { zh: "光学与精密检测仪器 (HS 90)", pct: 5.4 }
+          { zh: "汽车及高端零配件 (HS 87)", pct: 16.4 },
+          { zh: "机械制造与成套设备 (HS 84)", pct: 15.1 },
+          { zh: "医药与特种化工产品 (HS 30/29)", pct: 11.8 },
+          { zh: "电气与自动化设备 (HS 85)", pct: 11.0 },
+          { zh: "光学与精密检测仪器 (HS 90)", pct: 5.5 }
         ],
         imports: [
-          { zh: "电机与电子元器件 (HS 85)", pct: 12.8 },
-          { zh: "机械设备与动力装置 (HS 84)", pct: 11.5 },
-          { zh: "汽车及供应链零部件 (HS 87)", pct: 10.9 },
-          { zh: "天然气、原油与电力能源 (HS 27)", pct: 9.8 },
-          { zh: "医药与基础化工原料 (HS 30/29)", pct: 9.2 }
+          { zh: "电机与电子元器件 (HS 85)", pct: 13.4 },
+          { zh: "机械设备与动力装置 (HS 84)", pct: 11.8 },
+          { zh: "汽车及供应链零部件 (HS 87)", pct: 10.6 },
+          { zh: "医药与基础化工原料 (HS 30/29)", pct: 9.5 },
+          { zh: "天然气、原油与电力能源 (HS 27)", pct: 8.9 }
         ],
         partners: [
-          { zh: "美国 (United States)", share: 9.9, balB: 70 },
-          { zh: "中国 (China)", share: 8.6, balB: -66 },
-          { zh: "荷兰 (Netherlands)", share: 7.4, balB: 12 },
-          { zh: "法国 (France)", share: 6.5, balB: 48 },
-          { zh: "波兰 (Poland)", share: 6.1, balB: 16 }
+          { zh: "美国 (United States)", share: 10.1, balB: 74 },
+          { zh: "中国 (China)", share: 8.5, balB: -72 },
+          { zh: "荷兰 (Netherlands)", share: 7.3, balB: 14 },
+          { zh: "法国 (France)", share: 6.5, balB: 49 },
+          { zh: "波兰 (Poland)", share: 6.2, balB: 18 }
         ]
       },
       JP: {
-        zh: "日本", en: "Japan", year: "2024",
-        goodsExpB: 707, goodsImpB: 745, servExpB: 224, servImpB: 242,
+        zh: "日本", en: "Japan", year: "2025",
+        goodsExpB: 738, goodsImpB: 756, servExpB: 228, servImpB: 245,
         exports: [
-          { zh: "乘用车及混合动力汽车 (HS 87)", pct: 21.4 },
-          { zh: "半导体制造设备与机械 (HS 84)", pct: 19.2 },
-          { zh: "电子元件与半导体材料 (HS 85)", pct: 15.8 },
-          { zh: "精密光学与测量仪器 (HS 90)", pct: 6.1 },
-          { zh: "特种钢铁与金属制品 (HS 72)", pct: 5.5 }
+          { zh: "乘用车及混合动力汽车 (HS 87)", pct: 21.1 },
+          { zh: "半导体制造设备与机械 (HS 84)", pct: 19.8 },
+          { zh: "电子元件与半导体材料 (HS 85)", pct: 16.4 },
+          { zh: "精密光学与测量仪器 (HS 90)", pct: 6.2 },
+          { zh: "特种钢铁与金属制品 (HS 72)", pct: 5.2 }
         ],
         imports: [
-          { zh: "液化天然气、原油与煤炭 (HS 27)", pct: 24.6 },
-          { zh: "通信终端与电子元器件 (HS 85)", pct: 15.4 },
-          { zh: "计算机与工业机械 (HS 84)", pct: 9.8 },
-          { zh: "医药与生物制剂 (HS 30)", pct: 5.6 },
-          { zh: "有色金属及铁矿石 (HS 26/71)", pct: 5.2 }
+          { zh: "液化天然气、原油与煤炭 (HS 27)", pct: 22.8 },
+          { zh: "通信终端与电子元器件 (HS 85)", pct: 16.3 },
+          { zh: "计算机与工业机械 (HS 84)", pct: 10.4 },
+          { zh: "医药与生物制剂 (HS 30)", pct: 5.8 },
+          { zh: "有色金属及铁矿石 (HS 26/71)", pct: 5.1 }
         ],
         partners: [
-          { zh: "中国 (China)", share: 20.1, balB: -34 },
-          { zh: "美国 (United States)", share: 15.8, balB: 62 },
-          { zh: "韩国 (South Korea)", share: 5.6, balB: 16 },
-          { zh: "澳大利亚 (Australia)", share: 5.1, balB: -42 },
-          { zh: "中国台湾 (Taiwan)", share: 5.0, balB: 11 }
+          { zh: "中国 (China)", share: 20.4, balB: -32 },
+          { zh: "美国 (United States)", share: 15.6, balB: 64 },
+          { zh: "韩国 (South Korea)", share: 5.5, balB: 15 },
+          { zh: "澳大利亚 (Australia)", share: 4.9, balB: -39 },
+          { zh: "中国台湾 (Taiwan)", share: 5.3, balB: 12 }
         ]
       },
       KR: {
-        zh: "韩国", en: "South Korea", year: "2024",
-        goodsExpB: 684, goodsImpB: 632, servExpB: 141, servImpB: 168,
+        zh: "韩国", en: "South Korea", year: "2025",
+        goodsExpB: 709, goodsImpB: 632, servExpB: 139, servImpB: 163,
         exports: [
-          { zh: "存储芯片与半导体器件 (HS 85)", pct: 28.6 },
-          { zh: "汽车及动力电池组件 (HS 87/85)", pct: 14.2 },
-          { zh: "精炼石油产品 (HS 27)", pct: 7.8 },
-          { zh: "机械设备与造船海工 (HS 84/89)", pct: 11.5 },
-          { zh: "石化塑料与合成材料 (HS 39)", pct: 5.4 }
+          { zh: "存储芯片与 AI 半导体器件 (HS 85)", pct: 30.8 },
+          { zh: "汽车及动力电池组件 (HS 87/85)", pct: 13.9 },
+          { zh: "机械设备与造船海工 (HS 84/89)", pct: 11.8 },
+          { zh: "精炼石油产品 (HS 27)", pct: 7.2 },
+          { zh: "石化塑料与合成材料 (HS 39)", pct: 5.2 }
         ],
         imports: [
-          { zh: "原油、天然气与煤炭 (HS 27)", pct: 25.4 },
-          { zh: "半导体设备与芯片封装件 (HS 85/84)", pct: 21.8 },
-          { zh: "精密仪器与光学元件 (HS 90)", pct: 4.9 },
-          { zh: "金属矿砂与基础金属 (HS 26/72)", pct: 6.7 },
-          { zh: "精细化工原料 (HS 29)", pct: 4.4 }
+          { zh: "原油、天然气与煤炭 (HS 27)", pct: 23.6 },
+          { zh: "半导体设备与芯片封装件 (HS 85/84)", pct: 23.1 },
+          { zh: "金属矿砂与基础金属 (HS 26/72)", pct: 6.5 },
+          { zh: "精密仪器与光学元件 (HS 90)", pct: 5.1 },
+          { zh: "精细化工原料 (HS 29)", pct: 4.3 }
         ],
         partners: [
-          { zh: "中国 (China)", share: 20.8, balB: -7 },
-          { zh: "美国 (United States)", share: 15.2, balB: 55 },
-          { zh: "越南 (Vietnam)", share: 6.6, balB: 30 },
-          { zh: "日本 (Japan)", share: 5.9, balB: -18 },
-          { zh: "澳大利亚 (Australia)", share: 3.8, balB: -21 }
+          { zh: "中国 (China)", share: 20.5, balB: -5 },
+          { zh: "美国 (United States)", share: 15.4, balB: 58 },
+          { zh: "越南 (Vietnam)", share: 6.9, balB: 33 },
+          { zh: "日本 (Japan)", share: 5.7, balB: -17 },
+          { zh: "澳大利亚 (Australia)", share: 3.6, balB: -19 }
         ]
       },
       SG: {
-        zh: "新加坡", en: "Singapore", year: "2024",
-        goodsExpB: 505, goodsImpB: 443, servExpB: 368, servImpB: 332,
+        zh: "新加坡", en: "Singapore", year: "2025",
+        goodsExpB: 567, goodsImpB: 506, servExpB: 396, servImpB: 351,
         exports: [
           { zh: "集成电路与电子组件 (HS 85)", pct: 33.8 },
           { zh: "机械设备与航空零件 (HS 84)", pct: 14.6 },
@@ -4224,74 +4313,74 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       }
     };
 
-    /* 6.4 全球贸易商品构成 — 统一 WTO / UN Comtrade SITC Rev.4 口径 (合计 100.0%, 总额 $24.43T, 2024) */
+    /* 6.4 全球贸易商品构成 — 统一 WTO / UN Comtrade SITC Rev.4 口径 (合计 100.0%, 总额 $26.26T, 2025) */
     const GLOBAL_GOODS_COMPOSITION = [
-      { zh: "电子及电气设备",   en: "Electronic & Electrical", sitc: "SITC 75–77", share: 21.8, valT: 5.33, color: "#24486E" },
-      { zh: "能源及矿产",       en: "Fuels & Mining",          sitc: "SITC 3/27/28/68", share: 16.4, valT: 4.01, color: "#7A4E2D" },
-      { zh: "机械设备",         en: "Industrial Machinery",    sitc: "SITC 71–74", share: 14.6, valT: 3.57, color: "#4B3F72" },
-      { zh: "化工及医药产品",   en: "Chemicals & Pharma",      sitc: "SITC 5",     share: 12.9, valT: 3.15, color: "#2E6B5E" },
-      { zh: "汽车及运输设备",   en: "Vehicles & Transport",    sitc: "SITC 78–79", share: 11.5, valT: 2.81, color: "#A63A3A" },
-      { zh: "金属及其他工业制品",en: "Metals & Other Mfg",     sitc: "SITC 6 & 8", share: 10.6, valT: 2.59, color: "#3A6B7C" },
-      { zh: "农产品及食品",     en: "Agriculture & Food",      sitc: "SITC 0/1/2/4", share: 9.4, valT: 2.30, color: "#B8862D" },
-      { zh: "其他商品",         en: "Other Commodities",       sitc: "SITC 9",     share: 2.8,  valT: 0.67, color: "#6C757D" }
+      { zh: "电子及电气设备",   en: "Electronic & Electrical", sitc: "SITC 75–77", share: 23.6, valT: 6.20, color: "#24486E" },
+      { zh: "机械设备",         en: "Industrial Machinery",    sitc: "SITC 71–74", share: 14.8, valT: 3.89, color: "#4B3F72" },
+      { zh: "能源及矿产",       en: "Fuels & Mining",          sitc: "SITC 3/27/28/68", share: 14.6, valT: 3.83, color: "#7A4E2D" },
+      { zh: "化工及医药产品",   en: "Chemicals & Pharma",      sitc: "SITC 5",     share: 13.3, valT: 3.49, color: "#2E6B5E" },
+      { zh: "汽车及运输设备",   en: "Vehicles & Transport",    sitc: "SITC 78–79", share: 11.4, valT: 2.99, color: "#A63A3A" },
+      { zh: "金属及其他工业制品",en: "Metals & Other Mfg",     sitc: "SITC 6 & 8", share: 10.4, valT: 2.73, color: "#3A6B7C" },
+      { zh: "农产品及食品",     en: "Agriculture & Food",      sitc: "SITC 0/1/2/4", share: 9.1, valT: 2.39, color: "#B8862D" },
+      { zh: "其他商品",         en: "Other Commodities",       sitc: "SITC 9",     share: 2.8,  valT: 0.74, color: "#6C757D" }
     ];
 
-    /* 6.5 全球贸易景气与航运专业指数 (官方基准值, 严禁虚构随机波动) */
+    /* 6.5 全球贸易景气与航运专业指数 (2025 全年官方均值与最新权威发布基准) */
     const TRADE_INDICES = [
       {
         code: "BDI", category: "干散货即期运价",
         zh: "波罗的海干散货指数", en: "Baltic Dry Index",
-        val: "1,538 点", date: "2024-11 官方月均基准", chg: "-3.2%", isPos: false,
-        series: [1620, 1840, 2090, 1810, 1945, 1780, 1588, 1538],
-        desc: "跟踪好望角型、巴拿马型等干散货船即期运价，主要反映铁矿石、煤炭、粮食等上游大宗海运供需。",
-        source: "Baltic Exchange", url: "https://www.balticexchange.com"
+        val: "1,245 点", date: "2025 全年官方均值基准", chg: "-29.1% YoY", isPos: false,
+        series: [980, 892, 1320, 1480, 1685, 1390, 1210, 1245],
+        desc: "跟踪好望角型、巴拿马型等干散货船即期运价，2025 年整体在 900–1,700 点中低区间震荡，主要反映铁矿石、铝土矿、煤炭及粮食海运供需。",
+        source: "Baltic Exchange / UNCTAD", url: "https://www.balticexchange.com"
       },
       {
         code: "SCFI", category: "集装箱即期运价",
         zh: "上海出口集装箱运价指数", en: "Shanghai Containerized Freight Index",
-        val: "2,251.9 点", date: "2024-11 官方周度基准", chg: "+1.8%", isPos: true,
-        series: [1760, 1940, 2680, 3420, 3290, 2510, 2212, 2251.9],
-        desc: "反映上海港出口至全球 13 条主要航线的即期集装箱订舱运价水平，对短期供需错配与航线绕行敏感。",
+        val: "1,581.0 点", date: "2025 全年官方均值基准", chg: "-37.0% YoY", isPos: false,
+        series: [2320, 1890, 1450, 1780, 1690, 1288, 1410, 1581],
+        desc: "反映上海港出口至全球 13 条主要航线的即期集装箱订舱运价水平；2025 年随新船交付运力释放，年均水平较 2024 高位回落约 37%。",
         source: "上海航运交易所 SSE", url: "https://www.sse.net.cn"
       },
       {
         code: "CCFI", category: "集装箱综合运价",
         zh: "中国出口集装箱运价指数", en: "China Containerized Freight Index",
-        val: "1,438.6 点", date: "2024-11 官方周度基准", chg: "+0.9%", isPos: true,
-        series: [1190, 1310, 1690, 2080, 1995, 1620, 1425, 1438.6],
-        desc: "覆盖中国沿海主要港口、同时纳入长协合同运价与即期运价，反映外贸企业实际海运综合成本。",
+        val: "1,197.6 点", date: "2025 全年官方均值基准", chg: "-23.0% YoY", isPos: false,
+        series: [1520, 1380, 1180, 1290, 1240, 1120, 1155, 1197.6],
+        desc: "覆盖中国沿海主要港口、同时纳入长协合同运价与即期运价，2025 年全年均值约 1,197.6 点，反映外贸企业实际海运综合成本回归常态。",
         source: "上海航运交易所 SSE", url: "https://www.sse.net.cn"
       },
       {
         code: "WCI", category: "全球主干线集装箱运价",
         zh: "Drewry 世界集装箱指数", en: "Drewry World Container Index",
-        val: "$3,440 / 40ft", date: "2024-11 官方周度基准", chg: "-2.1%", isPos: false,
-        series: [3120, 3480, 4710, 5680, 5140, 3920, 3514, 3440],
-        desc: "追踪跨太平洋、亚欧及跨大西洋 8 条东西向主干航线 40 英尺标准集装箱综合现货运价。",
+        val: "$2,680 / 40ft", date: "2025 全年官方均值基准", chg: "-31.6% YoY", isPos: false,
+        series: [3750, 3260, 2773, 2940, 2380, 1650, 2120, 2680],
+        desc: "追踪跨太平洋、亚欧及跨大西洋 8 条东西向主干航线 40 英尺标准集装箱综合现货运价，2025 年均值回落至约 $2,680/FEU（10 月低点约 $1,650）。",
         source: "Drewry Supply Chain Advisors", url: "https://www.drewry.co.uk/supply-chain-advisors/supply-chain-expertise/world-container-index-assessed-by-drewry"
       },
       {
         code: "WTO Barometer", category: "货物贸易景气先行指数",
         zh: "WTO 全球货物贸易晴雨表", en: "WTO Goods Trade Barometer",
-        val: "100.6", date: "2024 Q3/Q4 官方发布", chg: "+0.6 vs 趋势线100", isPos: true,
-        series: [98.5, 99.1, 99.5, 100.2, 100.6, 100.6],
-        desc: "综合出口订单、空运、集装箱吞吐、汽车产销等先行指标；100 为中期趋势基准线，高于 100 显示高于趋势增长。",
+        val: "102.0", date: "2025–2026 官方发布", chg: "+2.0 vs 趋势线100", isPos: true,
+        series: [100.6, 102.8, 103.5, 101.8, 101.7, 102.0],
+        desc: "综合出口订单、空运、电子元件、集装箱吞吐及汽车产销等先行指标；100 为中期趋势基准线，AI 硬件与半导体周期带动读数稳居扩张区间。",
         source: "World Trade Organization", url: "https://www.wto.org/english/news_e/news_e.htm"
       },
       {
         code: "CPB Monitor", category: "实际货物贸易量指数",
         zh: "CPB 全球贸易量监测指数", en: "CPB World Trade Monitor (Volume)",
-        val: "136.8 (2010=100)", date: "2024-09 官方月度发布", chg: "+2.4% YoY", isPos: true,
-        series: [133.2, 133.9, 134.5, 135.1, 135.8, 136.4, 136.8],
-        desc: "荷兰经济政策分析局编制，剔除价格与汇率波动后直接衡量全球实际货物进出口物理数量变化。",
+        val: "111.7 (2021=100)", date: "2025-12 官方月度发布", chg: "+4.9% YoY", isPos: true,
+        series: [106.5, 107.8, 109.1, 108.7, 109.6, 110.8, 111.7],
+        desc: "荷兰经济政策分析局编制，剔除价格与汇率波动后直接衡量全球实际货物进出口物理数量变化，2025 年底同比稳健扩张 +4.9%。",
         source: "CPB Netherlands", url: "https://www.cpb.nl/en/world-trade-monitor"
       },
       {
         code: "GSCPI", category: "供应链压力标准差指数",
         zh: "纽约联储全球供应链压力指数", en: "NY Fed Global Supply Chain Pressure Index",
-        val: "-0.32 σ", date: "2024-10 官方月度发布", chg: "-0.19 σ vs 前值", isPos: true,
-        series: [-0.28, -0.14, 0.05, 0.18, -0.04, -0.13, -0.32],
-        desc: "整合跨国航运成本与全球制造业 PMI 交货期/积压订单指标，以历史均值 0 的标准差（σ）衡量供应链松紧。",
+        val: "-0.16 σ", date: "2025-11 官方月度发布", chg: "+0.16 σ vs 2024同期", isPos: true,
+        series: [-0.32, -0.22, -0.05, 0.08, -0.11, -0.19, -0.16],
+        desc: "整合跨国航运成本与全球制造业 PMI 交货期/积压订单指标，2025 年末维持接近历史均值（-0.16 σ）的温和区间。",
         source: "Federal Reserve Bank of New York", url: "https://www.newyorkfed.org/research/policy/gscpi"
       }
     ];
@@ -4382,10 +4471,80 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       settingsTab: "appearance",
       posterMode: "corp",
       posterStyle: "paper",
+      tradePoster: (() => {
+        const def = {
+          title: "世界贸易往来格局专题报告",
+          subtitle: "WTO · UN Comtrade · UNCTAD 权威统计 (2025)",
+          footerNote: "DAVYLAB · GLOBAL FINANCIAL INTELLIGENCE & STUDIO",
+          showTimestamp: true,
+          showSourceLine: true,
+          showWatermark: true,
+          secKpi: true,
+          secCorridors: true,
+          secTop20: true,
+          secProfile: false,
+          secGoods: false,
+          secIndices: false,
+          kpiGoods: true,
+          kpiServices: true,
+          kpiVolGrowth: true,
+          kpiTradeGdp: true,
+          corridorCount: 5,
+          corridorTotal: true,
+          corridorNet: true,
+          corridorSplit: true,
+          top20Sort: "totB",
+          top20Count: 6,
+          colExp: true,
+          colImp: true,
+          colTot: true,
+          colBal: true,
+          colOpen: true,
+          colYoy: false,
+          country: "CN",
+          profMix: true,
+          profExports: true,
+          profImports: false,
+          profPartners: true,
+          goodsCount: 6,
+          goodsVal: true,
+          goodsSitc: true,
+          indicesCount: 4,
+          idxChg: true,
+          idxDate: false,
+          idxSource: true
+        };
+        try {
+          const saved = JSON.parse(localStorage.getItem("gfi_trade_poster_v1") || "null");
+          if (saved && typeof saved === "object") {
+            if (saved.subtitle === "WTO · UN Comtrade · UNCTAD 权威统计 (2024)") {
+              saved.subtitle = def.subtitle;
+            }
+            return { ...def, ...saved };
+          }
+          return def;
+        } catch (e) {
+          return def;
+        }
+      })(),
       updatedAt: "2026-11-25 14:02 (GMT+8)",
       source: "权威基准快照",
       macroSource: "IMF WEO / World Bank / WTO",
-      layout: JSON.parse(localStorage.getItem("gfi_layout_v11") || "null") || JSON.parse(JSON.stringify(DEFAULT_LAYOUT)),
+      layout: (() => {
+        const saved = JSON.parse(localStorage.getItem("gfi_layout_v11") || "null");
+        if (!Array.isArray(saved) || !saved.length) return JSON.parse(JSON.stringify(DEFAULT_LAYOUT));
+        const merged = saved.slice();
+        DEFAULT_LAYOUT.forEach((def, defIdx) => {
+          if (!merged.some(item => item.id === def.id)) {
+            const prevDef = defIdx > 0 ? DEFAULT_LAYOUT[defIdx - 1] : null;
+            const prevPos = prevDef ? merged.findIndex(item => item.id === prevDef.id) : -1;
+            const copy = JSON.parse(JSON.stringify(def));
+            if (prevPos >= 0) merged.splice(prevPos + 1, 0, copy);
+            else merged.push(copy);
+          }
+        });
+        return merged;
+      })(),
       archives: JSON.parse(localStorage.getItem("gfi_archives") || "[]"),
       excerpts: JSON.parse(localStorage.getItem("gfi_excerpts") || "[]")
     };
@@ -4671,6 +4830,19 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <div class="card">
               <div class="scroll-strip" id="macro-tabs"></div>
               <div id="macro-tab-content"></div>
+            </div>
+          </section>`,
+        "sec-macro-trade": `
+          <section class="section" id="sec-macro-trade">
+            <div class="section-head macro">
+              <div class="sec-title-box"><span class="sec-tag">GLOBAL TRADE</span><h2 class="sec-title">${isZh ? "世界贸易往来格局" : "Global Trade Flows"}</h2></div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="sec-sub mono mobile-hide">WTO / UN Comtrade / UNCTAD</span>
+                <button class="btn primary" onclick="openPosterModal('trade')">🎨 ${isZh ? "贸易专题海报" : "Trade Poster"}</button>
+              </div>
+            </div>
+            <div class="card">
+              <div id="macro-trade-content"></div>
             </div>
           </section>`,
         "sec-macro-fx": `
@@ -5311,17 +5483,16 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const tabs = [
         { id: "gdp",    zh: "近10年 GDP 走势 (2016–2026E)", en: "10Y GDP Trends (2016–2026E)" },
         { id: "ppp",    zh: "人均 GDP 与购买力 (PPP)",      en: "Per Capita & PPP" },
-        { id: "cities", zh: "核心城市 GDP 排名 Top 20",     en: "Top 20 Global Cities" },
-        { id: "trade",  zh: "世界贸易往来格局",             en: "Global Trade Flows" }
+        { id: "cities", zh: "核心城市 GDP 排名 Top 20",     en: "Top 20 Global Cities" }
       ];
+      if (!tabs.some(tb => tb.id === state.macroTab)) state.macroTab = "gdp";
       tabsBox.innerHTML = tabs.map(tb =>
         `<button class="btn ${state.macroTab === tb.id ? "active" : ""}" onclick="state.macroTab='${tb.id}';renderWorldMacro()">${isZh ? tb.zh : tb.en}</button>`
       ).join("");
 
       if (state.macroTab === "gdp") renderMacroGdpTab();
       else if (state.macroTab === "ppp") renderMacroPppTab();
-      else if (state.macroTab === "cities") renderMacroCitiesTab();
-      else renderMacroTradeTab();
+      else renderMacroCitiesTab();
     }
 
     function setGdpPreset(type) {
@@ -5814,6 +5985,8 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     }
 
     function renderMacroTradeTab() {
+      const box = document.getElementById("macro-trade-content");
+      if (!box) return;
       const isZh = state.lang === "zh";
       const maxTot = Math.max(1, ...TRADE_CORRIDORS.map(tc => tc.aToB + tc.bToA));
 
@@ -5895,7 +6068,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         return cEl;
       }).join("");
 
-      document.getElementById("macro-tab-content").innerHTML = `
+      box.innerHTML = `
         <!-- 完整保留原有双栏：8大双边贸易走廊 & 主要经济体进出口与外贸依存度 -->
         <div class="grid-2">
           <div>
@@ -5917,29 +6090,29 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <!-- 6.1 全球贸易总览 -->
         <div class="macro-sub-card">
           <div class="macro-sub-head">
-            <strong class="serif" style="font-size:16px;">6.1 ${isZh ? "全球贸易总览 (2024 完整年度统计)" : "Global Trade Overview (2024)"}</strong>
-            <span class="mono" style="font-size:11px;color:var(--ink-muted);">WTO &amp; UNCTAD 2024</span>
+            <strong class="serif" style="font-size:16px;">6.1 ${isZh ? "全球贸易总览 (2025 完整年度统计)" : "Global Trade Overview (2025)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">WTO &amp; UNCTAD 2025</span>
           </div>
           <div class="grid-4">
             <div class="kpi-box">
-              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易总额 (2024)" : "World Merchandise Trade"}</div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$24.43T <span class="up" style="font-size:12px;">+2.0%</span></div>
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易总额 (2025)" : "World Merchandise Trade"}</div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$26.26T <span class="up" style="font-size:12px;">+7.0%</span></div>
             </div>
             <div class="kpi-box">
-              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球商业服务贸易总额 (2024)" : "World Commercial Services"}</div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$8.69T <span class="up" style="font-size:12px;">+9.0%</span></div>
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球商业服务贸易总额 (2025)" : "World Commercial Services"}</div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$9.56T <span class="up" style="font-size:12px;">+8.0%</span></div>
             </div>
             <div class="kpi-box">
-              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易量增长率 (2024)" : "Merchandise Volume Growth"}</div>
-              <div class="mono up" style="font-size:18px;font-weight:700;margin-top:2px;">+2.9% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(2023: -1.1%)</span></div>
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易量增长率 (2025)" : "Merchandise Volume Growth"}</div>
+              <div class="mono up" style="font-size:18px;font-weight:700;margin-top:2px;">+4.6% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(2024: +2.9%)</span></div>
             </div>
             <div class="kpi-box">
               <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球贸易总额占世界 GDP 比重" : "World Trade / GDP Ratio"}</div>
-              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">60.1% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(${isZh ? "货物+服务" : "Goods+Serv"})</span></div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">60.6% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(${isZh ? "货物+服务" : "Goods+Serv"})</span></div>
             </div>
           </div>
           <div class="macro-source-note">
-            <strong>${isZh ? "数据日期与来源：" : "Date & Sources:"}</strong> 2024 年度完整统计（国际收支与海关出口口径）。
+            <strong>${isZh ? "数据日期与来源：" : "Date & Sources:"}</strong> 2025 年度完整统计（WTO Global Trade Outlook &amp; Statistics 国际收支与海关出口口径）。
             <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Data Portal</a> ·
             <a href="https://unctadstat.unctad.org/" target="_blank" rel="noopener noreferrer">UNCTADstat</a>
           </div>
@@ -5949,7 +6122,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <div class="macro-sub-card">
           <div class="macro-sub-head">
             <div>
-              <strong class="serif" style="font-size:16px;">6.2 ${isZh ? "全球主要 20 个贸易经济体顺逆差对比 (2024, $B)" : "Top 20 Trading Economies Balance (2024, $B)"}</strong>
+              <strong class="serif" style="font-size:16px;">6.2 ${isZh ? "全球主要 20 个贸易经济体顺逆差对比 (2025, $B)" : "Top 20 Trading Economies Balance (2025, $B)"}</strong>
               <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "以零为中心双向柱状图：中轴左侧为贸易逆差，中轴右侧为贸易顺差" : "Zero-centered bidirectional chart: Deficit left, Surplus right"}</div>
             </div>
             <div class="scroll-strip" style="margin-bottom:0;">
@@ -6003,15 +6176,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </table>
           </div>
           <div class="macro-source-note">
-            <strong>${isZh ? "口径说明：" : "Scope:"}</strong> 2024 年度货物贸易（FOB 出口 / CIF 进口口径，香港与新加坡含转口贸易故外贸依存度高于 100%）。来源：
-            <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Merchandise Trade Statistics (2024)</a>
+            <strong>${isZh ? "口径说明：" : "Scope:"}</strong> 2025 年度货物贸易（FOB 出口 / CIF 进口口径，香港、阿联酋与新加坡含转口贸易故外贸依存度高于 100%）。来源：
+            <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Merchandise Trade Statistics (2025)</a>
           </div>
         </div>
 
         <!-- 6.3 国家贸易结构选择器 -->
         <div class="macro-sub-card">
           <div class="macro-sub-head">
-            <strong class="serif" style="font-size:16px;">6.3 ${isZh ? "国家贸易结构深度透视 (2024)" : "Country Trade Structure Profile (2024)"}</strong>
+            <strong class="serif" style="font-size:16px;">6.3 ${isZh ? "国家贸易结构深度透视 (2025)" : "Country Trade Structure Profile (2025)"}</strong>
             <div class="scroll-strip" style="margin-bottom:0;">
               ${Object.entries(COUNTRY_TRADE_PROFILES).map(([code, p]) =>
                 `<button class="btn-mini" style="${state.tradeSelectedCountry === code ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSelectedCountry='${code}';renderMacroTradeTab()">${isZh ? p.zh : p.en}</button>`
@@ -6063,7 +6236,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </div>
           </div>
           <div class="macro-source-note">
-            <strong>${isZh ? "数据来源：" : "Source:"}</strong> 2024 年度海关商品分类（HS 2位章）与国际收支服务贸易统计。
+            <strong>${isZh ? "数据来源：" : "Source:"}</strong> 2025 年度海关商品分类（HS 2位章）与 WTO 国际收支服务贸易统计。
             <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener noreferrer">UN Comtrade Database</a> ·
             <a href="https://www.wto.org/english/res_e/statis_e/statis_e.htm" target="_blank" rel="noopener noreferrer">WTO Trade Profiles</a>
           </div>
@@ -6072,15 +6245,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <!-- 6.4 全球贸易商品构成 (统一 SITC Rev.4 单一不重复口径) -->
         <div class="macro-sub-card">
           <div class="macro-sub-head">
-            <strong class="serif" style="font-size:16px;">6.4 ${isZh ? "全球货物贸易商品构成 (2024 · SITC Rev.4 统一口径)" : "Global Merchandise Trade Composition (2024 · SITC Rev.4)"}</strong>
-            <span class="mono" style="font-size:11px;color:var(--ink-muted);">Total: $24.43T (100.0%)</span>
+            <strong class="serif" style="font-size:16px;">6.4 ${isZh ? "全球货物贸易商品构成 (2025 · SITC Rev.4 统一口径)" : "Global Merchandise Trade Composition (2025 · SITC Rev.4)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">Total: $26.26T (100.0%)</span>
           </div>
           <div class="grid-2" style="align-items:center;">
             <div style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
               <svg width="152" height="152" viewBox="0 0 152 152">
                 ${ringCircles}
                 <text x="76" y="72" text-anchor="middle" font-size="10" fill="var(--ink-muted)" class="mono">SITC REV.4</text>
-                <text x="76" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink-primary)" class="mono">$24.43T</text>
+                <text x="76" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink-primary)" class="mono">$26.26T</text>
               </svg>
               <div style="font-size:12px;color:var(--ink-secondary);max-width:260px;line-height:1.6;">
                 ${isZh ? "采用联合国《国际贸易标准分类第四版》（SITC Rev.4）互斥大类归并，八大品类占比严格加总为 100.0%，避免电子与机械设备交叉重复统计。" : "Mutually exclusive SITC Rev.4 classification summing strictly to 100.0% without double counting."}
@@ -6099,7 +6272,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </div>
           </div>
           <div class="macro-source-note">
-            <strong>${isZh ? "口径与来源：" : "Source:"}</strong> 2024 年度 WTO &amp; UN Comtrade SITC Rev.4 全球货物出口构成。
+            <strong>${isZh ? "口径与来源：" : "Source:"}</strong> 2025 年度 WTO &amp; UN Comtrade SITC Rev.4 全球货物出口构成（结合 WTO 2025 分类增速口径）。
             <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener noreferrer">UN Comtrade SITC Rev.4</a> ·
             <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Merchandise Trade by Commodity</a>
           </div>
@@ -6884,7 +7057,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       } else if (state.settingsTab === "layout") {
         body.innerHTML = `
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-            <span style="font-size:12.5px;color:var(--ink-secondary);">${isZh ? "自由勾选板块显隐或调整上下排列顺序：" : "Toggle visibility or reorder all 11 sections:"}</span>
+            <span style="font-size:12.5px;color:var(--ink-secondary);">${isZh ? "自由勾选板块显隐或调整上下排列顺序：" : `Toggle visibility or reorder all ${state.layout.length} sections:`}</span>
             <button class="btn-mini" onclick="resetLayout()">${isZh ? "恢复默认排序" : "Reset Default"}</button>
           </div>
           ${state.layout.map((s, idx) => `
@@ -7035,31 +7208,332 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     }
 
     /* =========================================================================
-       12. 6风格高清 Canvas 海报工作室 (企业年报海报 / 世界经济宏观海报)
+       12. 6风格高清 Canvas 海报工作室 (企业年报海报 / 世界经济宏观海报 / 世界贸易专题海报)
        ========================================================================= */
+    const DEFAULT_TRADE_POSTER = {
+      title: "世界贸易往来格局专题报告",
+      subtitle: "WTO · UN Comtrade · UNCTAD 权威统计 (2025)",
+      footerNote: "DAVYLAB · GLOBAL FINANCIAL INTELLIGENCE & STUDIO",
+      showTimestamp: true,
+      showSourceLine: true,
+      showWatermark: true,
+      secKpi: true,
+      secCorridors: true,
+      secTop20: true,
+      secProfile: false,
+      secGoods: false,
+      secIndices: false,
+      kpiGoods: true,
+      kpiServices: true,
+      kpiVolGrowth: true,
+      kpiTradeGdp: true,
+      corridorCount: 5,
+      corridorTotal: true,
+      corridorNet: true,
+      corridorSplit: true,
+      top20Sort: "totB",
+      top20Count: 6,
+      colExp: true,
+      colImp: true,
+      colTot: true,
+      colBal: true,
+      colOpen: true,
+      colYoy: false,
+      country: "CN",
+      profMix: true,
+      profExports: true,
+      profImports: false,
+      profPartners: true,
+      goodsCount: 6,
+      goodsVal: true,
+      goodsSitc: true,
+      indicesCount: 4,
+      idxChg: true,
+      idxDate: false,
+      idxSource: true
+    };
+
+    function escAttr(str) {
+      return String(str ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+    }
+
+    function saveTradePosterConfig() {
+      try {
+        localStorage.setItem("gfi_trade_poster_v1", JSON.stringify(state.tradePoster));
+      } catch (e) {}
+    }
+
+    function updateTradePosterField(key, val, rerenderPanel = true) {
+      state.tradePoster[key] = val;
+      saveTradePosterConfig();
+      if (rerenderPanel) renderTradePosterControls();
+      drawPosterCanvas();
+    }
+
+    function applyTradePosterPreset(preset) {
+      const base = { ...state.tradePoster };
+      if (preset === "overview") {
+        Object.assign(base, { secKpi: true, secCorridors: true, secTop20: true, secProfile: false, secGoods: false, secIndices: false, corridorCount: 5, top20Count: 6 });
+      } else if (preset === "country") {
+        Object.assign(base, { secKpi: true, secCorridors: false, secTop20: false, secProfile: true, secGoods: true, secIndices: false, profMix: true, profExports: true, profImports: true, profPartners: true, country: state.tradeSelectedCountry || base.country || "CN" });
+      } else if (preset === "freight") {
+        Object.assign(base, { secKpi: true, secCorridors: true, secTop20: false, secProfile: false, secGoods: false, secIndices: true, corridorCount: 4, indicesCount: 6 });
+      } else if (preset === "full") {
+        Object.assign(base, { secKpi: true, secCorridors: true, secTop20: true, secProfile: true, secGoods: true, secIndices: true, corridorCount: 5, top20Count: 6, goodsCount: 6, indicesCount: 4 });
+      }
+      state.tradePoster = base;
+      saveTradePosterConfig();
+      renderTradePosterControls();
+      drawPosterCanvas();
+    }
+
+    function resetTradePosterConfig() {
+      state.tradePoster = { ...DEFAULT_TRADE_POSTER, country: state.tradeSelectedCountry || "CN" };
+      saveTradePosterConfig();
+      renderTradePosterControls();
+      drawPosterCanvas();
+      showToast("已恢复贸易专题海报默认字段配置");
+    }
+
     function openPosterModal(mode = "corp") {
       state.posterMode = mode;
+      if (mode === "trade" && state.tradeSelectedCountry && COUNTRY_TRADE_PROFILES[state.tradeSelectedCountry]) {
+        if (!localStorage.getItem("gfi_trade_poster_v1")) {
+          state.tradePoster.country = state.tradeSelectedCountry;
+        }
+      }
       document.getElementById("poster-modal").classList.add("open");
       renderPosterStudio();
     }
+
+    function renderTradePosterControls() {
+      const panel = document.getElementById("poster-custom-panel");
+      if (!panel) return;
+      const isZh = state.lang === "zh";
+      const cfg = state.tradePoster;
+      const chk = (key, label) => `
+        <label class="poster-chk-pill ${cfg[key] ? "checked" : ""}">
+          <input type="checkbox" ${cfg[key] ? "checked" : ""} onchange="updateTradePosterField('${key}', this.checked, true)" />
+          <span>${label}</span>
+        </label>
+      `;
+
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <strong style="font-size:13px;">${isZh ? "自定义海报内容与字段" : "Customize Content & Fields"}</strong>
+          <button class="btn-mini" onclick="resetTradePosterConfig()">${isZh ? "恢复默认" : "Reset"}</button>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "快捷版式模板" : "Quick Presets"}</span></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn-mini" onclick="applyTradePosterPreset('overview')">${isZh ? "综合总览" : "Overview"}</button>
+            <button class="btn-mini" onclick="applyTradePosterPreset('country')">${isZh ? "大国档案" : "Country Deep-Dive"}</button>
+            <button class="btn-mini" onclick="applyTradePosterPreset('freight')">${isZh ? "航运景气" : "Freight & Barometer"}</button>
+            <button class="btn-mini" onclick="applyTradePosterPreset('full')">${isZh ? "全量长图" : "Full Infographic"}</button>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "标题与页眉页脚字段" : "Header & Footer Fields"}</span></div>
+          <input type="text" class="inp poster-field-inp" placeholder="${isZh ? "海报主标题" : "Poster Title"}" value="${escAttr(cfg.title)}" oninput="updateTradePosterField('title', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" placeholder="${isZh ? "副标题 / 统计口径" : "Subtitle / Scope"}" value="${escAttr(cfg.subtitle)}" oninput="updateTradePosterField('subtitle', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" placeholder="${isZh ? "底部署名 / 备注文案" : "Footer Note"}" value="${escAttr(cfg.footerNote)}" oninput="updateTradePosterField('footerNote', this.value, false)" />
+          <div class="poster-chk-grid">
+            ${chk("showTimestamp", isZh ? "同步时间" : "Timestamp")}
+            ${chk("showSourceLine", isZh ? "数据来源说明" : "Source Line")}
+            ${chk("showWatermark", isZh ? "站点水印" : "Watermark")}
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secKpi ? "checked" : ""} onchange="updateTradePosterField('secKpi', this.checked, true)" />
+              <span>${isZh ? "1. 全球贸易总览 KPI" : "1. Global Trade KPIs"}</span>
+            </label>
+          </div>
+          ${cfg.secKpi ? `
+            <div class="poster-chk-grid">
+              ${chk("kpiGoods", isZh ? "货物贸易总额" : "Merchandise")}
+              ${chk("kpiServices", isZh ? "商业服务贸易" : "Services")}
+              ${chk("kpiVolGrowth", isZh ? "贸易量增速" : "Volume Growth")}
+              ${chk("kpiTradeGdp", isZh ? "占全球GDP比" : "Trade / GDP")}
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secCorridors ? "checked" : ""} onchange="updateTradePosterField('secCorridors', this.checked, true)" />
+              <span>${isZh ? "2. 双边贸易走廊" : "2. Bilateral Corridors"}</span>
+            </label>
+            ${cfg.secCorridors ? `
+              <select class="inp" style="padding:2px 6px;font-size:11px;" onchange="updateTradePosterField('corridorCount', Number(this.value), true)">
+                <option value="4" ${cfg.corridorCount === 4 ? "selected" : ""}>Top 4</option>
+                <option value="5" ${cfg.corridorCount === 5 ? "selected" : ""}>Top 5</option>
+                <option value="6" ${cfg.corridorCount === 6 ? "selected" : ""}>Top 6</option>
+                <option value="8" ${cfg.corridorCount === 8 ? "selected" : ""}>${isZh ? "全部 8 条" : "All 8"}</option>
+              </select>
+            ` : ""}
+          </div>
+          ${cfg.secCorridors ? `
+            <div class="poster-chk-grid">
+              ${chk("corridorTotal", isZh ? "双边总额" : "Total")}
+              ${chk("corridorNet", isZh ? "顺差方净额" : "Net Surplus")}
+              ${chk("corridorSplit", isZh ? "双向明细" : "A⇄B Split")}
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secTop20 ? "checked" : ""} onchange="updateTradePosterField('secTop20', this.checked, true)" />
+              <span>${isZh ? "3. 经济体顺逆差排行" : "3. Top Economies Table"}</span>
+            </label>
+          </div>
+          ${cfg.secTop20 ? `
+            <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;">
+              <select class="inp" style="flex:1;padding:3px 6px;font-size:11.5px;" onchange="updateTradePosterField('top20Sort', this.value, true)">
+                <option value="totB" ${cfg.top20Sort === "totB" ? "selected" : ""}>${isZh ? "排序：贸易总额" : "Sort: Total Trade"}</option>
+                <option value="surplus" ${cfg.top20Sort === "surplus" ? "selected" : ""}>${isZh ? "排序：顺差最大" : "Sort: Top Surplus"}</option>
+                <option value="deficit" ${cfg.top20Sort === "deficit" ? "selected" : ""}>${isZh ? "排序：逆差最大" : "Sort: Top Deficit"}</option>
+                <option value="openPct" ${cfg.top20Sort === "openPct" ? "selected" : ""}>${isZh ? "排序：外贸依存度" : "Sort: Openness %"}</option>
+              </select>
+              <select class="inp" style="padding:3px 6px;font-size:11.5px;" onchange="updateTradePosterField('top20Count', Number(this.value), true)">
+                <option value="5" ${cfg.top20Count === 5 ? "selected" : ""}>Top 5</option>
+                <option value="6" ${cfg.top20Count === 6 ? "selected" : ""}>Top 6</option>
+                <option value="8" ${cfg.top20Count === 8 ? "selected" : ""}>Top 8</option>
+                <option value="10" ${cfg.top20Count === 10 ? "selected" : ""}>Top 10</option>
+              </select>
+            </div>
+            <div class="poster-chk-grid">
+              ${chk("colExp", isZh ? "出口($B)" : "Exports")}
+              ${chk("colImp", isZh ? "进口($B)" : "Imports")}
+              ${chk("colTot", isZh ? "总额($B)" : "Total")}
+              ${chk("colBal", isZh ? "顺逆差($B)" : "Balance")}
+              ${chk("colOpen", isZh ? "依存度(%)" : "Open%")}
+              ${chk("colYoy", isZh ? "年变化(%)" : "YoY%")}
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secProfile ? "checked" : ""} onchange="updateTradePosterField('secProfile', this.checked, true)" />
+              <span>${isZh ? "4. 重点国家贸易结构" : "4. Country Profile"}</span>
+            </label>
+            ${cfg.secProfile ? `
+              <select class="inp" style="padding:2px 6px;font-size:11px;" onchange="updateTradePosterField('country', this.value, true)">
+                ${Object.entries(COUNTRY_TRADE_PROFILES).map(([code, p]) =>
+                  `<option value="${code}" ${cfg.country === code ? "selected" : ""}>${isZh ? p.zh : p.en} (${code})</option>`
+                ).join("")}
+              </select>
+            ` : ""}
+          </div>
+          ${cfg.secProfile ? `
+            <div class="poster-chk-grid">
+              ${chk("profMix", isZh ? "货服占比" : "Goods/Serv")}
+              ${chk("profExports", isZh ? "主要出口品" : "Top Exports")}
+              ${chk("profImports", isZh ? "主要进口品" : "Top Imports")}
+              ${chk("profPartners", isZh ? "前五大伙伴" : "Top Partners")}
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secGoods ? "checked" : ""} onchange="updateTradePosterField('secGoods', this.checked, true)" />
+              <span>${isZh ? "5. 全球贸易商品构成" : "5. Goods Composition"}</span>
+            </label>
+            ${cfg.secGoods ? `
+              <select class="inp" style="padding:2px 6px;font-size:11px;" onchange="updateTradePosterField('goodsCount', Number(this.value), true)">
+                <option value="5" ${cfg.goodsCount === 5 ? "selected" : ""}>Top 5</option>
+                <option value="6" ${cfg.goodsCount === 6 ? "selected" : ""}>Top 6</option>
+                <option value="8" ${cfg.goodsCount === 8 ? "selected" : ""}>${isZh ? "全部 8 类" : "All 8"}</option>
+              </select>
+            ` : ""}
+          </div>
+          ${cfg.secGoods ? `
+            <div class="poster-chk-grid">
+              ${chk("goodsVal", isZh ? "贸易金额($T)" : "Value($T)")}
+              ${chk("goodsSitc", isZh ? "SITC分类码" : "SITC Code")}
+            </div>
+          ` : ""}
+        </div>
+
+        <div class="poster-cfg-group" style="margin-bottom:0;">
+          <div class="poster-cfg-title">
+            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" style="accent-color:var(--accent-macro);" ${cfg.secIndices ? "checked" : ""} onchange="updateTradePosterField('secIndices', this.checked, true)" />
+              <span>${isZh ? "6. 航运与贸易景气指数" : "6. Freight & Barometers"}</span>
+            </label>
+            ${cfg.secIndices ? `
+              <select class="inp" style="padding:2px 6px;font-size:11px;" onchange="updateTradePosterField('indicesCount', Number(this.value), true)">
+                <option value="4" ${cfg.indicesCount === 4 ? "selected" : ""}>4 项</option>
+                <option value="6" ${cfg.indicesCount === 6 ? "selected" : ""}>6 项</option>
+                <option value="7" ${cfg.indicesCount === 7 ? "selected" : ""}>全部 7 项</option>
+              </select>
+            ` : ""}
+          </div>
+          ${cfg.secIndices ? `
+            <div class="poster-chk-grid">
+              ${chk("idxChg", isZh ? "变动幅度" : "Change")}
+              ${chk("idxDate", isZh ? "数据周期" : "Date")}
+              ${chk("idxSource", isZh ? "发布机构" : "Source")}
+            </div>
+          ` : ""}
+        </div>
+      `;
+    }
+
     function renderPosterStudio() {
       const isZh = state.lang === "zh";
       document.getElementById("poster-mode-tabs").innerHTML = [
         { id: "corp",  zh: "企业年报研报海报",     en: "Corporate Filing Poster" },
-        { id: "macro", zh: "世界经济宏观专题海报", en: "World Economy Macro Poster" }
+        { id: "macro", zh: "世界经济宏观专题海报", en: "World Economy Macro Poster" },
+        { id: "trade", zh: "世界贸易往来专题海报", en: "Global Trade Poster" }
       ].map(m => `<button class="modal-tab-btn ${state.posterMode === m.id ? "active" : ""}" onclick="state.posterMode='${m.id}';renderPosterStudio()">${isZh ? m.zh : m.en}</button>`).join("");
 
       document.getElementById("poster-style-tabs").innerHTML = POSTER_STYLES.map(st =>
         `<button class="btn-mini" style="${state.posterStyle === st.id ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.posterStyle='${st.id}';drawPosterCanvas();renderPosterStudio()">${isZh ? st.zh : st.en}</button>`
       ).join("");
 
+      const dialog = document.getElementById("poster-modal-dialog");
+      const body = document.getElementById("poster-studio-body");
+      const panel = document.getElementById("poster-custom-panel");
+      if (state.posterMode === "trade") {
+        if (dialog) dialog.style.maxWidth = "1120px";
+        if (body) body.classList.add("with-custom");
+        if (panel) panel.style.display = "block";
+        renderTradePosterControls();
+      } else {
+        if (dialog) dialog.style.maxWidth = "860px";
+        if (body) body.classList.remove("with-custom");
+        if (panel) { panel.style.display = "none"; panel.innerHTML = ""; }
+      }
+
       drawPosterCanvas();
+    }
+
+    function fitCanvasText(ctx, text, maxW) {
+      const s = String(text ?? "");
+      if (!ctx || ctx.measureText(s).width <= maxW) return s;
+      let out = s;
+      while (out.length > 1 && ctx.measureText(out + "…").width > maxW) {
+        out = out.slice(0, -1);
+      }
+      return out + "…";
     }
 
     function wrapCanvasLines(ctx, text, maxW, maxLines = 4) {
       const lines = [];
       let line = "";
-      for (const ch of text) {
+      for (const ch of String(text ?? "")) {
         if (ctx.measureText(line + ch).width > maxW) {
           lines.push(line);
           line = ch;
@@ -7072,11 +7546,508 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       return lines;
     }
 
+    function renderTradePosterContent(ctx, st, W, dryRun) {
+      const cfg = state.tradePoster;
+      const isZh = state.lang === "zh";
+      const padX = 48;
+      const innerW = W - padX * 2;
+      const draw = !dryRun && ctx;
+
+      let y = 66;
+      if (draw) {
+        ctx.textAlign = "left";
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 15px monospace";
+        ctx.fillText("DAVYLAB · GLOBAL TRADE INTELLIGENCE", padX, y);
+      }
+      if (cfg.showTimestamp) {
+        y += 22;
+        if (draw) {
+          ctx.fillStyle = st.sub;
+          ctx.font = "13.5px monospace";
+          ctx.fillText(state.updatedAt, padX, y);
+        }
+      }
+      y += 16;
+      if (draw) {
+        ctx.fillStyle = st.border;
+        ctx.fillRect(padX, y, innerW, 3);
+      }
+      y += 46;
+
+      // 主标题与副标题
+      const titleText = (cfg.title || "").trim() || (isZh ? "世界贸易往来格局专题报告" : "Global Trade Flows Report");
+      let titleLines = [titleText];
+      if (ctx) {
+        ctx.font = "bold 36px Georgia, serif";
+        titleLines = wrapCanvasLines(ctx, titleText, innerW, 2);
+      }
+      if (draw) {
+        ctx.fillStyle = st.ink;
+        ctx.font = "bold 36px Georgia, serif";
+        titleLines.forEach((ln, i) => ctx.fillText(ln, padX, y + i * 44));
+      }
+      y += (titleLines.length - 1) * 44 + 30;
+
+      const subText = (cfg.subtitle || "").trim();
+      if (subText) {
+        let subLines = [subText];
+        if (ctx) {
+          ctx.font = "16px sans-serif";
+          subLines = wrapCanvasLines(ctx, subText, innerW, 2);
+        }
+        if (draw) {
+          ctx.fillStyle = st.sub;
+          ctx.font = "16px sans-serif";
+          subLines.forEach((ln, i) => ctx.fillText(ln, padX, y + i * 22));
+        }
+        y += subLines.length * 22 + 10;
+      } else {
+        y += 8;
+      }
+
+      let renderedBlocks = 0;
+
+      // 模块 1：全球贸易总览 KPI
+      if (cfg.secKpi) {
+        const kpiDefs = [
+          cfg.kpiGoods     && { label: isZh ? "全球货物贸易总额 (2025)" : "World Merchandise Trade (2025)", val: "$26.26T", sub: "+7.0% YoY" },
+          cfg.kpiServices  && { label: isZh ? "全球商业服务贸易总额 (2025)" : "Commercial Services Trade (2025)", val: "$9.56T", sub: "+8.0% YoY" },
+          cfg.kpiVolGrowth && { label: isZh ? "全球货物贸易量增速 (2025)" : "Merchandise Volume Growth (2025)", val: "+4.6%", sub: "2024: +2.9%" },
+          cfg.kpiTradeGdp  && { label: isZh ? "全球贸易占世界 GDP 比重" : "World Trade / GDP Ratio", val: "60.6%", sub: isZh ? "货物 + 服务" : "Goods + Services" }
+        ].filter(Boolean);
+
+        if (kpiDefs.length) {
+          renderedBlocks++;
+          const cols = kpiDefs.length === 1 ? 1 : 2;
+          const cardGap = 16;
+          const cardW = (innerW - cardGap * (cols - 1)) / cols;
+          const cardH = 82;
+          kpiDefs.forEach((kp, idx) => {
+            const col = idx % cols;
+            const row = Math.floor(idx / cols);
+            const x = padX + col * (cardW + cardGap);
+            const cy = y + row * (cardH + 12);
+            if (draw) {
+              ctx.fillStyle = st.card;
+              ctx.fillRect(x, cy, cardW, cardH);
+              ctx.strokeStyle = st.accent;
+              ctx.lineWidth = 1;
+              ctx.strokeRect(x, cy, cardW, cardH);
+              ctx.fillStyle = st.sub;
+              ctx.font = "13.5px sans-serif";
+              ctx.fillText(fitCanvasText(ctx, kp.label, cardW - 28), x + 14, cy + 28);
+              ctx.fillStyle = st.ink;
+              ctx.font = "bold 24px monospace";
+              ctx.fillText(kp.val, x + 14, cy + 62);
+              const valW = ctx.measureText(kp.val).width;
+              ctx.fillStyle = st.accent;
+              ctx.font = "13px monospace";
+              ctx.fillText(kp.sub, x + 22 + valW, cy + 62);
+            }
+          });
+          y += Math.ceil(kpiDefs.length / cols) * (cardH + 12) + 14;
+        }
+      }
+
+      // 模块 2：双边贸易走廊
+      if (cfg.secCorridors) {
+        renderedBlocks++;
+        const list = TRADE_CORRIDORS.slice(0, cfg.corridorCount || 5);
+        const maxTot = Math.max(1, ...list.map(tc => tc.aToB + tc.bToA));
+        const rowH = cfg.corridorSplit ? 58 : 42;
+        const boxH = 44 + list.length * rowH + 12;
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, boxH);
+          ctx.fillStyle = st.accent;
+          ctx.font = "bold 16px sans-serif";
+          ctx.fillText(`■ ${isZh ? `全球核心双边贸易走廊 (Top ${list.length})` : `Top ${list.length} Bilateral Trade Corridors`}`, padX + 16, y + 30);
+
+          list.forEach((tc, i) => {
+            const ry = y + 54 + i * rowH;
+            const tot = tc.aToB + tc.bToA;
+            const net = tc.aToB - tc.bToA;
+            const pctA = (tc.aToB / tot) * 100;
+            const nA = isZh ? tc.zhA : tc.enA, nB = isZh ? tc.zhB : tc.enB;
+
+            ctx.fillStyle = st.ink;
+            ctx.font = "bold 14.5px sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(`${nA} ⇄ ${nB}`, padX + 16, ry);
+
+            const rightParts = [];
+            if (cfg.corridorTotal) rightParts.push(`$${tot}B`);
+            if (cfg.corridorNet) rightParts.push(net >= 0 ? `${nA}顺差 $${net}B` : `${nB}顺差 $${Math.abs(net)}B`);
+            if (rightParts.length) {
+              ctx.fillStyle = st.ink;
+              ctx.font = "bold 13px monospace";
+              ctx.textAlign = "right";
+              ctx.fillText(rightParts.join(" · "), padX + innerW - 16, ry);
+              ctx.textAlign = "left";
+            }
+
+            const barW = Math.max(180, (tot / maxTot) * (innerW - 32));
+            const wA = (pctA / 100) * barW;
+            ctx.fillStyle = tc.colA;
+            ctx.fillRect(padX + 16, ry + 8, wA, 10);
+            ctx.fillStyle = tc.colB;
+            ctx.fillRect(padX + 16 + wA, ry + 8, barW - wA, 10);
+
+            if (cfg.corridorSplit) {
+              ctx.fillStyle = st.sub;
+              ctx.font = "11.5px monospace";
+              ctx.fillText(`${nA}→${nB}: $${tc.aToB}B (${pctA.toFixed(0)}%)`, padX + 16, ry + 34);
+              ctx.textAlign = "right";
+              ctx.fillText(`${nB}→${nA}: $${tc.bToA}B (${(100 - pctA).toFixed(0)}%)`, padX + innerW - 16, ry + 34);
+              ctx.textAlign = "left";
+            }
+          });
+        }
+        y += boxH + 18;
+      }
+
+      // 模块 3：主要经济体贸易顺逆差排行 (自定义列字段)
+      if (cfg.secTop20) {
+        renderedBlocks++;
+        const sorted = [...TOP20_TRADE_BALANCES].sort((a, b) => {
+          if (cfg.top20Sort === "surplus") return b.balB - a.balB;
+          if (cfg.top20Sort === "deficit") return a.balB - b.balB;
+          if (cfg.top20Sort === "openPct") return b.openPct - a.openPct;
+          return b.totB - a.totB;
+        }).slice(0, cfg.top20Count || 6);
+
+        const activeCols = [
+          cfg.colExp  && { key: "exp",  label: isZh ? "出口" : "Exp",  fmt: r => `$${fmt(r.expB, 0)}B` },
+          cfg.colImp  && { key: "imp",  label: isZh ? "进口" : "Imp",  fmt: r => `$${fmt(r.impB, 0)}B` },
+          cfg.colTot  && { key: "tot",  label: isZh ? "总额" : "Tot",  fmt: r => `$${fmt(r.totB, 0)}B` },
+          cfg.colBal  && { key: "bal",  label: isZh ? "顺逆差" : "Bal", fmt: r => `${r.balB >= 0 ? "+" : "-"}$${fmt(Math.abs(r.balB), 0)}B`, colored: true },
+          cfg.colOpen && { key: "open", label: isZh ? "依存度" : "Open", fmt: r => `${r.openPct.toFixed(1)}%` },
+          cfg.colYoy  && { key: "yoy",  label: isZh ? "年变化" : "YoY", fmt: r => `${r.yoyPct >= 0 ? "+" : ""}${r.yoyPct.toFixed(1)}%`, colored: true }
+        ].filter(Boolean);
+
+        const sortNameMap = { totB: "按贸易总额", surplus: "按顺差最大", deficit: "按逆差最大", openPct: "按外贸依存度" };
+        const rowH = 34;
+        const boxH = 74 + sorted.length * rowH + 10;
+
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, boxH);
+          ctx.fillStyle = st.accent;
+          ctx.font = "bold 16px sans-serif";
+          ctx.fillText(`■ ${isZh ? `主要贸易经济体排行 (Top ${sorted.length} · ${sortNameMap[cfg.top20Sort] || "按贸易总额"})` : `Top ${sorted.length} Trading Economies`}`, padX + 16, y + 30);
+
+          const nameColW = 148;
+          const colAreaX = padX + 16 + nameColW;
+          const colAreaW = innerW - 32 - nameColW;
+          const colStep = activeCols.length ? colAreaW / activeCols.length : 0;
+
+          // 表头
+          ctx.fillStyle = st.sub;
+          ctx.font = "bold 12px sans-serif";
+          ctx.textAlign = "left";
+          ctx.fillText(isZh ? "#  经济体" : "#  Economy", padX + 16, y + 58);
+          activeCols.forEach((col, ci) => {
+            ctx.textAlign = "right";
+            ctx.fillText(col.label, colAreaX + (ci + 1) * colStep, y + 58);
+          });
+          ctx.textAlign = "left";
+          ctx.fillStyle = st.border;
+          ctx.globalAlpha = 0.25;
+          ctx.fillRect(padX + 16, y + 66, innerW - 32, 1);
+          ctx.globalAlpha = 1;
+
+          sorted.forEach((row, i) => {
+            const ry = y + 92 + i * rowH;
+            ctx.fillStyle = st.sub;
+            ctx.font = "12px monospace";
+            ctx.fillText(String(i + 1).padStart(2, "0"), padX + 16, ry);
+            ctx.fillStyle = st.ink;
+            ctx.font = "bold 13.5px sans-serif";
+            ctx.fillText(fitCanvasText(ctx, `${isZh ? row.zh : row.en} (${row.code})`, nameColW - 28), padX + 42, ry);
+
+            activeCols.forEach((col, ci) => {
+              const cx = colAreaX + (ci + 1) * colStep;
+              const rawVal = col.key === "bal" ? row.balB : (col.key === "yoy" ? row.yoyPct : 0);
+              ctx.fillStyle = col.colored ? (rawVal >= 0 ? "#C84B4B" : "#2E8B57") : st.ink;
+              ctx.font = (col.key === "tot" || col.key === "bal") ? "bold 12.5px monospace" : "12.5px monospace";
+              ctx.textAlign = "right";
+              ctx.fillText(col.fmt(row), cx, ry);
+            });
+            ctx.textAlign = "left";
+
+            if (i < sorted.length - 1) {
+              ctx.fillStyle = st.border;
+              ctx.globalAlpha = 0.12;
+              ctx.fillRect(padX + 16, ry + 11, innerW - 32, 1);
+              ctx.globalAlpha = 1;
+            }
+          });
+        }
+        y += boxH + 18;
+      }
+
+      // 模块 4：重点国家贸易结构
+      if (cfg.secProfile) {
+        const prof = COUNTRY_TRADE_PROFILES[cfg.country] || COUNTRY_TRADE_PROFILES.CN;
+        const subBlocks = [
+          cfg.profExports  && { type: "exp", title: isZh ? "主要出口商品 Top 4" : "Top Exports", items: prof.exports.slice(0, 4) },
+          cfg.profImports  && { type: "imp", title: isZh ? "主要进口商品 Top 4" : "Top Imports", items: prof.imports.slice(0, 4) },
+          cfg.profPartners && { type: "pt",  title: isZh ? "前五大贸易伙伴" : "Top 5 Partners", items: prof.partners.slice(0, 5) }
+        ].filter(Boolean);
+
+        if (cfg.profMix || subBlocks.length) {
+          renderedBlocks++;
+          const mixH = cfg.profMix ? 54 : 0;
+          const gridH = subBlocks.length ? 168 : 0;
+          const boxH = 44 + mixH + gridH + 14;
+          const totGoods = prof.goodsExpB + prof.goodsImpB;
+          const totServ = prof.servExpB + prof.servImpB;
+          const goodsPct = (totGoods / (totGoods + totServ)) * 100;
+
+          if (draw) {
+            ctx.fillStyle = st.card;
+            ctx.fillRect(padX, y, innerW, boxH);
+            ctx.fillStyle = st.accent;
+            ctx.font = "bold 16px sans-serif";
+            ctx.fillText(`■ ${isZh ? `${prof.zh} 贸易结构深度透视 (${prof.year})` : `${prof.en} Trade Profile (${prof.year})`}`, padX + 16, y + 30);
+
+            let py = y + 48;
+            if (cfg.profMix) {
+              ctx.fillStyle = st.ink;
+              ctx.font = "12.5px monospace";
+              ctx.fillText(`${isZh ? "货物贸易" : "Goods"}: $${fmt(prof.goodsExpB, 0)}B / $${fmt(prof.goodsImpB, 0)}B (${goodsPct.toFixed(1)}%)`, padX + 16, py + 12);
+              ctx.textAlign = "right";
+              ctx.fillText(`${isZh ? "服务贸易" : "Services"}: $${fmt(prof.servExpB, 0)}B / $${fmt(prof.servImpB, 0)}B (${(100 - goodsPct).toFixed(1)}%)`, padX + innerW - 16, py + 12);
+              ctx.textAlign = "left";
+              const barW = innerW - 32;
+              const gw = (goodsPct / 100) * barW;
+              ctx.fillStyle = "#24486E";
+              ctx.fillRect(padX + 16, py + 22, gw, 12);
+              ctx.fillStyle = st.accent;
+              ctx.fillRect(padX + 16 + gw, py + 22, barW - gw, 12);
+              py += mixH;
+            }
+
+            if (subBlocks.length) {
+              const gap = 12;
+              const colW = (innerW - 32 - gap * (subBlocks.length - 1)) / subBlocks.length;
+              subBlocks.forEach((sb, bi) => {
+                const bx = padX + 16 + bi * (colW + gap);
+                ctx.fillStyle = st.bg;
+                ctx.fillRect(bx, py, colW, 156);
+                ctx.strokeStyle = st.border;
+                ctx.globalAlpha = 0.2;
+                ctx.strokeRect(bx, py, colW, 156);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = st.ink;
+                ctx.font = "bold 13px sans-serif";
+                ctx.fillText(sb.title, bx + 10, py + 22);
+
+                if (sb.type === "pt") {
+                  sb.items.forEach((pt, pi) => {
+                    const iy = py + 46 + pi * 23;
+                    ctx.fillStyle = st.sub;
+                    ctx.font = "11.5px sans-serif";
+                    ctx.fillText(fitCanvasText(ctx, `${pt.zh} (${pt.share}%)`, colW - 76), bx + 10, iy);
+                    ctx.fillStyle = pt.balB >= 0 ? "#C84B4B" : "#2E8B57";
+                    ctx.font = "bold 11.5px monospace";
+                    ctx.textAlign = "right";
+                    ctx.fillText(`${pt.balB >= 0 ? "+" : "-"}$${Math.abs(pt.balB)}B`, bx + colW - 10, iy);
+                    ctx.textAlign = "left";
+                  });
+                } else {
+                  sb.items.forEach((it, ii) => {
+                    const iy = py + 46 + ii * 28;
+                    ctx.fillStyle = st.sub;
+                    ctx.font = "11.5px sans-serif";
+                    ctx.fillText(fitCanvasText(ctx, it.zh, colW - 58), bx + 10, iy);
+                    ctx.fillStyle = st.ink;
+                    ctx.font = "bold 11.5px monospace";
+                    ctx.textAlign = "right";
+                    ctx.fillText(`${it.pct}%`, bx + colW - 10, iy);
+                    ctx.textAlign = "left";
+                    ctx.fillStyle = st.card;
+                    ctx.fillRect(bx + 10, iy + 5, colW - 20, 5);
+                    ctx.fillStyle = sb.type === "exp" ? "#24486E" : st.accent;
+                    ctx.fillRect(bx + 10, iy + 5, Math.min(colW - 20, ((it.pct * 2.5) / 100) * (colW - 20)), 5);
+                  });
+                }
+              });
+            }
+          }
+          y += boxH + 18;
+        }
+      }
+
+      // 模块 5：全球贸易商品构成 (SITC Rev.4)
+      if (cfg.secGoods) {
+        renderedBlocks++;
+        const list = GLOBAL_GOODS_COMPOSITION.slice(0, cfg.goodsCount || 6);
+        const rowH = 34;
+        const boxH = 46 + list.length * rowH + 10;
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, boxH);
+          ctx.fillStyle = st.accent;
+          ctx.font = "bold 16px sans-serif";
+          ctx.fillText(`■ ${isZh ? "全球货物贸易商品构成 (2025 · SITC Rev.4)" : "Global Merchandise Composition (2025 · SITC Rev.4)"}`, padX + 16, y + 30);
+
+          list.forEach((g, i) => {
+            const ry = y + 58 + i * rowH;
+            const label = cfg.goodsSitc ? `${isZh ? g.zh : g.en} (${g.sitc})` : (isZh ? g.zh : g.en);
+            ctx.fillStyle = g.color;
+            ctx.fillRect(padX + 16, ry - 10, 10, 10);
+            ctx.fillStyle = st.ink;
+            ctx.font = "13px sans-serif";
+            ctx.fillText(fitCanvasText(ctx, label, 260), padX + 32, ry);
+
+            const barX = padX + 300;
+            const barMaxW = 215;
+            ctx.fillStyle = st.bg;
+            ctx.fillRect(barX, ry - 10, barMaxW, 11);
+            ctx.fillStyle = g.color;
+            ctx.fillRect(barX, ry - 10, Math.min(barMaxW, (g.share / 24) * barMaxW), 11);
+
+            ctx.fillStyle = st.ink;
+            ctx.font = "bold 12.5px monospace";
+            ctx.textAlign = "right";
+            const rightVal = cfg.goodsVal ? `${g.share.toFixed(1)}% ($${g.valT.toFixed(2)}T)` : `${g.share.toFixed(1)}%`;
+            ctx.fillText(rightVal, padX + innerW - 16, ry);
+            ctx.textAlign = "left";
+          });
+        }
+        y += boxH + 18;
+      }
+
+      // 模块 6：航运与贸易景气指数
+      if (cfg.secIndices) {
+        renderedBlocks++;
+        const list = TRADE_INDICES.slice(0, cfg.indicesCount || 4);
+        const cardH = (cfg.idxDate || cfg.idxSource) ? 94 : 74;
+        const rows = Math.ceil(list.length / 2);
+        const boxH = 46 + rows * (cardH + 10) + 6;
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, boxH);
+          ctx.fillStyle = st.accent;
+          ctx.font = "bold 16px sans-serif";
+          ctx.fillText(`■ ${isZh ? "全球贸易景气与航运专业指数" : "Global Trade & Freight Indices"}`, padX + 16, y + 30);
+
+          const colW = (innerW - 44) / 2;
+          list.forEach((ix, i) => {
+            const col = i % 2;
+            const row = Math.floor(i / 2);
+            const cx = padX + 16 + col * (colW + 12);
+            const cy = y + 44 + row * (cardH + 10);
+            ctx.fillStyle = st.bg;
+            ctx.fillRect(cx, cy, colW, cardH);
+            ctx.strokeStyle = st.border;
+            ctx.globalAlpha = 0.2;
+            ctx.strokeRect(cx, cy, colW, cardH);
+            ctx.globalAlpha = 1;
+
+            ctx.fillStyle = st.accent;
+            ctx.font = "bold 11.5px monospace";
+            ctx.fillText(ix.code, cx + 12, cy + 20);
+            ctx.fillStyle = st.sub;
+            ctx.font = "11px sans-serif";
+            ctx.textAlign = "right";
+            ctx.fillText(fitCanvasText(ctx, ix.category, colW - 110), cx + colW - 12, cy + 20);
+            ctx.textAlign = "left";
+
+            ctx.fillStyle = st.ink;
+            ctx.font = "bold 13.5px sans-serif";
+            ctx.fillText(fitCanvasText(ctx, isZh ? ix.zh : ix.en, colW - 24), cx + 12, cy + 40);
+
+            ctx.fillStyle = st.ink;
+            ctx.font = "bold 18px monospace";
+            ctx.fillText(ix.val, cx + 12, cy + 64);
+
+            if (cfg.idxChg) {
+              ctx.fillStyle = ix.isPos ? "#C84B4B" : "#2E8B57";
+              ctx.font = "bold 12px monospace";
+              ctx.textAlign = "right";
+              ctx.fillText(fitCanvasText(ctx, ix.chg, colW * 0.48), cx + colW - 12, cy + 64);
+              ctx.textAlign = "left";
+            }
+
+            if (cfg.idxDate || cfg.idxSource) {
+              const meta = [cfg.idxDate ? ix.date : "", cfg.idxSource ? ix.source : ""].filter(Boolean).join(" · ");
+              ctx.fillStyle = st.sub;
+              ctx.font = "10.5px monospace";
+              ctx.fillText(fitCanvasText(ctx, meta, colW - 24), cx + 12, cy + 84);
+            }
+          });
+        }
+        y += boxH + 18;
+      }
+
+      if (!renderedBlocks) {
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, 120);
+          ctx.fillStyle = st.sub;
+          ctx.font = "16px sans-serif";
+          ctx.textAlign = "center";
+          ctx.fillText(isZh ? "请在左侧勾选至少一个展示模块或字段" : "Select at least one module on the left", W / 2, y + 66);
+          ctx.textAlign = "left";
+        }
+        y += 140;
+      }
+
+      // 页脚区域
+      if (cfg.showSourceLine) {
+        if (draw) {
+          ctx.fillStyle = st.sub;
+          ctx.font = "12px sans-serif";
+          ctx.fillText(isZh ? "数据口径：WTO Merchandise & Services Trade · UN Comtrade SITC/HS · UNCTAD · Baltic/SSE" : "Sources: WTO · UN Comtrade · UNCTAD · Baltic Exchange · SSE", padX, y + 10);
+        }
+        y += 26;
+      }
+
+      if (draw) {
+        ctx.fillStyle = st.border;
+        ctx.fillRect(padX, y, innerW, 1);
+      }
+      y += 28;
+      if (draw) {
+        ctx.fillStyle = st.sub;
+        ctx.font = "13px monospace";
+        ctx.fillText(fitCanvasText(ctx, (cfg.footerNote || "").trim() || "DAVYLAB · GLOBAL FINANCIAL INTELLIGENCE & STUDIO", innerW), padX, y);
+      }
+      if (cfg.showWatermark) {
+        y += 22;
+        if (draw) {
+          ctx.fillStyle = st.accent;
+          ctx.font = "13px monospace";
+          ctx.fillText("finhub.chenzhe223.workers.dev", padX, y);
+        }
+      }
+
+      return Math.max(820, Math.ceil(y + 44));
+    }
+
     function drawPosterCanvas() {
       const canvas = document.getElementById("poster-canvas");
       const ctx = canvas.getContext("2d");
       const st = POSTER_STYLES.find(x => x.id === state.posterStyle) || POSTER_STYLES[0];
-      const W = 750, H = 1100;
+      const W = 750;
+
+      if (state.posterMode === "trade") {
+        const H = renderTradePosterContent(ctx, st, W, true);
+        if (canvas.height !== H) canvas.height = H;
+        ctx.fillStyle = st.bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = st.border;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(24, 24, W - 48, H - 48);
+        renderTradePosterContent(ctx, st, W, false);
+        return;
+      }
+
+      const H = 1100;
+      if (canvas.height !== H) canvas.height = H;
 
       ctx.fillStyle = st.bg;
       ctx.fillRect(0, 0, W, H);
@@ -7240,7 +8211,9 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     function downloadPosterPNG() {
       const canvas = document.getElementById("poster-canvas");
       const link = document.createElement("a");
-      const slug = state.posterMode === "corp" ? state.selectedComp.ticker : "WORLD-MACRO";
+      const slug = state.posterMode === "corp"
+        ? state.selectedComp.ticker
+        : (state.posterMode === "trade" ? "WORLD-TRADE" : "WORLD-MACRO");
       link.download = `DAVYLAB-Poster-${slug}-${state.posterStyle}.png`;
       link.href = canvas.toDataURL("image/png");
       document.body.appendChild(link);
@@ -7343,6 +8316,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       filterCompanyPills();
       renderCompanyDetail();
       renderWorldMacro();
+      renderMacroTradeTab();
       renderCurrencyReserves();
     }
 
