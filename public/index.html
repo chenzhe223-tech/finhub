@@ -1704,6 +1704,106 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     .layout-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--bg-canvas); border: 1px solid var(--border-hairline); border-radius: 4px; margin-bottom: 6px; font-size: 13px; }
     .excerpt-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 10px; background: var(--bg-canvas); border: 1px solid var(--border-hairline); border-radius: 4px; margin-bottom: 8px; font-size: 12.5px; }
 
+    /* 世界经济宏观全景增量样式 (复用原有变量与卡片规范) */
+    .macro-sub-card {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 14px 16px;
+      margin-top: 16px;
+    }
+    .macro-sub-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .macro-source-note {
+      font-size: 11px;
+      color: var(--ink-muted);
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+    .macro-source-note a {
+      color: var(--accent-us);
+      text-decoration: underline;
+    }
+    details.macro-fold-details {
+      margin-top: 14px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-left: 3px solid var(--accent-macro);
+      border-radius: 4px;
+      padding: 10px 14px;
+    }
+    details.macro-fold-details > summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-primary);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    details.macro-fold-details > summary::-webkit-details-marker { display: none; }
+    .macro-fold-body {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-hairline);
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+      line-height: 1.65;
+    }
+    .macro-badge-adv {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--accent-gold-soft);
+      color: var(--accent-gold-text);
+      border: 1px solid var(--accent-gold);
+    }
+    .macro-badge-emde {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--bg-subtle);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border-hairline);
+    }
+    .bi-bar-cell {
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr;
+      align-items: center;
+      height: 12px;
+      background: var(--bg-subtle);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .bi-bar-left { display: flex; justify-content: flex-end; height: 100%; }
+    .bi-bar-zero { width: 2px; height: 100%; background: var(--border-strong); }
+    .bi-bar-right { display: flex; justify-content: flex-start; height: 100%; }
+    .freight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-top: 3px solid var(--accent-fx);
+      border-radius: 4px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
     .footer {
       margin-top: 44px;
       padding-top: 14px;
@@ -3827,59 +3927,99 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       }
     ];
 
-    /* 世界经济宏观全景数据 (2016 - 2026E) */
+    /* 世界经济宏观全景数据 (2016 - 2025 实际历史统计, 2026E IMF WEO 预测) */
     const MACRO_YEARS = ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026E"];
     const GLOBAL_GDP_TOTAL = [76.5, 81.4, 86.5, 87.8, 85.2, 97.1, 101.2, 105.4, 110.1, 115.2, 120.5];
 
     const MACRO_GDP_10Y = [
-      { id: "us", zh: "美国",   en: "United States", color: "#24486E", nom: [18.80, 19.61, 20.66, 21.52, 21.32, 23.59, 25.74, 27.36, 28.78, 30.12, 31.40], gr: [1.8, 2.5, 3.0, 2.5, -2.2, 5.8, 1.9, 2.5, 2.8, 2.2, 2.1] },
-      { id: "cn", zh: "中国",   en: "China",         color: "#A63A3A", nom: [11.23, 12.31, 13.89, 14.28, 14.69, 17.82, 17.88, 17.79, 18.53, 19.48, 20.50], gr: [6.8, 6.9, 6.7, 6.0, 2.2, 8.4, 3.0, 5.2, 5.0, 4.7, 4.5] },
-      { id: "de", zh: "德国",   en: "Germany",       color: "#B8862D", nom: [3.47,  3.69,  3.97,  3.89,  3.89,  4.28,  4.08,  4.46,  4.59,  4.74,  4.91],  gr: [2.2, 2.7, 1.1, 1.1, -3.8, 3.2, 1.8, -0.3, -0.2, 0.8, 1.3] },
-      { id: "jp", zh: "日本",   en: "Japan",         color: "#4B3F72", nom: [5.00,  4.93,  5.04,  5.12,  5.05,  5.03,  4.26,  4.21,  4.07,  4.19,  4.36],  gr: [0.8, 1.7, 0.6, -0.4, -4.1, 2.6, 1.0, 1.9, 0.1, 1.1, 1.0] },
-      { id: "in", zh: "印度",   en: "India",         color: "#2E6B5E", nom: [2.29,  2.65,  2.70,  2.84,  2.67,  3.17,  3.35,  3.57,  3.89,  4.27,  4.68],  gr: [8.3, 6.8, 6.5, 3.9, -5.8, 9.7, 7.0, 8.2, 6.5, 6.5, 6.4] },
-      { id: "uk", zh: "英国",   en: "United Kingdom",color: "#3A6B7C", nom: [2.69,  2.68,  2.87,  2.85,  2.70,  3.14,  3.09,  3.34,  3.59,  3.75,  3.91],  gr: [1.9, 2.7, 1.4, 1.6, -10.4, 8.7, 4.3, 0.1, 0.9, 1.5, 1.5] },
-      { id: "fr", zh: "法国",   en: "France",        color: "#6C757D", nom: [2.47,  2.59,  2.79,  2.73,  2.64,  2.96,  2.78,  3.03,  3.13,  3.24,  3.36],  gr: [1.1, 2.3, 1.9, 1.8, -7.5, 6.4, 2.5, 0.9, 1.1, 1.1, 1.3] },
-      { id: "it", zh: "意大利", en: "Italy",         color: "#8C6D46", nom: [1.88,  1.96,  2.09,  2.01,  1.90,  2.15,  2.07,  2.25,  2.33,  2.40,  2.48],  gr: [1.3, 1.7, 0.9, 0.5, -9.0, 8.3, 4.0, 0.9, 0.7, 0.8, 0.9] },
-      { id: "br", zh: "巴西",   en: "Brazil",        color: "#2B8A3E", nom: [1.80,  2.06,  1.92,  1.87,  1.48,  1.67,  1.95,  2.17,  2.19,  2.31,  2.44],  gr: [-3.3, 1.3, 1.8, 1.2, -3.3, 4.8, 3.0, 2.9, 3.1, 2.2, 2.2] },
-      { id: "ca", zh: "加拿大", en: "Canada",        color: "#7A4E2D", nom: [1.53,  1.65,  1.73,  1.74,  1.65,  2.01,  2.16,  2.14,  2.21,  2.33,  2.45],  gr: [1.0, 3.0, 2.7, 1.9, -5.0, 5.3, 3.8, 1.2, 1.3, 2.0, 2.1] }
+      { id: "us", zh: "美国",       en: "United States",  color: "#24486E", nom: [18.80, 19.61, 20.66, 21.52, 21.32, 23.59, 25.74, 27.36, 28.78, 30.12, 31.40], gr: [1.8, 2.5, 3.0, 2.5, -2.2, 5.8, 1.9, 2.5, 2.8, 2.2, 2.1], pc10y: [58206, 60322, 63201, 65548, 64411, 71056, 77247, 81695, 85373, 88890, 92150] },
+      { id: "cn", zh: "中国",       en: "China",          color: "#A63A3A", nom: [11.23, 12.31, 13.89, 14.28, 14.69, 17.82, 17.88, 17.79, 18.53, 19.48, 20.50], gr: [6.8, 6.9, 6.7, 6.0, 2.2, 8.4, 3.0, 5.2, 5.0, 4.7, 4.5], pc10y: [8094, 8817, 9905, 10144, 10409, 12618, 12663, 12614, 13136, 13850, 14610] },
+      { id: "de", zh: "德国",       en: "Germany",        color: "#B8862D", nom: [3.47,  3.69,  3.97,  3.89,  3.89,  4.28,  4.08,  4.46,  4.59,  4.74,  4.91],  gr: [2.2, 2.7, 1.1, 1.1, -3.8, 3.2, 1.8, -0.3, -0.2, 0.8, 1.3], pc10y: [42136, 44653, 47939, 46795, 46749, 51427, 48718, 52746, 54291, 56200, 58310] },
+      { id: "jp", zh: "日本",       en: "Japan",          color: "#4B3F72", nom: [5.00,  4.93,  5.04,  5.12,  5.05,  5.03,  4.26,  4.21,  4.07,  4.19,  4.36],  gr: [0.8, 1.7, 0.6, -0.4, -4.1, 2.6, 1.0, 1.9, 0.1, 1.1, 1.0], pc10y: [39375, 38834, 39751, 40416, 39990, 40059, 34017, 33834, 32859, 34100, 35620] },
+      { id: "in", zh: "印度",       en: "India",          color: "#2E6B5E", nom: [2.29,  2.65,  2.70,  2.84,  2.67,  3.17,  3.35,  3.57,  3.89,  4.27,  4.68],  gr: [8.3, 6.8, 6.5, 3.9, -5.8, 9.7, 7.0, 8.2, 6.5, 6.5, 6.4], pc10y: [1714, 1958, 1974, 2050, 1913, 2250, 2366, 2485, 2698, 2940, 3195] },
+      { id: "uk", zh: "英国",       en: "United Kingdom", color: "#3A6B7C", nom: [2.69,  2.68,  2.87,  2.85,  2.70,  3.14,  3.09,  3.34,  3.59,  3.75,  3.91],  gr: [1.9, 2.7, 1.4, 1.6, -10.4, 8.7, 4.3, 0.1, 0.9, 1.5, 1.5], pc10y: [40985, 40572, 43204, 42663, 40217, 46870, 45564, 48867, 52423, 54100, 56120] },
+      { id: "fr", zh: "法国",       en: "France",         color: "#6C757D", nom: [2.47,  2.59,  2.79,  2.73,  2.64,  2.96,  2.78,  3.03,  3.13,  3.24,  3.36],  gr: [1.1, 2.3, 1.9, 1.8, -7.5, 6.4, 2.5, 0.9, 1.1, 1.1, 1.3], pc10y: [37063, 38781, 41593, 40579, 39179, 43659, 40886, 44461, 46184, 48200, 49850] },
+      { id: "it", zh: "意大利",     en: "Italy",          color: "#8C6D46", nom: [1.88,  1.96,  2.09,  2.01,  1.90,  2.15,  2.07,  2.25,  2.33,  2.40,  2.48],  gr: [1.3, 1.7, 0.9, 0.5, -9.0, 8.3, 4.0, 0.9, 0.7, 0.8, 0.9], pc10y: [30961, 32407, 34622, 33673, 31923, 36449, 35054, 38373, 39580, 40890, 42310] },
+      { id: "br", zh: "巴西",       en: "Brazil",         color: "#2B8A3E", nom: [1.80,  2.06,  1.92,  1.87,  1.48,  1.67,  1.95,  2.17,  2.19,  2.31,  2.44],  gr: [-3.3, 1.3, 1.8, 1.2, -3.3, 4.8, 3.0, 2.9, 3.1, 2.2, 2.2], pc10y: [8710, 9929, 9151, 8876, 6924, 7795, 9066, 10044, 10296, 10810, 11360] },
+      { id: "ca", zh: "加拿大",     en: "Canada",         color: "#7A4E2D", nom: [1.53,  1.65,  1.73,  1.74,  1.65,  2.01,  2.16,  2.14,  2.21,  2.33,  2.45],  gr: [1.0, 3.0, 2.7, 1.9, -5.0, 5.3, 3.8, 1.2, 1.3, 2.0, 2.1], pc10y: [42316, 45129, 46548, 46374, 43538, 52515, 55509, 53372, 53834, 55800, 58120] },
+      { id: "ru", zh: "俄罗斯",     en: "Russia",         color: "#5C6BC0", nom: [1.28,  1.57,  1.66,  1.69,  1.49,  1.84,  2.27,  2.02,  2.18,  2.24,  2.31],  gr: [0.2, 1.8, 2.8, 2.2, -2.7, 5.9, -1.2, 3.6, 3.6, 1.5, 1.3], pc10y: [8705, 10720, 11287, 11536, 10194, 12593, 15482, 13817, 14953, 15380, 15910] },
+      { id: "kr", zh: "韩国",       en: "South Korea",    color: "#00897B", nom: [1.50,  1.62,  1.72,  1.65,  1.64,  1.82,  1.67,  1.71,  1.87,  1.94,  2.02],  gr: [2.9, 3.2, 2.9, 2.2, -0.7, 4.3, 2.6, 1.4, 2.2, 2.0, 2.1], pc10y: [29289, 31617, 33437, 31929, 31721, 35142, 32423, 33121, 36132, 37480, 39010] },
+      { id: "au", zh: "澳大利亚",   en: "Australia",      color: "#D87A38", nom: [1.21,  1.33,  1.43,  1.39,  1.33,  1.56,  1.69,  1.72,  1.79,  1.86,  1.94],  gr: [2.7, 2.4, 2.8, 2.2, -0.1, 5.5, 3.9, 2.0, 1.2, 2.1, 2.2], pc10y: [50050, 54094, 57355, 55049, 51868, 60697, 65099, 64712, 65966, 67800, 70150] },
+      { id: "mx", zh: "墨西哥",     en: "Mexico",         color: "#8E6C88", nom: [1.08,  1.16,  1.22,  1.27,  1.09,  1.31,  1.47,  1.79,  1.85,  1.89,  1.96],  gr: [1.8, 1.9, 2.0, -0.4, -8.4, 6.0, 3.7, 3.2, 1.5, 1.3, 1.8], pc10y: [8875, 9434, 9857, 10145, 8655, 10359, 11497, 13926, 14157, 14390, 14850] },
+      { id: "id", zh: "印度尼西亚", en: "Indonesia",      color: "#C0564B", nom: [0.93,  1.02,  1.04,  1.12,  1.06,  1.19,  1.32,  1.37,  1.40,  1.49,  1.60],  gr: [5.0, 5.1, 5.2, 5.0, -2.1, 3.7, 5.3, 5.0, 5.0, 5.1, 5.1], pc10y: [3559, 3837, 3893, 4135, 3895, 4334, 4788, 4941, 4981, 5260, 5610] },
+      { id: "sa", zh: "沙特阿拉伯", en: "Saudi Arabia",   color: "#3E7A5A", nom: [0.64,  0.69,  0.85,  0.84,  0.73,  0.87,  1.11,  1.07,  1.10,  1.15,  1.21],  gr: [1.7, -0.1, 3.2, 1.1, -3.6, 5.1, 7.5, -0.8, 1.5, 4.4, 4.3], pc10y: [19280, 20110, 24161, 23451, 20110, 24161, 30436, 28895, 29450, 30380, 31560] }
     ];
 
+    /* 国家级人均名义 GDP 与购买力平价 (PPP) 数据库 — World Bank WDI & IMF WEO 2024 权威基准 */
     const MACRO_PPP_DATA = [
-      { code: "CH", zh: "瑞士",   en: "Switzerland",   pcNom: 105600, pcPpp: 93800,  totNom: 0.94,  totPpp: 0.83 },
-      { code: "SG", zh: "新加坡", en: "Singapore",     pcNom: 91200,  pcPpp: 148200, totNom: 0.53,  totPpp: 0.86 },
-      { code: "US", zh: "美国",   en: "United States", pcNom: 89600,  pcPpp: 89600,  totNom: 30.12, totPpp: 30.12 },
-      { code: "AU", zh: "澳大利亚",en: "Australia",    pcNom: 67800,  pcPpp: 69500,  totNom: 1.79,  totPpp: 1.84 },
-      { code: "DE", zh: "德国",   en: "Germany",       pcNom: 56200,  pcPpp: 70400,  totNom: 4.74,  totPpp: 5.94 },
-      { code: "CA", zh: "加拿大", en: "Canada",        pcNom: 55800,  pcPpp: 63900,  totNom: 2.33,  totPpp: 2.67 },
-      { code: "UK", zh: "英国",   en: "United Kingdom",pcNom: 54100,  pcPpp: 61800,  totNom: 3.75,  totPpp: 4.28 },
-      { code: "FR", zh: "法国",   en: "France",        pcNom: 48200,  pcPpp: 61200,  totNom: 3.24,  totPpp: 4.11 },
-      { code: "KR", zh: "韩国",   en: "South Korea",   pcNom: 36800,  pcPpp: 60400,  totNom: 1.90,  totPpp: 3.12 },
-      { code: "JP", zh: "日本",   en: "Japan",         pcNom: 34100,  pcPpp: 54600,  totNom: 4.19,  totPpp: 6.71 },
-      { code: "CN", zh: "中国",   en: "China",         pcNom: 13850,  pcPpp: 27380,  totNom: 19.48, totPpp: 38.50 },
-      { code: "IN", zh: "印度",   en: "India",         pcNom: 2940,   pcPpp: 11150,  totNom: 4.27,  totPpp: 16.20 }
+      { rank: 1,  code: "LU", zh: "卢森堡",       en: "Luxembourg",           region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 135320, pcPpp: 147940, totNom: 0.09,  totPpp: 0.10 },
+      { rank: 2,  code: "CH", zh: "瑞士",         en: "Switzerland",          region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 105670, pcPpp: 93820,  totNom: 0.94,  totPpp: 0.83 },
+      { rank: 3,  code: "IE", zh: "爱尔兰",       en: "Ireland",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 103500, pcPpp: 127750, totNom: 0.56,  totPpp: 0.69 },
+      { rank: 4,  code: "NO", zh: "挪威",         en: "Norway",               region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 90430,  pcPpp: 104460, totNom: 0.50,  totPpp: 0.58 },
+      { rank: 5,  code: "SG", zh: "新加坡",       en: "Singapore",            region: "apac",     imfClass: "adv",  wbIncome: "high",      pcNom: 88450,  pcPpp: 148190, totNom: 0.53,  totPpp: 0.89 },
+      { rank: 6,  code: "US", zh: "美国",         en: "United States",        region: "americas", imfClass: "adv",  wbIncome: "high",      pcNom: 85373,  pcPpp: 85373,  totNom: 28.78, totPpp: 28.78 },
+      { rank: 7,  code: "IS", zh: "冰岛",         en: "Iceland",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 84590,  pcPpp: 77960,  totNom: 0.03,  totPpp: 0.03 },
+      { rank: 8,  code: "QA", zh: "卡塔尔",       en: "Qatar",                region: "mea",      imfClass: "emde", wbIncome: "high",      pcNom: 81400,  pcPpp: 128920, totNom: 0.24,  totPpp: 0.38 },
+      { rank: 9,  code: "DK", zh: "丹麦",         en: "Denmark",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 68898,  pcPpp: 77640,  totNom: 0.41,  totPpp: 0.46 },
+      { rank: 10, code: "AU", zh: "澳大利亚",     en: "Australia",            region: "apac",     imfClass: "adv",  wbIncome: "high",      pcNom: 65966,  pcPpp: 68640,  totNom: 1.79,  totPpp: 1.86 },
+      { rank: 11, code: "NL", zh: "荷兰",         en: "Netherlands",          region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 63750,  pcPpp: 78210,  totNom: 1.14,  totPpp: 1.40 },
+      { rank: 12, code: "SE", zh: "瑞典",         en: "Sweden",               region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 58530,  pcPpp: 70210,  totNom: 0.62,  totPpp: 0.74 },
+      { rank: 13, code: "BE", zh: "比利时",       en: "Belgium",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 55540,  pcPpp: 70460,  totNom: 0.66,  totPpp: 0.83 },
+      { rank: 14, code: "AT", zh: "奥地利",       en: "Austria",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 56800,  pcPpp: 71190,  totNom: 0.52,  totPpp: 0.65 },
+      { rank: 15, code: "DE", zh: "德国",         en: "Germany",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 54291,  pcPpp: 69340,  totNom: 4.59,  totPpp: 5.86 },
+      { rank: 16, code: "CA", zh: "加拿大",       en: "Canada",               region: "americas", imfClass: "adv",  wbIncome: "high",      pcNom: 53834,  pcPpp: 62770,  totNom: 2.21,  totPpp: 2.58 },
+      { rank: 17, code: "FI", zh: "芬兰",         en: "Finland",              region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 54510,  pcPpp: 63140,  totNom: 0.31,  totPpp: 0.35 },
+      { rank: 18, code: "IL", zh: "以色列",       en: "Israel",               region: "mea",      imfClass: "adv",  wbIncome: "high",      pcNom: 53200,  pcPpp: 54350,  totNom: 0.53,  totPpp: 0.54 },
+      { rank: 19, code: "UK", zh: "英国",         en: "United Kingdom",       region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 52423,  pcPpp: 60620,  totNom: 3.59,  totPpp: 4.15 },
+      { rank: 20, code: "AE", zh: "阿联酋",       en: "United Arab Emirates", region: "mea",      imfClass: "emde", wbIncome: "high",      pcNom: 51910,  pcPpp: 83900,  totNom: 0.54,  totPpp: 0.87 },
+      { rank: 21, code: "FR", zh: "法国",         en: "France",               region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 46184,  pcPpp: 60340,  totNom: 3.13,  totPpp: 4.09 },
+      { rank: 22, code: "NZ", zh: "新西兰",       en: "New Zealand",          region: "apac",     imfClass: "adv",  wbIncome: "high",      pcNom: 48230,  pcPpp: 54110,  totNom: 0.26,  totPpp: 0.29 },
+      { rank: 23, code: "IT", zh: "意大利",       en: "Italy",                region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 39580,  pcPpp: 58750,  totNom: 2.33,  totPpp: 3.46 },
+      { rank: 24, code: "KR", zh: "韩国",         en: "South Korea",          region: "apac",     imfClass: "adv",  wbIncome: "high",      pcNom: 36132,  pcPpp: 59330,  totNom: 1.87,  totPpp: 3.07 },
+      { rank: 25, code: "ES", zh: "西班牙",       en: "Spain",                region: "europe",   imfClass: "adv",  wbIncome: "high",      pcNom: 34045,  pcPpp: 53860,  totNom: 1.65,  totPpp: 2.61 },
+      { rank: 26, code: "JP", zh: "日本",         en: "Japan",                region: "apac",     imfClass: "adv",  wbIncome: "high",      pcNom: 32859,  pcPpp: 52640,  totNom: 4.07,  totPpp: 6.52 },
+      { rank: 27, code: "SA", zh: "沙特阿拉伯",   en: "Saudi Arabia",         region: "mea",      imfClass: "emde", wbIncome: "high",      pcNom: 29450,  pcPpp: 70330,  totNom: 1.10,  totPpp: 2.63 },
+      { rank: 28, code: "PL", zh: "波兰",         en: "Poland",               region: "europe",   imfClass: "emde", wbIncome: "high",      pcNom: 23010,  pcPpp: 49060,  totNom: 0.84,  totPpp: 1.79 },
+      { rank: 29, code: "CL", zh: "智利",         en: "Chile",                region: "americas", imfClass: "emde", wbIncome: "high",      pcNom: 16616,  pcPpp: 31560,  totNom: 0.34,  totPpp: 0.64 },
+      { rank: 30, code: "RU", zh: "俄罗斯",       en: "Russia",               region: "europe",   imfClass: "emde", wbIncome: "high",      pcNom: 14953,  pcPpp: 47290,  totNom: 2.18,  totPpp: 6.89 },
+      { rank: 31, code: "MX", zh: "墨西哥",       en: "Mexico",               region: "americas", imfClass: "emde", wbIncome: "upper-mid", pcNom: 14157,  pcPpp: 25690,  totNom: 1.85,  totPpp: 3.36 },
+      { rank: 32, code: "AR", zh: "阿根廷",       en: "Argentina",            region: "americas", imfClass: "emde", wbIncome: "upper-mid", pcNom: 13650,  pcPpp: 29260,  totNom: 0.64,  totPpp: 1.37 },
+      { rank: 33, code: "MY", zh: "马来西亚",     en: "Malaysia",             region: "apac",     imfClass: "emde", wbIncome: "upper-mid", pcNom: 13315,  pcPpp: 39030,  totNom: 0.45,  totPpp: 1.32 },
+      { rank: 34, code: "CN", zh: "中国",         en: "China",                region: "apac",     imfClass: "emde", wbIncome: "upper-mid", pcNom: 13136,  pcPpp: 26310,  totNom: 18.53, totPpp: 37.11 },
+      { rank: 35, code: "TR", zh: "土耳其",       en: "Turkey",               region: "europe",   imfClass: "emde", wbIncome: "upper-mid", pcNom: 12765,  pcPpp: 43620,  totNom: 1.11,  totPpp: 3.79 },
+      { rank: 36, code: "BR", zh: "巴西",         en: "Brazil",               region: "americas", imfClass: "emde", wbIncome: "upper-mid", pcNom: 10296,  pcPpp: 21120,  totNom: 2.19,  totPpp: 4.49 },
+      { rank: 37, code: "TH", zh: "泰国",         en: "Thailand",             region: "apac",     imfClass: "emde", wbIncome: "upper-mid", pcNom: 7527,   pcPpp: 24710,  totNom: 0.53,  totPpp: 1.74 },
+      { rank: 38, code: "ZA", zh: "南非",         en: "South Africa",         region: "mea",      imfClass: "emde", wbIncome: "upper-mid", pcNom: 6190,   pcPpp: 16210,  totNom: 0.38,  totPpp: 1.00 },
+      { rank: 39, code: "ID", zh: "印度尼西亚",   en: "Indonesia",            region: "apac",     imfClass: "emde", wbIncome: "upper-mid", pcNom: 4981,   pcPpp: 16840,  totNom: 1.40,  totPpp: 4.73 },
+      { rank: 40, code: "VN", zh: "越南",         en: "Vietnam",              region: "apac",     imfClass: "emde", wbIncome: "lower-mid", pcNom: 4623,   pcPpp: 16190,  totNom: 0.47,  totPpp: 1.65 },
+      { rank: 41, code: "PH", zh: "菲律宾",       en: "Philippines",          region: "apac",     imfClass: "emde", wbIncome: "lower-mid", pcNom: 4130,   pcPpp: 11790,  totNom: 0.47,  totPpp: 1.34 },
+      { rank: 42, code: "EG", zh: "埃及",         en: "Egypt",                region: "mea",      imfClass: "emde", wbIncome: "lower-mid", pcNom: 3338,   pcPpp: 18820,  totNom: 0.38,  totPpp: 2.14 },
+      { rank: 43, code: "IN", zh: "印度",         en: "India",                region: "apac",     imfClass: "emde", wbIncome: "lower-mid", pcNom: 2698,   pcPpp: 10850,  totNom: 3.89,  totPpp: 15.65 },
+      { rank: 44, code: "NG", zh: "尼日利亚",     en: "Nigeria",              region: "mea",      imfClass: "emde", wbIncome: "lower-mid", pcNom: 1110,   pcPpp: 6340,   totNom: 0.25,  totPpp: 1.43 }
     ];
 
+    /* 全球核心城市 GDP Top 20 — 严格统一「单一城市 / 行政市域 (City Proper)」同维度对比口径 (2024 基准, 剔除跨州/跨府县大都市圈) */
     const GLOBAL_CITIES = [
-      { zh: "纽约都市圈", en: "New York Metro",   ctry: "US", region: "us",   gdpB: 2290, pc: 116800, col: "#24486E", zhTag: "全球金融/科技/传媒", enTag: "Finance & Tech" },
-      { zh: "东京都市圈", en: "Greater Tokyo",    ctry: "JP", region: "euap", gdpB: 2050, pc: 54200,  col: "#4B3F72", zhTag: "总部经济/精密制造",  enTag: "HQ & Precision Mfg" },
-      { zh: "洛杉矶都市圈",en: "Los Angeles",     ctry: "US", region: "us",   gdpB: 1295, pc: 98100,  col: "#24486E", zhTag: "数字娱乐/航运贸易",  enTag: "Media & Trade" },
-      { zh: "大伦敦地区", en: "Greater London",   ctry: "UK", region: "euap", gdpB: 1120, pc: 118500, col: "#3A6B7C", zhTag: "国际金融/专业服务",  enTag: "Global Finance" },
-      { zh: "大巴黎地区", en: "Paris Region",     ctry: "FR", region: "euap", gdpB: 1040, pc: 84600,  col: "#6C757D", zhTag: "高端制造/时尚奢侈",  enTag: "Luxury & Aerospace" },
-      { zh: "旧金山湾区", en: "SF Bay Area",      ctry: "US", region: "us",   gdpB: 965,  pc: 162400, col: "#24486E", zhTag: "AI大模型/风投中心",  enTag: "AI & Venture Cap" },
-      { zh: "首尔都市圈", en: "Seoul Capital",    ctry: "KR", region: "euap", gdpB: 925,  pc: 48900,  col: "#2E6B5E", zhTag: "存储芯片/消费电子",  enTag: "Semiconductors" },
-      { zh: "芝加哥都市圈",en: "Chicago Metro",   ctry: "US", region: "us",   gdpB: 895,  pc: 94200,  col: "#24486E", zhTag: "衍生品交易/物流制造",enTag: "Derivatives & Mfg" },
-      { zh: "上海",       en: "Shanghai",         ctry: "CN", region: "cn",   gdpB: 745,  pc: 29900,  col: "#A63A3A", zhTag: "国际金融/航运科创",  enTag: "Finance & Shipping" },
-      { zh: "北京",       en: "Beijing",          ctry: "CN", region: "cn",   gdpB: 690,  pc: 31600,  col: "#A63A3A", zhTag: "AI研发/央企总部中心",enTag: "AI R&D & HQ Hub" },
-      { zh: "休斯顿",     en: "Houston",          ctry: "US", region: "us",   gdpB: 635,  pc: 85800,  col: "#24486E", zhTag: "能源化工/航天医疗",  enTag: "Energy & Aerospace" },
-      { zh: "达拉斯",     en: "Dallas-Fort Worth",ctry: "US", region: "us",   gdpB: 620,  pc: 78500,  col: "#24486E", zhTag: "企业总部/电信防务",  enTag: "Corporate HQ" },
-      { zh: "大阪-神户",  en: "Osaka-Kobe",       ctry: "JP", region: "euap", gdpB: 590,  pc: 46500,  col: "#4B3F72", zhTag: "关西制造/商贸枢纽",  enTag: "Industrial Hub" },
-      { zh: "新加坡",     en: "Singapore",        ctry: "SG", region: "euap", gdpB: 530,  pc: 91200,  col: "#2E6B5E", zhTag: "亚太财富管理/航运",  enTag: "Wealth & Maritime" },
-      { zh: "深圳",       en: "Shenzhen",         ctry: "CN", region: "cn",   gdpB: 515,  pc: 28900,  col: "#A63A3A", zhTag: "硬件创新/跨境科技",  enTag: "Hardware & Tech" },
-      { zh: "重庆",       en: "Chongqing",        ctry: "CN", region: "cn",   gdpB: 452,  pc: 14200,  col: "#A63A3A", zhTag: "智能网联汽车/制造",  enTag: "Auto & Electronics" },
-      { zh: "广州",       en: "Guangzhou",        ctry: "CN", region: "cn",   gdpB: 438,  pc: 23300,  col: "#A63A3A", zhTag: "商贸会展/汽车生物",  enTag: "Trade & Auto" },
-      { zh: "香港",       en: "Hong Kong",        ctry: "HK", region: "cn",   gdpB: 405,  pc: 53800,  col: "#A63A3A", zhTag: "离岸人民币/资本市场",enTag: "Offshore RMB Hub" },
-      { zh: "苏州",       en: "Suzhou",           ctry: "CN", region: "cn",   gdpB: 372,  pc: 28700,  col: "#A63A3A", zhTag: "高端装备/生物医药",  enTag: "Advanced Mfg" },
-      { zh: "孟买",       en: "Mumbai",           ctry: "IN", region: "euap", gdpB: 365,  pc: 17100,  col: "#B8862D", zhTag: "南亚金融/软件外包",  enTag: "South Asia Finance" }
+      { zh: "纽约市 (五区市域)", en: "New York City (5 Boroughs)", ctry: "US", region: "us",   gdpB: 1354, pc: 159700, col: "#24486E", zhTag: "金融/传媒/科技 (市域)", enTag: "Finance & Tech (City)" },
+      { zh: "东京都 (行政辖区)", en: "Tokyo Metropolis",           ctry: "JP", region: "euap", gdpB: 888,  pc: 63000,  col: "#4B3F72", zhTag: "总部经济/高端制造",     enTag: "HQ & Precision Mfg" },
+      { zh: "上海市 (市域)",     en: "Shanghai",                   ctry: "CN", region: "cn",   gdpB: 757,  pc: 30500,  col: "#A63A3A", zhTag: "国际金融/航运科创",     enTag: "Finance & Shipping" },
+      { zh: "伦敦市 (大伦敦市域)",en: "Greater London",            ctry: "UK", region: "euap", gdpB: 740,  pc: 82700,  col: "#3A6B7C", zhTag: "国际金融/专业服务",     enTag: "Global Finance" },
+      { zh: "北京市 (市域)",     en: "Beijing",                    ctry: "CN", region: "cn",   gdpB: 700,  pc: 32100,  col: "#A63A3A", zhTag: "AI研发/央企总部中心",   enTag: "AI R&D & HQ Hub" },
+      { zh: "新加坡 (城市经济体)",en: "Singapore",                 ctry: "SG", region: "euap", gdpB: 530,  pc: 88450,  col: "#2E6B5E", zhTag: "亚太财富管理/航运",     enTag: "Wealth & Maritime" },
+      { zh: "深圳市 (市域)",     en: "Shenzhen",                   ctry: "CN", region: "cn",   gdpB: 517,  pc: 28700,  col: "#A63A3A", zhTag: "硬件创新/跨境科技",     enTag: "Hardware & Tech" },
+      { zh: "洛杉矶市 (市域)",   en: "Los Angeles (City Proper)",  ctry: "US", region: "us",   gdpB: 465,  pc: 119800, col: "#24486E", zhTag: "数字娱乐/港口贸易",     enTag: "Media & Port (City)" },
+      { zh: "重庆市 (直辖市域)", en: "Chongqing",                  ctry: "CN", region: "cn",   gdpB: 452,  pc: 14200,  col: "#A63A3A", zhTag: "智能网联汽车/制造",     enTag: "Auto & Electronics" },
+      { zh: "广州市 (市域)",     en: "Guangzhou",                  ctry: "CN", region: "cn",   gdpB: 436,  pc: 23000,  col: "#A63A3A", zhTag: "商贸会展/汽车生物",     enTag: "Trade & Auto" },
+      { zh: "首尔市 (特别市域)", en: "Seoul Special City",         ctry: "KR", region: "euap", gdpB: 415,  pc: 44200,  col: "#2E6B5E", zhTag: "消费电子/数字服务",     enTag: "Electronics & Services" },
+      { zh: "香港 (特别行政区)", en: "Hong Kong SAR",              ctry: "HK", region: "cn",   gdpB: 407,  pc: 54000,  col: "#A63A3A", zhTag: "离岸人民币/资本市场",   enTag: "Offshore RMB Hub" },
+      { zh: "苏州市 (市域)",     en: "Suzhou",                     ctry: "CN", region: "cn",   gdpB: 375,  pc: 28900,  col: "#A63A3A", zhTag: "高端装备/生物医药",     enTag: "Advanced Mfg" },
+      { zh: "成都市 (市域)",     en: "Chengdu",                    ctry: "CN", region: "cn",   gdpB: 330,  pc: 15400,  col: "#A63A3A", zhTag: "电子信息/装备制造",     enTag: "Electronics & Mfg" },
+      { zh: "芝加哥市 (市域)",   en: "Chicago (City Proper)",      ctry: "US", region: "us",   gdpB: 315,  pc: 115800, col: "#24486E", zhTag: "金融衍生品/物流总部",   enTag: "Derivatives & HQ (City)" },
+      { zh: "杭州市 (市域)",     en: "Hangzhou",                   ctry: "CN", region: "cn",   gdpB: 307,  pc: 24300,  col: "#A63A3A", zhTag: "数字经济/人工智能",     enTag: "Digital & AI Economy" },
+      { zh: "休斯顿市 (市域)",   en: "Houston (City Proper)",      ctry: "US", region: "us",   gdpB: 305,  pc: 127600, col: "#24486E", zhTag: "能源化工/航天医疗",     enTag: "Energy & Aero (City)" },
+      { zh: "武汉市 (市域)",     en: "Wuhan",                      ctry: "CN", region: "cn",   gdpB: 296,  pc: 21400,  col: "#A63A3A", zhTag: "光电子/汽车重工",       enTag: "Optoelectronics & Auto" },
+      { zh: "巴黎市 (市域20区)", en: "City of Paris",              ctry: "FR", region: "euap", gdpB: 286,  pc: 136200, col: "#6C757D", zhTag: "金融奢侈/总部服务",     enTag: "Finance & Luxury (City)" },
+      { zh: "旧金山市 (市县合一)",en: "San Francisco (City/County)",ctry: "US", region: "us",  gdpB: 285,  pc: 344600, col: "#24486E", zhTag: "AI大模型/风投中心",     enTag: "AI & VC (City/County)" }
     ];
 
     const TRADE_CORRIDORS = [
@@ -3904,6 +4044,256 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { zh: "印度",   en: "India",          exp: 0.44, imp: 0.70, bal: -260, open: 26.7 },
       { zh: "加拿大", en: "Canada",         exp: 0.57, imp: 0.56, bal: 11,   open: 48.5 },
       { zh: "新加坡", en: "Singapore",      exp: 0.50, imp: 0.44, bal: 62,   open: 177.4 }
+    ];
+
+    /* 6.2 全球主要 20 个贸易经济体货物贸易顺逆差基准 (WTO Merchandise Trade 2024, 单位: 十亿美元 $B) */
+    const TOP20_TRADE_BALANCES = [
+      { code: "CN", zh: "中国",       en: "China",          expB: 3577, impB: 2585, balB: 992,   totB: 6162, openPct: 33.3, yoyPct: 3.8 },
+      { code: "US", zh: "美国",       en: "United States",  expB: 2065, impB: 3359, balB: -1294, totB: 5424, openPct: 18.8, yoyPct: 4.1 },
+      { code: "DE", zh: "德国",       en: "Germany",        expB: 1684, impB: 1424, balB: 260,   totB: 3108, openPct: 67.7, yoyPct: -1.2 },
+      { code: "NL", zh: "荷兰",       en: "Netherlands",    expB: 921,  impB: 836,  balB: 85,    totB: 1757, openPct: 154.1,yoyPct: 0.9 },
+      { code: "JP", zh: "日本",       en: "Japan",          expB: 707,  impB: 745,  balB: -38,   totB: 1452, openPct: 35.7, yoyPct: -0.6 },
+      { code: "KR", zh: "韩国",       en: "South Korea",    expB: 684,  impB: 632,  balB: 52,    totB: 1316, openPct: 70.4, yoyPct: 3.1 },
+      { code: "FR", zh: "法国",       en: "France",         expB: 638,  impB: 726,  balB: -88,   totB: 1364, openPct: 43.6, yoyPct: -0.8 },
+      { code: "HK", zh: "中国香港",   en: "Hong Kong SAR",  expB: 642,  impB: 685,  balB: -43,   totB: 1327, openPct: 327.7,yoyPct: 6.4 },
+      { code: "IT", zh: "意大利",     en: "Italy",          expB: 672,  impB: 613,  balB: 59,    totB: 1285, openPct: 55.2, yoyPct: 0.4 },
+      { code: "UK", zh: "英国",       en: "United Kingdom", expB: 512,  impB: 810,  balB: -298,  totB: 1322, openPct: 36.8, yoyPct: 1.5 },
+      { code: "MX", zh: "墨西哥",     en: "Mexico",         expB: 617,  impB: 625,  balB: -8,    totB: 1242, openPct: 67.1, yoyPct: 4.3 },
+      { code: "CA", zh: "加拿大",     en: "Canada",         expB: 569,  impB: 558,  balB: 11,    totB: 1127, openPct: 51.0, yoyPct: 0.7 },
+      { code: "IN", zh: "印度",       en: "India",          expB: 443,  impB: 713,  balB: -270,  totB: 1156, openPct: 29.7, yoyPct: 3.4 },
+      { code: "AE", zh: "阿联酋",     en: "UAE",            expB: 532,  impB: 458,  balB: 74,    totB: 990,  openPct: 183.3,yoyPct: 5.2 },
+      { code: "SG", zh: "新加坡",     en: "Singapore",      expB: 505,  impB: 443,  balB: 62,    totB: 948,  openPct: 178.9,yoyPct: 4.8 },
+      { code: "BE", zh: "比利时",     en: "Belgium",        expB: 541,  impB: 524,  balB: 17,    totB: 1065, openPct: 161.4,yoyPct: -1.5 },
+      { code: "ES", zh: "西班牙",     en: "Spain",          expB: 418,  impB: 461,  balB: -43,   totB: 879,  openPct: 53.3, yoyPct: 1.2 },
+      { code: "CH", zh: "瑞士",       en: "Switzerland",    expB: 428,  impB: 369,  balB: 59,    totB: 797,  openPct: 84.8, yoyPct: 2.1 },
+      { code: "VN", zh: "越南",       en: "Vietnam",        expB: 405,  impB: 380,  balB: 25,    totB: 785,  openPct: 167.0,yoyPct: 14.3 },
+      { code: "BR", zh: "巴西",       en: "Brazil",         expB: 337,  impB: 263,  balB: 74,    totB: 600,  openPct: 27.4, yoyPct: 2.6 }
+    ];
+
+    /* 6.3 国家贸易结构详情 (UN Comtrade & WTO Trade Profiles 2024 权威统计) */
+    const COUNTRY_TRADE_PROFILES = {
+      CN: {
+        zh: "中国", en: "China", year: "2024",
+        goodsExpB: 3577, goodsImpB: 2585, servExpB: 412, servImpB: 628,
+        exports: [
+          { zh: "电机、电气与音像设备 (HS 85)", pct: 26.8 },
+          { zh: "核反应堆、锅炉与机械设备 (HS 84)", pct: 15.9 },
+          { zh: "车辆及其零附件 (HS 87)", pct: 6.4 },
+          { zh: "塑料及其制品 (HS 39)", pct: 3.9 },
+          { zh: "钢铁及金属制品 (HS 72-73)", pct: 3.7 }
+        ],
+        imports: [
+          { zh: "集成电路与电子元器件 (HS 85)", pct: 23.4 },
+          { zh: "原油、天然气与煤炭 (HS 27)", pct: 19.8 },
+          { zh: "铁矿砂、铜矿砂等矿产 (HS 26)", pct: 9.6 },
+          { zh: "机械器具及精密设备 (HS 84)", pct: 8.7 },
+          { zh: "大豆、谷物及农产品 (HS 12/10)", pct: 4.5 }
+        ],
+        partners: [
+          { zh: "东盟 (ASEAN)", share: 15.9, balB: 154 },
+          { zh: "欧盟 (EU-27)", share: 12.7, balB: 247 },
+          { zh: "美国 (United States)", share: 11.2, balB: 360 },
+          { zh: "韩国 (South Korea)", share: 5.3, balB: -35 },
+          { zh: "日本 (Japan)", share: 5.0, balB: -4 }
+        ]
+      },
+      US: {
+        zh: "美国", en: "United States", year: "2024",
+        goodsExpB: 2065, goodsImpB: 3359, servExpB: 1107, servImpB: 814,
+        exports: [
+          { zh: "矿物燃料、成品油与天然气 (HS 27)", pct: 15.6 },
+          { zh: "工业机械与航空发动机 (HS 84)", pct: 12.1 },
+          { zh: "电机、芯片与通信设备 (HS 85)", pct: 10.4 },
+          { zh: "航空器、航天器及零件 (HS 88)", pct: 6.8 },
+          { zh: "医药制品与精密医疗器械 (HS 30/90)", pct: 8.9 }
+        ],
+        imports: [
+          { zh: "电机、芯片与消费电子 (HS 85)", pct: 15.2 },
+          { zh: "工业机械与计算机设备 (HS 84)", pct: 15.8 },
+          { zh: "乘用车及汽车零部件 (HS 87)", pct: 12.4 },
+          { zh: "医药与生物制品 (HS 30)", pct: 7.9 },
+          { zh: "原油及石化产品 (HS 27)", pct: 7.6 }
+        ],
+        partners: [
+          { zh: "墨西哥 (Mexico)", share: 15.5, balB: -172 },
+          { zh: "加拿大 (Canada)", share: 14.3, balB: -65 },
+          { zh: "中国 (China)", share: 10.8, balB: -295 },
+          { zh: "德国 (Germany)", share: 4.4, balB: -84 },
+          { zh: "日本 (Japan)", share: 4.2, balB: -68 }
+        ]
+      },
+      DE: {
+        zh: "德国", en: "Germany", year: "2024",
+        goodsExpB: 1684, goodsImpB: 1424, servExpB: 452, servImpB: 521,
+        exports: [
+          { zh: "汽车及高端零配件 (HS 87)", pct: 16.8 },
+          { zh: "机械制造与成套设备 (HS 84)", pct: 14.9 },
+          { zh: "电气与自动化设备 (HS 85)", pct: 10.6 },
+          { zh: "医药与特种化工产品 (HS 30/29)", pct: 11.4 },
+          { zh: "光学与精密检测仪器 (HS 90)", pct: 5.4 }
+        ],
+        imports: [
+          { zh: "电机与电子元器件 (HS 85)", pct: 12.8 },
+          { zh: "机械设备与动力装置 (HS 84)", pct: 11.5 },
+          { zh: "汽车及供应链零部件 (HS 87)", pct: 10.9 },
+          { zh: "天然气、原油与电力能源 (HS 27)", pct: 9.8 },
+          { zh: "医药与基础化工原料 (HS 30/29)", pct: 9.2 }
+        ],
+        partners: [
+          { zh: "美国 (United States)", share: 9.9, balB: 70 },
+          { zh: "中国 (China)", share: 8.6, balB: -66 },
+          { zh: "荷兰 (Netherlands)", share: 7.4, balB: 12 },
+          { zh: "法国 (France)", share: 6.5, balB: 48 },
+          { zh: "波兰 (Poland)", share: 6.1, balB: 16 }
+        ]
+      },
+      JP: {
+        zh: "日本", en: "Japan", year: "2024",
+        goodsExpB: 707, goodsImpB: 745, servExpB: 224, servImpB: 242,
+        exports: [
+          { zh: "乘用车及混合动力汽车 (HS 87)", pct: 21.4 },
+          { zh: "半导体制造设备与机械 (HS 84)", pct: 19.2 },
+          { zh: "电子元件与半导体材料 (HS 85)", pct: 15.8 },
+          { zh: "精密光学与测量仪器 (HS 90)", pct: 6.1 },
+          { zh: "特种钢铁与金属制品 (HS 72)", pct: 5.5 }
+        ],
+        imports: [
+          { zh: "液化天然气、原油与煤炭 (HS 27)", pct: 24.6 },
+          { zh: "通信终端与电子元器件 (HS 85)", pct: 15.4 },
+          { zh: "计算机与工业机械 (HS 84)", pct: 9.8 },
+          { zh: "医药与生物制剂 (HS 30)", pct: 5.6 },
+          { zh: "有色金属及铁矿石 (HS 26/71)", pct: 5.2 }
+        ],
+        partners: [
+          { zh: "中国 (China)", share: 20.1, balB: -34 },
+          { zh: "美国 (United States)", share: 15.8, balB: 62 },
+          { zh: "韩国 (South Korea)", share: 5.6, balB: 16 },
+          { zh: "澳大利亚 (Australia)", share: 5.1, balB: -42 },
+          { zh: "中国台湾 (Taiwan)", share: 5.0, balB: 11 }
+        ]
+      },
+      KR: {
+        zh: "韩国", en: "South Korea", year: "2024",
+        goodsExpB: 684, goodsImpB: 632, servExpB: 141, servImpB: 168,
+        exports: [
+          { zh: "存储芯片与半导体器件 (HS 85)", pct: 28.6 },
+          { zh: "汽车及动力电池组件 (HS 87/85)", pct: 14.2 },
+          { zh: "精炼石油产品 (HS 27)", pct: 7.8 },
+          { zh: "机械设备与造船海工 (HS 84/89)", pct: 11.5 },
+          { zh: "石化塑料与合成材料 (HS 39)", pct: 5.4 }
+        ],
+        imports: [
+          { zh: "原油、天然气与煤炭 (HS 27)", pct: 25.4 },
+          { zh: "半导体设备与芯片封装件 (HS 85/84)", pct: 21.8 },
+          { zh: "精密仪器与光学元件 (HS 90)", pct: 4.9 },
+          { zh: "金属矿砂与基础金属 (HS 26/72)", pct: 6.7 },
+          { zh: "精细化工原料 (HS 29)", pct: 4.4 }
+        ],
+        partners: [
+          { zh: "中国 (China)", share: 20.8, balB: -7 },
+          { zh: "美国 (United States)", share: 15.2, balB: 55 },
+          { zh: "越南 (Vietnam)", share: 6.6, balB: 30 },
+          { zh: "日本 (Japan)", share: 5.9, balB: -18 },
+          { zh: "澳大利亚 (Australia)", share: 3.8, balB: -21 }
+        ]
+      },
+      SG: {
+        zh: "新加坡", en: "Singapore", year: "2024",
+        goodsExpB: 505, goodsImpB: 443, servExpB: 368, servImpB: 332,
+        exports: [
+          { zh: "集成电路与电子组件 (HS 85)", pct: 33.8 },
+          { zh: "机械设备与航空零件 (HS 84)", pct: 14.6 },
+          { zh: "精炼成品油与石化品 (HS 27)", pct: 16.2 },
+          { zh: "生物医药与医疗器械 (HS 30/90)", pct: 8.4 },
+          { zh: "黄金及贵金属制品 (HS 71)", pct: 4.1 }
+        ],
+        imports: [
+          { zh: "集成电路与半导体 (HS 85)", pct: 31.5 },
+          { zh: "原油与成品油原料 (HS 27)", pct: 21.4 },
+          { zh: "工业机械与涡轮设备 (HS 84)", pct: 13.8 },
+          { zh: "精密仪器与光学设备 (HS 90)", pct: 4.5 },
+          { zh: "黄金与珠宝制品 (HS 71)", pct: 4.8 }
+        ],
+        partners: [
+          { zh: "中国 (China)", share: 13.8, balB: 9 },
+          { zh: "马来西亚 (Malaysia)", share: 10.9, balB: -4 },
+          { zh: "美国 (United States)", share: 10.4, balB: -12 },
+          { zh: "中国台湾 (Taiwan)", share: 8.6, balB: -24 },
+          { zh: "印度尼西亚 (Indonesia)", share: 6.2, balB: 18 }
+        ]
+      }
+    };
+
+    /* 6.4 全球贸易商品构成 — 统一 WTO / UN Comtrade SITC Rev.4 口径 (合计 100.0%, 总额 $24.43T, 2024) */
+    const GLOBAL_GOODS_COMPOSITION = [
+      { zh: "电子及电气设备",   en: "Electronic & Electrical", sitc: "SITC 75–77", share: 21.8, valT: 5.33, color: "#24486E" },
+      { zh: "能源及矿产",       en: "Fuels & Mining",          sitc: "SITC 3/27/28/68", share: 16.4, valT: 4.01, color: "#7A4E2D" },
+      { zh: "机械设备",         en: "Industrial Machinery",    sitc: "SITC 71–74", share: 14.6, valT: 3.57, color: "#4B3F72" },
+      { zh: "化工及医药产品",   en: "Chemicals & Pharma",      sitc: "SITC 5",     share: 12.9, valT: 3.15, color: "#2E6B5E" },
+      { zh: "汽车及运输设备",   en: "Vehicles & Transport",    sitc: "SITC 78–79", share: 11.5, valT: 2.81, color: "#A63A3A" },
+      { zh: "金属及其他工业制品",en: "Metals & Other Mfg",     sitc: "SITC 6 & 8", share: 10.6, valT: 2.59, color: "#3A6B7C" },
+      { zh: "农产品及食品",     en: "Agriculture & Food",      sitc: "SITC 0/1/2/4", share: 9.4, valT: 2.30, color: "#B8862D" },
+      { zh: "其他商品",         en: "Other Commodities",       sitc: "SITC 9",     share: 2.8,  valT: 0.67, color: "#6C757D" }
+    ];
+
+    /* 6.5 全球贸易景气与航运专业指数 (官方基准值, 严禁虚构随机波动) */
+    const TRADE_INDICES = [
+      {
+        code: "BDI", category: "干散货即期运价",
+        zh: "波罗的海干散货指数", en: "Baltic Dry Index",
+        val: "1,538 点", date: "2024-11 官方月均基准", chg: "-3.2%", isPos: false,
+        series: [1620, 1840, 2090, 1810, 1945, 1780, 1588, 1538],
+        desc: "跟踪好望角型、巴拿马型等干散货船即期运价，主要反映铁矿石、煤炭、粮食等上游大宗海运供需。",
+        source: "Baltic Exchange", url: "https://www.balticexchange.com"
+      },
+      {
+        code: "SCFI", category: "集装箱即期运价",
+        zh: "上海出口集装箱运价指数", en: "Shanghai Containerized Freight Index",
+        val: "2,251.9 点", date: "2024-11 官方周度基准", chg: "+1.8%", isPos: true,
+        series: [1760, 1940, 2680, 3420, 3290, 2510, 2212, 2251.9],
+        desc: "反映上海港出口至全球 13 条主要航线的即期集装箱订舱运价水平，对短期供需错配与航线绕行敏感。",
+        source: "上海航运交易所 SSE", url: "https://www.sse.net.cn"
+      },
+      {
+        code: "CCFI", category: "集装箱综合运价",
+        zh: "中国出口集装箱运价指数", en: "China Containerized Freight Index",
+        val: "1,438.6 点", date: "2024-11 官方周度基准", chg: "+0.9%", isPos: true,
+        series: [1190, 1310, 1690, 2080, 1995, 1620, 1425, 1438.6],
+        desc: "覆盖中国沿海主要港口、同时纳入长协合同运价与即期运价，反映外贸企业实际海运综合成本。",
+        source: "上海航运交易所 SSE", url: "https://www.sse.net.cn"
+      },
+      {
+        code: "WCI", category: "全球主干线集装箱运价",
+        zh: "Drewry 世界集装箱指数", en: "Drewry World Container Index",
+        val: "$3,440 / 40ft", date: "2024-11 官方周度基准", chg: "-2.1%", isPos: false,
+        series: [3120, 3480, 4710, 5680, 5140, 3920, 3514, 3440],
+        desc: "追踪跨太平洋、亚欧及跨大西洋 8 条东西向主干航线 40 英尺标准集装箱综合现货运价。",
+        source: "Drewry Supply Chain Advisors", url: "https://www.drewry.co.uk/supply-chain-advisors/supply-chain-expertise/world-container-index-assessed-by-drewry"
+      },
+      {
+        code: "WTO Barometer", category: "货物贸易景气先行指数",
+        zh: "WTO 全球货物贸易晴雨表", en: "WTO Goods Trade Barometer",
+        val: "100.6", date: "2024 Q3/Q4 官方发布", chg: "+0.6 vs 趋势线100", isPos: true,
+        series: [98.5, 99.1, 99.5, 100.2, 100.6, 100.6],
+        desc: "综合出口订单、空运、集装箱吞吐、汽车产销等先行指标；100 为中期趋势基准线，高于 100 显示高于趋势增长。",
+        source: "World Trade Organization", url: "https://www.wto.org/english/news_e/news_e.htm"
+      },
+      {
+        code: "CPB Monitor", category: "实际货物贸易量指数",
+        zh: "CPB 全球贸易量监测指数", en: "CPB World Trade Monitor (Volume)",
+        val: "136.8 (2010=100)", date: "2024-09 官方月度发布", chg: "+2.4% YoY", isPos: true,
+        series: [133.2, 133.9, 134.5, 135.1, 135.8, 136.4, 136.8],
+        desc: "荷兰经济政策分析局编制，剔除价格与汇率波动后直接衡量全球实际货物进出口物理数量变化。",
+        source: "CPB Netherlands", url: "https://www.cpb.nl/en/world-trade-monitor"
+      },
+      {
+        code: "GSCPI", category: "供应链压力标准差指数",
+        zh: "纽约联储全球供应链压力指数", en: "NY Fed Global Supply Chain Pressure Index",
+        val: "-0.32 σ", date: "2024-10 官方月度发布", chg: "-0.19 σ vs 前值", isPos: true,
+        series: [-0.28, -0.14, 0.05, 0.18, -0.04, -0.13, -0.32],
+        desc: "整合跨国航运成本与全球制造业 PMI 交货期/积压订单指标，以历史均值 0 的标准差（σ）衡量供应链松紧。",
+        source: "Federal Reserve Bank of New York", url: "https://www.newyorkfed.org/research/policy/gscpi"
+      }
     ];
 
     const CURRENCY_RESERVES = [
@@ -3971,9 +4361,18 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       macroTab: "gdp",
       gdpMetric: "nom",
       gdpSelected: ["us", "cn", "de", "jp", "in"],
+      gdpSearch: "",
+      gdpShowGlobalOverlay: true,
       pppMode: "pc",
+      pppSearch: "",
+      pppRegionFilter: "all",
+      pppClassFilter: "all",
+      pppSortBy: "pcNom",
+      pppShowAll: false,
       cityRegion: "all",
       cityCur: "USD",
+      tradeSortBy: "totB",
+      tradeSelectedCountry: "CN",
       newsFilter: "all",
       showNewsForm: false,
       newsFeed: JSON.parse(localStorage.getItem("gfi_news_feed") || "null") || JSON.parse(JSON.stringify(DEFAULT_NEWS_FEED)),
@@ -4881,8 +5280,30 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     }
 
     /* =========================================================================
-       8. SECTION 08: 世界经济宏观全景 (4页签投研工作台)
+       8. SECTION 08: 世界经济宏观全景 (4页签投研工作台 · 增量增强版)
        ========================================================================= */
+    function showMacroTip(evt, cx, name, val, subStr) {
+      const cv = document.getElementById("macro-cross-v");
+      if (cv && typeof cx === "number") {
+        cv.setAttribute("x1", cx);
+        cv.setAttribute("x2", cx);
+        cv.style.display = "block";
+      }
+      const pt = (evt.touches && evt.touches[0]) ? evt.touches[0] : evt;
+      const tip = document.getElementById("tooltip");
+      if (!tip || !pt) return;
+      tip.innerHTML = `<strong>${name}</strong><br/><span class="mono">${val}${subStr ? ` · ${subStr}` : ""}</span>`;
+      tip.style.left = `${Math.min(window.innerWidth - 185, (pt.clientX || 120) + 12)}px`;
+      tip.style.top = `${Math.max(12, (pt.clientY || 120) - 18)}px`;
+      tip.style.display = "block";
+    }
+    function hideMacroTip() {
+      const cv = document.getElementById("macro-cross-v");
+      if (cv) cv.style.display = "none";
+      const tip = document.getElementById("tooltip");
+      if (tip) tip.style.display = "none";
+    }
+
     function renderWorldMacro() {
       const tabsBox = document.getElementById("macro-tabs");
       if (!tabsBox) return;
@@ -4923,12 +5344,27 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const box = document.getElementById("macro-tab-content");
       const isZh = state.lang === "zh";
       const us26 = MACRO_GDP_10Y[0].nom[10], cn26 = MACRO_GDP_10Y[1].nom[10];
+      const q = (state.gdpSearch || "").trim().toLowerCase();
+      const filteredChips = MACRO_GDP_10Y.filter(c =>
+        !q || c.zh.toLowerCase().includes(q) || c.en.toLowerCase().includes(q) || c.id.toLowerCase().includes(q)
+      );
+
+      const activeList = MACRO_GDP_10Y.filter(c => state.gdpSelected.includes(c.id));
 
       box.innerHTML = `
         <div class="macro-kpis">
-          <div class="kpi-box"><div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球 GDP 总盘子 (2026E)" : "Global Nominal GDP (2026E)"}</div><div class="mono" style="font-size:19px;font-weight:700;margin-top:2px;">$${GLOBAL_GDP_TOTAL[10].toFixed(1)}T</div></div>
-          <div class="kpi-box"><div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "中美经济规模比值 (CN / US)" : "China / US GDP Ratio"}</div><div class="mono" style="font-size:19px;font-weight:700;margin-top:2px;">${((cn26 / us26) * 100).toFixed(1)}% <span style="font-size:12px;font-weight:400;">($${cn26}T / $${us26}T)</span></div></div>
-          <div class="kpi-box"><div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "十年复合增速最快大国" : "Fastest 10Y CAGR Major Econ"}</div><div class="mono" style="font-size:19px;font-weight:700;margin-top:2px;color:var(--accent-fx);">${isZh ? "印度 +7.4%" : "India +7.4%"} <span style="font-size:12px;font-weight:400;">(${isZh ? "中国 +6.2%" : "CN +6.2%"})</span></div></div>
+          <div class="kpi-box">
+            <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球名义 GDP 总量 (2016 → 2025 → 2026E)" : "Global Nominal GDP Trajectory"}</div>
+            <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$${GLOBAL_GDP_TOTAL[0]}T → $${GLOBAL_GDP_TOTAL[9]}T → <span style="color:var(--accent-gold-text);">$${GLOBAL_GDP_TOTAL[10]}T</span></div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "中美经济规模比值 (CN / US, 2026E)" : "China / US GDP Ratio (2026E)"}</div>
+            <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">${((cn26 / us26) * 100).toFixed(1)}% <span style="font-size:12px;font-weight:400;">($${cn26}T / $${us26}T)</span></div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "十年名义复合增速最快大国 (2016–2025)" : "Fastest 10Y Nominal CAGR (2016–2025)"}</div>
+            <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;color:var(--accent-fx);">${isZh ? "印度 +7.2%" : "India +7.2%"} <span style="font-size:12px;font-weight:400;">(${isZh ? "中国 +6.3%" : "CN +6.3%"})</span></div>
+          </div>
         </div>
 
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
@@ -4936,8 +5372,10 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <button class="btn ${state.gdpMetric === "nom" ? "active" : ""}" onclick="state.gdpMetric='nom';renderMacroGdpTab()">${isZh ? "名义总额 ($T)" : "Nominal ($T)"}</button>
             <button class="btn ${state.gdpMetric === "gr" ? "active" : ""}" onclick="state.gdpMetric='gr';renderMacroGdpTab()">${isZh ? "实际年增速 (%)" : "Real Growth (%)"}</button>
             <button class="btn ${state.gdpMetric === "share" ? "active" : ""}" onclick="state.gdpMetric='share';renderMacroGdpTab()">${isZh ? "占全球比重 (%)" : "Global Share (%)"}</button>
+            <button class="btn ${state.gdpMetric === "pc10y" ? "active" : ""}" onclick="state.gdpMetric='pc10y';renderMacroGdpTab()">${isZh ? "人均 GDP 十年变化 ($)" : "Per Capita 10Y ($)"}</button>
           </div>
           <div class="scroll-strip" style="margin-bottom:0;">
+            ${state.gdpMetric === "nom" ? `<button class="btn-mini ${state.gdpShowGlobalOverlay ? "gold" : ""}" style="${state.gdpShowGlobalOverlay ? "background:var(--accent-gold-soft);color:var(--accent-gold-text);border-color:var(--accent-gold);" : ""}" onclick="state.gdpShowGlobalOverlay=!state.gdpShowGlobalOverlay;renderMacroGdpTab()">${isZh ? "全球总量背景柱" : "Global Total Bars"}</button>` : ""}
             <button class="btn-mini" onclick="setGdpPreset('default')">${isZh ? "默认五国" : "Top 5"}</button>
             <button class="btn-mini" onclick="setGdpPreset('uscn')">${isZh ? "中美博弈" : "US vs CN"}</button>
             <button class="btn-mini" onclick="setGdpPreset('dejp')">${isZh ? "德日印交替" : "DE/JP/IN"}</button>
@@ -4945,10 +5383,20 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
           </div>
         </div>
 
-        <div class="chart-box-wrap" style="height:280px;"><svg class="full-svg" id="macro-gdp-svg"></svg></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--ink-secondary);margin-bottom:6px;">
+          <span class="mono"><strong>━━</strong> ${isZh ? "2016–2025 实际历史统计 (IMF / World Bank)" : "2016–2025 Actual Historical"} &nbsp;&nbsp; <strong>┄┄○</strong> ${isZh ? "2026E 预测值 (IMF WEO)" : "2026E Forecast (IMF WEO)"}</span>
+          <span class="mono" style="color:var(--ink-muted);">${isZh ? "悬停或触控折线节点查看年度明细" : "Hover or tap nodes for annual values"}</span>
+        </div>
+
+        <div class="chart-box-wrap" style="height:285px;"><svg class="full-svg" id="macro-gdp-svg"></svg></div>
+
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;">
+          <input type="text" class="inp" style="min-width:190px;max-width:260px;padding:4px 9px;font-size:12px;" placeholder="${isZh ? "搜索国家添加/移除对比..." : "Search economy..."}" value="${state.gdpSearch}" oninput="state.gdpSearch=this.value;renderMacroGdpTab()" />
+          <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? `已选 ${activeList.length} 个经济体同图对比` : `${activeList.length} selected`}</span>
+        </div>
 
         <div class="country-chips">
-          ${MACRO_GDP_10Y.map(c => {
+          ${filteredChips.map(c => {
             const on = state.gdpSelected.includes(c.id);
             return `<label class="chip-chk" style="${on ? `border-color:${c.color};font-weight:700;` : ""}" onclick="toggleGdpCountry('${c.id}')">
               <span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${on ? c.color : "var(--border-hairline)"};"></span>
@@ -4956,24 +5404,82 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </label>`;
           }).join("")}
         </div>
+
+        <!-- 所选经济体十年累计变化率与复合增长率 (CAGR) 对比表 -->
+        <div style="margin-top:14px;overflow-x:auto;border:1px solid var(--border-hairline);border-radius:4px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>${isZh ? "对比经济体" : "Economy"}</th>
+                <th class="num">${isZh ? "2016 实际" : "2016 Actual"}</th>
+                <th class="num">${isZh ? "2025 实际" : "2025 Actual"}</th>
+                <th class="num">${isZh ? "2026E 预测" : "2026E Est."}</th>
+                <th class="num">${isZh ? "十年累计变化 (16→25)" : "10Y Cumul. (16→25)"}</th>
+                <th class="num">${isZh ? "十年复合增速 CAGR" : "10Y CAGR"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${activeList.map(c => {
+                const arr = state.gdpMetric === "nom" ? c.nom
+                  : state.gdpMetric === "gr" ? c.gr
+                  : state.gdpMetric === "pc10y" ? c.pc10y
+                  : c.nom.map((v, idx) => (v / GLOBAL_GDP_TOTAL[idx]) * 100);
+                const v16 = arr[0], v25 = arr[9], v26 = arr[10];
+                const fmtCell = v => state.gdpMetric === "nom" ? `$${v.toFixed(2)}T`
+                  : state.gdpMetric === "pc10y" ? `$${fmt(v, 0)}`
+                  : `${v.toFixed(2)}%`;
+                let cumStr = "--", cagrStr = "--", cCls = "";
+                if (state.gdpMetric === "gr" || state.gdpMetric === "share") {
+                  const diffPt = v25 - v16;
+                  cumStr = `${diffPt >= 0 ? "+" : ""}${diffPt.toFixed(2)} pct`;
+                  const avgGr = c.gr.slice(0, 10).reduce((a, b) => a + b, 0) / 10;
+                  cagrStr = `${isZh ? "均速" : "Avg"} ${avgGr.toFixed(2)}%`;
+                  cCls = cls(diffPt);
+                } else if (v16 > 0) {
+                  const cum = ((v25 - v16) / v16) * 100;
+                  const cagr = (Math.pow(v25 / v16, 1 / 9) - 1) * 100;
+                  cumStr = `${cum >= 0 ? "+" : ""}${cum.toFixed(1)}%`;
+                  cagrStr = `${cagr >= 0 ? "+" : ""}${cagr.toFixed(2)}%`;
+                  cCls = cls(cum);
+                }
+                return `
+                  <tr>
+                    <td><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${c.color};margin-right:6px;"></span><strong>${isZh ? c.zh : c.en}</strong></td>
+                    <td class="num">${fmtCell(v16)}</td>
+                    <td class="num">${fmtCell(v25)}</td>
+                    <td class="num" style="color:var(--ink-secondary);">${fmtCell(v26)}</td>
+                    <td class="num ${cCls}" style="font-weight:700;">${cumStr}</td>
+                    <td class="num ${cCls}" style="font-weight:700;">${cagrStr}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="macro-source-note">
+          <strong>${isZh ? "口径与数据来源：" : "Methodology & Sources:"}</strong>
+          ${isZh ? "2016–2025 为完整年度实际统计值（现价美元 / 实际 GDP 增速），2026E 为国际货币基金组织（IMF）《世界经济展望》预测值（虚线标注）。" : "2016–2025 actual statistics; 2026E IMF WEO forecast (dashed)."}
+          <a href="https://www.imf.org/en/Publications/WEO" target="_blank" rel="noopener noreferrer">IMF World Economic Outlook</a> ·
+          <a href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD" target="_blank" rel="noopener noreferrer">World Bank WDI</a>
+        </div>
       `;
 
       const svg = document.getElementById("macro-gdp-svg");
       const rect = svg.getBoundingClientRect();
-      const W = Math.max(300, rect.width || 820), H = 264;
-      const pad = { top: 18, right: 86, bottom: 26, left: 48 };
+      const W = Math.max(300, rect.width || 820), H = 268;
+      const pad = { top: 18, right: 92, bottom: 26, left: 56 };
       const pw = W - pad.left - pad.right, ph = H - pad.top - pad.bottom;
 
-      const activeList = MACRO_GDP_10Y.filter(c => state.gdpSelected.includes(c.id));
       const seriesList = activeList.map(c => {
         if (state.gdpMetric === "nom") return c.nom;
         if (state.gdpMetric === "gr") return c.gr;
+        if (state.gdpMetric === "pc10y") return c.pc10y;
         return c.nom.map((v, idx) => (v / GLOBAL_GDP_TOTAL[idx]) * 100);
       });
 
       const flat = seriesList.flat();
       const min = state.gdpMetric === "gr" ? Math.min(-11, ...flat) : 0;
-      const max = Math.max(1, ...flat) * 1.06;
+      const max = Math.max(1, ...flat) * 1.07;
       const span = max - min || 1;
       const xOf = (i) => pad.left + (i / 10) * pw;
       const yOf = (v) => pad.top + ph - ((v - min) / span) * ph;
@@ -4982,32 +5488,69 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       for (let g = 0; g <= 4; g++) {
         const val = min + (span * g) / 4, gy = yOf(val);
         html += `<line x1="${pad.left}" y1="${gy}" x2="${W - pad.right}" y2="${gy}" stroke="var(--border-hairline)" stroke-dasharray="2,3" />`;
-        const lbl = state.gdpMetric === "nom" ? `$${val.toFixed(0)}T` : `${val.toFixed(0)}%`;
+        const lbl = state.gdpMetric === "nom" ? `$${val.toFixed(0)}T`
+          : state.gdpMetric === "pc10y" ? `$${(val / 1000).toFixed(0)}k`
+          : `${val.toFixed(0)}%`;
         html += `<text x="${pad.left - 8}" y="${gy + 4}" text-anchor="end" font-size="10.5" fill="var(--ink-muted)" class="mono">${lbl}</text>`;
       }
+
+      /* 全球总量背景柱 (仅名义总额模式下可选叠加) */
+      if (state.gdpMetric === "nom" && state.gdpShowGlobalOverlay) {
+        const maxGlob = 130;
+        const barW = Math.max(10, (pw / 11) * 0.42);
+        GLOBAL_GDP_TOTAL.forEach((gv, i) => {
+          const bh = (gv / maxGlob) * ph;
+          const bx = xOf(i) - barW / 2;
+          const by = pad.top + ph - bh;
+          html += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" fill="var(--border-hairline)" opacity="0.32" rx="2" />`;
+        });
+      }
+
+      /* 2025 实际与 2026E 预测分界线 */
+      const x2025 = xOf(9);
+      html += `<line x1="${x2025}" y1="${pad.top}" x2="${x2025}" y2="${pad.top + ph}" stroke="var(--border-hairline)" stroke-dasharray="3,3" />`;
+      html += `<text x="${x2025 - 4}" y="${pad.top + 10}" text-anchor="end" font-size="9.5" fill="var(--ink-muted)" class="mono">${isZh ? "实际" : "Actual"}</text>`;
+      html += `<text x="${x2025 + 4}" y="${pad.top + 10}" text-anchor="start" font-size="9.5" fill="var(--accent-gold-text)" class="mono">2026E</text>`;
+
       if (state.gdpMetric === "gr") {
         html += `<line x1="${pad.left}" y1="${yOf(0)}" x2="${W - pad.right}" y2="${yOf(0)}" stroke="var(--ink-muted)" />`;
       }
       MACRO_YEARS.forEach((yr, i) => {
         if (i % 2 === 0 || i === 10) {
-          html += `<text x="${xOf(i)}" y="${H - 6}" text-anchor="middle" font-size="10.5" fill="var(--ink-muted)" class="mono">${yr}</text>`;
+          html += `<text x="${xOf(i)}" y="${H - 6}" text-anchor="middle" font-size="10.5" fill="${i === 10 ? "var(--accent-gold-text)" : "var(--ink-muted)"}" font-weight="${i === 10 ? "700" : "400"}" class="mono">${yr}</text>`;
         }
       });
 
       const endLabels = [];
       seriesList.forEach((arr, idx) => {
         const c = activeList[idx];
-        const pts = arr.map((v, i) => `${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
-        html += `<polyline fill="none" stroke="${c.color}" stroke-width="2.4" points="${pts}" />`;
+        /* 2016-2025 实际历史实线 */
+        const actualPts = arr.slice(0, 10).map((v, i) => `${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+        html += `<polyline fill="none" stroke="${c.color}" stroke-width="2.4" points="${actualPts}" />`;
+        /* 2025 -> 2026E 预测虚线 */
+        const forecastPts = `${xOf(9).toFixed(1)},${yOf(arr[9]).toFixed(1)} ${xOf(10).toFixed(1)},${yOf(arr[10]).toFixed(1)}`;
+        html += `<polyline fill="none" stroke="${c.color}" stroke-width="2.2" stroke-dasharray="5,4" points="${forecastPts}" />`;
+        html += `<circle cx="${xOf(10).toFixed(1)}" cy="${yOf(arr[10]).toFixed(1)}" r="3.5" fill="var(--bg-card)" stroke="${c.color}" stroke-width="2" />`;
+
         const lastV = arr[10];
-        const unit = state.gdpMetric === "nom" ? "T" : "%";
-        endLabels.push({ y: yOf(lastV), text: `${isZh ? c.zh : c.en.slice(0, 3)} ${lastV.toFixed(1)}${unit}`, color: c.color });
+        const unit = state.gdpMetric === "nom" ? "T" : state.gdpMetric === "pc10y" ? "" : "%";
+        const valText = state.gdpMetric === "pc10y" ? `$${(lastV / 1000).toFixed(1)}k` : `${lastV.toFixed(1)}${unit}`;
+        endLabels.push({ y: yOf(lastV), text: `${isZh ? c.zh : c.en.slice(0, 3)} ${valText}`, color: c.color });
+
         arr.forEach((v, i) => {
-          html += `<circle cx="${xOf(i)}" cy="${yOf(v)}" r="5" fill="transparent" style="cursor:pointer"
-            onmouseenter="showCrossTip(event, ${xOf(i)}, '${isZh ? c.zh : c.en} (${MACRO_YEARS[i]})', '${state.gdpMetric === "nom" ? "$" : ""}${v.toFixed(2)}${unit}', '')"
-            onmouseleave="hideCrossTip()" />`;
+          const dispVal = state.gdpMetric === "nom" ? `$${v.toFixed(2)}T`
+            : state.gdpMetric === "pc10y" ? `$${fmt(v, 0)}`
+            : `${v.toFixed(2)}%`;
+          const subTag = i === 10 ? (isZh ? "IMF 预测" : "Forecast") : (isZh ? "实际统计" : "Actual");
+          html += `<circle cx="${xOf(i)}" cy="${yOf(v)}" r="6" fill="transparent" style="cursor:pointer"
+            onmouseenter="showMacroTip(event, ${xOf(i)}, '${isZh ? c.zh : c.en} (${MACRO_YEARS[i]})', '${dispVal}', '${subTag}')"
+            onmousemove="showMacroTip(event, ${xOf(i)}, '${isZh ? c.zh : c.en} (${MACRO_YEARS[i]})', '${dispVal}', '${subTag}')"
+            ontouchstart="showMacroTip(event, ${xOf(i)}, '${isZh ? c.zh : c.en} (${MACRO_YEARS[i]})', '${dispVal}', '${subTag}')"
+            onmouseleave="hideMacroTip()" />`;
         });
       });
+
+      html += `<line id="macro-cross-v" x1="0" y1="${pad.top}" x2="0" y2="${pad.top + ph}" stroke="var(--ink-muted)" stroke-dasharray="2,2" style="display:none" />`;
 
       endLabels.sort((a, b) => a.y - b.y);
       for (let i = 1; i < endLabels.length; i++) {
@@ -5024,12 +5567,46 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const box = document.getElementById("macro-tab-content");
       const isZh = state.lang === "zh";
       const isPc = state.pppMode === "pc";
-      const sorted = [...MACRO_PPP_DATA].sort((a, b) => isPc ? (b.pcPpp - a.pcPpp) : (b.totPpp - a.totPpp));
-      const maxVal = Math.max(1, ...sorted.map(d => isPc ? Math.max(d.pcNom, d.pcPpp) : Math.max(d.totNom, d.totPpp)));
+      const q = (state.pppSearch || "").trim().toLowerCase();
+
+      const wbLabels = {
+        "high":      isZh ? "WB 高收入组" : "WB High-Income",
+        "upper-mid": isZh ? "WB 中高收入组" : "WB Upper-Middle",
+        "lower-mid": isZh ? "WB 中低收入组" : "WB Lower-Middle",
+        "low":       isZh ? "WB 低收入组" : "WB Low-Income"
+      };
+      const regLabels = {
+        "apac":     isZh ? "亚太" : "APAC",
+        "europe":   isZh ? "欧洲" : "Europe",
+        "americas": isZh ? "美洲" : "Americas",
+        "mea":      isZh ? "中东与非洲" : "MEA"
+      };
+
+      const filtered = MACRO_PPP_DATA.filter(d => {
+        const matchQ = !q || d.zh.toLowerCase().includes(q) || d.en.toLowerCase().includes(q) || d.code.toLowerCase().includes(q);
+        const matchReg = state.pppRegionFilter === "all" || d.region === state.pppRegionFilter;
+        const matchCls = state.pppClassFilter === "all"
+          || (state.pppClassFilter === "adv" && d.imfClass === "adv")
+          || (state.pppClassFilter === "emde" && d.imfClass === "emde")
+          || (state.pppClassFilter === d.wbIncome);
+        return matchQ && matchReg && matchCls;
+      });
+
+      const sorted = [...filtered].sort((a, b) => {
+        if (state.pppSortBy === "pcPpp") return b.pcPpp - a.pcPpp;
+        if (state.pppSortBy === "mult")  return (b.pcPpp / b.pcNom) - (a.pcPpp / a.pcNom);
+        if (state.pppSortBy === "totNom") return b.totNom - a.totNom;
+        if (state.pppSortBy === "totPpp") return b.totPpp - a.totPpp;
+        return b.pcNom - a.pcNom;
+      });
+
+      const displayed = state.pppShowAll ? sorted : sorted.slice(0, 20);
+      const maxVal = Math.max(1, ...displayed.map(d => isPc ? Math.max(d.pcNom, d.pcPpp) : Math.max(d.totNom, d.totPpp)));
 
       box.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-          <div style="display:flex;gap:6px;">
+        <!-- 顶部筛选、搜索与口径切换控件 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
             <button class="btn ${isPc ? "active" : ""}" onclick="state.pppMode='pc';renderMacroPppTab()">${isZh ? "人均口径 ($/人)" : "Per Capita ($/Person)"}</button>
             <button class="btn ${!isPc ? "active" : ""}" onclick="state.pppMode='tot';renderMacroPppTab()">${isZh ? "国家总盘子 ($T)" : "Total Economy ($T)"}</button>
           </div>
@@ -5038,27 +5615,135 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <span style="color:var(--accent-gold);">● ${isZh ? "购买力平价 (PPP)" : "PPP Adjusted"}</span>
           </div>
         </div>
-        <div style="overflow-x:auto;">
-          <svg width="100%" height="${sorted.length * 36 + 24}" viewBox="0 0 760 ${sorted.length * 36 + 24}" style="min-width:560px;">
-            ${sorted.map((d, i) => {
-              const y = 22 + i * 36;
-              const vNom = isPc ? d.pcNom : d.totNom;
-              const vPpp = isPc ? d.pcPpp : d.totPpp;
-              const xNom = 110 + (vNom / maxVal) * 430;
-              const xPpp = 110 + (vPpp / maxVal) * 430;
-              const mult = (vPpp / (vNom || 1)).toFixed(2);
-              const nomStr = isPc ? `$${fmt(vNom, 0)}` : `$${vNom.toFixed(2)}T`;
-              const pppStr = isPc ? `$${fmt(vPpp, 0)}` : `$${vPpp.toFixed(2)}T`;
-              return `
-                <text x="100" y="${y + 4}" text-anchor="end" font-size="12" font-weight="700" fill="var(--ink-primary)">${isZh ? d.zh : d.en}</text>
-                <line x1="110" y1="${y}" x2="545" y2="${y}" stroke="var(--border-hairline)" stroke-dasharray="2,2" />
-                <line x1="${xNom.toFixed(1)}" y1="${y}" x2="${xPpp.toFixed(1)}" y2="${y}" stroke="var(--ink-secondary)" stroke-width="2.5" />
-                <circle cx="${xNom.toFixed(1)}" cy="${y}" r="5.5" fill="#24486E" />
-                <circle cx="${xPpp.toFixed(1)}" cy="${y}" r="6" fill="var(--accent-gold)" />
-                <text x="558" y="${y + 4}" font-size="11" fill="var(--ink-primary)" class="mono">${nomStr} → ${pppStr} (${mult}x)</text>
-              `;
-            }).join("")}
-          </svg>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;">
+          <input type="text" class="inp" style="flex:1;min-width:180px;padding:5px 10px;font-size:12.5px;" placeholder="${isZh ? "搜索国家中英文名或代码（如 瑞士 / China / US）..." : "Search country name or code..."}" value="${state.pppSearch}" oninput="state.pppSearch=this.value;renderMacroPppTab()" />
+          <select class="inp" style="padding:5px 8px;font-size:12px;" onchange="state.pppRegionFilter=this.value;renderMacroPppTab()">
+            <option value="all" ${state.pppRegionFilter === "all" ? "selected" : ""}>${isZh ? "地区: 全部" : "Region: All"}</option>
+            <option value="apac" ${state.pppRegionFilter === "apac" ? "selected" : ""}>${isZh ? "亚太地区" : "Asia-Pacific"}</option>
+            <option value="europe" ${state.pppRegionFilter === "europe" ? "selected" : ""}>${isZh ? "欧洲地区" : "Europe"}</option>
+            <option value="americas" ${state.pppRegionFilter === "americas" ? "selected" : ""}>${isZh ? "美洲地区" : "Americas"}</option>
+            <option value="mea" ${state.pppRegionFilter === "mea" ? "selected" : ""}>${isZh ? "中东与非洲" : "Middle East & Africa"}</option>
+          </select>
+          <select class="inp" style="padding:5px 8px;font-size:12px;" onchange="state.pppClassFilter=this.value;renderMacroPppTab()">
+            <option value="all" ${state.pppClassFilter === "all" ? "selected" : ""}>${isZh ? "分类: 全部经济体" : "Class: All"}</option>
+            <option value="adv" ${state.pppClassFilter === "adv" ? "selected" : ""}>${isZh ? "IMF 发达经济体" : "IMF Advanced"}</option>
+            <option value="emde" ${state.pppClassFilter === "emde" ? "selected" : ""}>${isZh ? "IMF 新兴市场与发展中" : "IMF EMDE"}</option>
+            <option value="high" ${state.pppClassFilter === "high" ? "selected" : ""}>${isZh ? "WB 高收入经济体" : "WB High-Income"}</option>
+            <option value="upper-mid" ${state.pppClassFilter === "upper-mid" ? "selected" : ""}>${isZh ? "WB 中高收入经济体" : "WB Upper-Middle"}</option>
+            <option value="lower-mid" ${state.pppClassFilter === "lower-mid" ? "selected" : ""}>${isZh ? "WB 中低收入经济体" : "WB Lower-Middle"}</option>
+          </select>
+          <select class="inp" style="padding:5px 8px;font-size:12px;" onchange="state.pppSortBy=this.value;renderMacroPppTab()">
+            <option value="pcNom" ${state.pppSortBy === "pcNom" ? "selected" : ""}>${isZh ? "排序: 人均名义 GDP" : "Sort: Nominal Per Capita"}</option>
+            <option value="pcPpp" ${state.pppSortBy === "pcPpp" ? "selected" : ""}>${isZh ? "排序: 人均 PPP" : "Sort: PPP Per Capita"}</option>
+            <option value="mult" ${state.pppSortBy === "mult" ? "selected" : ""}>${isZh ? "排序: 购买力倍数" : "Sort: PPP/Nom Ratio"}</option>
+            <option value="totNom" ${state.pppSortBy === "totNom" ? "selected" : ""}>${isZh ? "排序: 名义经济总量" : "Sort: Nominal Total"}</option>
+            <option value="totPpp" ${state.pppSortBy === "totPpp" ? "selected" : ""}>${isZh ? "排序: PPP 经济总量" : "Sort: PPP Total"}</option>
+          </select>
+        </div>
+
+        <!-- 原有名义值与 PPP 哑铃对比图 (同步展示当前筛选列表) -->
+        <div style="overflow-x:auto;border:1px solid var(--border-hairline);border-radius:4px;padding:8px 4px;margin-bottom:14px;">
+          ${displayed.length ? `
+            <svg width="100%" height="${displayed.length * 34 + 22}" viewBox="0 0 780 ${displayed.length * 34 + 22}" style="min-width:580px;">
+              ${displayed.map((d, i) => {
+                const y = 20 + i * 34;
+                const vNom = isPc ? d.pcNom : d.totNom;
+                const vPpp = isPc ? d.pcPpp : d.totPpp;
+                const xNom = 135 + (vNom / maxVal) * 410;
+                const xPpp = 135 + (vPpp / maxVal) * 410;
+                const mult = (vPpp / (vNom || 1)).toFixed(2);
+                const nomStr = isPc ? `$${fmt(vNom, 0)}` : `$${vNom.toFixed(2)}T`;
+                const pppStr = isPc ? `$${fmt(vPpp, 0)}` : `$${vPpp.toFixed(2)}T`;
+                return `
+                  <text x="125" y="${y + 4}" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--ink-primary)">#${d.rank} ${isZh ? d.zh : d.en}</text>
+                  <line x1="135" y1="${y}" x2="550" y2="${y}" stroke="var(--border-hairline)" stroke-dasharray="2,2" />
+                  <line x1="${xNom.toFixed(1)}" y1="${y}" x2="${xPpp.toFixed(1)}" y2="${y}" stroke="var(--ink-secondary)" stroke-width="2.4" />
+                  <circle cx="${xNom.toFixed(1)}" cy="${y}" r="5.2" fill="#24486E" />
+                  <circle cx="${xPpp.toFixed(1)}" cy="${y}" r="5.8" fill="var(--accent-gold)" />
+                  <text x="560" y="${y + 4}" font-size="10.8" fill="var(--ink-primary)" class="mono">${nomStr} → ${pppStr} (${mult}x)</text>
+                `;
+              }).join("")}
+            </svg>
+          ` : `<div style="padding:18px;text-align:center;color:var(--ink-muted);font-size:13px;">${isZh ? "暂无匹配经济体，请调整筛选条件" : "No matching economies"}</div>`}
+        </div>
+
+        <!-- 结构化多维指标与官方分类明细表 -->
+        <div style="overflow-x:auto;border:1px solid var(--border-hairline);border-radius:4px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>${isZh ? "全球参考排位" : "Global Rank"}</th>
+                <th>${isZh ? "国家 / 地区" : "Economy"}</th>
+                <th class="num">${isZh ? "人均名义 GDP (2024)" : "Nominal PC (2024)"}</th>
+                <th class="num">${isZh ? "人均 PPP (2024)" : "PPP PC (2024)"}</th>
+                <th class="num">${isZh ? "PPP/名义" : "Ratio"}</th>
+                <th class="num">${isZh ? "经济总量 (名义 / PPP)" : "Total (Nom / PPP)"}</th>
+                <th>${isZh ? "IMF 经济分类" : "IMF Class"}</th>
+                <th>${isZh ? "世界银行收入分组" : "WB Income Group"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${displayed.map(d => {
+                const mult = (d.pcPpp / (d.pcNom || 1)).toFixed(2);
+                return `
+                  <tr>
+                    <td class="mono" style="font-weight:700;color:${d.rank <= 3 ? "var(--accent-gold-text)" : "var(--ink-muted)"};">#${String(d.rank).padStart(2, "0")}</td>
+                    <td><strong>${isZh ? d.zh : d.en}</strong> <span class="mono" style="font-size:11px;color:var(--ink-muted);">(${d.code} · ${regLabels[d.region]})</span></td>
+                    <td class="num" style="font-weight:700;">$${fmt(d.pcNom, 0)}</td>
+                    <td class="num" style="color:var(--accent-gold-text);font-weight:700;">$${fmt(d.pcPpp, 0)}</td>
+                    <td class="num">${mult}x</td>
+                    <td class="num">$${d.totNom.toFixed(2)}T / $${d.totPpp.toFixed(2)}T</td>
+                    <td><span class="${d.imfClass === "adv" ? "macro-badge-adv" : "macro-badge-emde"}">${d.imfClass === "adv" ? (isZh ? "IMF 发达经济体" : "IMF Advanced") : (isZh ? "IMF 新兴与发展中" : "IMF EMDE")}</span></td>
+                    <td style="font-size:12px;">${wbLabels[d.wbIncome]}</td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+
+        ${sorted.length > 20 ? `
+          <div style="margin-top:10px;text-align:center;">
+            <button class="btn gold" onclick="state.pppShowAll=!state.pppShowAll;renderMacroPppTab()">
+              ${state.pppShowAll
+                ? (isZh ? "▲ 收起至排名前 20 经济体" : "▲ Collapse to Top 20")
+                : (isZh ? `▼ 展开全部经济体（当前显示 20 / 共 ${sorted.length} 个）` : `▼ Show All (${sorted.length} Economies)`)}
+            </button>
+          </div>
+        ` : ""}
+
+        <!-- 默认折叠的「世界经济体分类标准说明」组件 -->
+        <details class="macro-fold-details">
+          <summary>
+            <span>📘 ${isZh ? "世界经济体分类标准说明（IMF 发达/发展中 vs 世界银行收入分组 · 默认折叠，点击展开）" : "World Economy Classification Standards (IMF vs World Bank · Click to Expand)"}</span>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">[展开 / 收起]</span>
+          </summary>
+          <div class="macro-fold-body">
+            <div style="margin-bottom:8px;padding:8px 10px;background:var(--accent-gold-soft);border-radius:4px;color:var(--ink-primary);">
+              <strong>核心口径声明：</strong>全球不存在单一、具有普遍法律约束力的“发达国家”统一划分标准；世界银行按人均国民总收入（GNI）划分的“高收入经济体”也不等同于“发达国家”。本看板严格引用官方原始分类标签，不依据人均 GDP 数值自行判定任何国家是否属于发达国家。
+            </div>
+            <p style="margin:6px 0;"><strong>1. IMF 发达经济体分类（Advanced Economies，2024/2025 WEO 覆盖 41 个经济体）：</strong>国际货币基金组织（IMF）《世界经济展望》不采用单一人均 GDP 门槛，而是综合考量三项维度：① 人均收入水平；② 出口多元化程度（非高度依赖单一初级大宗商品出口）；③ 与全球金融体系的融合深度与货币国际化程度。</p>
+            <p style="margin:6px 0;"><strong>2. IMF 新兴市场与发展中经济体（Emerging Market and Developing Economies, EMDE，155 个经济体）：</strong>除上述 41 个发达经济体外的其余全部经济体，涵盖大型新兴工业化经济体（如中国、印度、巴西、墨西哥）、高收入资源出口国（如沙特、卡塔尔、阿联酋）及低收入发展中国家。</p>
+            <p style="margin:6px 0;"><strong>3. 世界银行四级收入分组（World Bank Country Classifications by Income Level，FY2025 标准，基于 2023 年人均 GNI 图表集法）：</strong><br/>
+              · <strong>高收入经济体（High-Income）：</strong>人均 GNI &gt; <strong>$14,005</strong>（适用对象：全员统计分组，不含“发达国家”政治或制度定性）；<br/>
+              · <strong>中高收入经济体（Upper-Middle-Income）：</strong>人均 GNI <strong>$4,516 – $14,005</strong>；<br/>
+              · <strong>中低收入经济体（Lower-Middle-Income）：</strong>人均 GNI <strong>$1,146 – $4,515</strong>；<br/>
+              · <strong>低收入经济体（Low-Income）：</strong>人均 GNI ≤ <strong>$1,145</strong>。
+            </p>
+            <div class="macro-source-note" style="margin-top:8px;">
+              <strong>官方分类数据年份与来源链接：</strong>
+              <a href="https://www.imf.org/en/Publications/WEO/weo-database/2024/October/groups-and-aggregates" target="_blank" rel="noopener noreferrer">IMF WEO Country Composition (2024/2025)</a> ·
+              <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519" target="_blank" rel="noopener noreferrer">World Bank Country &amp; Lending Groups (FY2025)</a>
+            </div>
+          </div>
+        </details>
+
+        <div class="macro-source-note">
+          <strong>${isZh ? "人均 GDP 与 PPP 数据来源（2024 完整年度基准）：" : "Data Sources (2024 Full-Year Benchmark):"}</strong>
+          <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.CD" target="_blank" rel="noopener noreferrer">World Bank Nominal GDP per capita</a> ·
+          <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD" target="_blank" rel="noopener noreferrer">World Bank PPP GDP per capita (Intl $)</a> ·
+          <a href="https://www.imf.org/en/Publications/WEO" target="_blank" rel="noopener noreferrer">IMF World Economic Outlook</a>
         </div>
       `;
     }
@@ -5091,7 +5776,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
 
         <div class="city-row city-head">
           <span>#</span>
-          <span>${isZh ? "核心城市 / 都市圈" : "City / Metro"}</span>
+          <span>${isZh ? "核心城市 (行政市域同口径)" : "City Proper (Same-Dim)"}</span>
           <span class="col-bar">${isZh ? "经济体量对比条" : "Economic Scale"}</span>
           <span style="text-align:right;">${state.cityCur === "USD" ? (isZh ? "GDP (亿美元)" : "GDP ($B)") : (isZh ? "GDP (万亿¥)" : "GDP (¥T)")}</span>
           <span style="text-align:right;">${isZh ? "城市人均" : "Per Capita"}</span>
@@ -5117,6 +5802,14 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             `;
           }).join("")}
         </div>
+        <div class="macro-source-note">
+          <strong>${isZh ? "同维度统计口径说明（2024 基准）：" : "Same-Dimension City Proper Scope (2024):"}</strong>
+          ${isZh
+            ? "全部采用单一城市行政市域口径（City Proper）：美国城市严格按市域/五区行政边界折算（纽约市五区 $1,354B、洛杉矶市 $465B、芝加哥市 $315B、休斯顿市 $305B、旧金山市县合一 $285B，剔除跨郡/跨州 MSA 都市圈口径），与中国直辖市/地级市市域（上海、北京、深圳等）及东京都、大伦敦、首尔特别市、巴黎市（20区）保持同一地理与行政对比维度。"
+            : "All entries strictly follow single municipal administrative boundaries (City Proper / County-equivalent) rather than multi-county Metropolitan Statistical Areas (MSA)."}
+          <a href="https://www.bea.gov/data/gdp/gdp-county-metro-and-other-areas" target="_blank" rel="noopener noreferrer">US BEA Regional GDP</a> ·
+          <a href="https://data.stats.gov.cn/" target="_blank" rel="noopener noreferrer">中国国家统计局 NBS</a>
+        </div>
       `;
     }
 
@@ -5124,6 +5817,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       const isZh = state.lang === "zh";
       const maxTot = Math.max(1, ...TRADE_CORRIDORS.map(tc => tc.aToB + tc.bToA));
 
+      /* 原有模块 1：全球 8 大双边贸易走廊 (完整保留) */
       const corridorsHtml = TRADE_CORRIDORS.map(tc => {
         const tot = tc.aToB + tc.bToA;
         const pctA = (tc.aToB / tot) * 100, pctB = 100 - pctA;
@@ -5148,6 +5842,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         `;
       }).join("");
 
+      /* 原有模块 2：主要经济体进出口与外贸依存度 (完整保留) */
       const maxBal = Math.max(1, ...TRADE_STRUCTURES.map(ts => Math.abs(ts.bal)));
       const structsHtml = `
         <div class="trade-struct-row" style="background:var(--bg-subtle);font-weight:700;color:var(--ink-secondary);border-bottom:1px solid var(--border-strong);">
@@ -5173,7 +5868,35 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         }).join("")}
       `;
 
+      /* 6.2 Top 20 贸易经济体顺逆差排序与零中心双向横向柱状图 */
+      const sortedTop20 = [...TOP20_TRADE_BALANCES].sort((a, b) => {
+        if (state.tradeSortBy === "surplus") return b.balB - a.balB;
+        if (state.tradeSortBy === "deficit") return a.balB - b.balB;
+        if (state.tradeSortBy === "openPct") return b.openPct - a.openPct;
+        if (state.tradeSortBy === "expB")    return b.expB - a.expB;
+        return b.totB - a.totB;
+      });
+      const maxAbsBi = Math.max(1, ...sortedTop20.map(x => Math.abs(x.balB)));
+
+      /* 6.3 国家贸易结构 */
+      const prof = COUNTRY_TRADE_PROFILES[state.tradeSelectedCountry] || COUNTRY_TRADE_PROFILES.CN;
+      const totGoods = prof.goodsExpB + prof.goodsImpB;
+      const totServ = prof.servExpB + prof.servImpB;
+      const goodsPct = ((totGoods / (totGoods + totServ)) * 100).toFixed(1);
+      const servPct = (100 - Number(goodsPct)).toFixed(1);
+
+      /* 6.4 全球贸易商品构成环形图 SVG */
+      const ringR = 54, ringC = 2 * Math.PI * ringR;
+      let ringOff = 0;
+      const ringCircles = GLOBAL_GOODS_COMPOSITION.map(g => {
+        const dash = (g.share / 100) * ringC;
+        const cEl = `<circle cx="76" cy="76" r="${ringR}" fill="none" stroke="${g.color}" stroke-width="18" stroke-dasharray="${dash.toFixed(2)} ${(ringC - dash).toFixed(2)}" stroke-dashoffset="${(-ringOff).toFixed(2)}" transform="rotate(-90 76 76)" />`;
+        ringOff += dash;
+        return cEl;
+      }).join("");
+
       document.getElementById("macro-tab-content").innerHTML = `
+        <!-- 完整保留原有双栏：8大双边贸易走廊 & 主要经济体进出口与外贸依存度 -->
         <div class="grid-2">
           <div>
             <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
@@ -5190,9 +5913,236 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             <div style="border:1px solid var(--border-hairline);border-radius:4px;overflow:hidden;">${structsHtml}</div>
           </div>
         </div>
+
+        <!-- 6.1 全球贸易总览 -->
+        <div class="macro-sub-card">
+          <div class="macro-sub-head">
+            <strong class="serif" style="font-size:16px;">6.1 ${isZh ? "全球贸易总览 (2024 完整年度统计)" : "Global Trade Overview (2024)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">WTO &amp; UNCTAD 2024</span>
+          </div>
+          <div class="grid-4">
+            <div class="kpi-box">
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易总额 (2024)" : "World Merchandise Trade"}</div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$24.43T <span class="up" style="font-size:12px;">+2.0%</span></div>
+            </div>
+            <div class="kpi-box">
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球商业服务贸易总额 (2024)" : "World Commercial Services"}</div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">$8.69T <span class="up" style="font-size:12px;">+9.0%</span></div>
+            </div>
+            <div class="kpi-box">
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球货物贸易量增长率 (2024)" : "Merchandise Volume Growth"}</div>
+              <div class="mono up" style="font-size:18px;font-weight:700;margin-top:2px;">+2.9% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(2023: -1.1%)</span></div>
+            </div>
+            <div class="kpi-box">
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "全球贸易总额占世界 GDP 比重" : "World Trade / GDP Ratio"}</div>
+              <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;">60.1% <span style="font-size:11.5px;color:var(--ink-muted);font-weight:400;">(${isZh ? "货物+服务" : "Goods+Serv"})</span></div>
+            </div>
+          </div>
+          <div class="macro-source-note">
+            <strong>${isZh ? "数据日期与来源：" : "Date & Sources:"}</strong> 2024 年度完整统计（国际收支与海关出口口径）。
+            <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Data Portal</a> ·
+            <a href="https://unctadstat.unctad.org/" target="_blank" rel="noopener noreferrer">UNCTADstat</a>
+          </div>
+        </div>
+
+        <!-- 6.2 主要经济体贸易顺逆差 (Top 20 · 以零为中心的双向横向柱状图) -->
+        <div class="macro-sub-card">
+          <div class="macro-sub-head">
+            <div>
+              <strong class="serif" style="font-size:16px;">6.2 ${isZh ? "全球主要 20 个贸易经济体顺逆差对比 (2024, $B)" : "Top 20 Trading Economies Balance (2024, $B)"}</strong>
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "以零为中心双向柱状图：中轴左侧为贸易逆差，中轴右侧为贸易顺差" : "Zero-centered bidirectional chart: Deficit left, Surplus right"}</div>
+            </div>
+            <div class="scroll-strip" style="margin-bottom:0;">
+              <button class="btn-mini" style="${state.tradeSortBy === "totB" ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSortBy='totB';renderMacroTradeTab()">${isZh ? "按贸易总额" : "Total Trade"}</button>
+              <button class="btn-mini" style="${state.tradeSortBy === "surplus" ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSortBy='surplus';renderMacroTradeTab()">${isZh ? "顺差最大" : "Top Surplus"}</button>
+              <button class="btn-mini" style="${state.tradeSortBy === "deficit" ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSortBy='deficit';renderMacroTradeTab()">${isZh ? "逆差最大" : "Top Deficit"}</button>
+              <button class="btn-mini" style="${state.tradeSortBy === "openPct" ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSortBy='openPct';renderMacroTradeTab()">${isZh ? "外贸依存度" : "Openness %"}</button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;border:1px solid var(--border-hairline);border-radius:4px;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>${isZh ? "经济体" : "Economy"}</th>
+                  <th class="num">${isZh ? "出口 ($B)" : "Exports"}</th>
+                  <th class="num">${isZh ? "进口 ($B)" : "Imports"}</th>
+                  <th class="num">${isZh ? "贸易总额 ($B)" : "Total ($B)"}</th>
+                  <th style="min-width:170px;text-align:center;">${isZh ? "← 逆差 | 0 | 顺差 →" : "← Deficit | 0 | Surplus →"}</th>
+                  <th class="num">${isZh ? "差额 ($B)" : "Balance"}</th>
+                  <th class="num">${isZh ? "依存度" : "Open%"}</th>
+                  <th class="num">${isZh ? "年变化" : "YoY%"}</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sortedTop20.map((row, i) => {
+                  const pctBar = (Math.abs(row.balB) / maxAbsBi) * 100;
+                  const isSurplus = row.balB >= 0;
+                  return `
+                    <tr>
+                      <td class="mono" style="color:var(--ink-muted);">${String(i + 1).padStart(2, "0")}</td>
+                      <td><strong>${isZh ? row.zh : row.en}</strong> <span class="mono" style="font-size:11px;color:var(--ink-muted);">(${row.code})</span></td>
+                      <td class="num">$${fmt(row.expB, 0)}</td>
+                      <td class="num">$${fmt(row.impB, 0)}</td>
+                      <td class="num" style="font-weight:700;">$${fmt(row.totB, 0)}</td>
+                      <td>
+                        <div class="bi-bar-cell">
+                          <div class="bi-bar-left">${!isSurplus ? `<div style="width:${pctBar.toFixed(1)}%;height:100%;background:var(--down);"></div>` : ""}</div>
+                          <div class="bi-bar-zero"></div>
+                          <div class="bi-bar-right">${isSurplus ? `<div style="width:${pctBar.toFixed(1)}%;height:100%;background:var(--up);"></div>` : ""}</div>
+                        </div>
+                      </td>
+                      <td class="num ${cls(row.balB)}" style="font-weight:700;">${isSurplus ? "+" : "-"}$${fmt(Math.abs(row.balB), 0)}</td>
+                      <td class="num">${row.openPct.toFixed(1)}%</td>
+                      <td class="num ${cls(row.yoyPct)}">${row.yoyPct >= 0 ? "+" : ""}${row.yoyPct.toFixed(1)}%</td>
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+          <div class="macro-source-note">
+            <strong>${isZh ? "口径说明：" : "Scope:"}</strong> 2024 年度货物贸易（FOB 出口 / CIF 进口口径，香港与新加坡含转口贸易故外贸依存度高于 100%）。来源：
+            <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Merchandise Trade Statistics (2024)</a>
+          </div>
+        </div>
+
+        <!-- 6.3 国家贸易结构选择器 -->
+        <div class="macro-sub-card">
+          <div class="macro-sub-head">
+            <strong class="serif" style="font-size:16px;">6.3 ${isZh ? "国家贸易结构深度透视 (2024)" : "Country Trade Structure Profile (2024)"}</strong>
+            <div class="scroll-strip" style="margin-bottom:0;">
+              ${Object.entries(COUNTRY_TRADE_PROFILES).map(([code, p]) =>
+                `<button class="btn-mini" style="${state.tradeSelectedCountry === code ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.tradeSelectedCountry='${code}';renderMacroTradeTab()">${isZh ? p.zh : p.en}</button>`
+              ).join("")}
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:6px;font-size:12.5px;">
+              <strong>${isZh ? `${prof.zh} 货物贸易 vs 服务贸易结构 (${prof.year})` : `${prof.en} Goods vs Services Mix`}</strong>
+              <span class="mono">
+                ${isZh ? "货物" : "Goods"}: $${fmt(prof.goodsExpB, 0)}B / $${fmt(prof.goodsImpB, 0)}B (${goodsPct}%) ·
+                ${isZh ? "服务" : "Services"}: $${fmt(prof.servExpB, 0)}B / $${fmt(prof.servImpB, 0)}B (${servPct}%)
+              </span>
+            </div>
+            <div style="height:10px;border-radius:5px;overflow:hidden;display:flex;background:var(--bg-subtle);">
+              <div style="width:${goodsPct}%;background:var(--accent-us);"></div>
+              <div style="width:${servPct}%;background:var(--accent-gold);"></div>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card">
+              <strong style="font-size:13px;display:block;margin-bottom:8px;">${isZh ? "主要出口商品及占比" : "Top Export Commodities"}</strong>
+              ${prof.exports.map(e => `
+                <div style="margin-bottom:7px;">
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;"><span>${e.zh}</span><span class="mono" style="font-weight:700;">${e.pct}%</span></div>
+                  <div class="rank-track" style="margin-top:3px;"><div class="rank-fill" style="width:${Math.min(100, e.pct * 2.6)}%;background:var(--accent-us);"></div></div>
+                </div>
+              `).join("")}
+            </div>
+            <div class="card">
+              <strong style="font-size:13px;display:block;margin-bottom:8px;">${isZh ? "主要进口商品及占比" : "Top Import Commodities"}</strong>
+              ${prof.imports.map(im => `
+                <div style="margin-bottom:7px;">
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;"><span>${im.zh}</span><span class="mono" style="font-weight:700;">${im.pct}%</span></div>
+                  <div class="rank-track" style="margin-top:3px;"><div class="rank-fill" style="width:${Math.min(100, im.pct * 2.6)}%;background:var(--accent-macro);"></div></div>
+                </div>
+              `).join("")}
+            </div>
+            <div class="card">
+              <strong style="font-size:13px;display:block;margin-bottom:8px;">${isZh ? "前五大贸易伙伴及双边差额" : "Top 5 Partners & Bilateral Balance"}</strong>
+              ${prof.partners.map(pt => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-hairline);font-size:12px;">
+                  <span>${pt.zh} <span class="mono" style="color:var(--ink-muted);">(${pt.share}%)</span></span>
+                  <span class="mono ${cls(pt.balB)}" style="font-weight:700;">${pt.balB >= 0 ? "+" : "-"}$${Math.abs(pt.balB)}B</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          <div class="macro-source-note">
+            <strong>${isZh ? "数据来源：" : "Source:"}</strong> 2024 年度海关商品分类（HS 2位章）与国际收支服务贸易统计。
+            <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener noreferrer">UN Comtrade Database</a> ·
+            <a href="https://www.wto.org/english/res_e/statis_e/statis_e.htm" target="_blank" rel="noopener noreferrer">WTO Trade Profiles</a>
+          </div>
+        </div>
+
+        <!-- 6.4 全球贸易商品构成 (统一 SITC Rev.4 单一不重复口径) -->
+        <div class="macro-sub-card">
+          <div class="macro-sub-head">
+            <strong class="serif" style="font-size:16px;">6.4 ${isZh ? "全球货物贸易商品构成 (2024 · SITC Rev.4 统一口径)" : "Global Merchandise Trade Composition (2024 · SITC Rev.4)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">Total: $24.43T (100.0%)</span>
+          </div>
+          <div class="grid-2" style="align-items:center;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
+              <svg width="152" height="152" viewBox="0 0 152 152">
+                ${ringCircles}
+                <text x="76" y="72" text-anchor="middle" font-size="10" fill="var(--ink-muted)" class="mono">SITC REV.4</text>
+                <text x="76" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink-primary)" class="mono">$24.43T</text>
+              </svg>
+              <div style="font-size:12px;color:var(--ink-secondary);max-width:260px;line-height:1.6;">
+                ${isZh ? "采用联合国《国际贸易标准分类第四版》（SITC Rev.4）互斥大类归并，八大品类占比严格加总为 100.0%，避免电子与机械设备交叉重复统计。" : "Mutually exclusive SITC Rev.4 classification summing strictly to 100.0% without double counting."}
+              </div>
+            </div>
+            <div>
+              ${GLOBAL_GOODS_COMPOSITION.map(g => `
+                <div style="margin-bottom:7px;">
+                  <div style="display:flex;justify-content:space-between;font-size:12px;">
+                    <span><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${g.color};margin-right:6px;"></i><strong>${isZh ? g.zh : g.en}</strong> <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">(${g.sitc})</span></span>
+                    <span class="mono" style="font-weight:700;">${g.share.toFixed(1)}% <span style="font-weight:400;color:var(--ink-muted);">($${g.valT.toFixed(2)}T)</span></span>
+                  </div>
+                  <div class="rank-track" style="margin-top:3px;"><div class="rank-fill" style="width:${(g.share / 24) * 100}%;background:${g.color};"></div></div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          <div class="macro-source-note">
+            <strong>${isZh ? "口径与来源：" : "Source:"}</strong> 2024 年度 WTO &amp; UN Comtrade SITC Rev.4 全球货物出口构成。
+            <a href="https://comtradeplus.un.org/" target="_blank" rel="noopener noreferrer">UN Comtrade SITC Rev.4</a> ·
+            <a href="https://stats.wto.org/" target="_blank" rel="noopener noreferrer">WTO Merchandise Trade by Commodity</a>
+          </div>
+        </div>
+
+        <!-- 6.5 全球贸易景气与航运专业指数 -->
+        <div class="macro-sub-card">
+          <div class="macro-sub-head">
+            <div>
+              <strong class="serif" style="font-size:16px;">6.5 ${isZh ? "全球贸易景气与航运专业指数监测" : "Global Trade Barometers & Freight Indices"}</strong>
+              <div style="font-size:11.5px;color:var(--ink-muted);">${isZh ? "严格区分「即期/综合运价」「实际贸易量」「先行景气」与「供应链压力」四类口径" : "Distinctly categorized across Freight Rates, Trade Volume, Leading Barometer & Supply Chain Pressure"}</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;padding:8px 11px;background:var(--accent-gold-soft);border-left:3px solid var(--accent-gold);border-radius:4px;font-size:12px;color:var(--ink-primary);">
+            <strong>指标解读红线提示：</strong>BDI、SCFI、CCFI、WCI 属于<strong>海运价格指数</strong>，受航线绕行、港口拥堵或运力供给收缩影响显著；<strong>不得将运价指数上涨直接解释为全球实际贸易量增长</strong>，实际货量需结合 CPB 贸易量指数与 WTO 晴雨表交叉验证。
+          </div>
+
+          <div class="grid-3">
+            ${TRADE_INDICES.map(ix => `
+              <div class="freight-card">
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px;">
+                    <span class="mono" style="font-size:11px;font-weight:700;color:var(--accent-fx);">${ix.code}</span>
+                    <span class="badge-pct">${ix.category}</span>
+                  </div>
+                  <strong class="serif" style="font-size:15px;display:block;">${isZh ? ix.zh : ix.en}</strong>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin:8px 0 4px;">
+                    <span class="mono" style="font-size:19px;font-weight:700;">${ix.val}</span>
+                    ${sparkSvg(ix.series, ix.isPos, 74, 22)}
+                  </div>
+                  <div class="mono ${ix.isPos ? "up" : "down"}" style="font-size:11.5px;margin-bottom:6px;">${ix.chg} · <span style="color:var(--ink-muted);">${ix.date}</span></div>
+                  <p style="font-size:12px;color:var(--ink-secondary);margin:0;line-height:1.5;">${ix.desc}</p>
+                </div>
+                <div class="mono" style="font-size:10.5px;padding-top:6px;border-top:1px dashed var(--border-hairline);">
+                  <a href="${ix.url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-us);">${ix.source} ↗</a>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
       `;
     }
-
     /* =========================================================================
        9. SECTION 09: 世界货币与储备
        ========================================================================= */
@@ -6261,7 +7211,8 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
 
         ctx.fillStyle = st.accent;
         ctx.font = "bold 16px sans-serif";
-        ctx.fillText("■ 全球核心都市圈 GDP 五强", 48, 740);
+        ctx.fillText("■ 全球核心城市 GDP 五强 (市域同口径)", 48, 740);
+        const topCityMax = GLOBAL_CITIES[0]?.gdpB || 1354;
         GLOBAL_CITIES.slice(0, 5).forEach((ct, i) => {
           const y = 768 + i * 42;
           ctx.fillStyle = st.ink;
@@ -6270,7 +7221,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
           ctx.fillStyle = st.card;
           ctx.fillRect(210, y - 13, 360, 14);
           ctx.fillStyle = st.accent;
-          ctx.fillRect(210, y - 13, (ct.gdpB / 2290) * 360, 14);
+          ctx.fillRect(210, y - 13, (ct.gdpB / topCityMax) * 360, 14);
           ctx.fillStyle = st.ink;
           ctx.font = "bold 15px monospace";
           ctx.fillText(`$${ct.gdpB}B`, 588, y);
