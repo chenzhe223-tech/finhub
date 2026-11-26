@@ -4076,6 +4076,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         <strong class="serif" style="font-size:18px;">🎨 高清静态与动态信息海报工作室（6种商业财经风格）</strong>
         <div style="display:flex;gap:6px;flex-wrap:wrap;" id="poster-header-actions">
           <button class="btn primary" id="btn-export-png" onclick="downloadPosterPNG()">⬇ 下载高清 PNG</button>
+          <button class="btn" id="btn-copy-share" style="display:none;" onclick="copyChinaPosterShareText()">📋 复制分享文案</button>
           <button class="btn" id="btn-export-video" style="display:none;background:var(--accent-gold);color:#fff;border-color:var(--accent-gold);" onclick="exportAnimatedPosterVideo()">🎬 导出动态视频</button>
           <button class="btn" id="btn-export-gif" style="display:none;" onclick="exportAnimatedPosterGIF()">🎞 导出 GIF 动图</button>
           <button class="btn" onclick="closeModal('poster-modal')">关闭</button>
@@ -4784,6 +4785,9 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       chinaTableDir: "desc",
       chinaTableRegion: "all",
       chinaTableQuery: "",
+      chinaCityFilter: "all",
+      chinaCitySort: "gdp",
+      chinaCityQuery: "",
       gdpMetric: "nom",
       gdpSelected: ["us", "cn", "de", "jp", "in"],
       gdpSearch: "",
@@ -4826,20 +4830,42 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         exporting: false,
         exportStatus: ""
       },
+      chinaStaticPoster: {
+        title: "中国核心城市与区域经济深度图谱",
+        subtitle: "产业结构 · 人口与城镇化 · 地理区位全景档案 (2025)",
+        footerNote: "DAVYLAB · CHINA REGIONAL & CITY INTELLIGENCE",
+        entityType: "city",
+        cityId: "shenzhen",
+        provCode: "440000",
+        currency: "CNY",
+        yearIdx: 9,
+        cityRankSort: "gdp",
+        cityRankCount: 8,
+        secMap: true,
+        secKpis: true,
+        secIndustry: true,
+        secPopGeo: true,
+        secCityCompare: true,
+        showWatermark: true
+      },
       chinaAnimPoster: {
         title: "中国区域经济十年格局演进（含港澳台）",
-        subtitle: "34 省级行政区 GDP · 人均产出 · 产业结构与人口版图 (2016–2025)",
+        subtitle: "34 省区市 & 36 核心城市 · 产业结构、人口城镇化与地理版图 (2016–2025)",
         footerNote: "DAVYLAB · CHINA REGIONAL MACRO INTELLIGENCE",
+        entityType: "province",
         metric: "gdp",
         currency: "CNY",
         focusCode: "440000",
+        focusCityId: "shenzhen",
         startIdx: 0,
         endIdx: 9,
         durationSec: 8,
         aspect: "poster",
         showMap: true,
+        showCityDots: true,
         showRace: true,
         showSparkline: true,
+        showGeoInfo: true,
         showWatermark: true
       },
       tradePoster: (() => {
@@ -5216,7 +5242,8 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
                   <button class="btn-mini" style="border:none;border-radius:0;${state.chinaCurrency === "CNY" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="state.chinaCurrency='CNY';renderAll()">¥ 人民币</button>
                   <button class="btn-mini" style="border:none;border-radius:0;${state.chinaCurrency === "USD" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="state.chinaCurrency='USD';renderAll()">$ 美元</button>
                 </div>
-                <button class="btn primary" onclick="openChinaAnimatedPoster()">🎬 ${isZh ? "中国区域动态海报" : "China Animated Poster"}</button>
+                <button class="btn" onclick="openChinaStaticPoster()">🖼 ${isZh ? "中国静态海报" : "China Static Poster"}</button>
+                <button class="btn primary" onclick="openChinaAnimatedPoster()">🎬 ${isZh ? "中国动态海报" : "China Animated Poster"}</button>
               </div>
             </div>
             <div class="card">
@@ -7093,7 +7120,9 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       } finally {
         chinaMacroStore.loading = false;
         renderChinaMacro();
-        if (document.getElementById("poster-modal")?.classList.contains("open") && state.posterMode === "china_anim") {
+        if (document.getElementById("poster-modal")?.classList.contains("open") && (state.posterMode === "china_anim" || state.posterMode === "china_static")) {
+          if (state.posterMode === "china_static") renderChinaStaticPosterControls();
+          else renderChinaAnimPosterControls();
           drawPosterCanvas();
         }
       }
@@ -7284,15 +7313,89 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       tip.style.display = "block";
     }
 
-    function openChinaAnimatedPoster() {
+    function getChinaCitiesList() {
+      return Array.isArray(chinaMacroStore.data?.cities) ? chinaMacroStore.data.cities : [];
+    }
+
+    function openChinaStaticPoster(cityId = null, provCode = null) {
+      const sp = state.chinaStaticPoster;
+      sp.currency = state.chinaCurrency || "CNY";
+      sp.yearIdx = state.chinaYearIdx;
+      if (cityId) {
+        sp.entityType = "city";
+        sp.cityId = cityId;
+        const ct = getChinaCitiesList().find(x => x.id === cityId);
+        if (ct) {
+          sp.title = `${ct.zh}城市经济、产业与地理深度档案`;
+          sp.subtitle = `${ct.tier} · ${ct.geo.beltZh} · 产业结构 / 人口城镇化 / 地理区位 (${chinaMacroStore.data?.yearLabels?.[sp.yearIdx] || "2025"})`;
+        }
+      } else if (provCode) {
+        sp.entityType = "province";
+        sp.provCode = provCode;
+        const pv = getChinaProvincesDict()[provCode];
+        if (pv) {
+          sp.title = `${pv.fullZh}经济、产业结构与人口地理图谱`;
+          sp.subtitle = `GDP 构成 · 三产结构 · 人口城镇化与地理信息 (${chinaMacroStore.data?.yearLabels?.[sp.yearIdx] || "2025"})`;
+        }
+      } else {
+        sp.provCode = state.chinaSelectedCode || "440000";
+        if (state.chinaTab === "cities") {
+          sp.entityType = "city";
+        }
+      }
+      openPosterModal("china_static");
+    }
+
+    function openChinaAnimatedPoster(cityId = null) {
       const m = CHINA_METRICS[state.chinaMetric] || CHINA_METRICS.gdp;
       const isZh = state.lang === "zh";
-      state.chinaAnimPoster.metric = state.chinaMetric || "gdp";
-      state.chinaAnimPoster.currency = state.chinaCurrency || "CNY";
-      state.chinaAnimPoster.focusCode = state.chinaSelectedCode || "440000";
-      state.chinaAnimPoster.title = isZh ? `中国区域经济十年演进 · ${m.zh}` : `China Regional 10Y · ${m.en}`;
-      state.chinaAnimPoster.subtitle = isZh ? `含港澳台 34 省级行政区 · ${m.zh}动态地图与排名格局 (2016–2025)` : `34 Divisions incl. HK, Macao & Taiwan (2016–2025)`;
+      const cp = state.chinaAnimPoster;
+      cp.metric = state.chinaMetric || "gdp";
+      cp.currency = state.chinaCurrency || "CNY";
+      cp.focusCode = state.chinaSelectedCode || "440000";
+      if (cityId) {
+        cp.entityType = "city";
+        cp.focusCityId = cityId;
+        const ct = getChinaCitiesList().find(x => x.id === cityId);
+        cp.title = ct ? `中国核心城市十年演进 · 聚焦${ct.zh}` : `中国核心城市十年演进 · ${m.zh}`;
+        cp.subtitle = `36 核心城市（含港澳台）· 产业结构 / 人口城镇化 / 地理版图 (2016–2025)`;
+      } else {
+        cp.entityType = state.chinaTab === "cities" ? "city" : "province";
+        cp.title = isZh ? `中国区域经济十年演进 · ${m.zh}` : `China Regional 10Y · ${m.en}`;
+        cp.subtitle = isZh ? `含港澳台 34 省与 36 核心城市 · 产业、人口城镇化与地理格局 (2016–2025)` : `34 Divisions & 36 Cities incl. HK, Macao & Taiwan (2016–2025)`;
+      }
       openPosterModal("china_anim");
+    }
+
+    function copyChinaPosterShareText() {
+      const isStatic = state.posterMode === "china_static";
+      const cfg = isStatic ? state.chinaStaticPoster : state.chinaAnimPoster;
+      const yIdx = isStatic ? cfg.yearIdx : cfg.endIdx;
+      const yLabel = chinaMacroStore.data?.yearLabels?.[yIdx] || "2025";
+      const cur = cfg.currency || "CNY";
+      const isCity = cfg.entityType === "city";
+      const target = isCity
+        ? (getChinaCitiesList().find(c => c.id === (isStatic ? cfg.cityId : cfg.focusCityId)) || getChinaCitiesList()[0])
+        : (getChinaProvincesDict()[isStatic ? cfg.provCode : cfg.focusCode] || Object.values(getChinaProvincesDict())[0]);
+      if (!target) return;
+      const name = isCity ? `${target.zh}（${target.tier} · ${target.provZh}）` : target.fullZh;
+      const gdpStr = formatChinaVal(getChinaMetricValue(target, "gdp", yIdx, cur), "gdp", cur);
+      const pcStr = formatChinaVal(getChinaMetricValue(target, "pc", yIdx, cur), "pc", cur);
+      const grStr = formatChinaVal(target.growth?.[yIdx], "growth");
+      const popStr = formatChinaVal(target.popWan?.[yIdx], "pop");
+      const areaStr = isCity ? `${target.areaKm2.toLocaleString()} km²` : `${target.areaWanKm2} 万km²`;
+      const text = [
+        `📊【${cfg.title}】`,
+        `📍 聚焦地区：${name}（${yLabel}）`,
+        `💰 经济规模：GDP ${gdpStr}｜人均 ${pcStr}｜增速 ${grStr}`,
+        `🏭 产业结构：第一产业 ${target.industry.primary}% / 第二产业 ${target.industry.secondary}% / 第三产业 ${target.industry.tertiary}%`,
+        `🎯 支柱产业：${target.geo.pillars.join(" · ")}`,
+        `👥 人口与城镇化：常住人口 ${popStr}（近10年 ${target.popChg10y >= 0 ? "+" : ""}${target.popChg10y}万）｜城镇化率 ${target.urbanPct}%｜密度 ${target.density.toLocaleString()}人/km²`,
+        `🗺 地理信息：面积 ${areaStr}｜${target.geo.coastalType}${target.geo.beltZh ? " · " + target.geo.beltZh : ""}｜${target.geo.terrainZh}`,
+        `—— 制图：DAVYLAB 全球与区域金融信息中枢 (finhub.chenzhe223.workers.dev)`
+      ].join("\n");
+      copyTextSafe(text);
+      showToast("已复制含产业/人口/城镇化/地理信息的分享文案");
     }
 
     function renderChinaMacro() {
@@ -7300,10 +7403,11 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       if (!tabsBox) return;
       const isZh = state.lang === "zh";
       const tabs = [
-        { id: "map",      zh: "🗺 中国区域动态地图",    en: "🗺 Regional Interactive Map" },
-        { id: "industry", zh: "🏭 GDP构成与产业结构",   en: "🏭 Composition & Industry" },
-        { id: "pop",      zh: "👥 人口、城镇化与地理",  en: "👥 Population & Geography" },
-        { id: "clusters", zh: "🧭 核心区域经济圈",      en: "🧭 Economic Clusters" }
+        { id: "map",      zh: "🗺 中国区域动态地图",    en: "🗺 Regional Map" },
+        { id: "cities",   zh: "🏙 核心城市档案 (36城)", en: "🏙 Top 36 Cities" },
+        { id: "industry", zh: "🏭 GDP构成与产业结构",   en: "🏭 Industry & Mix" },
+        { id: "pop",      zh: "👥 人口、城镇化与地理",  en: "👥 Pop & Geography" },
+        { id: "clusters", zh: "🧭 核心区域经济圈",      en: "🧭 Clusters" }
       ];
       if (!tabs.some(tb => tb.id === state.chinaTab)) state.chinaTab = "map";
       if (state.chinaTab !== "map") stopChinaPlay();
@@ -7320,9 +7424,113 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       }
 
       if (state.chinaTab === "map") renderChinaMapTab();
+      else if (state.chinaTab === "cities") renderChinaCitiesTab();
       else if (state.chinaTab === "industry") renderChinaIndustryTab();
       else if (state.chinaTab === "pop") renderChinaPopGeoTab();
       else renderChinaClustersTab();
+    }
+
+    function renderChinaCitiesTab() {
+      const box = document.getElementById("china-tab-content");
+      if (!box || !chinaMacroStore.data) return;
+      const isZh = state.lang === "zh";
+      const data = chinaMacroStore.data;
+      const cities = getChinaCitiesList();
+      const yIdx = state.chinaYearIdx;
+      const yLabel = data.yearLabels?.[yIdx] || "2025";
+      const cur = state.chinaCurrency || "CNY";
+      const q = (state.chinaCityQuery || "").trim().toLowerCase();
+      const filt = state.chinaCityFilter || "all";
+      const sort = state.chinaCitySort || "gdp";
+
+      const filtered = cities
+        .filter(c => (filt === "all" || c.region === filt || (filt === "hmt" && c.isHmt)) && (!q || c.zh.includes(q) || c.en.toLowerCase().includes(q) || c.provZh.includes(q) || c.geo.beltZh.includes(q) || c.geo.pillars.some(p => p.includes(q))))
+        .sort((a, b) => {
+          if (sort === "pc") return getChinaMetricValue(b, "pc", yIdx, cur) - getChinaMetricValue(a, "pc", yIdx, cur);
+          if (sort === "tertiary") return b.industry.tertiary - a.industry.tertiary;
+          if (sort === "secondary") return b.industry.secondary - a.industry.secondary;
+          if (sort === "pop") return b.popWan[yIdx] - a.popWan[yIdx];
+          if (sort === "urban") return b.urbanPct - a.urbanPct;
+          if (sort === "density") return b.density - a.density;
+          return getChinaMetricValue(b, "gdp", yIdx, cur) - getChinaMetricValue(a, "gdp", yIdx, cur);
+        });
+
+      box.innerHTML = `
+        <div class="macro-sub-head" style="margin-top:0;">
+          <div>
+            <strong style="font-size:14px;">🏙 ${isZh ? `中国 36 座核心城市（含港澳台）产业结构、人口城镇化与地理档案 (${yLabel})` : `36 Core Chinese Cities Profiles (${yLabel})`}</strong>
+            <div style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? "每张城市卡片均支持一键生成「静态深度分享海报」或「动态视频/GIF 海报」" : "Generate customizable static or animated sharing posters for any city"}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+            <input type="text" class="inp" style="padding:4px 8px;font-size:12px;width:165px;" placeholder="${isZh ? "搜城市/产业/湾区..." : "Search city/pillar..."}" value="${escAttr(state.chinaCityQuery || "")}" oninput="state.chinaCityQuery=this.value;renderChinaCitiesTab()" />
+            <select class="inp" style="padding:4px 8px;font-size:12px;" onchange="state.chinaCityFilter=this.value;renderChinaCitiesTab()">
+              <option value="all" ${filt === "all" ? "selected" : ""}>全部 36 城</option>
+              ${Object.entries(data.regions).map(([rk, rv]) => `<option value="${rk}" ${filt === rk ? "selected" : ""}>${isZh ? rv.zh : rv.en}</option>`).join("")}
+            </select>
+            <select class="inp" style="padding:4px 8px;font-size:12px;" onchange="state.chinaCitySort=this.value;renderChinaCitiesTab()">
+              <option value="gdp" ${sort === "gdp" ? "selected" : ""}>排序：GDP 总量</option>
+              <option value="pc" ${sort === "pc" ? "selected" : ""}>排序：人均 GDP</option>
+              <option value="tertiary" ${sort === "tertiary" ? "selected" : ""}>排序：第三产业占比</option>
+              <option value="secondary" ${sort === "secondary" ? "selected" : ""}>排序：第二产业制造占比</option>
+              <option value="pop" ${sort === "pop" ? "selected" : ""}>排序：常住人口</option>
+              <option value="urban" ${sort === "urban" ? "selected" : ""}>排序：城镇化率</option>
+              <option value="density" ${sort === "density" ? "selected" : ""}>排序：人口密度</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="china-pk-grid">
+          ${filtered.map((c, idx) => `
+            <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-top:3px solid ${c.color};border-radius:4px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+                  <div>
+                    <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">#${idx + 1}</span>
+                    <strong class="serif" style="font-size:16px;margin-left:3px;">${isZh ? c.zh : c.en}</strong>
+                    <span class="${c.isHmt ? "macro-badge-adv" : "macro-badge-emde"}" style="margin-left:4px;">${c.tier}</span>
+                  </div>
+                  <strong class="mono" style="font-size:14.5px;color:var(--accent-cn);">${formatChinaVal(getChinaMetricValue(c, "gdp", yIdx, cur), "gdp", cur, true)}</strong>
+                </div>
+                <div class="mono" style="font-size:11px;color:var(--ink-muted);margin-top:3px;">
+                  人均 ${formatChinaVal(getChinaMetricValue(c, "pc", yIdx, cur), "pc", cur, true)} · 增速 ${formatChinaVal(c.growth[yIdx], "growth")} · 人口 ${formatChinaVal(c.popWan[yIdx], "pop")}（10年${c.popChg10y >= 0 ? "+" : ""}${c.popChg10y}万）
+                </div>
+
+                <div style="margin-top:8px;">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+                    <span>🏭 产业结构 (一/二/三产)</span>
+                    <span class="mono">${c.industry.primary}/${c.industry.secondary}/<strong style="color:var(--accent-fx);">${c.industry.tertiary}%</strong></span>
+                  </div>
+                  <div class="china-stack-bar">
+                    <div style="width:${c.industry.primary}%;background:#8C6D46;"></div>
+                    <div style="width:${c.industry.secondary}%;background:#24486E;"></div>
+                    <div style="width:${c.industry.tertiary}%;background:#2E6B5E;"></div>
+                  </div>
+                </div>
+
+                <div style="margin-top:7px;">
+                  <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;">
+                    <span>🏙 城镇化率 · 密度</span>
+                    <span class="mono"><strong>${c.urbanPct}%</strong> · ${c.density.toLocaleString()}人/km² · ${c.areaKm2.toLocaleString()}km²</span>
+                  </div>
+                  <div style="height:6px;background:var(--bg-subtle);border-radius:3px;overflow:hidden;">
+                    <div style="width:${Math.min(100, c.urbanPct)}%;height:100%;background:var(--accent-gold);"></div>
+                  </div>
+                </div>
+
+                <div style="font-size:11.5px;color:var(--ink-secondary);margin-top:7px;line-height:1.5;background:var(--bg-card);padding:6px 8px;border-radius:3px;border:1px solid var(--border-hairline);">
+                  <strong>📍 ${c.geo.beltZh} · ${c.geo.coastalType}</strong>：${c.geo.terrainZh}
+                </div>
+                <div class="china-pillar-row">${c.geo.pillars.map(p => `<span class="china-pillar-tag">${p}</span>`).join("")}</div>
+              </div>
+
+              <div style="display:flex;gap:6px;padding-top:7px;border-top:1px dashed var(--border-hairline);">
+                <button class="btn-mini" style="flex:1;font-weight:700;" onclick="openChinaStaticPoster('${c.id}')">🖼 静态分享海报</button>
+                <button class="btn-mini" style="flex:1;background:var(--accent-gold-soft);color:var(--accent-gold-text);border-color:var(--accent-gold);font-weight:700;" onclick="openChinaAnimatedPoster('${c.id}')">🎬 动态海报</button>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
     }
 
     function renderChinaMapTab() {
@@ -9558,11 +9766,12 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     function renderPosterStudio() {
       const isZh = state.lang === "zh";
       document.getElementById("poster-mode-tabs").innerHTML = [
-        { id: "macro_anim", zh: "🎬 世界宏观动态海报",         en: "🎬 World Animated Poster" },
-        { id: "china_anim", zh: "🇨🇳 中国区域动态海报",         en: "🇨🇳 China Animated Poster" },
-        { id: "corp",       zh: "企业年报研报海报",           en: "Corporate Filing Poster" },
-        { id: "macro",      zh: "世界经济宏观专题海报",       en: "World Economy Macro Poster" },
-        { id: "trade",      zh: "世界贸易往来专题海报",       en: "Global Trade Poster" }
+        { id: "china_static", zh: "🖼 中国静态深度海报",         en: "🖼 China Static Poster" },
+        { id: "china_anim",   zh: "🇨🇳 中国区域动态海报",         en: "🇨🇳 China Animated Poster" },
+        { id: "macro_anim",   zh: "🎬 世界宏观动态海报",         en: "🎬 World Animated Poster" },
+        { id: "corp",         zh: "企业年报研报海报",           en: "Corporate Filing Poster" },
+        { id: "macro",        zh: "世界经济宏观专题海报",       en: "World Economy Macro Poster" },
+        { id: "trade",        zh: "世界贸易往来专题海报",       en: "Global Trade Poster" }
       ].map(m => `<button class="modal-tab-btn ${state.posterMode === m.id ? "active" : ""}" onclick="if(state.posterMode!== '${m.id}'){stopPosterAnimation();state.posterMode='${m.id}';renderPosterStudio();}">${isZh ? m.zh : m.en}</button>`).join("");
 
       document.getElementById("poster-style-tabs").innerHTML = POSTER_STYLES.map(st =>
@@ -9574,6 +9783,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const panel = document.getElementById("poster-custom-panel");
       const btnVid = document.getElementById("btn-export-video");
       const btnGif = document.getElementById("btn-export-gif");
+      const btnCopy = document.getElementById("btn-copy-share");
       const animBar = document.getElementById("poster-anim-preview-bar");
 
       if (state.posterMode === "trade") {
@@ -9583,8 +9793,20 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         if (panel) panel.style.display = "block";
         if (btnVid) btnVid.style.display = "none";
         if (btnGif) btnGif.style.display = "none";
+        if (btnCopy) btnCopy.style.display = "none";
         if (animBar) animBar.style.display = "none";
         renderTradePosterControls();
+      } else if (state.posterMode === "china_static") {
+        stopPosterAnimation();
+        ensureChinaMacroAssets();
+        if (dialog) dialog.style.maxWidth = "1160px";
+        if (body) body.classList.add("with-custom");
+        if (panel) panel.style.display = "block";
+        if (btnVid) btnVid.style.display = "none";
+        if (btnGif) btnGif.style.display = "none";
+        if (btnCopy) btnCopy.style.display = "inline-flex";
+        if (animBar) animBar.style.display = "none";
+        renderChinaStaticPosterControls();
       } else if (state.posterMode === "macro_anim" || state.posterMode === "china_anim") {
         if (state.posterMode === "china_anim") ensureChinaMacroAssets();
         else ensureMacroDynamicAssets();
@@ -9593,6 +9815,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         if (panel) panel.style.display = "block";
         if (btnVid) btnVid.style.display = "inline-flex";
         if (btnGif) btnGif.style.display = "inline-flex";
+        if (btnCopy) btnCopy.style.display = state.posterMode === "china_anim" ? "inline-flex" : "none";
         if (animBar) animBar.style.display = "flex";
         if (state.posterMode === "china_anim") renderChinaAnimPosterControls();
         else renderAnimPosterControls();
@@ -9604,6 +9827,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         if (panel) { panel.style.display = "none"; panel.innerHTML = ""; }
         if (btnVid) btnVid.style.display = "none";
         if (btnGif) btnGif.style.display = "none";
+        if (btnCopy) btnCopy.style.display = "none";
         if (animBar) animBar.style.display = "none";
       }
 
@@ -10119,6 +10343,502 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     }
 
     /* =========================================================================
+       12.4 中国区域与核心城市静态深度海报引擎 (自由勾选：地图落点/产业结构/人口城镇化/地理信息/城市对比表)
+       ========================================================================= */
+    function updateChinaStaticField(key, val, rerenderPanel = false) {
+      state.chinaStaticPoster[key] = val;
+      if (rerenderPanel) renderChinaStaticPosterControls();
+      drawPosterCanvas();
+    }
+
+    function applyChinaStaticPreset(preset) {
+      const sp = state.chinaStaticPoster;
+      if (preset === "city_card") {
+        sp.entityType = "city"; sp.cityId = "shenzhen"; sp.currency = "CNY";
+        sp.title = "深圳城市经济、产业与地理深度名片";
+        sp.subtitle = "特区一线 · 粤港澳大湾区 · 产业结构 / 人口城镇化 / 地理区位 (2025)";
+        sp.secMap = true; sp.secKpis = true; sp.secIndustry = true; sp.secPopGeo = true; sp.secCityCompare = false;
+      } else if (preset === "city_rank") {
+        sp.entityType = "city"; sp.cityId = "shanghai"; sp.cityRankSort = "gdp"; sp.cityRankCount = 10;
+        sp.title = "中国核心城市多维全景排行（含港澳台）";
+        sp.subtitle = "GDP 总量 · 三产结构 · 常住人口与城镇化率 · 地理区位一览 (2025)";
+        sp.secMap = true; sp.secKpis = false; sp.secIndustry = false; sp.secPopGeo = false; sp.secCityCompare = true;
+      } else if (preset === "hmt_bay") {
+        sp.entityType = "city"; sp.cityId = "hongkong"; sp.currency = "USD"; sp.cityRankSort = "pc"; sp.cityRankCount = 8;
+        sp.title = "港澳台与内地核心城市全景对标";
+        sp.subtitle = "美元同口径 · 现代服务业 / 人口密度 / 城镇化与湾区地理格局 (2025)";
+        sp.secMap = true; sp.secKpis = true; sp.secIndustry = true; sp.secPopGeo = true; sp.secCityCompare = true;
+      } else if (preset === "prov_full") {
+        sp.entityType = "province"; sp.provCode = state.chinaSelectedCode || "440000"; sp.currency = "CNY"; sp.cityRankSort = "tertiary"; sp.cityRankCount = 8;
+        const pv = getChinaProvincesDict()[sp.provCode];
+        sp.title = pv ? `${pv.fullZh}宏观经济与区域地理长图` : "中国省级区域宏观深度长图";
+        sp.subtitle = "34 省区市热力地图 · 产业结构 / GDP 构成 / 人口城镇化与地理信息 (2025)";
+        sp.secMap = true; sp.secKpis = true; sp.secIndustry = true; sp.secPopGeo = true; sp.secCityCompare = true;
+      }
+      renderChinaStaticPosterControls();
+      drawPosterCanvas();
+      showToast("已切换中国静态海报模板");
+    }
+
+    function renderChinaStaticPosterControls() {
+      const panel = document.getElementById("poster-custom-panel");
+      if (!panel) return;
+      const isZh = state.lang === "zh";
+      const sp = state.chinaStaticPoster;
+      const cities = getChinaCitiesList();
+      const dict = getChinaProvincesDict();
+      const years = chinaMacroStore.data?.yearLabels || ["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+      const chk = (key, label) => `
+        <label class="poster-chk-pill ${sp[key] ? "checked" : ""}">
+          <input type="checkbox" ${sp[key] ? "checked" : ""} onchange="updateChinaStaticField('${key}', this.checked, true)" />
+          <span>${label}</span>
+        </label>
+      `;
+
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <strong style="font-size:13px;">🖼 ${isZh ? "中国静态海报内容与字段配置" : "China Static Poster Fields"}</strong>
+          <button class="btn-mini" onclick="copyChinaPosterShareText()">📋 复制文案</button>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>快捷版式模板</span></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn-mini" onclick="applyChinaStaticPreset('city_card')">单城深度名片</button>
+            <button class="btn-mini" onclick="applyChinaStaticPreset('city_rank')">核心城市长图</button>
+            <button class="btn-mini" onclick="applyChinaStaticPreset('hmt_bay')">港澳台湾区专刊</button>
+            <button class="btn-mini" onclick="applyChinaStaticPreset('prov_full')">省级全量档案</button>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>标题与署名</span></div>
+          <input type="text" class="inp poster-field-inp" value="${escAttr(sp.title)}" oninput="updateChinaStaticField('title', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(sp.subtitle)}" oninput="updateChinaStaticField('subtitle', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(sp.footerNote)}" oninput="updateChinaStaticField('footerNote', this.value, false)" />
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>聚焦视角、对象与年份</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaStaticField('entityType', this.value, true)">
+              <option value="city" ${sp.entityType === "city" ? "selected" : ""}>🏙 聚焦核心城市 (36城)</option>
+              <option value="province" ${sp.entityType === "province" ? "selected" : ""}>🗺 聚焦省级行政区 (34省)</option>
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaStaticField('currency', this.value, true)">
+              <option value="CNY" ${sp.currency === "CNY" ? "selected" : ""}>¥ 人民币口径</option>
+              <option value="USD" ${sp.currency === "USD" ? "selected" : ""}>$ 美元同口径</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:6px;">
+            ${sp.entityType === "city" ? `
+              <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaStaticField('cityId', this.value, true)">
+                ${cities.map(c => `<option value="${c.id}" ${sp.cityId === c.id ? "selected" : ""}>${c.zh} (${c.provZh} · ${c.tier})</option>`).join("")}
+              </select>
+            ` : `
+              <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaStaticField('provCode', this.value, true)">
+                ${Object.values(dict).sort((a,b) => (b.gdpCny[9]||0)-(a.gdpCny[9]||0)).map(p => `<option value="${p.code}" ${sp.provCode === p.code ? "selected" : ""}>${p.fullZh} (${p.abbr})</option>`).join("")}
+              </select>
+            `}
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaStaticField('yearIdx', Number(this.value), true)">
+              ${years.map((yl, i) => `<option value="${i}" ${sp.yearIdx === i ? "selected" : ""}>${yl} 年</option>`).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>勾选展示模块（自由组合长图）</span></div>
+          <div class="poster-chk-grid">
+            ${chk("secMap", "1. 中国地图与城市落点")}
+            ${chk("secKpis", "2. 核心经济与人口KPI")}
+            ${chk("secIndustry", "3. 产业结构与GDP构成")}
+            ${chk("secPopGeo", "4. 城镇化与地理信息卡")}
+            ${chk("secCityCompare", "5. 核心城市多维对比表")}
+            ${chk("showWatermark", "口径来源与水印")}
+          </div>
+        </div>
+
+        ${sp.secCityCompare ? `
+          <div class="poster-cfg-group" style="margin-bottom:0;">
+            <div class="poster-cfg-title"><span>核心城市对比表排序与条数</span></div>
+            <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:6px;">
+              <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateChinaStaticField('cityRankSort', this.value, true)">
+                <option value="gdp" ${sp.cityRankSort === "gdp" ? "selected" : ""}>按 GDP 总量排序</option>
+                <option value="pc" ${sp.cityRankSort === "pc" ? "selected" : ""}>按人均 GDP 排序</option>
+                <option value="tertiary" ${sp.cityRankSort === "tertiary" ? "selected" : ""}>按第三产业占比排序</option>
+                <option value="pop" ${sp.cityRankSort === "pop" ? "selected" : ""}>按常住人口排序</option>
+                <option value="urban" ${sp.cityRankSort === "urban" ? "selected" : ""}>按城镇化率排序</option>
+                <option value="density" ${sp.cityRankSort === "density" ? "selected" : ""}>按人口密度排序</option>
+              </select>
+              <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateChinaStaticField('cityRankCount', Number(this.value), true)">
+                <option value="6" ${sp.cityRankCount === 6 ? "selected" : ""}>Top 6 城</option>
+                <option value="8" ${sp.cityRankCount === 8 ? "selected" : ""}>Top 8 城</option>
+                <option value="10" ${sp.cityRankCount === 10 ? "selected" : ""}>Top 10 城</option>
+                <option value="12" ${sp.cityRankCount === 12 ? "selected" : ""}>Top 12 城</option>
+              </select>
+            </div>
+          </div>
+        ` : ""}
+      `;
+    }
+
+    function renderChinaStaticPosterContent(ctx, st, W, dryRun) {
+      const sp = state.chinaStaticPoster;
+      const draw = !dryRun && ctx;
+      const padX = 46;
+      const innerW = W - padX * 2;
+      const data = chinaMacroStore.data;
+      if (!data) {
+        if (draw) { ctx.fillStyle = st.sub; ctx.font = "16px sans-serif"; ctx.fillText("正在加载中国 34 省与 36 城数据...", padX, 140); }
+        return 900;
+      }
+
+      const yIdx = Math.max(0, Math.min((data.yearLabels?.length || 10) - 1, sp.yearIdx ?? 9));
+      const yLabel = data.yearLabels?.[yIdx] || "2025";
+      const cur = sp.currency || "CNY";
+      const cities = getChinaCitiesList();
+      const dict = getChinaProvincesDict();
+      const isCity = sp.entityType === "city";
+      const target = isCity
+        ? (cities.find(c => c.id === sp.cityId) || cities[0])
+        : (dict[sp.provCode] || Object.values(dict)[0]);
+      const targetName = isCity ? `${target.zh}（${target.tier}）` : target.fullZh;
+
+      let y = 58;
+      // Masthead
+      if (draw) {
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 14px monospace";
+        ctx.fillText("DAVYLAB · CHINA REGIONAL & CITY INTELLIGENCE", padX, y);
+        ctx.textAlign = "right";
+        ctx.fillStyle = st.sub;
+        ctx.font = "bold 14px monospace";
+        ctx.fillText(`${yLabel} · ${cur === "CNY" ? "人民币 ¥" : "美元 $"}`, W - padX, y);
+        ctx.textAlign = "left";
+      }
+      y += 34;
+
+      if (draw) {
+        ctx.fillStyle = st.ink;
+        const tStr = sp.title || `${targetName}全景档案`;
+        ctx.font = `bold ${tStr.length > 15 ? 27 : 32}px Georgia, serif`;
+        ctx.fillText(fitCanvasText(ctx, tStr, innerW), padX, y);
+      }
+      y += 26;
+
+      if (draw) {
+        ctx.fillStyle = st.sub;
+        ctx.font = "14px sans-serif";
+        ctx.fillText(fitCanvasText(ctx, sp.subtitle || "", innerW), padX, y);
+        ctx.fillStyle = st.border;
+        ctx.fillRect(padX, y + 12, innerW, 2.5);
+      }
+      y += 28;
+
+      let blocks = 0;
+
+      // Module 1: China 34-Province Map + 36 City Dots + Focused Beacon
+      if (sp.secMap) {
+        blocks++;
+        const mh = 338;
+        if (draw) {
+          ctx.fillStyle = st.card;
+          ctx.fillRect(padX, y, innerW, mh);
+          ctx.strokeStyle = st.border; ctx.globalAlpha = 0.25; ctx.lineWidth = 1;
+          ctx.strokeRect(padX, y, innerW, mh); ctx.globalAlpha = 1;
+
+          ctx.fillStyle = st.accent; ctx.font = "bold 13px sans-serif";
+          ctx.fillText(`■ 中国 34 省区市地理格局与 36 核心城市落点 · 聚焦：${isCity ? target.zh : target.fullZh}`, padX + 16, y + 25);
+
+          const cache = ensureChinaMapPath2D();
+          if (cache) {
+            const ax = padX + 12, ay = y + 32, aw = innerW - 24, ah = mh - 46;
+            const sc = Math.min(aw / 960, ah / 700);
+            const ox = ax + (aw - 960 * sc) / 2;
+            const oy = ay + (ah - 700 * sc) / 2;
+            const isDark = ["obsidian","wallstreet","emerald","crimson"].includes(st.id);
+            const emptyFill = isDark ? "rgba(255,255,255,0.10)" : "rgba(35,33,30,0.09)";
+            const strokeCol = isDark ? "rgba(255,255,255,0.22)" : "rgba(35,33,30,0.28)";
+            const focusProvCode = isCity ? target.provCode : target.code;
+
+            ctx.save();
+            ctx.translate(ox, oy);
+            ctx.scale(sc, sc);
+            let focusPt = null;
+            for (const mp of cache.provinces) {
+              const pv = dict[mp.code];
+              const v = getChinaMetricValue(pv, "gdp", yIdx, cur);
+              ctx.fillStyle = getChinaMapColor(v, "gdp", cur) || emptyFill;
+              ctx.fill(mp.path);
+              ctx.strokeStyle = mp.code === focusProvCode ? st.accent : strokeCol;
+              ctx.lineWidth = mp.code === focusProvCode ? 2.6 / sc : 0.8 / sc;
+              ctx.stroke(mp.path);
+              if (!isCity && mp.code === focusProvCode) focusPt = mp.c;
+            }
+            // South China Sea inset
+            const [ix, iy, iw, ih] = cache.insetBox;
+            ctx.fillStyle = isDark ? "rgba(16,20,28,0.9)" : "rgba(247,244,237,0.94)";
+            ctx.fillRect(ix, iy, iw, ih);
+            ctx.strokeStyle = strokeCol; ctx.lineWidth = 1.4; ctx.strokeRect(ix, iy, iw, ih);
+            if (cache.scsLand) { ctx.fillStyle = emptyFill; ctx.fill(cache.scsLand); }
+            if (cache.scsDash) { ctx.strokeStyle = "#B84A39"; ctx.lineWidth = 2.2; ctx.stroke(cache.scsDash); }
+            ctx.fillStyle = st.sub; ctx.font = "bold 14px sans-serif"; ctx.textAlign = "right";
+            ctx.fillText("南海诸岛", ix + iw - 8, iy + ih - 10); ctx.textAlign = "left";
+
+            // 36 Core City coordinate markers
+            for (const c of cities) {
+              const isFocusCity = isCity && c.id === target.id;
+              ctx.beginPath();
+              ctx.arc(c.xy[0], c.xy[1], isFocusCity ? 8.5 : 3.6, 0, Math.PI * 2);
+              ctx.fillStyle = isFocusCity ? st.accent : "#FFFFFF";
+              ctx.fill();
+              ctx.strokeStyle = isFocusCity ? "#FFFFFF" : "rgba(20,20,24,0.75)";
+              ctx.lineWidth = isFocusCity ? 2.4 : 1.1;
+              ctx.stroke();
+              if (isFocusCity) focusPt = c.xy;
+            }
+            if (focusPt) {
+              ctx.beginPath(); ctx.arc(focusPt[0], focusPt[1], 16, 0, Math.PI * 2);
+              ctx.strokeStyle = st.accent; ctx.lineWidth = 3; ctx.stroke();
+              const bx = Math.min(720, Math.max(20, focusPt[0] + 18));
+              const by = Math.max(24, focusPt[1] - 26);
+              ctx.fillStyle = "rgba(18,20,26,0.90)";
+              ctx.fillRect(bx, by, 185, 34);
+              ctx.strokeStyle = st.accent; ctx.lineWidth = 1.8; ctx.strokeRect(bx, by, 185, 34);
+              ctx.fillStyle = "#F7F3EA"; ctx.font = "bold 16px sans-serif";
+              ctx.fillText(`${isCity ? target.zh : target.zh} ${formatChinaVal(getChinaMetricValue(target, "gdp", yIdx, cur), "gdp", cur, true)}`, bx + 10, by + 23);
+            }
+            ctx.restore();
+          }
+        }
+        y += mh + 16;
+      }
+
+      // Module 2: 4 Core KPIs
+      if (sp.secKpis) {
+        blocks++;
+        const kpiH = 166;
+        if (draw) {
+          const gdpVal = formatChinaVal(getChinaMetricValue(target, "gdp", yIdx, cur), "gdp", cur);
+          const pcVal = formatChinaVal(getChinaMetricValue(target, "pc", yIdx, cur), "pc", cur);
+          const popVal = formatChinaVal(target.popWan[yIdx], "pop");
+          const areaStr = isCity ? `${target.areaKm2.toLocaleString()} km²` : `${target.areaWanKm2} 万km²`;
+          const kpis = [
+            { lbl: `${isCity ? target.zh : target.zh} 名义 GDP (${yLabel})`, val: gdpVal, sub: `实际增速 ${formatChinaVal(target.growth[yIdx], "growth")}` },
+            { lbl: `人均 GDP (${cur === "CNY" ? "万元" : "USD"})`, val: pcVal, sub: isCity ? `${target.tier} · ${target.provZh}` : `${data.regions[target.region]?.zh || ""}` },
+            { lbl: `常住人口与 10 年增量`, val: popVal, sub: `近10年 ${target.popChg10y >= 0 ? "+" : ""}${target.popChg10y}万` },
+            { lbl: `城镇化率与人口密度`, val: `${target.urbanPct}%`, sub: `${target.density.toLocaleString()} 人/km² · ${areaStr}` }
+          ];
+          const cw = (innerW - 14) / 2;
+          kpis.forEach((kp, idx) => {
+            const kx = padX + (idx % 2) * (cw + 14);
+            const ky = y + Math.floor(idx / 2) * 86;
+            ctx.fillStyle = st.card; ctx.fillRect(kx, ky, cw, 76);
+            ctx.strokeStyle = st.accent; ctx.lineWidth = 1; ctx.strokeRect(kx, ky, cw, 76);
+            ctx.fillStyle = st.sub; ctx.font = "12.5px sans-serif"; ctx.fillText(kp.lbl, kx + 14, ky + 23);
+            ctx.fillStyle = st.ink; ctx.font = "bold 22px monospace"; ctx.fillText(kp.val, kx + 14, ky + 51);
+            ctx.fillStyle = st.sub; ctx.font = "11.5px sans-serif"; ctx.fillText(fitCanvasText(ctx, kp.sub, cw - 28), kx + 14, ky + 68);
+          });
+        }
+        y += kpiH + 16;
+      }
+
+      // Module 3: Industry Structure + Pillars + GDP Expenditure Mix
+      if (sp.secIndustry) {
+        blocks++;
+        const indH = 198;
+        if (draw) {
+          ctx.fillStyle = st.card; ctx.fillRect(padX, y, innerW, indH);
+          ctx.fillStyle = st.accent; ctx.font = "bold 14px sans-serif";
+          ctx.fillText(`■ 产业结构（一/二/三产）与 GDP 支出构成 · ${isCity ? target.zh : target.fullZh}`, padX + 16, y + 26);
+
+          // 3-Sector Stacked Bar
+          const bx = padX + 16, bw = innerW - 32, by1 = y + 48;
+          ctx.fillStyle = st.ink; ctx.font = "13px sans-serif";
+          ctx.fillText(`第一产业 ${target.industry.primary}%   ·   第二产业（工业制造）${target.industry.secondary}%   ·   第三产业（服务业）${target.industry.tertiary}%`, bx, by1 - 6);
+          const w1 = (target.industry.primary / 100) * bw;
+          const w2 = (target.industry.secondary / 100) * bw;
+          ctx.fillStyle = "#8C6D46"; ctx.fillRect(bx, by1, w1, 16);
+          ctx.fillStyle = "#24486E"; ctx.fillRect(bx + w1, by1, w2, 16);
+          ctx.fillStyle = "#2E6B5E"; ctx.fillRect(bx + w1 + w2, by1, Math.max(0, bw - w1 - w2), 16);
+
+          // Pillar Industry Tags
+          let tx = bx;
+          const ty = by1 + 28;
+          ctx.font = "bold 12px sans-serif";
+          ctx.fillStyle = st.sub;
+          ctx.fillText("支柱产业：", tx, ty + 15);
+          tx += 66;
+          target.geo.pillars.forEach(tag => {
+            const tw = ctx.measureText(tag).width + 18;
+            if (tx + tw <= padX + innerW - 14) {
+              ctx.fillStyle = st.bg; ctx.fillRect(tx, ty, tw, 22);
+              ctx.strokeStyle = st.accent; ctx.lineWidth = 0.9; ctx.strokeRect(tx, ty, tw, 22);
+              ctx.fillStyle = st.ink; ctx.fillText(tag, tx + 9, ty + 15);
+              tx += tw + 8;
+            }
+          });
+
+          // GDP Expenditure Mix (Consumption / Investment / Net Export)
+          const comp = target.composition;
+          const cTot = Math.max(1, comp.consumption + comp.investment + Math.max(0, comp.netExport));
+          const by2 = y + 132;
+          ctx.fillStyle = st.ink; ctx.font = "13px sans-serif";
+          ctx.fillText(`GDP 需求构成：最终消费 ${comp.consumption}%   ·   资本形成（投资）${comp.investment}%   ·   净出口 ${comp.netExport >= 0 ? "+" : ""}${comp.netExport}%`, bx, by2 - 6);
+          const cw1 = (comp.consumption / cTot) * bw;
+          const cw2 = (comp.investment / cTot) * bw;
+          ctx.fillStyle = "#A63A3A"; ctx.fillRect(bx, by2, cw1, 16);
+          ctx.fillStyle = "#B8862D"; ctx.fillRect(bx + cw1, by2, cw2, 16);
+          if (comp.netExport > 0) {
+            ctx.fillStyle = "#3A6B7C"; ctx.fillRect(bx + cw1 + cw2, by2, Math.max(0, bw - cw1 - cw2), 16);
+          }
+
+          ctx.fillStyle = st.sub; ctx.font = "12px monospace";
+          const extraLine = isCity
+            ? `城市能级：${target.tier}  ·  所属区域：${target.geo.beltZh}  ·  地理类型：${target.geo.coastalType}`
+            : `社零消费：¥${(comp.retailYi || 0).toLocaleString()} 亿  ·  外贸进出口：$${comp.tradeUsdB || 0}B`;
+          ctx.fillText(fitCanvasText(ctx, extraLine, bw), bx, y + 176);
+        }
+        y += indH + 16;
+      }
+
+      // Module 4: Population, Urbanization & Geographic Info Card
+      if (sp.secPopGeo) {
+        blocks++;
+        const geoLines = ctx ? wrapCanvasLines(ctx, target.geo.terrainZh, innerW - 36, 3) : [target.geo.terrainZh];
+        const pgH = 148 + geoLines.length * 22;
+        if (draw) {
+          ctx.fillStyle = st.card; ctx.fillRect(padX, y, innerW, pgH);
+          ctx.fillStyle = st.accent; ctx.fillRect(padX, y, 4, pgH);
+          ctx.font = "bold 14px sans-serif";
+          ctx.fillText(`■ 人口、城镇化与地理信息名片 · ${isCity ? target.zh : target.fullZh}`, padX + 18, y + 26);
+
+          // Urbanization Bar
+          const bx = padX + 18, bw = innerW - 36;
+          ctx.fillStyle = st.ink; ctx.font = "13px sans-serif";
+          ctx.fillText(`城镇化率 ${target.urbanPct}%`, bx, y + 54);
+          ctx.textAlign = "right";
+          ctx.fillStyle = st.sub; ctx.font = "12px monospace";
+          const areaDisp = isCity ? `市域面积 ${target.areaKm2.toLocaleString()} km²` : `陆地面积 ${target.areaWanKm2} 万km²`;
+          ctx.fillText(`常住人口 ${formatChinaVal(target.popWan[yIdx], "pop")}  ·  ${areaDisp}  ·  密度 ${target.density.toLocaleString()} 人/km²`, padX + innerW - 18, y + 54);
+          ctx.textAlign = "left";
+
+          ctx.fillStyle = st.bg; ctx.fillRect(bx, y + 62, bw, 12);
+          ctx.fillStyle = st.accent; ctx.fillRect(bx, y + 62, (Math.min(100, target.urbanPct) / 100) * bw, 12);
+
+          // Geo badges & terrain description
+          ctx.fillStyle = st.ink; ctx.font = "bold 13px sans-serif";
+          const geoMeta = isCity
+            ? `📍 区位属性：${target.geo.coastalType}  ｜  所属经济带：${target.geo.beltZh}  ｜  所属地区：${target.provZh}`
+            : `📍 区位属性：${target.geo.coastalType}  ｜  省会/首府：${target.capital}  ｜  地理大区：${data.regions[target.region]?.zh || ""}`;
+          ctx.fillText(fitCanvasText(ctx, geoMeta, bw), bx, y + 102);
+
+          ctx.fillStyle = st.sub; ctx.font = "14px sans-serif";
+          geoLines.forEach((ln, i) => ctx.fillText(ln, bx, y + 128 + i * 22));
+        }
+        y += pgH + 16;
+      }
+
+      // Module 5: Multi-City Comprehensive Comparison Table (Industry + Pop + Urbanization + Geo)
+      if (sp.secCityCompare) {
+        blocks++;
+        const sort = sp.cityRankSort || "gdp";
+        const cnt = Math.min(12, Math.max(6, Number(sp.cityRankCount) || 8));
+        const ranked = cities.slice().sort((a, b) => {
+          if (sort === "pc") return getChinaMetricValue(b, "pc", yIdx, cur) - getChinaMetricValue(a, "pc", yIdx, cur);
+          if (sort === "tertiary") return b.industry.tertiary - a.industry.tertiary;
+          if (sort === "pop") return b.popWan[yIdx] - a.popWan[yIdx];
+          if (sort === "urban") return b.urbanPct - a.urbanPct;
+          if (sort === "density") return b.density - a.density;
+          return getChinaMetricValue(b, "gdp", yIdx, cur) - getChinaMetricValue(a, "gdp", yIdx, cur);
+        }).slice(0, cnt);
+
+        const sortName = { gdp:"GDP 总量", pc:"人均 GDP", tertiary:"第三产业占比", pop:"常住人口", urban:"城镇化率", density:"人口密度" }[sort] || "GDP";
+        const rowH = 44;
+        const tblH = 72 + ranked.length * rowH;
+
+        if (draw) {
+          ctx.fillStyle = st.card; ctx.fillRect(padX, y, innerW, tblH);
+          ctx.fillStyle = st.accent; ctx.font = "bold 14px sans-serif";
+          ctx.fillText(`■ 中国核心城市（含港澳台）产业、人口与地理 Top ${cnt}（按${sortName}）`, padX + 16, y + 26);
+
+          // Column headers
+          const hy = y + 52;
+          ctx.fillStyle = st.sub; ctx.font = "bold 11.5px sans-serif";
+          ctx.fillText("城市 / 地理区位", padX + 16, hy);
+          ctx.fillText("GDP / 人均", padX + 206, hy);
+          ctx.fillText("三产结构 (一/二/三)", padX + 336, hy);
+          ctx.fillText("人口 / 城镇化", padX + 516, hy);
+          ctx.fillStyle = st.border; ctx.globalAlpha = 0.25; ctx.fillRect(padX + 14, hy + 8, innerW - 28, 1); ctx.globalAlpha = 1;
+
+          ranked.forEach((c, idx) => {
+            const ry = y + 72 + idx * rowH;
+            const isSel = isCity && c.id === target.id;
+            if (isSel) {
+              ctx.fillStyle = st.bg; ctx.fillRect(padX + 10, ry - 10, innerW - 20, rowH - 2);
+            }
+            ctx.fillStyle = isSel ? st.accent : st.ink; ctx.font = "bold 13.5px sans-serif";
+            ctx.fillText(`${String(idx + 1).padStart(2, "0")} ${c.zh}`, padX + 16, ry + 7);
+            ctx.fillStyle = st.sub; ctx.font = "11px sans-serif";
+            ctx.fillText(fitCanvasText(ctx, `${c.geo.beltZh} · ${c.geo.coastalType}`, 182), padX + 16, ry + 23);
+
+            ctx.fillStyle = st.ink; ctx.font = "bold 12.5px monospace";
+            ctx.fillText(formatChinaVal(getChinaMetricValue(c, "gdp", yIdx, cur), "gdp", cur, true), padX + 206, ry + 7);
+            ctx.fillStyle = st.sub; ctx.font = "11px monospace";
+            ctx.fillText(`人均 ${formatChinaVal(getChinaMetricValue(c, "pc", yIdx, cur), "pc", cur, true)}`, padX + 206, ry + 23);
+
+            // Mini 3-sector stacked bar
+            const bx = padX + 336, bw = 158;
+            const w1 = (c.industry.primary / 100) * bw;
+            const w2 = (c.industry.secondary / 100) * bw;
+            ctx.fillStyle = "#8C6D46"; ctx.fillRect(bx, ry - 2, w1, 9);
+            ctx.fillStyle = "#24486E"; ctx.fillRect(bx + w1, ry - 2, w2, 9);
+            ctx.fillStyle = "#2E6B5E"; ctx.fillRect(bx + w1 + w2, ry - 2, Math.max(0, bw - w1 - w2), 9);
+            ctx.fillStyle = st.sub; ctx.font = "11px monospace";
+            ctx.fillText(`${c.industry.primary}/${c.industry.secondary}/${c.industry.tertiary}%`, bx, ry + 22);
+
+            ctx.fillStyle = st.ink; ctx.font = "bold 12px monospace";
+            ctx.fillText(`${formatChinaVal(c.popWan[yIdx], "pop")} · ${c.urbanPct}%`, padX + 516, ry + 7);
+            ctx.fillStyle = st.sub; ctx.font = "10.5px monospace";
+            ctx.fillText(`${c.density.toLocaleString()}人/km²`, padX + 516, ry + 23);
+
+            if (idx < ranked.length - 1) {
+              ctx.fillStyle = st.border; ctx.globalAlpha = 0.14;
+              ctx.fillRect(padX + 16, ry + rowH - 12, innerW - 32, 1);
+              ctx.globalAlpha = 1;
+            }
+          });
+        }
+        y += tblH + 16;
+      }
+
+      if (!blocks) {
+        if (draw) {
+          ctx.fillStyle = st.card; ctx.fillRect(padX, y, innerW, 120);
+          ctx.fillStyle = st.sub; ctx.font = "15px sans-serif"; ctx.textAlign = "center";
+          ctx.fillText("请在左侧至少勾选一个展示模块", W / 2, y + 66); ctx.textAlign = "left";
+        }
+        y += 140;
+      }
+
+      // Footer
+      if (sp.showWatermark) {
+        if (draw) {
+          ctx.fillStyle = st.border; ctx.fillRect(padX, y, innerW, 1);
+          ctx.fillStyle = st.sub; ctx.font = "11.5px sans-serif";
+          ctx.fillText("口径：国家统计局 / 各省市公报 / 香港 C&SD / 澳门 DSEC / 台湾 DGBAS", padX, y + 20);
+          ctx.font = "12px monospace";
+          ctx.fillText(fitCanvasText(ctx, sp.footerNote || "DAVYLAB · CHINA REGIONAL & CITY INTELLIGENCE", innerW - 210), padX, y + 40);
+          ctx.textAlign = "right"; ctx.fillStyle = st.accent;
+          ctx.fillText("finhub.chenzhe223.workers.dev", W - padX, y + 40); ctx.textAlign = "left";
+        }
+        y += 58;
+      }
+
+      return Math.max(820, Math.ceil(y + 28));
+    }
+
+    /* =========================================================================
        12.5 动态世界宏观海报引擎 (逐帧插值动画 + MP4/WebM 视频录制 + 纯前端 GIF89a 编码)
        ========================================================================= */
     let posterAnimRaf = null;
@@ -10275,21 +10995,25 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     function applyChinaAnimPreset(preset) {
       const cp = state.chinaAnimPoster;
       if (preset === "gdp_race") {
-        cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCode = "440000"; cp.aspect = "poster"; cp.durationSec = 8;
-        cp.title = "中国34省区市 GDP 十年格局演进"; cp.subtitle = "含香港、澳门、台湾 · 省际经济总量动态热力与排名追赶 (2016–2025)";
-        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+        cp.entityType = "province"; cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCode = "440000"; cp.aspect = "poster"; cp.durationSec = 8;
+        cp.title = "中国34省区市 GDP 十年格局演进"; cp.subtitle = "含香港、澳门、台湾 · 省际经济总量、产业结构与地理格局 (2016–2025)";
+        cp.showMap = true; cp.showCityDots = true; cp.showRace = true; cp.showSparkline = true; cp.showGeoInfo = true;
+      } else if (preset === "city_race") {
+        cp.entityType = "city"; cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCityId = "shenzhen"; cp.aspect = "poster"; cp.durationSec = 8;
+        cp.title = "中国核心城市十年竞速（含港澳台）"; cp.subtitle = "36 核心城市 · 产业结构 / 人口城镇化 / 地理区位全景演进 (2016–2025)";
+        cp.showMap = true; cp.showCityDots = true; cp.showRace = true; cp.showSparkline = true; cp.showGeoInfo = true;
       } else if (preset === "gba_hmt") {
-        cp.metric = "pc"; cp.currency = "USD"; cp.focusCode = "810000"; cp.aspect = "poster"; cp.durationSec = 8;
-        cp.title = "中国地区（含港澳台）人均 GDP 演进"; cp.subtitle = "美元同口径 · 港澳台与内地核心省市十年对比 (2016–2025)";
-        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+        cp.entityType = "city"; cp.metric = "pc"; cp.currency = "USD"; cp.focusCityId = "hongkong"; cp.aspect = "poster"; cp.durationSec = 8;
+        cp.title = "港澳台与内地核心城市人均演进"; cp.subtitle = "美元同口径 · 服务业占比 / 城镇化率与湾区地理版图 (2016–2025)";
+        cp.showMap = true; cp.showCityDots = true; cp.showRace = true; cp.showSparkline = true; cp.showGeoInfo = true;
       } else if (preset === "reel_916") {
-        cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCode = "320000"; cp.aspect = "reel"; cp.durationSec = 10;
-        cp.title = "中国各省经济十年变迁"; cp.subtitle = "9:16 短视频竖屏 · 34省级行政区动态数据海报";
-        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+        cp.entityType = "city"; cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCityId = "shanghai"; cp.aspect = "reel"; cp.durationSec = 10;
+        cp.title = "中国核心城市十年变迁"; cp.subtitle = "9:16 短视频竖屏 · 产业结构、人口与地理动态数据海报";
+        cp.showMap = true; cp.showCityDots = true; cp.showRace = true; cp.showSparkline = true; cp.showGeoInfo = true;
       } else if (preset === "landscape_169") {
-        cp.metric = "tertiary"; cp.currency = "CNY"; cp.focusCode = "310000"; cp.aspect = "landscape"; cp.durationSec = 8;
-        cp.title = "中国区域产业结构与现代服务业格局"; cp.subtitle = "16:9 横屏演示 · 34省区市三产结构与地理分布";
-        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+        cp.entityType = "city"; cp.metric = "tertiary"; cp.currency = "CNY"; cp.focusCityId = "hangzhou"; cp.aspect = "landscape"; cp.durationSec = 8;
+        cp.title = "中国核心城市产业升级与城镇化格局"; cp.subtitle = "16:9 横屏演示 · 第三产业占比、常住人口与地理分布";
+        cp.showMap = true; cp.showCityDots = true; cp.showRace = true; cp.showSparkline = true; cp.showGeoInfo = true;
       }
       state.animPoster.progress = 1;
       renderChinaAnimPosterControls();
@@ -10304,10 +11028,14 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const isZh = state.lang === "zh";
       const cp = state.chinaAnimPoster;
       const dict = getChinaProvincesDict();
+      const cities = getChinaCitiesList();
       const years = chinaMacroStore.data?.yearLabels || ["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
       const provOpts = Object.values(dict)
         .sort((a, b) => (b.gdpCny?.[9] || 0) - (a.gdpCny?.[9] || 0))
         .map(p => `<option value="${p.code}" ${cp.focusCode === p.code ? "selected" : ""}>${isZh ? p.fullZh : p.en} (${p.abbr})</option>`)
+        .join("");
+      const cityOpts = cities
+        .map(c => `<option value="${c.id}" ${cp.focusCityId === c.id ? "selected" : ""}>${c.zh} (${c.provZh} · ${c.tier})</option>`)
         .join("");
       const chk = (key, label) => `
         <label class="poster-chk-pill ${cp[key] ? "checked" : ""}">
@@ -10318,17 +11046,18 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
 
       panel.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
-          <strong style="font-size:13px;">🇨🇳 ${isZh ? "中国区域动态海报配置" : "China Animated Poster"}</strong>
+          <strong style="font-size:13px;">🇨🇳 ${isZh ? "中国区域与城市动态海报" : "China Animated Poster"}</strong>
           <button class="btn-mini" onclick="togglePosterAnimPlay()">${state.animPoster.playing ? (isZh ? "⏸ 暂停" : "⏸ Pause") : (isZh ? "▶ 预览" : "▶ Play")}</button>
         </div>
 
         <div class="poster-cfg-group">
           <div class="poster-cfg-title"><span>${isZh ? "一键场景模板" : "Scene Presets"}</span></div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;">
-            <button class="btn-mini" onclick="applyChinaAnimPreset('gdp_race')">GDP 十年竞速</button>
-            <button class="btn-mini" onclick="applyChinaAnimPreset('gba_hmt')">港澳台人均对比</button>
-            <button class="btn-mini" onclick="applyChinaAnimPreset('reel_916')">9:16 短视频</button>
-            <button class="btn-mini" onclick="applyChinaAnimPreset('landscape_169')">16:9 横屏</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('city_race')">🏙 城市十年竞速</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('gdp_race')">🗺 34省竞速</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('gba_hmt')">港澳台人均</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('reel_916')">9:16 竖屏</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('landscape_169')">16:9 产业</button>
           </div>
         </div>
 
@@ -10340,19 +11069,27 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         </div>
 
         <div class="poster-cfg-group">
-          <div class="poster-cfg-title"><span>${isZh ? "核心指标、币种与聚焦省份" : "Metric, Currency & Province"}</span></div>
-          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:6px;margin-bottom:6px;">
-            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('metric', this.value, true)">
-              ${Object.values(CHINA_METRICS).map(m => `<option value="${m.id}" ${cp.metric === m.id ? "selected" : ""}>${isZh ? m.zh : m.en}</option>`).join("")}
+          <div class="poster-cfg-title"><span>${isZh ? "聚焦视角、指标与对象" : "Entity, Metric & Target"}</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('entityType', this.value, true)">
+              <option value="city" ${cp.entityType === "city" ? "selected" : ""}>🏙 核心城市 (36城)</option>
+              <option value="province" ${cp.entityType !== "city" ? "selected" : ""}>🗺 省级行政区 (34省)</option>
             </select>
             <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('currency', this.value, true)">
               <option value="CNY" ${cp.currency === "CNY" ? "selected" : ""}>¥ 人民币</option>
               <option value="USD" ${cp.currency === "USD" ? "selected" : ""}>$ 美元</option>
             </select>
           </div>
-          <select class="inp poster-field-inp" onchange="updateChinaAnimField('focusCode', this.value, true)">
-            ${provOpts}
-          </select>
+          <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('metric', this.value, true)">
+              ${Object.values(CHINA_METRICS).map(m => `<option value="${m.id}" ${cp.metric === m.id ? "selected" : ""}>${isZh ? m.zh : m.en}</option>`).join("")}
+            </select>
+            ${cp.entityType === "city" ? `
+              <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('focusCityId', this.value, true)">${cityOpts}</select>
+            ` : `
+              <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('focusCode', this.value, true)">${provOpts}</select>
+            `}
+          </div>
         </div>
 
         <div class="poster-cfg-group">
@@ -10378,11 +11115,13 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         </div>
 
         <div class="poster-cfg-group" style="margin-bottom:0;">
-          <div class="poster-cfg-title"><span>${isZh ? "动态画面组件" : "Components"}</span></div>
+          <div class="poster-cfg-title"><span>${isZh ? "动态画面组件（支持产业/人口/地理分享）" : "Components"}</span></div>
           <div class="poster-chk-grid">
-            ${chk("showMap", "中国34省地图")}
-            ${chk("showRace", "Top 省份竞速")}
-            ${chk("showSparkline", "聚焦省曲线+三产")}
+            ${chk("showMap", "中国34省底图")}
+            ${chk("showCityDots", "36城地理落点")}
+            ${chk("showRace", cp.entityType === "city" ? "城市Top竞速" : "省份Top竞速")}
+            ${chk("showSparkline", "10年动态曲线")}
+            ${chk("showGeoInfo", "产业/人口/地理卡")}
             ${chk("showWatermark", "口径与水印")}
           </div>
         </div>
@@ -10402,31 +11141,50 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       return cache;
     }
 
-    function getInterpolatedChinaSnapshot(metric, fIdx, cur) {
+    function getInterpolatedChinaSnapshot(metric, fIdx, cur, entityType = "province") {
       const data = chinaMacroStore.data;
       const dict = getChinaProvincesDict();
+      const cities = getChinaCitiesList();
       const maxI = (data?.yearLabels?.length || 10) - 1;
       const clamped = Math.max(0, Math.min(maxI, fIdx));
       const i0 = Math.floor(clamped);
       const i1 = Math.min(maxI, i0 + 1);
       const frac = clamped - i0;
 
-      const list0 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i0, cur) ?? 0 })).sort((a, b) => b.v - a.v);
-      const list1 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i1, cur) ?? 0 })).sort((a, b) => b.v - a.v);
-      const rank0 = {}; list0.forEach((x, idx) => { rank0[x.code] = idx; });
-      const rank1 = {}; list1.forEach((x, idx) => { rank1[x.code] = idx; });
+      // Always interpolate provinces for the choropleth map background
+      const provList0 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i0, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+      const provList1 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i1, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+      const pRank0 = {}; provList0.forEach((x, idx) => { pRank0[x.code] = idx; });
+      const pRank1 = {}; provList1.forEach((x, idx) => { pRank1[x.code] = idx; });
 
       const byCode = {};
-      const items = Object.values(dict).map(p => {
+      const provItems = Object.values(dict).map(p => {
         const v0 = getChinaMetricValue(p, metric, i0, cur) ?? 0;
         const v1 = getChinaMetricValue(p, metric, i1, cur) ?? v0;
         const val = v0 + (v1 - v0) * frac;
-        const rPos = (rank0[p.code] ?? 20) + ((rank1[p.code] ?? 20) - (rank0[p.code] ?? 20)) * frac;
-        const entry = { ...p, val, rPos };
+        const rPos = (pRank0[p.code] ?? 20) + ((pRank1[p.code] ?? 20) - (pRank0[p.code] ?? 20)) * frac;
+        const entry = { ...p, key: p.code, val, rPos };
         byCode[p.code] = entry;
         return entry;
-      });
-      items.sort((a, b) => a.rPos - b.rPos);
+      }).sort((a, b) => a.rPos - b.rPos);
+
+      // Interpolate 36 core cities when city mode is active
+      let cityItems = [], byCityId = {};
+      if (cities.length) {
+        const cList0 = cities.map(c => ({ id: c.id, v: getChinaMetricValue(c, metric, i0, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+        const cList1 = cities.map(c => ({ id: c.id, v: getChinaMetricValue(c, metric, i1, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+        const cRank0 = {}; cList0.forEach((x, idx) => { cRank0[x.id] = idx; });
+        const cRank1 = {}; cList1.forEach((x, idx) => { cRank1[x.id] = idx; });
+        cityItems = cities.map(c => {
+          const v0 = getChinaMetricValue(c, metric, i0, cur) ?? 0;
+          const v1 = getChinaMetricValue(c, metric, i1, cur) ?? v0;
+          const val = v0 + (v1 - v0) * frac;
+          const rPos = (cRank0[c.id] ?? 20) + ((cRank1[c.id] ?? 20) - (cRank0[c.id] ?? 20)) * frac;
+          const entry = { ...c, key: c.id, val, rPos };
+          byCityId[c.id] = entry;
+          return entry;
+        }).sort((a, b) => a.rPos - b.rPos);
+      }
 
       const ml0 = data?.totals?.mainlandGdpCny?.[i0] || 1340000;
       const ml1 = data?.totals?.mainlandGdpCny?.[i1] || ml0;
@@ -10436,7 +11194,8 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const fx1 = data?.fxUsdCny?.[i1] || fx0;
 
       return {
-        items, byCode, clamped,
+        items: entityType === "city" && cityItems.length ? cityItems : provItems,
+        provItems, cityItems, byCode, byCityId, clamped,
         mlGdpCny: ml0 + (ml1 - ml0) * frac,
         allGdpCny: all0 + (all1 - all0) * frac,
         fx: fx0 + (fx1 - fx0) * frac
@@ -10448,12 +11207,13 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const cp = state.chinaAnimPoster;
       const { W, H } = getAnimPosterDimensions(cp.aspect);
       const isLandscape = cp.aspect === "landscape";
+      const isCity = cp.entityType === "city";
       const p = Math.max(0, Math.min(1, progressOverride !== null ? progressOverride : state.animPoster.progress));
       const data = chinaMacroStore.data;
       if (!data) {
         ctx.fillStyle = st.bg; ctx.fillRect(0, 0, W, H);
         ctx.fillStyle = st.sub; ctx.font = "16px sans-serif";
-        ctx.fillText("正在加载中国 34 省数据与矢量底图...", 48, 120);
+        ctx.fillText("正在加载中国 34 省与 36 城数据...", 48, 120);
         return;
       }
       const years = data.yearLabels || [];
@@ -10461,31 +11221,28 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const cur = cp.currency || "CNY";
       const mInfo = CHINA_METRICS[metric] || CHINA_METRICS.gdp;
       const fIdx = cp.startIdx + (cp.endIdx - cp.startIdx) * p;
-      const snap = getInterpolatedChinaSnapshot(metric, fIdx, cur);
+      const snap = getInterpolatedChinaSnapshot(metric, fIdx, cur, cp.entityType);
       const curYearLabel = years[Math.round(fIdx)] || years[cp.endIdx];
-      const focusP = snap.byCode[cp.focusCode] || snap.items[0];
-      const focusRank = snap.items.findIndex(x => x.code === focusP.code) + 1;
+      const focusItem = isCity
+        ? (snap.byCityId[cp.focusCityId] || snap.items[0])
+        : (snap.byCode[cp.focusCode] || snap.items[0]);
+      const focusRank = snap.items.findIndex(x => x.key === focusItem.key) + 1;
+      const focusProvCode = isCity ? focusItem.provCode : focusItem.code;
 
-      // Background & frame
-      ctx.fillStyle = st.bg;
-      ctx.fillRect(0, 0, W, H);
-      ctx.strokeStyle = st.border;
-      ctx.lineWidth = 3;
-      ctx.strokeRect(20, 20, W - 40, H - 40);
+      ctx.fillStyle = st.bg; ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = st.border; ctx.lineWidth = 3; ctx.strokeRect(20, 20, W - 40, H - 40);
 
       const padX = 44;
       const innerW = W - padX * 2;
-      ctx.fillStyle = st.accent;
-      ctx.font = "bold 14px monospace";
-      ctx.fillText("DAVYLAB · CHINA REGIONAL MACRO INTELLIGENCE (34 DIVISIONS)", padX, 54);
+      ctx.fillStyle = st.accent; ctx.font = "bold 14px monospace";
+      ctx.fillText(isCity ? "DAVYLAB · CHINA 36 CORE CITIES ANIMATED INTELLIGENCE" : "DAVYLAB · CHINA 34 DIVISIONS ANIMATED INTELLIGENCE", padX, 54);
 
       const mlDisp = cur === "USD" ? `$${(snap.mlGdpCny / snap.fx / 10000).toFixed(2)}T` : `¥${(snap.mlGdpCny / 10000).toFixed(1)}万亿`;
       ctx.textAlign = "right";
       ctx.fillStyle = st.accent;
       ctx.font = `bold ${isLandscape ? 44 : 46}px Georgia, serif`;
       ctx.fillText(curYearLabel, W - padX, 78);
-      ctx.fillStyle = st.sub;
-      ctx.font = "12.5px monospace";
+      ctx.fillStyle = st.sub; ctx.font = "12.5px monospace";
       ctx.fillText(`${isZh ? "内地GDP" : "CN GDP"} ${mlDisp}`, W - padX, 100);
       ctx.textAlign = "left";
 
@@ -10494,27 +11251,19 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const chinaTitleSize = isLandscape ? 28 : (chinaTitleText.length > 13 ? 25 : 29);
       ctx.font = `bold ${chinaTitleSize}px Georgia, serif`;
       ctx.fillText(fitCanvasText(ctx, chinaTitleText, innerW - 180), padX, 92);
-      ctx.fillStyle = st.sub;
-      ctx.font = "14px sans-serif";
-      ctx.fillText(fitCanvasText(ctx, cp.subtitle || "", innerW - 195), padX, 116);
+      ctx.fillStyle = st.sub; ctx.font = "14px sans-serif";
+      ctx.fillText(fitCanvasText(ctx, cp.subtitle || "", innerW - 180), padX, 116);
 
-      ctx.fillStyle = st.card;
-      ctx.fillRect(padX, 128, innerW, 6);
-      ctx.fillStyle = st.accent;
-      ctx.fillRect(padX, 128, Math.max(8, innerW * p), 6);
+      ctx.fillStyle = st.card; ctx.fillRect(padX, 128, innerW, 6);
+      ctx.fillStyle = st.accent; ctx.fillRect(padX, 128, Math.max(8, innerW * p), 6);
 
       const drawChinaMapBox = (mx, my, mw, mh) => {
-        ctx.fillStyle = st.card;
-        ctx.fillRect(mx, my, mw, mh);
-        ctx.strokeStyle = st.border;
-        ctx.globalAlpha = 0.26;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(mx, my, mw, mh);
-        ctx.globalAlpha = 1;
+        ctx.fillStyle = st.card; ctx.fillRect(mx, my, mw, mh);
+        ctx.strokeStyle = st.border; ctx.globalAlpha = 0.26; ctx.lineWidth = 1;
+        ctx.strokeRect(mx, my, mw, mh); ctx.globalAlpha = 1;
 
-        ctx.fillStyle = st.sub;
-        ctx.font = "bold 12px sans-serif";
-        ctx.fillText(`${isZh ? `中国 34 省区市（含港澳台）${mInfo.zh}分布` : `China 34 Divisions ${mInfo.en}`} (${curYearLabel})`, mx + 14, my + 22);
+        ctx.fillStyle = st.sub; ctx.font = "bold 12px sans-serif";
+        ctx.fillText(`${isCity ? `中国 36 核心城市${mInfo.zh}地理版图` : `中国 34 省区市（含港澳台）${mInfo.zh}分布`} (${curYearLabel})`, mx + 14, my + 22);
 
         const cache = ensureChinaMapPath2D();
         if (cache) {
@@ -10522,7 +11271,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
           const sc = Math.min(areaW / 960, areaH / 700);
           const ox = areaX + (areaW - 960 * sc) / 2;
           const oy = areaY + (areaH - 700 * sc) / 2;
-          const isDark = (st.id === "obsidian" || st.id === "wallstreet" || st.id === "emerald" || st.id === "crimson");
+          const isDark = ["obsidian","wallstreet","emerald","crimson"].includes(st.id);
           const emptyFill = isDark ? "rgba(255,255,255,0.10)" : "rgba(35,33,30,0.09)";
           const strokeCol = isDark ? "rgba(255,255,255,0.22)" : "rgba(35,33,30,0.28)";
 
@@ -10535,42 +11284,44 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
             const fillCol = pSnap ? (getChinaMapColor(pSnap.val, metric, cur) || emptyFill) : emptyFill;
             ctx.fillStyle = fillCol;
             ctx.fill(item.path);
-            ctx.strokeStyle = item.code === focusP.code ? st.accent : strokeCol;
-            ctx.lineWidth = item.code === focusP.code ? 2.6 / sc : 0.8 / sc;
+            ctx.strokeStyle = item.code === focusProvCode ? st.accent : strokeCol;
+            ctx.lineWidth = item.code === focusProvCode ? 2.6 / sc : 0.8 / sc;
             ctx.stroke(item.path);
-            if (item.code === focusP.code) focusCenter = item.c;
+            if (!isCity && item.code === focusProvCode) focusCenter = item.c;
           }
-          // South China Sea inset box on Canvas
           const [ix, iy, iw, ih] = cache.insetBox;
           ctx.fillStyle = isDark ? "rgba(16,20,28,0.88)" : "rgba(247,244,237,0.92)";
           ctx.fillRect(ix, iy, iw, ih);
-          ctx.strokeStyle = strokeCol;
-          ctx.lineWidth = 1.4;
-          ctx.strokeRect(ix, iy, iw, ih);
+          ctx.strokeStyle = strokeCol; ctx.lineWidth = 1.4; ctx.strokeRect(ix, iy, iw, ih);
           if (cache.scsLand) { ctx.fillStyle = emptyFill; ctx.fill(cache.scsLand); }
           if (cache.scsDash) { ctx.strokeStyle = "#B84A39"; ctx.lineWidth = 2.2; ctx.stroke(cache.scsDash); }
-          ctx.fillStyle = st.sub;
-          ctx.font = "bold 14px sans-serif";
-          ctx.textAlign = "right";
-          ctx.fillText("南海诸岛", ix + iw - 8, iy + ih - 10);
-          ctx.textAlign = "left";
+          ctx.fillStyle = st.sub; ctx.font = "bold 14px sans-serif"; ctx.textAlign = "right";
+          ctx.fillText("南海诸岛", ix + iw - 8, iy + ih - 10); ctx.textAlign = "left";
+
+          // Optional 36 Core Cities layer on animated map
+          if (cp.showCityDots && snap.cityItems.length) {
+            for (const c of snap.cityItems) {
+              const isFocusC = isCity && c.id === focusItem.id;
+              ctx.beginPath();
+              ctx.arc(c.xy[0], c.xy[1], isFocusC ? 8 : 3.6, 0, Math.PI * 2);
+              ctx.fillStyle = isFocusC ? st.accent : "#FFFFFF";
+              ctx.fill();
+              ctx.strokeStyle = isFocusC ? "#FFFFFF" : "rgba(20,20,26,0.72)";
+              ctx.lineWidth = isFocusC ? 2.2 : 1.0;
+              ctx.stroke();
+              if (isFocusC) focusCenter = c.xy;
+            }
+          }
 
           if (focusCenter) {
             const pulse = 0.5 + 0.5 * Math.sin(p * Math.PI * 12);
             ctx.beginPath();
-            ctx.arc(focusCenter[0], focusCenter[1], 10 + pulse * 14, 0, Math.PI * 2);
-            ctx.strokeStyle = st.accent;
-            ctx.lineWidth = 3;
-            ctx.globalAlpha = 0.85 - pulse * 0.6;
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-            ctx.beginPath();
-            ctx.arc(focusCenter[0], focusCenter[1], 5.5, 0, Math.PI * 2);
-            ctx.fillStyle = st.accent;
-            ctx.fill();
-            ctx.strokeStyle = "#fff";
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            ctx.arc(focusCenter[0], focusCenter[1], 11 + pulse * 14, 0, Math.PI * 2);
+            ctx.strokeStyle = st.accent; ctx.lineWidth = 3;
+            ctx.globalAlpha = 0.85 - pulse * 0.6; ctx.stroke(); ctx.globalAlpha = 1;
+            ctx.beginPath(); ctx.arc(focusCenter[0], focusCenter[1], 5.5, 0, Math.PI * 2);
+            ctx.fillStyle = st.accent; ctx.fill();
+            ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
           }
           ctx.restore();
         }
@@ -10578,20 +11329,16 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         const lgW = Math.min(180, mw * 0.4), lgX = mx + 14, lgY = my + mh - 18;
         const grad = ctx.createLinearGradient(lgX, lgY, lgX + lgW, lgY);
         mInfo.stops.forEach((rgb, i) => grad.addColorStop(i / Math.max(1, mInfo.stops.length - 1), `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`));
-        ctx.fillStyle = grad;
-        ctx.fillRect(lgX, lgY, lgW, 8);
+        ctx.fillStyle = grad; ctx.fillRect(lgX, lgY, lgW, 8);
         const rLbls = getChinaRangeLabels(metric, cur);
-        ctx.fillStyle = st.sub;
-        ctx.font = "11px monospace";
+        ctx.fillStyle = st.sub; ctx.font = "11px monospace";
         ctx.fillText(`${rLbls[0]}  →  ${rLbls[2]}`, lgX + lgW + 10, lgY + 8);
       };
 
       const drawChinaRaceBox = (rx, ry, rw, rh, count) => {
-        ctx.fillStyle = st.card;
-        ctx.fillRect(rx, ry, rw, rh);
-        ctx.fillStyle = st.accent;
-        ctx.font = "bold 13px sans-serif";
-        ctx.fillText(`■ ${curYearLabel} 全国 ${mInfo.zh} Top ${count} 动态竞速`, rx + 16, ry + 26);
+        ctx.fillStyle = st.card; ctx.fillRect(rx, ry, rw, rh);
+        ctx.fillStyle = st.accent; ctx.font = "bold 13px sans-serif";
+        ctx.fillText(`■ ${curYearLabel} ${isCity ? "中国核心城市" : "全国省区市"} ${mInfo.zh} Top ${count} 动态竞速`, rx + 16, ry + 26);
 
         const visible = snap.items.slice(0, count);
         const maxVal = Math.max(0.01, ...visible.map(x => Math.abs(x.val)));
@@ -10602,7 +11349,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
 
         visible.forEach((item, idx) => {
           const slotY = ry + 38 + Math.min(count - 0.6, item.rPos) * rowH;
-          const isFocus = item.code === focusP.code;
+          const isFocus = item.key === focusItem.key;
           ctx.fillStyle = isFocus ? st.accent : st.ink;
           ctx.font = `${isFocus ? "bold " : ""}13px sans-serif`;
           ctx.fillText(fitCanvasText(ctx, `${idx + 1}. ${isZh ? item.zh : item.en}`, nameW), rx + 16, slotY + rowH * 0.56);
@@ -10610,8 +11357,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
           const bx = rx + 16 + nameW + 6;
           const bh = Math.max(11, Math.min(18, rowH * 0.48));
           const by = slotY + (rowH - bh) * 0.42;
-          ctx.fillStyle = st.bg;
-          ctx.fillRect(bx, by, barMaxW, bh);
+          ctx.fillStyle = st.bg; ctx.fillRect(bx, by, barMaxW, bh);
 
           const bw = Math.max(4, (Math.abs(item.val) / maxVal) * barMaxW);
           ctx.fillStyle = (metric === "growth" && item.val < 0) ? "#C84B4B" : (isFocus ? st.accent : item.color);
@@ -10625,102 +11371,110 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         });
       };
 
-      const drawChinaSparkBox = (sx, sy, sw, sh) => {
-        ctx.fillStyle = st.card;
-        ctx.fillRect(sx, sy, sw, sh);
-        ctx.strokeStyle = st.accent;
-        ctx.lineWidth = 1.2;
-        ctx.strokeRect(sx, sy, sw, sh);
+      const drawChinaFocusBox = (sx, sy, sw, sh) => {
+        ctx.fillStyle = st.card; ctx.fillRect(sx, sy, sw, sh);
+        ctx.strokeStyle = st.accent; ctx.lineWidth = 1.2; ctx.strokeRect(sx, sy, sw, sh);
 
-        ctx.fillStyle = st.ink;
-        ctx.font = "bold 15px sans-serif";
-        ctx.fillText(`聚焦地区：${focusP.fullZh} · 人口 ${formatChinaVal(focusP.popWan[Math.round(fIdx)], "pop")}`, sx + 16, sy + 26);
+        const titleName = isCity ? `${focusItem.zh} (${focusItem.tier})` : focusItem.fullZh;
+        ctx.fillStyle = st.ink; ctx.font = "bold 14.5px sans-serif";
+        ctx.fillText(fitCanvasText(ctx, `聚焦：${titleName}`, sw - 180), sx + 16, sy + 24);
 
         ctx.textAlign = "right";
-        ctx.fillStyle = st.accent;
-        ctx.font = "bold 19px monospace";
-        ctx.fillText(`${formatChinaVal(focusP.val, metric, cur, true)}  #${focusRank}`, sx + sw - 16, sy + 27);
+        ctx.fillStyle = st.accent; ctx.font = "bold 18px monospace";
+        ctx.fillText(`${formatChinaVal(focusItem.val, metric, cur, true)}  #${focusRank}`, sx + sw - 16, sy + 25);
         ctx.textAlign = "left";
 
-        // 3-Sector Industry mini stacked bar right under header
-        const indY = sy + 36;
-        const indW = sw - 32;
-        const p1w = (focusP.industry.primary / 100) * indW;
-        const p2w = (focusP.industry.secondary / 100) * indW;
-        ctx.fillStyle = "#8C6D46"; ctx.fillRect(sx + 16, indY, p1w, 7);
-        ctx.fillStyle = "#24486E"; ctx.fillRect(sx + 16 + p1w, indY, p2w, 7);
-        ctx.fillStyle = "#2E6B5E"; ctx.fillRect(sx + 16 + p1w + p2w, indY, Math.max(0, indW - p1w - p2w), 7);
-        ctx.fillStyle = st.sub;
-        ctx.font = "11px monospace";
-        ctx.fillText(`三产 ${focusP.industry.primary}/${focusP.industry.secondary}/${focusP.industry.tertiary}% · 消费${focusP.composition.consumption}% · 城镇化${focusP.urbanPct}%`, sx + 16, indY + 20);
+        let curY = sy + 34;
+        if (cp.showGeoInfo) {
+          // Industry 3-sector bar + pillars + population/urbanization + geography summary
+          const indW = sw - 32;
+          const p1w = (focusItem.industry.primary / 100) * indW;
+          const p2w = (focusItem.industry.secondary / 100) * indW;
+          ctx.fillStyle = "#8C6D46"; ctx.fillRect(sx + 16, curY, p1w, 7);
+          ctx.fillStyle = "#24486E"; ctx.fillRect(sx + 16 + p1w, curY, p2w, 7);
+          ctx.fillStyle = "#2E6B5E"; ctx.fillRect(sx + 16 + p1w + p2w, curY, Math.max(0, indW - p1w - p2w), 7);
 
-        const trMetric = ["gdp","pc","growth","pop"].includes(metric) ? metric : "gdp";
-        const rawSeries = years.map((_, i) => getChinaMetricValue(focusP, trMetric, i, cur));
-        if (rawSeries.length >= 2) {
-          const sMin = Math.min(...rawSeries, trMetric === "growth" ? 0 : Infinity);
-          const sMax = Math.max(...rawSeries, trMetric === "growth" ? 2 : 0.1);
-          const lo = trMetric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
-          const hi = trMetric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
-          const sp = Math.max(0.001, hi - lo);
-          const px0 = sx + 20, py0 = sy + 64, pw = sw - 40, ph = Math.max(36, sh - 92);
-
-          ctx.strokeStyle = st.sub; ctx.globalAlpha = 0.25; ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          rawSeries.forEach((v, i) => {
-            const x = px0 + (i / (rawSeries.length - 1)) * pw;
-            const y = py0 + ph - ((v - lo) / sp) * ph;
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-          });
-          ctx.stroke(); ctx.globalAlpha = 1;
-
-          const wholeEnd = Math.floor(fIdx);
-          const i0 = wholeEnd, i1 = Math.min(rawSeries.length - 1, i0 + 1);
-          const curVal = rawSeries[i0] + (rawSeries[i1] - rawSeries[i0]) * (fIdx - i0);
-          const curX = px0 + (fIdx / (rawSeries.length - 1)) * pw;
-          const curY = py0 + ph - ((curVal - lo) / sp) * ph;
-
-          ctx.strokeStyle = st.accent; ctx.lineWidth = 3;
-          ctx.beginPath();
-          for (let i = 0; i <= wholeEnd; i++) {
-            const x = px0 + (i / (rawSeries.length - 1)) * pw;
-            const y = py0 + ph - ((rawSeries[i] - lo) / sp) * ph;
-            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-          }
-          ctx.lineTo(curX, curY);
-          ctx.stroke();
-
-          ctx.beginPath(); ctx.arc(curX, curY, 5, 0, Math.PI * 2);
-          ctx.fillStyle = st.accent; ctx.fill();
-          ctx.strokeStyle = st.bg; ctx.lineWidth = 2; ctx.stroke();
-
+          const curPopIdx = Math.min(years.length - 1, Math.round(fIdx));
+          const areaTxt = isCity ? `${focusItem.areaKm2.toLocaleString()}km²` : `${focusItem.areaWanKm2}万km²`;
           ctx.fillStyle = st.sub; ctx.font = "11px monospace";
-          ctx.fillText(years[0], px0, sy + sh - 8);
-          ctx.textAlign = "right";
-          ctx.fillText(years[rawSeries.length - 1], px0 + pw, sy + sh - 8);
-          ctx.textAlign = "left";
+          ctx.fillText(fitCanvasText(ctx, `三产 ${focusItem.industry.primary}/${focusItem.industry.secondary}/${focusItem.industry.tertiary}% · 人口 ${formatChinaVal(focusItem.popWan[curPopIdx], "pop")} · 城镇化 ${focusItem.urbanPct}% · ${areaTxt}`, indW), sx + 16, curY + 20);
+
+          ctx.fillStyle = st.ink; ctx.font = "11.5px sans-serif";
+          const geoSum = `📍 ${focusItem.geo.coastalType}${focusItem.geo.beltZh ? " · " + focusItem.geo.beltZh : ""}｜支柱：${focusItem.geo.pillars.slice(0, 3).join(" / ")}｜${focusItem.geo.terrainZh}`;
+          ctx.fillText(fitCanvasText(ctx, geoSum, indW), sx + 16, curY + 37);
+          curY += 46;
+        }
+
+        if (cp.showSparkline) {
+          const trMetric = ["gdp","pc","growth","pop"].includes(metric) ? metric : "gdp";
+          const rawSeries = years.map((_, i) => getChinaMetricValue(focusItem, trMetric, i, cur));
+          if (rawSeries.length >= 2 && (sy + sh - curY) >= 48) {
+            const sMin = Math.min(...rawSeries, trMetric === "growth" ? 0 : Infinity);
+            const sMax = Math.max(...rawSeries, trMetric === "growth" ? 2 : 0.1);
+            const lo = trMetric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
+            const hi = trMetric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
+            const sp = Math.max(0.001, hi - lo);
+            const px0 = sx + 18, py0 = curY + 6, pw = sw - 36, ph = Math.max(26, sy + sh - curY - 26);
+
+            ctx.strokeStyle = st.sub; ctx.globalAlpha = 0.25; ctx.lineWidth = 1.4;
+            ctx.beginPath();
+            rawSeries.forEach((v, i) => {
+              const x = px0 + (i / (rawSeries.length - 1)) * pw;
+              const y = py0 + ph - ((v - lo) / sp) * ph;
+              if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.stroke(); ctx.globalAlpha = 1;
+
+            const wholeEnd = Math.floor(fIdx);
+            const i0 = wholeEnd, i1 = Math.min(rawSeries.length - 1, i0 + 1);
+            const curVal = rawSeries[i0] + (rawSeries[i1] - rawSeries[i0]) * (fIdx - i0);
+            const curX = px0 + (fIdx / (rawSeries.length - 1)) * pw;
+            const curYpt = py0 + ph - ((curVal - lo) / sp) * ph;
+
+            ctx.strokeStyle = st.accent; ctx.lineWidth = 2.8;
+            ctx.beginPath();
+            for (let i = 0; i <= wholeEnd; i++) {
+              const x = px0 + (i / (rawSeries.length - 1)) * pw;
+              const y = py0 + ph - ((rawSeries[i] - lo) / sp) * ph;
+              if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.lineTo(curX, curYpt);
+            ctx.stroke();
+
+            ctx.beginPath(); ctx.arc(curX, curYpt, 4.8, 0, Math.PI * 2);
+            ctx.fillStyle = st.accent; ctx.fill();
+            ctx.strokeStyle = st.bg; ctx.lineWidth = 1.8; ctx.stroke();
+
+            ctx.fillStyle = st.sub; ctx.font = "10.5px monospace";
+            ctx.fillText(years[0], px0, sy + sh - 7);
+            ctx.textAlign = "right";
+            ctx.fillText(years[rawSeries.length - 1], px0 + pw, sy + sh - 7);
+            ctx.textAlign = "left";
+          }
         }
       };
 
       const contentTop = 148;
       const footerH = cp.showWatermark ? 64 : 24;
       const contentH = H - contentTop - footerH;
+      const hasFocusBox = cp.showSparkline || cp.showGeoInfo;
 
       if (isLandscape) {
-        const leftW = cp.showMap ? Math.round(innerW * 0.54) : 0;
+        const leftW = cp.showMap ? Math.round(innerW * 0.52) : 0;
         const rightX = cp.showMap ? (padX + leftW + 16) : padX;
         const rightW = cp.showMap ? (innerW - leftW - 16) : innerW;
         if (cp.showMap) drawChinaMapBox(padX, contentTop, leftW, contentH);
-        if (cp.showRace && cp.showSparkline) {
-          const raceH = Math.round(contentH * 0.54);
+        if (cp.showRace && hasFocusBox) {
+          const raceH = Math.round(contentH * 0.50);
           drawChinaRaceBox(rightX, contentTop, rightW, raceH, 6);
-          drawChinaSparkBox(rightX, contentTop + raceH + 14, rightW, contentH - raceH - 14);
+          drawChinaFocusBox(rightX, contentTop + raceH + 14, rightW, contentH - raceH - 14);
         } else if (cp.showRace) drawChinaRaceBox(rightX, contentTop, rightW, contentH, 8);
-        else if (cp.showSparkline) drawChinaSparkBox(rightX, contentTop, rightW, contentH);
+        else if (hasFocusBox) drawChinaFocusBox(rightX, contentTop, rightW, contentH);
       } else {
         const blocks = [];
-        if (cp.showMap) blocks.push({ type: "map", weight: 1.48 });
-        if (cp.showRace) blocks.push({ type: "race", weight: 1.0 });
-        if (cp.showSparkline) blocks.push({ type: "spark", weight: 0.78 });
+        if (cp.showMap) blocks.push({ type: "map", weight: 1.38 });
+        if (cp.showRace) blocks.push({ type: "race", weight: 0.96 });
+        if (hasFocusBox) blocks.push({ type: "focus", weight: cp.showSparkline && cp.showGeoInfo ? 0.96 : 0.68 });
         const totW = blocks.reduce((a, b) => a + b.weight, 0) || 1;
         const gap = 14;
         const availH = contentH - gap * Math.max(0, blocks.length - 1);
@@ -10729,7 +11483,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
           const bh = Math.round((b.weight / totW) * availH);
           if (b.type === "map") drawChinaMapBox(padX, cy, innerW, bh);
           else if (b.type === "race") drawChinaRaceBox(padX, cy, innerW, bh, cp.aspect === "reel" ? 7 : 6);
-          else if (b.type === "spark") drawChinaSparkBox(padX, cy, innerW, bh);
+          else if (b.type === "focus") drawChinaFocusBox(padX, cy, innerW, bh);
           cy += bh + gap;
         });
       }
@@ -11535,6 +12289,18 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const W = 750;
       if (canvas.width !== W) canvas.width = W;
 
+      if (state.posterMode === "china_static") {
+        const H = renderChinaStaticPosterContent(ctx, st, W, true);
+        if (canvas.height !== H) canvas.height = H;
+        ctx.fillStyle = st.bg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = st.border;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(20, 20, W - 40, H - 40);
+        renderChinaStaticPosterContent(ctx, st, W, false);
+        return;
+      }
+
       if (state.posterMode === "trade") {
         const H = renderTradePosterContent(ctx, st, W, true);
         if (canvas.height !== H) canvas.height = H;
@@ -11716,9 +12482,13 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
         ? state.selectedComp.ticker
         : (state.posterMode === "trade"
           ? "WORLD-TRADE"
-          : (state.posterMode === "macro_anim"
-            ? `MACRO-ANIM-${state.animPoster.metric}`
-            : (state.posterMode === "china_anim" ? `CHINA-ANIM-${state.chinaAnimPoster.metric}` : "WORLD-MACRO")));
+          : (state.posterMode === "china_static"
+            ? `CHINA-STATIC-${state.chinaStaticPoster.entityType === "city" ? state.chinaStaticPoster.cityId : state.chinaStaticPoster.provCode}`
+            : (state.posterMode === "macro_anim"
+              ? `MACRO-ANIM-${state.animPoster.metric}`
+              : (state.posterMode === "china_anim"
+                ? `CHINA-ANIM-${state.chinaAnimPoster.entityType === "city" ? state.chinaAnimPoster.focusCityId : state.chinaAnimPoster.focusCode}`
+                : "WORLD-MACRO"))));
       link.download = `DAVYLAB-Poster-${slug}-${state.posterStyle}.png`;
       link.href = canvas.toDataURL("image/png");
       document.body.appendChild(link);
