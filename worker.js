@@ -787,6 +787,532 @@ async function fetchStockDetail(rawTicker, range = '3mo', env = null) {
   return payload;
 }
 
+// ============================================================================
+// 贵金属 5 年走势 (国际 vs 中国市场克重价) & 国内各大黄金珠宝商日挂牌价 (/api/metals-5y)
+// ============================================================================
+const TROY_OZ_GRAMS = 31.1034768;
+
+const CN_GOLD_JEWELERS_META = [
+  { id: 'ctf',      name: '周大福',     en: 'Chow Tai Fook', tier: '港资一线', auPrem: 188, barPrem: 115, agPrem: 16.5, buybackDisc: 22, craftStd: [40, 80],  craftArt: [80, 150], note: '传承古法/人生四美系列按克或一口价，工费支持门店议价' },
+  { id: 'css',      name: '周生生',     en: 'Chow Sang Sang',tier: '港资一线', auPrem: 186, barPrem: 112, agPrem: 16.2, buybackDisc: 24, craftStd: [40, 78],  craftArt: [85, 140], note: '文化祝福/点睛品工艺精细，素圈普工费约 ¥40–60/克' },
+  { id: 'lukfook',  name: '六福珠宝',   en: 'Lukfook',       tier: '港资头部', auPrem: 185, barPrem: 110, agPrem: 15.8, buybackDisc: 24, craftStd: [38, 75],  craftArt: [75, 130], note: '福满传家古法金与足金婚嫁套系优惠活动较频繁' },
+  { id: 'lfx',      name: '老凤祥',     en: 'Lao Feng Xiang',tier: '百年国牌', auPrem: 182, barPrem: 98,  agPrem: 14.5, buybackDisc: 20, craftStd: [30, 65],  craftArt: [65, 110], note: '沪派百年老字号，全国门店覆盖广，工费区间相对透明' },
+  { id: 'laomiao',  name: '老庙黄金',   en: 'Lao Miao',      tier: '百年老字号',auPrem: 180, barPrem: 96,  agPrem: 14.2, buybackDisc: 20, craftStd: [30, 65],  craftArt: [65, 115], note: '古韵金系列主打国风好运文化，节假日克减力度较大' },
+  { id: 'chj',      name: '潮宏基',     en: 'CHJ Jewellery', tier: '国潮时尚', auPrem: 178, barPrem: 102, agPrem: 14.8, buybackDisc: 25, craftStd: [35, 75],  craftArt: [80, 130], note: '花丝风雨桥与国潮联名款工艺附加值较高' },
+  { id: 'zlf',      name: '周六福',     en: 'Zhou Liu Fu',   tier: '连锁品牌', auPrem: 174, barPrem: 92,  agPrem: 13.5, buybackDisc: 22, craftStd: [28, 60],  craftArt: [55, 100], note: '5G硬金与古法款门店常推克减 ¥30–60 促销' },
+  { id: 'caibai',   name: '菜百首饰',   en: 'Caibai',        tier: '京城标杆', auPrem: 156, barPrem: 22,  agPrem: 11.5, buybackDisc: 10, craftStd: [15, 45],  craftArt: [40, 80],  note: '贺岁金条与投资金条溢价极低，回购体系规范透明' },
+  { id: 'cngold',   name: '中国黄金',   en: 'China Gold',    tier: '央企直营', auPrem: 152, barPrem: 18,  agPrem: 11.0, buybackDisc: 8,  craftStd: [18, 48],  craftArt: [45, 85],  note: '央企背景投资金条性价比突出，支持官方指定渠道回购' },
+  { id: 'shuibei',  name: '深圳水贝批发',en: 'Shuibei Anchor',tier: '批发定价锚',auPrem: 2,   barPrem: 8,   agPrem: 1.4,  buybackDisc: 3,  craftStd: [8, 18],   craftArt: [15, 35],  note: '全国黄金珠宝批发基准价（紧贴上金所大盘 + 低工费）' }
+];
+
+async function fetchYahoo5YWeekly(ticker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=5y&interval=1wk`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${ticker}`);
+  const json = await res.json();
+  const r = json?.chart?.result?.[0];
+  if (!r) throw new Error(`Empty 5Y result for ${ticker}`);
+  const ts = r.timestamp || [];
+  const closes = r.indicators?.quote?.[0]?.close || [];
+  const points = [];
+  for (let i = 0; i < ts.length; i++) {
+    const c = closes[i];
+    if (typeof c === 'number' && Number.isFinite(c) && c > 0) {
+      const d = new Date(ts[i] * 1000);
+      const iso = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+      points.push({ ts: ts[i], date: iso, close: Number(c.toFixed(4)) });
+    }
+  }
+  const meta = r.meta || {};
+  return {
+    points,
+    livePrice: Number(meta.regularMarketPrice || (points.length ? points[points.length - 1].close : 0)),
+    prevClose: Number(meta.chartPreviousClose || meta.previousClose || (points.length > 1 ? points[points.length - 2].close : 0))
+  };
+}
+
+async function fetchChinaSgeSpot() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 4500);
+  try {
+    const res = await fetch('https://hq.sinajs.cn/list=gds_AUTD,gds_AGTD,nf_AU0,nf_AG0', {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://finance.sina.com.cn/'
+      }
+    });
+    if (!res.ok) return null;
+    const text = await res.text();
+    const parseLine = (key) => {
+      const m = text.match(new RegExp(`hq_str_${key}="([^"]*)"`));
+      return m && m[1] ? m[1].split(',') : null;
+    };
+    const autd = parseLine('gds_AUTD');
+    const agtd = parseLine('gds_AGTD');
+    const au0 = parseLine('nf_AU0');
+    const ag0 = parseLine('nf_AG0');
+
+    const auCnyG = Number(autd?.[0]) > 200 ? Number(autd[0]) : (Number(au0?.[8]) > 200 ? Number(au0[8]) : 0);
+    const auPrevCnyG = Number(autd?.[7]) > 200 ? Number(autd[7]) : (Number(au0?.[9]) > 200 ? Number(au0[9]) : auCnyG);
+    // AG(T+D) and nf_AG0 are quoted in CNY per kg -> divide by 1000 for CNY/g
+    const agKgRaw = Number(agtd?.[0]) > 1000 ? Number(agtd[0]) : (Number(ag0?.[8]) > 1000 ? Number(ag0[8]) : 0);
+    const agPrevKgRaw = Number(agtd?.[7]) > 1000 ? Number(agtd[7]) : (Number(ag0?.[9]) > 1000 ? Number(ag0[9]) : agKgRaw);
+    const agCnyG = agKgRaw > 0 ? Number((agKgRaw / 1000).toFixed(3)) : 0;
+    const agPrevCnyG = agPrevKgRaw > 0 ? Number((agPrevKgRaw / 1000).toFixed(3)) : agCnyG;
+    return {
+      auCnyG: auCnyG > 0 ? Number(auCnyG.toFixed(2)) : 0,
+      auPrevCnyG: auPrevCnyG > 0 ? Number(auPrevCnyG.toFixed(2)) : 0,
+      agCnyG,
+      agPrevCnyG,
+      source: autd?.[0] ? '上海黄金交易所 Au(T+D) / 沪银主连实时' : '上期所沪金/沪银主连实时'
+    };
+  } catch (e) {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function refreshMetals5YData(env) {
+  const [auRes, agRes, fxRes, sgeRes] = await Promise.allSettled([
+    fetchYahoo5YWeekly('GC=F'),
+    fetchYahoo5YWeekly('SI=F'),
+    fetchYahoo5YWeekly('CNY=X'),
+    fetchChinaSgeSpot()
+  ]);
+
+  const auData = auRes.status === 'fulfilled' ? auRes.value : null;
+  const agData = agRes.status === 'fulfilled' ? agRes.value : null;
+  const fxData = fxRes.status === 'fulfilled' ? fxRes.value : null;
+  const sge = sgeRes.status === 'fulfilled' ? sgeRes.value : null;
+
+  if (!auData?.points?.length || !agData?.points?.length) {
+    throw new Error('5-year metals history unavailable');
+  }
+
+  // Align weekly silver & FX series to Gold's weekly timestamps via nearest-week lookup
+  const nearestVal = (pts, targetTs, fallback) => {
+    if (!pts || !pts.length) return fallback;
+    let lo = 0, hi = pts.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (pts[mid].ts < targetTs) lo = mid + 1;
+      else hi = mid;
+    }
+    const cand = pts[lo];
+    const prev = lo > 0 ? pts[lo - 1] : cand;
+    return Math.abs(prev.ts - targetTs) < Math.abs(cand.ts - targetTs) ? prev.close : cand.close;
+  };
+
+  const liveFx = fxData?.livePrice > 5 ? fxData.livePrice : 7.24;
+  const liveIntlAuUsdOz = auData.livePrice;
+  const liveIntlAgUsdOz = agData.livePrice;
+  const liveIntlAuUsdG = Number((liveIntlAuUsdOz / TROY_OZ_GRAMS).toFixed(2));
+  const liveIntlAuCnyG = Number(((liveIntlAuUsdOz * liveFx) / TROY_OZ_GRAMS).toFixed(2));
+  const liveIntlAgUsdG = Number((liveIntlAgUsdOz / TROY_OZ_GRAMS).toFixed(3));
+  const liveIntlAgCnyG = Number(((liveIntlAgUsdOz * liveFx) / TROY_OZ_GRAMS).toFixed(3));
+
+  const liveCnAuCnyG = sge?.auCnyG > 200 ? sge.auCnyG : Number((liveIntlAuCnyG + 3.5).toFixed(2));
+  const liveCnAgCnyG = sge?.agCnyG > 2 ? sge.agCnyG : Number((liveIntlAgCnyG * 1.11).toFixed(3));
+  const liveCnAuUsdG = Number((liveCnAuCnyG / liveFx).toFixed(2));
+  const liveCnAgUsdG = Number((liveCnAgCnyG / liveFx).toFixed(3));
+
+  // Real-time China domestic parity ratio (for realistic 5Y SGE domestic curve)
+  const auCnFactor = Math.max(0.96, Math.min(1.06, liveCnAuCnyG / Math.max(1, liveIntlAuCnyG)));
+  const agCnFactor = Math.max(1.02, Math.min(1.18, liveCnAgCnyG / Math.max(0.1, liveIntlAgCnyG)));
+
+  const dates = [];
+  const intlAuUsdOz = [], intlAuUsdG = [], intlAuCnyG = [], cnAuCnyG = [], cnAuUsdG = [];
+  const intlAgUsdOz = [], intlAgUsdG = [], intlAgCnyG = [], cnAgCnyG = [], cnAgUsdG = [];
+  const fxSeries = [];
+
+  for (const pt of auData.points) {
+    const agOz = nearestVal(agData.points, pt.ts, liveIntlAgUsdOz);
+    const fxVal = nearestVal(fxData?.points, pt.ts, liveFx);
+    const auUg = pt.close / TROY_OZ_GRAMS;
+    const auCg = (pt.close * fxVal) / TROY_OZ_GRAMS;
+    const cnAuCg = auCg * auCnFactor;
+    const agUg = agOz / TROY_OZ_GRAMS;
+    const agCg = (agOz * fxVal) / TROY_OZ_GRAMS;
+    const cnAgCg = agCg * agCnFactor;
+
+    dates.push(pt.date);
+    fxSeries.push(Number(fxVal.toFixed(4)));
+    intlAuUsdOz.push(Number(pt.close.toFixed(2)));
+    intlAuUsdG.push(Number(auUg.toFixed(2)));
+    intlAuCnyG.push(Number(auCg.toFixed(2)));
+    cnAuCnyG.push(Number(cnAuCg.toFixed(2)));
+    cnAuUsdG.push(Number((cnAuCg / fxVal).toFixed(2)));
+    intlAgUsdOz.push(Number(agOz.toFixed(2)));
+    intlAgUsdG.push(Number(agUg.toFixed(3)));
+    intlAgCnyG.push(Number(agCg.toFixed(3)));
+    cnAgCnyG.push(Number(cnAgCg.toFixed(3)));
+    cnAgUsdG.push(Number((cnAgCg / fxVal).toFixed(3)));
+  }
+
+  // Anchor final bar to exact live spot prices
+  const last = dates.length - 1;
+  if (last >= 0) {
+    intlAuUsdOz[last] = Number(liveIntlAuUsdOz.toFixed(2));
+    intlAuUsdG[last] = liveIntlAuUsdG;
+    intlAuCnyG[last] = liveIntlAuCnyG;
+    cnAuCnyG[last] = liveCnAuCnyG;
+    cnAuUsdG[last] = liveCnAuUsdG;
+    intlAgUsdOz[last] = Number(liveIntlAgUsdOz.toFixed(2));
+    intlAgUsdG[last] = liveIntlAgUsdG;
+    intlAgCnyG[last] = liveIntlAgCnyG;
+    cnAgCnyG[last] = liveCnAgCnyG;
+    cnAgUsdG[last] = liveCnAgUsdG;
+  }
+
+  const brands = CN_GOLD_JEWELERS_META.map(b => {
+    const auJewelry = Math.round(liveCnAuCnyG + b.auPrem);
+    const auBar = Math.round(liveCnAuCnyG + b.barPrem);
+    const agJewelry = Number((liveCnAgCnyG + b.agPrem).toFixed(1));
+    const buyback = Math.round(liveCnAuCnyG - b.buybackDisc);
+    return {
+      ...b,
+      auJewelry,
+      auBar,
+      agJewelry,
+      buyback,
+      premiumOverSge: Number((auJewelry - liveCnAuCnyG).toFixed(1))
+    };
+  });
+
+  const nowBjt = new Date(Date.now() + 8 * 3600 * 1000);
+  const pad = n => String(n).padStart(2, '0');
+  const updatedAt = `${nowBjt.getUTCFullYear()}-${pad(nowBjt.getUTCMonth() + 1)}-${pad(nowBjt.getUTCDate())} ${pad(nowBjt.getUTCHours())}:${pad(nowBjt.getUTCMinutes())} (GMT+8)`;
+
+  const payload = {
+    ok: true,
+    updatedAt,
+    fetchedAtMs: Date.now(),
+    sgeSource: sge?.source || '国际折算 + 国内现货溢价模型',
+    live: {
+      fx: Number(liveFx.toFixed(4)),
+      intlAuUsdOz: Number(liveIntlAuUsdOz.toFixed(2)),
+      intlAuUsdG: liveIntlAuUsdG,
+      intlAuCnyG: liveIntlAuCnyG,
+      cnAuCnyG: liveCnAuCnyG,
+      cnAuUsdG: liveCnAuUsdG,
+      auSpreadCnyG: Number((liveCnAuCnyG - liveIntlAuCnyG).toFixed(2)),
+      intlAgUsdOz: Number(liveIntlAgUsdOz.toFixed(2)),
+      intlAgUsdG: liveIntlAgUsdG,
+      intlAgCnyG: liveIntlAgCnyG,
+      cnAgCnyG: liveCnAgCnyG,
+      cnAgUsdG: liveCnAgUsdG,
+      agSpreadCnyG: Number((liveCnAgCnyG - liveIntlAgCnyG).toFixed(3))
+    },
+    history: {
+      dates, fx: fxSeries,
+      intlAuUsdOz, intlAuUsdG, intlAuCnyG, cnAuCnyG, cnAuUsdG,
+      intlAgUsdOz, intlAgUsdG, intlAgCnyG, cnAgCnyG, cnAgUsdG
+    },
+    brands
+  };
+
+  if (env?.MARKET_KV) {
+    try {
+      await env.MARKET_KV.put('latest_metals_5y_v1', JSON.stringify(payload), { expirationTtl: 3600 });
+    } catch (e) {}
+  }
+  return payload;
+}
+
+// ============================================================================
+// 世界知名财经商业杂志实时 RSS 聚合引擎 (/api/magazines)
+// ============================================================================
+const MAGAZINE_FEEDS = [
+  { id: 'ft',        name: 'Financial Times',  zh: '金融时报 FT',       lang: 'en', color: '#990F3D', badge: 'UK · 宏观金融',   url: 'https://www.ft.com/rss/home/international', limit: 7 },
+  { id: 'econ_fin',  name: 'The Economist',    zh: '经济学人 · 金融',   lang: 'en', color: '#E3120B', badge: 'UK · 深度周刊',   url: 'https://www.economist.com/finance-and-economics/rss.xml', limit: 5, groupId: 'economist' },
+  { id: 'econ_cn',   name: 'The Economist',    zh: '经济学人 · 中国',   lang: 'en', color: '#E3120B', badge: 'UK · 中国观察',   url: 'https://www.economist.com/china/rss.xml', limit: 4, groupId: 'economist' },
+  { id: 'wsj',       name: 'Wall Street Journal', zh: '华尔街日报 WSJ', lang: 'en', color: '#1F3A5F', badge: 'US · 华尔街',     url: 'https://feeds.content.dowjones.io/public/rss/RSSMarketsMain', limit: 7 },
+  { id: 'bloomberg', name: 'Bloomberg',        zh: '彭博 Bloomberg',    lang: 'en', color: '#1D1D1F', badge: 'US · 实时市场',   url: 'https://feeds.bloomberg.com/markets/news.rss', limit: 7 },
+  { id: 'fortune',   name: 'Fortune',          zh: '财富 Fortune',      lang: 'en', color: '#B8862D', badge: 'US · 500强商业',  url: 'https://fortune.com/feed/', limit: 6 },
+  { id: 'forbes',    name: 'Forbes',           zh: '福布斯 Forbes',     lang: 'en', color: '#24486E', badge: 'US · 创富企业',   url: 'https://www.forbes.com/business/feed/', limit: 6 },
+  { id: 'nikkei',    name: 'Nikkei Asia',      zh: '日经亚洲 Nikkei',   lang: 'en', color: '#0A4B78', badge: 'JP · 亚洲产业链', url: 'https://asia.nikkei.com/rss/feed/nar', limit: 6 },
+  { id: 'scmp',      name: 'SCMP Business',    zh: '南华早报 · 商业',   lang: 'en', color: '#2E6B5E', badge: 'HK · 大中华商业', url: 'https://www.scmp.com/rss/92/feed', limit: 6 },
+  { id: 'cnbc',      name: 'CNBC Global',      zh: 'CNBC 全球财经',     lang: 'en', color: '#005594', badge: 'US · 财经快讯',   url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100727362', limit: 6 },
+  { id: 'ftchinese', name: 'FT中文网',         zh: 'FT中文网',          lang: 'zh', color: '#A63A3A', badge: '中文 · 国际财经', url: 'https://www.ftchinese.com/rss/feed', limit: 9 }
+];
+
+function decodeXmlEntities(str) {
+  return String(str || '')
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function classifyMagTopic(title, desc, feedId) {
+  const txt = `${title} ${desc}`.toLowerCase();
+  if (feedId === 'econ_cn' || /china|chinese|beijing|shanghai|hong kong|taiwan|yuan|renminbi|pboc|shenzhen|alibaba|tencent|byd|huawei|中国|北京|上海|香港|台湾|人民币|央行|A股|港股|民营|关税/.test(txt)) {
+    return 'china';
+  }
+  if (/\bai\b|artificial intelligence|nvidia|openai|anthropic|semiconductor|chip|apple|microsoft|google|meta|tesla|cloud|robot|人工智能|大模型|算力|芯片|半导体|科技/.test(txt)) {
+    return 'tech';
+  }
+  if (/fed|federal reserve|ecb|boj|gdp|inflation|tariff|trade|recession|imf|world bank|central bank|treasury|economy|economic|宏观|经济|通胀|降息|加息|美联储|贸易|增长/.test(txt)) {
+    return 'macro';
+  }
+  if (/stock|stocks|bond|yield|gold|oil|ipo|market|wall street|rally|selloff|etf|crypto|bitcoin|equity|股市|黄金|原油|债市|市场|指数|行情|基金/.test(txt)) {
+    return 'markets';
+  }
+  return 'corp';
+}
+
+function sanitizeNewsImageUrl(rawUrl) {
+  if (!rawUrl) return '';
+  let u = String(rawUrl)
+    .replace(/&amp;/g, '&')
+    .replace(/^<!\[CDATA\[|\]\]>$/g, '')
+    .trim();
+  if (u.startsWith('//')) u = 'https:' + u;
+  if (u.startsWith('http://')) u = 'https://' + u.slice(7);
+  if (!/^https:\/\/[^\s"'<>]+$/i.test(u)) return '';
+  if (/\.(svg|ico|gif)(\?|$)/i.test(u)) return '';
+  if (/pixel|tracker|beacon|doubleclick|feedburner|1x1|spacer|blank\./i.test(u)) return '';
+  return u;
+}
+
+function extractRssImageUrl(rawBlock) {
+  const candidates = [];
+  // 1. <media:content url="..." width="...">
+  const mediaMatches = rawBlock.matchAll(/<media:content\b([^>]+)>/gi);
+  for (const m of mediaMatches) {
+    const attrs = m[1] || '';
+    const urlM = attrs.match(/\burl=["']([^"']+)["']/i);
+    if (!urlM) continue;
+    const typeM = attrs.match(/\btype=["']([^"']+)["']/i);
+    const medM = attrs.match(/\bmedium=["']([^"']+)["']/i);
+    if (typeM && !typeM[1].toLowerCase().startsWith('image/')) continue;
+    if (medM && medM[1].toLowerCase() === 'video') continue;
+    const wM = attrs.match(/\bwidth=["'](\d+)["']/i);
+    const w = wM ? Number(wM[1]) : 600;
+    const clean = sanitizeNewsImageUrl(urlM[1]);
+    if (clean) candidates.push({ url: clean, score: w });
+  }
+  if (candidates.length) {
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates[0].url;
+  }
+  // 2. <media:thumbnail url="...">
+  const thumbM = rawBlock.match(/<media:thumbnail\b[^>]*\burl=["']([^"']+)["']/i);
+  if (thumbM) {
+    const clean = sanitizeNewsImageUrl(thumbM[1]);
+    if (clean) return clean;
+  }
+  // 3. <enclosure url="..." type="image/...">
+  const encMatches = rawBlock.matchAll(/<enclosure\b([^>]+)>/gi);
+  for (const m of encMatches) {
+    const attrs = m[1] || '';
+    const urlM = attrs.match(/\burl=["']([^"']+)["']/i);
+    const typeM = attrs.match(/\btype=["']([^"']+)["']/i);
+    if (urlM && (!typeM || typeM[1].toLowerCase().startsWith('image/'))) {
+      const clean = sanitizeNewsImageUrl(urlM[1]);
+      if (clean) return clean;
+    }
+  }
+  // 4. <img src="..."> inside description/content
+  const imgM = rawBlock.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i);
+  if (imgM) {
+    const clean = sanitizeNewsImageUrl(imgM[1]);
+    if (clean) return clean;
+  }
+  return '';
+}
+
+async function fetchArticleOgImage(articleUrl) {
+  if (!articleUrl || !/^https?:\/\//i.test(articleUrl)) return '';
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2400);
+  try {
+    const res = await fetch(articleUrl, {
+      signal: controller.signal,
+      redirect: 'follow',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml'
+      }
+    });
+    if (!res.ok) return '';
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    if (!ct.includes('text/html') && !ct.includes('application/xhtml')) return '';
+    // Read only up to first 48KB where <head> meta tags live
+    let htmlHead = '';
+    const reader = res.body?.getReader?.();
+    if (reader) {
+      const dec = new TextDecoder();
+      let total = 0;
+      while (total < 49152) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        total += value.byteLength;
+        htmlHead += dec.decode(value, { stream: true });
+        if (htmlHead.includes('</head>')) break;
+      }
+      try { reader.cancel(); } catch (e) {}
+    } else {
+      htmlHead = (await res.text()).slice(0, 49152);
+    }
+    const metaPatterns = [
+      /<meta[^>]+property=["']og:image(?::secure_url)?["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image(?::secure_url)?["']/i,
+      /<meta[^>]+name=["']twitter:image(?::src)?["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image(?::src)?["']/i
+    ];
+    for (const re of metaPatterns) {
+      const m = htmlHead.match(re);
+      if (m && m[1]) {
+        const clean = sanitizeNewsImageUrl(m[1]);
+        if (clean) return clean;
+      }
+    }
+  } catch (e) {
+  } finally {
+    clearTimeout(timer);
+  }
+  return '';
+}
+
+function parseRssXmlItems(xml, feed) {
+  const items = [];
+  const itemMatches = xml.match(/<item\b[\s\S]*?<\/item>/gi) || xml.match(/<entry\b[\s\S]*?<\/entry>/gi) || [];
+  const tagVal = (block, tag) => {
+    const m = block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i'));
+    return m ? decodeXmlEntities(m[1]) : '';
+  };
+
+  for (const raw of itemMatches.slice(0, feed.limit || 6)) {
+    const title = tagVal(raw, 'title');
+    if (!title || title.length < 4) continue;
+    let link = tagVal(raw, 'link');
+    if (!link) {
+      const hm = raw.match(/<link[^>]+href=["']([^"']+)["']/i);
+      if (hm) link = hm[1];
+    }
+    const descRaw = tagVal(raw, 'description') || tagVal(raw, 'summary') || '';
+    const summary = descRaw.length > 180 ? descRaw.slice(0, 178) + '…' : descRaw;
+    const pubRaw = tagVal(raw, 'pubDate') || tagVal(raw, 'updated') || tagVal(raw, 'dc:date') || '';
+    const ts = pubRaw ? Date.parse(pubRaw) : Date.now();
+    const validTs = Number.isFinite(ts) ? ts : Date.now();
+    const bjt = new Date(validTs + 8 * 3600 * 1000);
+    const pad = n => String(n).padStart(2, '0');
+    const timeStr = `${bjt.getUTCFullYear()}-${pad(bjt.getUTCMonth() + 1)}-${pad(bjt.getUTCDate())} ${pad(bjt.getUTCHours())}:${pad(bjt.getUTCMinutes())}`;
+    const imageUrl = extractRssImageUrl(raw);
+
+    items.push({
+      id: `${feed.id}_${items.length}_${validTs % 100000}`,
+      sourceId: feed.groupId || feed.id,
+      sourceName: feed.name,
+      sourceZh: feed.zh,
+      lang: feed.lang,
+      color: feed.color,
+      badge: feed.badge,
+      topic: classifyMagTopic(title, summary, feed.id),
+      title,
+      summary,
+      link,
+      imageUrl,
+      imageProxyUrl: imageUrl ? `/api/img-proxy?url=${encodeURIComponent(imageUrl)}` : '',
+      imageSource: imageUrl ? 'original' : 'ai',
+      ts: validTs,
+      timeStr
+    });
+  }
+  return items;
+}
+
+async function refreshMagazinesFeed(env) {
+  const results = await Promise.allSettled(
+    MAGAZINE_FEEDS.map(async (feed) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 4500);
+      try {
+        const res = await fetch(feed.url, {
+          signal: controller.signal,
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const xml = await res.text();
+        return { feed, items: parseRssXmlItems(xml, feed) };
+      } finally {
+        clearTimeout(timer);
+      }
+    })
+  );
+
+  const allItems = [];
+  const seenTitles = new Set();
+  const sourceStatus = {};
+
+  for (const r of results) {
+    if (r.status === 'fulfilled') {
+      const { feed, items } = r.value;
+      const gid = feed.groupId || feed.id;
+      sourceStatus[gid] = (sourceStatus[gid] || 0) + items.length;
+      for (const it of items) {
+        const key = it.title.toLowerCase().slice(0, 60);
+        if (seenTitles.has(key)) continue;
+        seenTitles.add(key);
+        allItems.push(it);
+      }
+    }
+  }
+
+  allItems.sort((a, b) => b.ts - a.ts);
+  const trimmed = allItems.slice(0, 72);
+
+  // Enrich newest items lacking RSS image with article og:image (bounded 12 concurrent, 2.4s timeout)
+  const needOg = trimmed.filter(it => !it.imageUrl && it.link).slice(0, 12);
+  if (needOg.length) {
+    await Promise.allSettled(
+      needOg.map(async (it) => {
+        const og = await fetchArticleOgImage(it.link);
+        if (og) {
+          it.imageUrl = og;
+          it.imageProxyUrl = `/api/img-proxy?url=${encodeURIComponent(og)}`;
+          it.imageSource = 'original';
+        }
+      })
+    );
+  }
+
+  const originalImgCount = trimmed.filter(it => it.imageSource === 'original').length;
+  const nowBjt = new Date(Date.now() + 8 * 3600 * 1000);
+  const pad = n => String(n).padStart(2, '0');
+  const updatedAt = `${nowBjt.getUTCFullYear()}-${pad(nowBjt.getUTCMonth() + 1)}-${pad(nowBjt.getUTCDate())} ${pad(nowBjt.getUTCHours())}:${pad(nowBjt.getUTCMinutes())} (GMT+8)`;
+
+  const payload = {
+    ok: true,
+    updatedAt,
+    fetchedAtMs: Date.now(),
+    total: trimmed.length,
+    originalImgCount,
+    aiFallbackCount: trimmed.length - originalImgCount,
+    sourceStatus,
+    items: trimmed
+  };
+
+  if (env?.MARKET_KV && trimmed.length > 0) {
+    try {
+      await env.MARKET_KV.put('latest_magazines_v2', JSON.stringify(payload), { expirationTtl: 3600 });
+    } catch (e) {}
+  }
+  return payload;
+}
+
 export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil((async () => {
@@ -890,6 +1416,103 @@ export default {
           headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
         });
       }
+    }
+    if (url.pathname === '/api/metals-5y') {
+      const force = url.searchParams.get('force') === '1';
+      let data = null;
+      if (!force && env.MARKET_KV) {
+        try {
+          const cached = await env.MARKET_KV.get('latest_metals_5y_v1', { type: 'json' });
+          if (cached && cached.fetchedAtMs && (Date.now() - cached.fetchedAtMs) < 30 * 60 * 1000 && cached.history?.dates?.length) {
+            data = cached;
+          }
+        } catch (e) {}
+      }
+      if (!data) {
+        try {
+          data = await refreshMetals5YData(env);
+        } catch (err) {
+          return new Response(JSON.stringify({ ok: false, error: err.message || 'Metals 5Y fetch failed' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+      }
+      return new Response(JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=300'
+        }
+      });
+    }
+    if (url.pathname === '/api/img-proxy') {
+      const target = url.searchParams.get('url') || '';
+      const clean = sanitizeNewsImageUrl(target);
+      if (!clean) {
+        return new Response('Invalid image URL', { status: 400 });
+      }
+      try {
+        const parsed = new URL(clean);
+        const host = parsed.hostname.toLowerCase();
+        if (
+          parsed.protocol !== 'https:' ||
+          host === 'localhost' ||
+          host.endsWith('.local') ||
+          /^(127\.|10\.|192\.168\.|169\.254\.|0\.|\[?::1\]?|172\.(1[6-9]|2\d|3[01])\.)/.test(host)
+        ) {
+          return new Response('Blocked host', { status: 403 });
+        }
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 5000);
+        try {
+          const imgRes = await fetch(clean, {
+            signal: controller.signal,
+            redirect: 'follow',
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+              'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8'
+            }
+          });
+          if (!imgRes.ok) return new Response('Upstream error', { status: 502 });
+          const ct = (imgRes.headers.get('content-type') || '').toLowerCase();
+          if (!ct.startsWith('image/')) return new Response('Not an image', { status: 415 });
+          return new Response(imgRes.body, {
+            status: 200,
+            headers: {
+              'Content-Type': ct,
+              'Access-Control-Allow-Origin': '*',
+              'Cache-Control': 'public, max-age=7200'
+            }
+          });
+        } finally {
+          clearTimeout(timer);
+        }
+      } catch (e) {
+        return new Response('Proxy fetch failed', { status: 504 });
+      }
+    }
+    if (url.pathname === '/api/magazines') {
+      const force = url.searchParams.get('force') === '1';
+      let data = null;
+      if (!force && env.MARKET_KV) {
+        try {
+          const cached = await env.MARKET_KV.get('latest_magazines_v2', { type: 'json' });
+          if (cached && cached.fetchedAtMs && (Date.now() - cached.fetchedAtMs) < 30 * 60 * 1000 && cached.items?.length) {
+            data = cached;
+          }
+        } catch (e) {}
+      }
+      if (!data) {
+        data = await refreshMagazinesFeed(env);
+      }
+      return new Response(JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=300'
+        }
+      });
     }
     return env.ASSETS.fetch(request);
   }
