@@ -2178,6 +2178,152 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       .china-ind-row { grid-template-columns: 24px 66px 1fr 102px; font-size: 11px; }
     }
 
+    /* 我的持仓与个股深度投研工作台样式 */
+    .stock-search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+    }
+    .stock-search-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      z-index: 60;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: 5px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+      max-height: 290px;
+      overflow-y: auto;
+      display: none;
+    }
+    .stock-search-dropdown.open { display: block; }
+    .stock-search-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-hairline);
+      cursor: pointer;
+      font-size: 12.5px;
+    }
+    .stock-search-item:hover { background: var(--bg-subtle); }
+    .stock-search-item:last-child { border-bottom: none; }
+    .stock-form-drawer {
+      margin-top: 12px;
+      padding: 13px 14px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--accent-gold);
+      border-left: 4px solid var(--accent-gold);
+      border-radius: 5px;
+    }
+    .stock-form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      margin-top: 10px;
+    }
+    .stock-form-field label {
+      display: block;
+      font-size: 11px;
+      color: var(--ink-muted);
+      margin-bottom: 3px;
+    }
+    .stock-form-field input, .stock-form-field select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px 8px;
+      font-size: 12.5px;
+    }
+    .stock-workbench-grid {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .stock-list-panel {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 5px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stock-holding-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-left: 3px solid var(--border-strong);
+      border-radius: 4px;
+      padding: 10px 11px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .stock-holding-card:hover { background: var(--bg-subtle); }
+    .stock-holding-card.active {
+      border-color: var(--accent-gold);
+      border-left-color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+    }
+    .stock-detail-panel {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 5px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .stock-sub-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 12px 14px;
+    }
+    .stock-target-track {
+      position: relative;
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, rgba(200,75,75,0.35) 0%, rgba(184,134,45,0.4) 50%, rgba(46,107,94,0.5) 100%);
+      margin: 26px 8px 24px;
+    }
+    .stock-target-marker {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.28);
+    }
+    .stock-metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .stock-score-ring {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-gold);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--accent-gold-text);
+      background: var(--accent-gold-soft);
+    }
+    @media (max-width: 1020px) {
+      .stock-workbench-grid { grid-template-columns: 1fr; }
+      .stock-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stock-metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
     .footer {
       margin-top: 44px;
       padding-top: 14px;
@@ -4165,6 +4311,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { id: "sec-metals",     group: "markets", zh: "贵金属市场",         en: "Precious Metals",   visible: true },
       { id: "sec-equities",   group: "markets", zh: "中美核心股指",       en: "CN & US Indices",   visible: true },
       { id: "sec-fx",         group: "markets", zh: "人民币汇率兑换",     en: "CNY FX Exchange",   visible: true },
+      { id: "sec-my-stocks",  group: "corp",    zh: "我的持仓与个股投研", en: "My Stocks & Research", visible: true },
       { id: "sec-ai",         group: "corp",    zh: "AI 与港A龙头",       en: "AI & HK/A Leaders", visible: true },
       { id: "sec-reports",    group: "corp",    zh: "上市公司年报中心",   en: "Annual Reports",    visible: true },
       { id: "sec-chart",      group: "macro",   zh: "深度走势与对比",     en: "Deep Charts",       visible: true },
@@ -4753,6 +4900,42 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       sim: false,
       activeNav: "sec-metals",
       aiFilter: "all",
+      myStocks: (() => {
+        const def = [
+          {
+            ticker: "NVDA", zh: "英伟达", en: "NVIDIA", mkt: "us", cur: "$", sector: "AI算力芯片",
+            shares: 40, costPrice: 128.5, targetPrice: 195, stopLoss: 115, buyDate: "2025-04-15",
+            note: "Blackwell 与下一代算力周期核心受益标的，逢回调分批持有，关注数据中心毛利率变化。",
+            isDemo: true
+          },
+          {
+            ticker: "0700.HK", zh: "腾讯控股", en: "Tencent", mkt: "hk", cur: "HK$", sector: "互联网社交/游戏/AI",
+            shares: 200, costPrice: 318.0, targetPrice: 440, stopLoss: 280, buyDate: "2025-02-10",
+            note: "视频号广告与高毛利业务驱动盈利增速，千亿回购提供较强安全边际。",
+            isDemo: true
+          },
+          {
+            ticker: "600519.SS", zh: "贵州茅台", en: "Kweichow Moutai", mkt: "cn", cur: "¥", sector: "白酒消费",
+            shares: 100, costPrice: 1465.0, targetPrice: 1780, stopLoss: 1320, buyDate: "2025-01-20",
+            note: "现金流与分红率确定性高，作为组合防守底仓配置。",
+            isDemo: true
+          }
+        ];
+        try {
+          const saved = JSON.parse(localStorage.getItem("gfi_my_stocks_v1") || "null");
+          return Array.isArray(saved) && saved.length ? saved : def;
+        } catch (e) { return def; }
+      })(),
+      myStockSelected: "NVDA",
+      myStockFilter: "all",
+      myStockRange: "3mo",
+      myStockQuery: "",
+      myStockSearchResults: [],
+      myStockFormOpen: false,
+      myStockEditingTicker: null,
+      myStockDraft: null,
+      myStockCache: {},
+      myStockLoadingTicker: null,
       repFilter: "all",
       repQuery: "",
       selectedComp: COMPANIES_DB[0],
@@ -5097,6 +5280,20 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
               </div>
               <div class="mono" style="font-size:16px;font-weight:700;color:var(--accent-fx);" id="fx-res">--</div>
             </div>
+          </section>`,
+        "sec-my-stocks": `
+          <section class="section" id="sec-my-stocks">
+            <div class="section-head ai">
+              <div class="sec-title-box">
+                <span class="sec-tag" style="background:var(--accent-gold);color:#fff;">MY PORTFOLIO &amp; RESEARCH</span>
+                <h2 class="sec-title">${isZh ? "我的持仓与个股深度投研" : "My Stocks & Deep Research"}</h2>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <span class="sec-sub mono mobile-hide">${isZh ? "支持 A股 / 港股 / 美股实时检索 · 走势 / 目标价 / 资金进出 / 年报解读 / 投资分析" : "CN / HK / US Live Search · Trends · Targets · Flows · Filings"}</span>
+                <button class="btn primary" onclick="openAddStockForm()">+ ${isZh ? "添加我的股票" : "Add Stock"}</button>
+              </div>
+            </div>
+            <div class="card" id="my-stocks-root"></div>
           </section>`,
         "sec-ai": `
           <section class="section" id="sec-ai">
@@ -5472,6 +5669,970 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
         : `${fmt(amt, 2)} ${code} ≈ ¥${fmt(out, 2)} CNY`;
     }
 
+    /* =========================================================================
+       5.5 我的持仓与个股深度投研工作台 (查询/添加/走势/目标价/资金进出/年报解读/投资分析)
+       ========================================================================= */
+    const LOCAL_STOCK_QUICK = [
+      { ticker: "600519.SS", zh: "贵州茅台", en: "Kweichow Moutai", py: "GZMT", mkt: "cn", cur: "¥", sector: "白酒消费", pe: 22.4, pb: 8.6, roe: 34.2, gm: 91.9, revGr: 11.2, div: 3.4 },
+      { ticker: "300750.SZ", zh: "宁德时代", en: "CATL",            py: "NDSD", mkt: "cn", cur: "¥", sector: "动力电池/储能", pe: 21.8, pb: 4.9, roe: 24.5, gm: 24.8, revGr: 15.6, div: 2.1 },
+      { ticker: "002594.SZ", zh: "比亚迪",   en: "BYD",             py: "BYD",  mkt: "cn", cur: "¥", sector: "新能源汽车", pe: 20.5, pb: 5.1, roe: 23.8, gm: 21.2, revGr: 18.4, div: 1.2 },
+      { ticker: "300308.SZ", zh: "中际旭创", en: "Innolight",       py: "ZJXC", mkt: "cn", cur: "¥", sector: "AI光模块", pe: 28.4, pb: 8.2, roe: 29.1, gm: 33.6, revGr: 62.5, div: 0.9 },
+      { ticker: "688256.SS", zh: "寒武纪",   en: "Cambricon",       py: "HWJ",  mkt: "cn", cur: "¥", sector: "AI算力芯片", pe: 145.0, pb: 26.5, roe: 4.2, gm: 64.5, revGr: 88.0, div: 0.0 },
+      { ticker: "000858.SZ", zh: "五粮液",   en: "Wuliangye",       py: "WLY",  mkt: "cn", cur: "¥", sector: "白酒消费", pe: 16.8, pb: 4.1, roe: 24.6, gm: 76.4, revGr: 8.5, div: 3.8 },
+      { ticker: "600036.SS", zh: "招商银行", en: "CMB",             py: "ZSYH", mkt: "cn", cur: "¥", sector: "股份制银行", pe: 6.8, pb: 0.98, roe: 15.4, gm: 58.0, revGr: 2.8, div: 5.1 },
+      { ticker: "601318.SS", zh: "中国平安", en: "Ping An",         py: "ZGPA", mkt: "cn", cur: "¥", sector: "综合保险金融", pe: 8.2, pb: 1.05, roe: 13.8, gm: 36.0, revGr: 7.4, div: 4.6 },
+      { ticker: "300760.SZ", zh: "迈瑞医疗", en: "Mindray",         py: "MRYL", mkt: "cn", cur: "¥", sector: "医疗器械", pe: 24.5, pb: 8.4, roe: 33.5, gm: 65.8, revGr: 12.8, div: 2.4 },
+      { ticker: "000333.SZ", zh: "美的集团", en: "Midea Group",     py: "MDJT", mkt: "cn", cur: "¥", sector: "智能家电/机器人", pe: 13.6, pb: 2.9, roe: 22.4, gm: 26.8, revGr: 9.6, div: 4.2 },
+      { ticker: "601899.SS", zh: "紫金矿业", en: "Zijin Mining",    py: "ZJKY", mkt: "cn", cur: "¥", sector: "黄金铜矿资源", pe: 14.2, pb: 3.5, roe: 25.1, gm: 20.5, revGr: 16.2, div: 2.3 },
+      { ticker: "601138.SS", zh: "工业富联", en: "Foxconn Ind.",    py: "GYFL", mkt: "cn", cur: "¥", sector: "AI服务器代工", pe: 19.6, pb: 3.2, roe: 17.5, gm: 8.4, revGr: 26.8, div: 2.6 },
+      { ticker: "300059.SZ", zh: "东方财富", en: "East Money",      py: "DFCF", mkt: "cn", cur: "¥", sector: "互联网券商", pe: 32.5, pb: 4.2, roe: 12.8, gm: 66.0, revGr: 14.2, div: 0.6 },
+      { ticker: "0700.HK",   zh: "腾讯控股", en: "Tencent",         py: "TXKG", mkt: "hk", cur: "HK$", sector: "互联网社交/游戏/AI", pe: 17.8, pb: 3.6, roe: 21.8, gm: 53.2, revGr: 9.2, div: 1.1 },
+      { ticker: "9988.HK",   zh: "阿里巴巴-W", en: "Alibaba HK",    py: "ALBB", mkt: "hk", cur: "HK$", sector: "电商/云计算AI", pe: 12.4, pb: 1.55, roe: 13.6, gm: 39.2, revGr: 7.8, div: 1.8 },
+      { ticker: "3690.HK",   zh: "美团-W",   en: "Meituan",         py: "MT",   mkt: "hk", cur: "HK$", sector: "本地生活服务", pe: 21.5, pb: 4.8, roe: 22.4, gm: 38.4, revGr: 19.6, div: 0.0 },
+      { ticker: "1810.HK",   zh: "小米集团-W", en: "Xiaomi",        py: "XMJT", mkt: "hk", cur: "HK$", sector: "智能终端/新能源车", pe: 26.8, pb: 3.9, roe: 15.2, gm: 21.6, revGr: 27.5, div: 0.0 },
+      { ticker: "0981.HK",   zh: "中芯国际", en: "SMIC",            py: "ZXGJ", mkt: "hk", cur: "HK$", sector: "半导体晶圆代工", pe: 44.0, pb: 2.2, roe: 5.1, gm: 20.8, revGr: 24.5, div: 0.0 },
+      { ticker: "NVDA",      zh: "英伟达",   en: "NVIDIA",          py: "YWD",  mkt: "us", cur: "$", sector: "AI算力芯片", pe: 42.5, pb: 38.0, roe: 92.4, gm: 75.2, revGr: 68.5, div: 0.03 },
+      { ticker: "AAPL",      zh: "苹果",     en: "Apple",           py: "PG",   mkt: "us", cur: "$", sector: "消费电子/生态服务", pe: 34.2, pb: 48.0, roe: 145.0, gm: 46.5, revGr: 6.2, div: 0.45 },
+      { ticker: "MSFT",      zh: "微软",     en: "Microsoft",       py: "WR",   mkt: "us", cur: "$", sector: "云计算/企业AI", pe: 33.8, pb: 11.4, roe: 36.2, gm: 69.8, revGr: 14.5, div: 0.72 },
+      { ticker: "GOOGL",     zh: "谷歌A",    en: "Alphabet",        py: "GG",   mkt: "us", cur: "$", sector: "搜索广告/AI云", pe: 23.6, pb: 7.1, roe: 31.4, gm: 58.2, revGr: 12.8, div: 0.42 },
+      { ticker: "AMZN",      zh: "亚马逊",   en: "Amazon",          py: "YMX",  mkt: "us", cur: "$", sector: "电商/AWS云计算", pe: 38.4, pb: 8.6, roe: 23.5, gm: 48.6, revGr: 11.4, div: 0.0 },
+      { ticker: "META",      zh: "Meta",     en: "Meta Platforms",  py: "META", mkt: "us", cur: "$", sector: "社交广告/开源AI", pe: 26.8, pb: 8.8, roe: 35.6, gm: 81.4, revGr: 18.2, div: 0.35 },
+      { ticker: "TSM",       zh: "台积电",   en: "TSMC ADR",        py: "TJD",  mkt: "us", cur: "$", sector: "先进制程代工", pe: 26.4, pb: 7.8, roe: 29.4, gm: 57.8, revGr: 25.8, div: 1.4 },
+      { ticker: "TSLA",      zh: "特斯拉",   en: "Tesla",           py: "TSL",  mkt: "us", cur: "$", sector: "电动车/自动驾驶", pe: 78.0, pb: 13.5, roe: 18.2, gm: 18.4, revGr: 12.5, div: 0.0 },
+      { ticker: "AVGO",      zh: "博通",     en: "Broadcom",        py: "BT",   mkt: "us", cur: "$", sector: "AI定制芯片/网络", pe: 36.5, pb: 14.2, roe: 34.0, gm: 67.5, revGr: 32.0, div: 1.25 },
+      { ticker: "AMD",       zh: "超威半导体", en: "AMD",           py: "CWBDT",mkt: "us", cur: "$", sector: "AI GPU/CPU", pe: 41.2, pb: 4.5, roe: 11.4, gm: 52.4, revGr: 22.8, div: 0.0 },
+      { ticker: "BABA",      zh: "阿里巴巴", en: "Alibaba ADR",     py: "ALBB", mkt: "us", cur: "$", sector: "电商/云计算AI", pe: 12.6, pb: 1.58, roe: 13.6, gm: 39.2, revGr: 7.8, div: 1.75 },
+      { ticker: "PDD",       zh: "拼多多",   en: "PDD Holdings",    py: "PDD",  mkt: "us", cur: "$", sector: "跨境与社交电商", pe: 10.4, pb: 3.9, roe: 42.5, gm: 61.5, revGr: 34.2, div: 0.0 }
+    ];
+
+    let myStockSearchTimer = null;
+
+    function saveMyStocks() {
+      try { localStorage.setItem("gfi_my_stocks_v1", JSON.stringify(state.myStocks)); } catch (e) {}
+    }
+
+    function normalizeClientTicker(raw) {
+      const s = String(raw || "").trim().toUpperCase();
+      if (!s) return "";
+      if (/^\d{6}$/.test(s)) return (s.startsWith("6") || s.startsWith("9")) ? `${s}.SS` : `${s}.SZ`;
+      if (/^\d{4,5}$/.test(s)) return `${s.replace(/^0+/, "").padStart(4, "0")}.HK`;
+      if (s.endsWith(".SH")) return s.replace(/\.SH$/, ".SS");
+      return s;
+    }
+
+    function curToCnyRate(cur) {
+      if (cur === "$") return fxMap.USD?.rate || 7.241;
+      if (cur === "HK$") return fxMap.HKD?.rate || 0.9302;
+      return 1;
+    }
+
+    function findMatchingCompanyReport(ticker, zhName = "") {
+      const norm = String(ticker || "").toUpperCase();
+      const shortCode = norm.split(".")[0].replace(/^0+/, "");
+      return COMPANIES_DB.find(c => {
+        const ct = c.ticker.toUpperCase();
+        if (ct.includes(norm) || (shortCode && shortCode.length >= 3 && ct.includes(shortCode))) return true;
+        if (zhName && (c.name === zhName || zhName.includes(c.name) || c.name.includes(zhName))) return true;
+        return false;
+      }) || null;
+    }
+
+    function buildSyntheticStockDetail(holding, range = "3mo") {
+      const norm = holding.ticker.toUpperCase();
+      const leader = AI_LEADERS.find(l => normalizeClientTicker(l.ticker) === norm || l.name === holding.zh);
+      const quick = LOCAL_STOCK_QUICK.find(q => q.ticker.toUpperCase() === norm);
+      const basePrice = Number(leader?.price || holding.costPrice || 100);
+      const prevClose = Number(leader?.prevClose || basePrice * 0.992);
+      const count = range === "1mo" ? 22 : (range === "6mo" ? 120 : (range === "1y" ? 52 : 60));
+      const seed = [...norm].reduce((a, ch) => a + ch.charCodeAt(0), 0);
+      const bars = [];
+      let p = basePrice * 0.91;
+      const now = Date.now();
+      const stepMs = range === "1y" ? 7 * 86400000 : 86400000;
+      for (let i = 0; i < count; i++) {
+        const wave = Math.sin((i + seed) * 0.31) * 0.015 + Math.cos((i * 2 + seed) * 0.17) * 0.009;
+        const drift = (basePrice - p) / Math.max(4, count - i);
+        const close = i === count - 1 ? basePrice : Number(Math.max(0.5, p + drift + p * wave).toFixed(2));
+        const open = Number((p).toFixed(2));
+        const high = Number((Math.max(open, close) * 1.014).toFixed(2));
+        const low = Number((Math.min(open, close) * 0.986).toFixed(2));
+        const d = new Date(now - (count - 1 - i) * stepMs);
+        bars.push({
+          date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+          o: open, h: high, l: low, c: close,
+          v: Math.round((1200000 + ((i * 197 + seed * 53) % 900000)) * (holding.mkt === "cn" ? 12 : 8))
+        });
+        p = close;
+      }
+      const highs = bars.map(b => b.h), lows = bars.map(b => b.l);
+      const closes = bars.map(b => b.c);
+      const ma = (n) => Number((closes.slice(-n).reduce((a, b) => a + b, 0) / Math.min(n, closes.length)).toFixed(2));
+      const ma5 = ma(5), ma20 = ma(20), ma60 = ma(Math.min(60, closes.length));
+      const high52w = Number((Math.max(...highs) * 1.12).toFixed(2));
+      const low52w = Number((Math.min(...lows) * 0.88).toFixed(2));
+      const unitLabel = holding.cur === "$" ? "$M" : (holding.cur === "HK$" ? "亿HK$" : "亿元");
+      const daily = bars.slice(-10).map((b, i) => {
+        const dir = b.c >= b.o ? 1 : -1;
+        const mag = Number((dir * (0.45 + ((i * 37 + seed) % 19) * 0.16)).toFixed(2));
+        return { date: b.date, mainNet: mag, retailNet: Number((-mag * 0.42).toFixed(2)), bigNet: mag, mainPct: Number((mag * 3.1).toFixed(1)) };
+      });
+      const sum5Main = Number(daily.slice(-5).reduce((a, b) => a + b.mainNet, 0).toFixed(2));
+      const sum10Main = Number(daily.reduce((a, b) => a + b.mainNet, 0).toFixed(2));
+      const sum5Retail = Number(daily.slice(-5).reduce((a, b) => a + b.retailNet, 0).toFixed(2));
+      const targetMean = Number((basePrice * 1.16).toFixed(2));
+      const targetHigh = Number((targetMean * 1.18).toFixed(2));
+      const targetLow = Number((basePrice * 0.90).toFixed(2));
+      const upsidePct = Number((((targetMean - basePrice) / Math.max(0.01, basePrice)) * 100).toFixed(1));
+      const score = sum5Main >= 0 ? 78 : 66;
+      return {
+        ticker: holding.ticker,
+        zh: holding.zh,
+        en: holding.en || holding.ticker,
+        exchange: holding.mkt === "cn" ? "SSE / SZSE" : (holding.mkt === "hk" ? "HKEX" : "NASDAQ / NYSE"),
+        mkt: holding.mkt,
+        cur: holding.cur,
+        sector: holding.sector || quick?.sector || "重点跟踪标的",
+        range,
+        price: basePrice,
+        prevClose,
+        change: Number((basePrice - prevClose).toFixed(3)),
+        changePct: prevClose ? Number((((basePrice - prevClose) / prevClose) * 100).toFixed(2)) : 0,
+        dayHigh: Number((basePrice * 1.015).toFixed(2)),
+        dayLow: Number((basePrice * 0.985).toFixed(2)),
+        high52w,
+        low52w,
+        volume: bars[bars.length - 1]?.v || 0,
+        fundamentals: {
+          pe: quick?.pe ?? null,
+          pb: quick?.pb ?? null,
+          divYield: quick?.div ?? null,
+          roe: quick?.roe ?? null,
+          revGrowth: quick?.revGr ?? null,
+          grossMargin: quick?.gm ?? null
+        },
+        target: {
+          low: targetLow, mean: targetMean, high: targetHigh, upsidePct,
+          rating: score >= 75 ? "偏多 / 增持" : "中性 / 持有",
+          score,
+          basis: "本地快照估值模型测算（点击「刷新实时数据」可同步最新行情）"
+        },
+        tech: { ma5, ma20, ma60, rsi14: 56.4, mfi14: sum5Main >= 0 ? 58.2 : 44.8, volRatio: 1.08, support: Number(Math.min(...lows.slice(-20)).toFixed(2)), resistance: Number(Math.max(...highs.slice(-20)).toFixed(2)) },
+        capitalFlow: { source: `基准量价资金模型 (${unitLabel})`, unit: unitLabel, daily, sum5Main, sum10Main, sum5Retail },
+        bars,
+        isFallback: true,
+        updatedAt: state.updatedAt
+      };
+    }
+
+    async function loadStockDetailLive(ticker, range = state.myStockRange, force = false) {
+      const key = `${ticker}:${range}`;
+      if (!force && state.myStockCache[key] && !state.myStockCache[key].isFallback) return state.myStockCache[key];
+      state.myStockLoadingTicker = ticker;
+      renderMyStocks();
+      try {
+        const res = await fetch(`/api/stock/detail?ticker=${encodeURIComponent(ticker)}&range=${encodeURIComponent(range)}`, { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          if (json?.ok && json.data) {
+            state.myStockCache[key] = json.data;
+            // Also refresh name/sector if user added by raw ticker
+            const h = state.myStocks.find(x => x.ticker === ticker);
+            if (h) {
+              const hasCjk = (s) => /[\u4e00-\u9fff]/.test(String(s || ""));
+              if (json.data.zh && (h.zh === h.ticker || (hasCjk(json.data.zh) && !hasCjk(h.zh)))) {
+                h.zh = json.data.zh;
+              }
+              if ((!h.sector || h.sector === "自定义查询标的" || h.sector === "A股上市公司") && json.data.sector) {
+                h.sector = json.data.sector;
+              }
+              saveMyStocks();
+            }
+            if (force) showToast(`已刷新 ${json.data.zh} (${ticker}) 最新走势与资金流`);
+          }
+        }
+      } catch (e) {
+        if (force) showToast("当前无法连接实时行情，已展示本地模型数据");
+      } finally {
+        state.myStockLoadingTicker = null;
+        renderMyStocks();
+      }
+      return state.myStockCache[key] || null;
+    }
+
+    function getStockDetailFor(holding, range = state.myStockRange) {
+      const key = `${holding.ticker}:${range}`;
+      if (state.myStockCache[key]) return state.myStockCache[key];
+      const anyKey = Object.keys(state.myStockCache).find(k => k.startsWith(holding.ticker + ":"));
+      if (anyKey) return state.myStockCache[anyKey];
+      return buildSyntheticStockDetail(holding, range);
+    }
+
+    function onMyStockSearchInput(val) {
+      state.myStockQuery = val;
+      const q = val.trim();
+      const qLower = q.toLowerCase();
+      const norm = normalizeClientTicker(q);
+      // Immediate local matches (supports zh / en / pinyin initials / ticker / sector)
+      const localMatches = LOCAL_STOCK_QUICK.filter(item =>
+        !q || item.zh.toLowerCase().includes(qLower) || item.en.toLowerCase().includes(qLower) || (item.py && item.py.toLowerCase().includes(qLower)) || item.ticker.toLowerCase().includes(qLower) || item.ticker === norm || item.sector.toLowerCase().includes(qLower)
+      ).slice(0, 8);
+      if (norm && !localMatches.some(x => x.ticker === norm) && (/^\d{4,6}(\.(SS|SZ|BJ|HK))?$/.test(norm) || norm.includes("."))) {
+        const mkt = (norm.endsWith(".SS") || norm.endsWith(".SZ") || norm.endsWith(".BJ")) ? "cn" : (norm.endsWith(".HK") ? "hk" : "us");
+        const cur = mkt === "cn" ? "¥" : (mkt === "hk" ? "HK$" : "$");
+        localMatches.unshift({ ticker: norm, zh: norm, en: norm, mkt, cur, sector: "按代码查询（正在匹配中文名...）" });
+      }
+      state.myStockSearchResults = localMatches;
+      state.myStockSearching = q.length >= 1;
+      renderMyStockSearchDropdown();
+
+      clearTimeout(myStockSearchTimer);
+      if (q.length >= 1) {
+        myStockSearchTimer = setTimeout(async () => {
+          try {
+            const res = await fetch(`/api/stock/search?q=${encodeURIComponent(q)}`);
+            if (res.ok) {
+              const json = await res.json();
+              if (state.myStockQuery.trim() === q && json?.ok && Array.isArray(json.results)) {
+                state.myStockSearchResults = json.results;
+              }
+            }
+          } catch (e) {} finally {
+            state.myStockSearching = false;
+            renderMyStockSearchDropdown();
+          }
+        }, 150);
+      }
+    }
+
+    function renderMyStockSearchDropdown() {
+      const dd = document.getElementById("my-stock-search-dd");
+      if (!dd) return;
+      const list = state.myStockSearchResults || [];
+      if (!state.myStockQuery.trim() && !list.length) {
+        dd.classList.remove("open");
+        dd.innerHTML = "";
+        return;
+      }
+      dd.classList.add("open");
+      if (!list.length && state.myStockSearching) {
+        dd.innerHTML = `<div style="padding:10px 12px;font-size:12px;color:var(--ink-muted);">🔍 正在全市场模糊检索（支持中文名、拼音简写、股票代码）...</div>`;
+        return;
+      }
+      dd.innerHTML = list.length ? list.map((item, idx) => {
+        const mktTag = item.mkt === "cn" ? "A股" : (item.mkt === "hk" ? "港股" : "美股");
+        const exists = state.myStocks.some(s => s.ticker === item.ticker);
+        return `
+          <div class="stock-search-item" onclick="pickSearchStockCandidate(${idx})">
+            <div>
+              <strong>${item.zh}</strong>
+              <span class="mono" style="font-size:11.5px;color:var(--ink-muted);margin-left:6px;">${item.ticker}</span>
+              ${item.py ? `<span class="mono" style="font-size:10.5px;color:var(--accent-gold-text);margin-left:5px;">${item.py}</span>` : ""}
+              <span class="macro-badge-emde" style="margin-left:5px;">${mktTag}</span>
+              <span style="font-size:11px;color:var(--ink-muted);margin-left:6px;">${item.sector || ""}</span>
+            </div>
+            <span class="btn-mini" style="${exists ? "color:var(--accent-gold-text);" : ""}">${exists ? "已在持仓 · 编辑" : "+ 录入买入"}</span>
+          </div>
+        `;
+      }).join("") : `<div style="padding:10px 12px;font-size:12px;color:var(--ink-muted);">未找到匹配标的，请尝试更换关键字、拼音首字母或 6 位股票代码</div>`;
+    }
+
+    function pickSearchStockCandidate(idx) {
+      const item = state.myStockSearchResults[idx];
+      if (!item) return;
+      const dd = document.getElementById("my-stock-search-dd");
+      if (dd) dd.classList.remove("open");
+      state.myStockQuery = "";
+      openAddStockForm(item);
+    }
+
+    function openAddStockForm(candidate = null) {
+      const existing = candidate ? state.myStocks.find(s => s.ticker === candidate.ticker) : null;
+      const today = new Date().toISOString().slice(0, 10);
+      if (existing) {
+        state.myStockEditingTicker = existing.ticker;
+        state.myStockDraft = { ...existing };
+      } else if (candidate) {
+        const leader = AI_LEADERS.find(l => normalizeClientTicker(l.ticker) === candidate.ticker);
+        const refPrice = leader?.price || "";
+        state.myStockEditingTicker = null;
+        state.myStockDraft = {
+          ticker: candidate.ticker,
+          zh: candidate.zh || candidate.ticker,
+          en: candidate.en || candidate.ticker,
+          mkt: candidate.mkt || "us",
+          cur: candidate.cur || "$",
+          sector: candidate.sector || "自定义标的",
+          shares: 100,
+          costPrice: refPrice,
+          targetPrice: refPrice ? Number((refPrice * 1.2).toFixed(2)) : "",
+          stopLoss: refPrice ? Number((refPrice * 0.88).toFixed(2)) : "",
+          buyDate: today,
+          note: ""
+        };
+      } else {
+        state.myStockEditingTicker = null;
+        state.myStockDraft = {
+          ticker: "", zh: "", en: "", mkt: "cn", cur: "¥", sector: "",
+          shares: 100, costPrice: "", targetPrice: "", stopLoss: "", buyDate: today, note: ""
+        };
+      }
+      state.myStockFormOpen = true;
+      renderMyStocks();
+      if (state.myStockDraft.ticker && !state.myStockDraft.costPrice) {
+        // Silently fetch live quote to help prefill current price
+        fetch(`/api/stock/detail?ticker=${encodeURIComponent(state.myStockDraft.ticker)}&range=1mo`)
+          .then(r => r.ok ? r.json() : null)
+          .then(j => {
+            if (j?.ok && j.data?.price && state.myStockFormOpen && state.myStockDraft?.ticker === j.data.ticker) {
+              const inp = document.getElementById("ms-cost");
+              if (inp && !inp.value) inp.value = j.data.price;
+              const tp = document.getElementById("ms-target");
+              if (tp && !tp.value) tp.value = j.data.target?.mean || Number((j.data.price * 1.18).toFixed(2));
+              const sl = document.getElementById("ms-stop");
+              if (sl && !sl.value) sl.value = Number((j.data.price * 0.88).toFixed(2));
+            }
+          }).catch(() => {});
+      }
+    }
+
+    function editMyStock(ticker) {
+      const item = state.myStocks.find(s => s.ticker === ticker);
+      if (item) openAddStockForm(item);
+    }
+
+    function quickAddLeaderToMyStocks(leaderId) {
+      const l = AI_LEADERS.find(x => x.id === leaderId);
+      if (!l) return;
+      const ticker = normalizeClientTicker(l.ticker);
+      openAddStockForm({ ticker, zh: l.name, en: l.enName, mkt: l.mkt, cur: l.cur, sector: "行业龙头" });
+      document.getElementById("sec-my-stocks")?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function submitMyStockForm() {
+      const rawTicker = (document.getElementById("ms-ticker")?.value || "").trim();
+      const ticker = normalizeClientTicker(rawTicker);
+      if (!ticker) { showToast("请输入有效的股票代码（如 600519 / 0700.HK / NVDA）"); return; }
+      const mktVal = document.getElementById("ms-mkt")?.value || (ticker.endsWith(".SS") || ticker.endsWith(".SZ") ? "cn" : (ticker.endsWith(".HK") ? "hk" : "us"));
+      const cur = mktVal === "cn" ? "¥" : (mktVal === "hk" ? "HK$" : "$");
+      const quick = LOCAL_STOCK_QUICK.find(x => x.ticker === ticker);
+      const zh = (document.getElementById("ms-name")?.value || "").trim() || quick?.zh || ticker;
+      const shares = Math.max(0, Number(document.getElementById("ms-shares")?.value || 0));
+      const costPrice = Math.max(0, Number(document.getElementById("ms-cost")?.value || 0));
+      const targetPrice = Math.max(0, Number(document.getElementById("ms-target")?.value || 0));
+      const stopLoss = Math.max(0, Number(document.getElementById("ms-stop")?.value || 0));
+      const buyDate = document.getElementById("ms-date")?.value || new Date().toISOString().slice(0, 10);
+      const note = (document.getElementById("ms-note")?.value || "").trim();
+
+      const record = {
+        ticker,
+        zh,
+        en: quick?.en || state.myStockDraft?.en || zh,
+        mkt: mktVal,
+        cur,
+        sector: quick?.sector || state.myStockDraft?.sector || (mktVal === "cn" ? "A股上市公司" : (mktVal === "hk" ? "港股上市公司" : "美股上市公司")),
+        shares,
+        costPrice,
+        targetPrice,
+        stopLoss,
+        buyDate,
+        note,
+        isDemo: false
+      };
+
+      const existIdx = state.myStocks.findIndex(x => x.ticker === (state.myStockEditingTicker || ticker));
+      if (existIdx >= 0) state.myStocks[existIdx] = record;
+      else state.myStocks.unshift(record);
+
+      state.myStockSelected = ticker;
+      state.myStockFormOpen = false;
+      state.myStockEditingTicker = null;
+      saveMyStocks();
+      renderMyStocks();
+      loadStockDetailLive(ticker, state.myStockRange, true);
+      showToast(`已保存 ${zh} (${ticker})，正在拉取最新走势与投研数据`);
+    }
+
+    function removeMyStock(ticker) {
+      state.myStocks = state.myStocks.filter(s => s.ticker !== ticker);
+      if (state.myStockSelected === ticker) {
+        state.myStockSelected = state.myStocks[0]?.ticker || "";
+      }
+      saveMyStocks();
+      renderMyStocks();
+      showToast(`已移除 ${ticker}`);
+    }
+
+    function selectMyStock(ticker) {
+      state.myStockSelected = ticker;
+      renderMyStocks();
+      loadStockDetailLive(ticker, state.myStockRange, false);
+    }
+
+    function setMyStockRange(range) {
+      state.myStockRange = range;
+      renderMyStocks();
+      if (state.myStockSelected) loadStockDetailLive(state.myStockSelected, range, false);
+    }
+
+    function updateMyStockNote(ticker, val) {
+      const h = state.myStocks.find(s => s.ticker === ticker);
+      if (h) {
+        h.note = val;
+        h.isDemo = false;
+        saveMyStocks();
+      }
+    }
+
+    function showMyStockChartTip(evt, barIdx) {
+      const tip = document.getElementById("tooltip");
+      const h = state.myStocks.find(s => s.ticker === state.myStockSelected);
+      if (!tip || !h) return;
+      const d = getStockDetailFor(h, state.myStockRange);
+      const b = d.bars?.[barIdx];
+      if (!b) return;
+      const prev = d.bars?.[barIdx - 1]?.c || b.o;
+      const chg = prev ? ((b.c - prev) / prev) * 100 : 0;
+      tip.innerHTML = `
+        <div style="font-weight:700;margin-bottom:3px;">${h.zh} (${h.ticker}) · ${b.date}</div>
+        <div class="mono" style="font-size:11.5px;">收：<strong>${d.cur}${fmt(b.c, 2)}</strong> (${chg >= 0 ? "+" : ""}${chg.toFixed(2)}%)</div>
+        <div class="mono" style="font-size:11px;opacity:0.85;">开 ${fmt(b.o, 2)} · 高 ${fmt(b.h, 2)} · 低 ${fmt(b.l, 2)}</div>
+        <div class="mono" style="font-size:11px;opacity:0.8;">成交量：${(b.v / 1e6).toFixed(2)}M</div>
+      `;
+      tip.style.left = Math.min(window.innerWidth - 250, evt.clientX + 14) + "px";
+      tip.style.top = Math.max(12, evt.clientY - 12) + "px";
+      tip.style.display = "block";
+    }
+
+    function buildStockInvestmentAnalysis(holding, detail, report) {
+      const p = detail.price;
+      const t = detail.tech || {};
+      const f = detail.fundamentals || {};
+      const cf = detail.capitalFlow;
+      const bulls = [];
+      const risks = [];
+
+      // Technical verdict
+      const aboveMa20 = p >= (t.ma20 || p);
+      const goldenCross = (t.ma5 || p) >= (t.ma20 || p);
+      const techSummary = aboveMa20
+        ? (goldenCross ? `股价站稳 MA20（${detail.cur}${fmt(t.ma20, 2)}）上方且 MA5 > MA20 呈短期多头排列，RSI-14 为 ${t.rsi14}，下方支撑关注 ${detail.cur}${fmt(t.support, 2)}。` : `股价位于 MA20 上方维持震荡整理，上方阻力关注 ${detail.cur}${fmt(t.resistance, 2)}，下方支撑 ${detail.cur}${fmt(t.support, 2)}。`)
+        : `股价暂位于 MA20（${detail.cur}${fmt(t.ma20, 2)}）下方承压运行，RSI-14 为 ${t.rsi14}，短线需观察 ${detail.cur}${fmt(t.support, 2)} 支撑企稳及放量信号。`;
+
+      // Capital flow verdict
+      const flow5 = cf ? cf.sum5Main : 0;
+      const flowSummary = cf
+        ? (flow5 >= 0
+          ? `近 5 个交易日主力资金累计净流入 ${flow5 >= 0 ? "+" : ""}${flow5} ${cf.unit}（近10日 ${cf.sum10Main >= 0 ? "+" : ""}${cf.sum10Main} ${cf.unit}），MFI-14 读数 ${t.mfi14}，机构/大资金承接意愿偏积极。`
+          : `近 5 个交易日主力资金累计净流出 ${flow5} ${cf.unit}（近10日 ${cf.sum10Main >= 0 ? "+" : ""}${cf.sum10Main} ${cf.unit}），MFI-14 读数 ${t.mfi14}，短线存在获利兑现或调仓分歧。`)
+        : "暂无近期主力资金流数据。";
+
+      // Bull case & Risk factors
+      if (f.roe && f.roe >= 18) bulls.push(`高资本回报质量：ROE 达 ${f.roe}%，${f.grossMargin ? `综合毛利率 ${f.grossMargin}%，` : ""}核心业务护城河与定价权突出。`);
+      if (f.revGrowth && f.revGrowth >= 12) bulls.push(`成长动能充沛：营收保持约 +${f.revGrowth}% 高增速，处于行业景气扩张周期。`);
+      if (f.divYield && f.divYield >= 2.5) bulls.push(`高股息现金回报：股息率约 ${f.divYield}%，在震荡市中提供较强防守安全边际。`);
+      if (detail.target?.upsidePct >= 10) bulls.push(`估值修复空间：相对综合目标均价（${detail.cur}${fmt(detail.target.mean, 2)}）具备约 +${detail.target.upsidePct}% 潜在空间。`);
+      if (report?.summary) bulls.push(`年报核心驱动：${report.summary}`);
+      if (!bulls.length) bulls.push(`行业地位清晰（${detail.sector}），当前位置距 52 周高点仍有修复弹性，建议结合财报季业绩兑现节奏跟踪。`);
+
+      if (f.pe && f.pe >= 45) risks.push(`估值溢价风险：当前市盈率约 ${f.pe}x，对未来业绩高增速容错率偏低，需警惕业绩增速不及预期带来的杀估值波动。`);
+      if (t.rsi14 >= 72) risks.push(`短线技术超买：RSI-14 升至 ${t.rsi14} 高位区间，追高盈亏比下降，防范阶段性获利回吐。`);
+      if (flow5 < 0) risks.push(`资金面阶段承压：近 5 日主力净流出 ${flow5} ${cf?.unit || ""}，需防范量能萎缩或大盘系统性回撤拖累。`);
+      if (holding.stopLoss > 0 && p <= holding.stopLoss * 1.05) risks.push(`风控预警：现价已逼近或触及你设定的止损位（${detail.cur}${fmt(holding.stopLoss, 2)}），请严格复核仓位与买入逻辑。`);
+      risks.push(`宏观与汇率风险：关注中美利率周期、行业监管政策及汇率波动对估值中枢的影响（以上分析仅供投研辅助参考，不构成投资建议）。`);
+
+      return { techSummary, flowSummary, bulls: bulls.slice(0, 3), risks: risks.slice(0, 3) };
+    }
+
+    function renderMyStocks() {
+      const root = document.getElementById("my-stocks-root");
+      if (!root) return;
+      const isZh = state.lang === "zh";
+      const list = state.myStocks || [];
+      if (list.length && !list.some(s => s.ticker === state.myStockSelected)) {
+        state.myStockSelected = list[0].ticker;
+      }
+
+      // Compute portfolio aggregate KPIs in unified CNY + USD
+      let totalValCny = 0, totalCostCny = 0, totalDayPnlCny = 0, hitTargetCnt = 0, hitStopCnt = 0;
+      const usdRate = fxMap.USD?.rate || 7.241;
+      list.forEach(h => {
+        const d = getStockDetailFor(h, state.myStockRange);
+        const rate = curToCnyRate(h.cur);
+        const sh = Number(h.shares || 0);
+        if (sh > 0) {
+          totalValCny += d.price * sh * rate;
+          totalCostCny += (Number(h.costPrice || d.price)) * sh * rate;
+          totalDayPnlCny += (d.price - d.prevClose) * sh * rate;
+        }
+        if (h.targetPrice > 0 && d.price >= h.targetPrice) hitTargetCnt++;
+        if (h.stopLoss > 0 && d.price <= h.stopLoss) hitStopCnt++;
+      });
+      const totalPnlCny = totalValCny - totalCostCny;
+      const totalRetPct = totalCostCny > 0 ? (totalPnlCny / totalCostCny) * 100 : 0;
+
+      const filteredList = state.myStockFilter === "all" ? list : list.filter(s => s.mkt === state.myStockFilter);
+      const selHolding = list.find(s => s.ticker === state.myStockSelected) || list[0] || null;
+      const selDetail = selHolding ? getStockDetailFor(selHolding, state.myStockRange) : null;
+      const selReport = selHolding ? findMatchingCompanyReport(selHolding.ticker, selHolding.zh) : null;
+
+      // Render Add/Edit Form Drawer if open
+      const draft = state.myStockDraft || {};
+      const formHtml = state.myStockFormOpen ? `
+        <div class="stock-form-drawer">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+            <strong style="font-size:13.5px;">${state.myStockEditingTicker ? `✎ 编辑持仓：${draft.zh} (${draft.ticker})` : "+ 录入我购买的股票 / 自选标的"}</strong>
+            <button class="btn-mini" onclick="state.myStockFormOpen=false;renderMyStocks()">取消</button>
+          </div>
+          <div class="stock-form-grid">
+            <div class="stock-form-field">
+              <label>股票代码 (A股6位/港股/美股)</label>
+              <input class="inp mono" id="ms-ticker" value="${escAttr(draft.ticker || "")}" placeholder="如 600519 / 0700.HK / NVDA" />
+            </div>
+            <div class="stock-form-field">
+              <label>股票简称</label>
+              <input class="inp" id="ms-name" value="${escAttr(draft.zh || "")}" placeholder="如 贵州茅台 / 特斯拉" />
+            </div>
+            <div class="stock-form-field">
+              <label>所属市场</label>
+              <select class="inp" id="ms-mkt">
+                <option value="cn" ${draft.mkt === "cn" ? "selected" : ""}>A股 (¥ 人民币)</option>
+                <option value="hk" ${draft.mkt === "hk" ? "selected" : ""}>港股 (HK$ 港币)</option>
+                <option value="us" ${draft.mkt === "us" ? "selected" : ""}>美股 ($ 美元)</option>
+              </select>
+            </div>
+            <div class="stock-form-field">
+              <label>买入日期</label>
+              <input class="inp mono" type="date" id="ms-date" value="${escAttr(draft.buyDate || "")}" />
+            </div>
+            <div class="stock-form-field">
+              <label>买入均价 (成本价)</label>
+              <input class="inp mono" type="number" step="0.01" id="ms-cost" value="${draft.costPrice !== "" && draft.costPrice !== undefined ? draft.costPrice : ""}" placeholder="买入成本" />
+            </div>
+            <div class="stock-form-field">
+              <label>持有股数 (填0为自选观察)</label>
+              <input class="inp mono" type="number" step="1" id="ms-shares" value="${draft.shares !== undefined ? draft.shares : 100}" />
+            </div>
+            <div class="stock-form-field">
+              <label>个人目标股价 (止盈参考)</label>
+              <input class="inp mono" type="number" step="0.01" id="ms-target" value="${draft.targetPrice || ""}" placeholder="留空使用模型目标价" />
+            </div>
+            <div class="stock-form-field">
+              <label>止损预警价 (可选)</label>
+              <input class="inp mono" type="number" step="0.01" id="ms-stop" value="${draft.stopLoss || ""}" placeholder="风控止损线" />
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:9px;flex-wrap:wrap;">
+            <input class="inp" id="ms-note" style="flex:1;min-width:220px;padding:6px 9px;font-size:12px;" value="${escAttr(draft.note || "")}" placeholder="填写我的买入逻辑、目标周期或关键催化事件..." />
+            <button class="btn primary" onclick="submitMyStockForm()">💾 保存并生成深度投研</button>
+          </div>
+        </div>
+      ` : "";
+
+      // Render Right-Side Deep Stock Intelligence Workbench
+      let detailHtml = `<div style="padding:36px;text-align:center;color:var(--ink-muted);">请从上方搜索并添加你购买的股票，或从左侧列表选择一只标的查看完整深度研判。</div>`;
+      if (selHolding && selDetail) {
+        const d = selDetail;
+        const bars = d.bars || [];
+        const isLoading = state.myStockLoadingTicker === selHolding.ticker;
+
+        // 1. Multi-timeframe Price + MA5/MA20 + Cost/Target/Stop + Volume SVG
+        const W = 680, H = 248, pL = 56, pR = 16, pT = 16, pB = 64;
+        const plotW = W - pL - pR, plotH = H - pT - pB;
+        const allPrices = bars.flatMap(b => [b.h, b.l]);
+        if (selHolding.costPrice > 0) allPrices.push(selHolding.costPrice);
+        const activeTarget = selHolding.targetPrice > 0 ? selHolding.targetPrice : d.target.mean;
+        if (activeTarget > 0) allPrices.push(activeTarget);
+        const minP = Math.min(...allPrices, d.price) * 0.97;
+        const maxP = Math.max(...allPrices, d.price) * 1.03;
+        const spanP = Math.max(0.01, maxP - minP);
+        const yOf = (val) => pT + plotH - ((val - minP) / spanP) * plotH;
+        const xOf = (i) => pL + (i / Math.max(1, bars.length - 1)) * plotW;
+
+        const priceLineD = bars.map((b, i) => `${i === 0 ? "M" : "L"}${xOf(i).toFixed(1)},${yOf(b.c).toFixed(1)}`).join(" ");
+        const priceAreaD = bars.length ? `${priceLineD} L${xOf(bars.length - 1).toFixed(1)},${(pT + plotH).toFixed(1)} L${xOf(0).toFixed(1)},${(pT + plotH).toFixed(1)} Z` : "";
+        const buildMaPath = (period) => bars.map((_, i) => {
+          const sl = bars.slice(Math.max(0, i - period + 1), i + 1);
+          const avg = sl.reduce((a, x) => a + x.c, 0) / sl.length;
+          return `${i === 0 ? "M" : "L"}${xOf(i).toFixed(1)},${yOf(avg).toFixed(1)}`;
+        }).join(" ");
+        const ma5D = bars.length >= 3 ? buildMaPath(5) : "";
+        const ma20D = bars.length >= 6 ? buildMaPath(20) : "";
+
+        const maxVol = Math.max(1, ...bars.map(b => b.v || 0));
+        const volBaseY = H - 20, volMaxH = 34;
+        const barW = Math.max(2, Math.min(9, (plotW / Math.max(1, bars.length)) * 0.62));
+        const volBarsSvg = bars.map((b, i) => {
+          const vh = Math.max(2, ((b.v || 0) / maxVol) * volMaxH);
+          const up = b.c >= b.o;
+          return `<rect x="${(xOf(i) - barW / 2).toFixed(1)}" y="${(volBaseY - vh).toFixed(1)}" width="${barW.toFixed(1)}" height="${vh.toFixed(1)}" fill="${up ? "var(--up)" : "var(--down)"}" opacity="0.52" />`;
+        }).join("");
+
+        const hitTargetsSvg = bars.map((b, i) => {
+          const stepW = plotW / Math.max(1, bars.length);
+          return `<rect x="${(xOf(i) - stepW / 2).toFixed(1)}" y="${pT}" width="${stepW.toFixed(1)}" height="${plotH + 42}" fill="transparent" onmousemove="showMyStockChartTip(event,${i})" onmouseleave="hideMacroTip()" />`;
+        }).join("");
+
+        // Reference dashed lines (Cost, Target, StopLoss)
+        const refLine = (val, label, col) => {
+          if (!val || val < minP || val > maxP) return "";
+          const yy = yOf(val);
+          return `
+            <line x1="${pL}" y1="${yy.toFixed(1)}" x2="${W - pR}" y2="${yy.toFixed(1)}" stroke="${col}" stroke-width="1.2" stroke-dasharray="4 3" />
+            <rect x="${W - pR - 118}" y="${(yy - 14).toFixed(1)}" width="116" height="15" rx="2" fill="${col}" opacity="0.92" />
+            <text x="${W - pR - 60}" y="${(yy - 3.5).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff" class="mono">${label} ${fmt(val, 2)}</text>
+          `;
+        };
+
+        // 2. Target Price Range Gauge
+        const tLow = d.target.low, tMean = d.target.mean, tHigh = d.target.high;
+        const tMin = Math.min(tLow, d.price, selHolding.targetPrice || tLow) * 0.94;
+        const tMax = Math.max(tHigh, d.price, selHolding.targetPrice || tHigh) * 1.04;
+        const tPct = (v) => Math.max(3, Math.min(97, ((v - tMin) / Math.max(0.01, tMax - tMin)) * 100));
+        const userUpside = selHolding.targetPrice > 0 ? (((selHolding.targetPrice - d.price) / Math.max(0.01, d.price)) * 100).toFixed(1) : null;
+
+        // 3. Capital Flow 10-Day Bidirectional Bar SVG
+        const cf = d.capitalFlow;
+        const cfDays = cf?.daily || [];
+        const cfMaxAbs = Math.max(0.1, ...cfDays.map(x => Math.abs(x.mainNet)));
+        const cfW = 540, cfH = 128, cfZeroY = 66;
+        const cfBarsSvg = cfDays.map((item, i) => {
+          const bw = 28;
+          const bx = 24 + i * ((cfW - 48) / Math.max(1, cfDays.length)) + 6;
+          const bh = Math.max(3, (Math.abs(item.mainNet) / cfMaxAbs) * 44);
+          const pos = item.mainNet >= 0;
+          const by = pos ? (cfZeroY - bh) : cfZeroY;
+          return `
+            <rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw}" height="${bh.toFixed(1)}" rx="2" fill="${pos ? "var(--up)" : "var(--down)"}" opacity="0.86" />
+            <text x="${(bx + bw / 2).toFixed(1)}" y="${pos ? (by - 4).toFixed(1) : (by + bh + 10).toFixed(1)}" text-anchor="middle" font-size="9" class="mono" fill="var(--ink-secondary)">${pos ? "+" : ""}${item.mainNet}</text>
+            <text x="${(bx + bw / 2).toFixed(1)}" y="${cfH - 4}" text-anchor="middle" font-size="9" class="mono" fill="var(--ink-muted)">${item.date.slice(5)}</text>
+          `;
+        }).join("");
+
+        // 4. Holding Position P&L Calculation
+        const hasPos = Number(selHolding.shares || 0) > 0 && Number(selHolding.costPrice || 0) > 0;
+        const posMktVal = hasPos ? d.price * selHolding.shares : 0;
+        const posPnl = hasPos ? (d.price - selHolding.costPrice) * selHolding.shares : 0;
+        const posRet = hasPos ? ((d.price - selHolding.costPrice) / selHolding.costPrice) * 100 : 0;
+        const w52Pct = Math.max(0, Math.min(100, ((d.price - d.low52w) / Math.max(0.01, d.high52w - d.low52w)) * 100));
+
+        // 5. Annual Report & Investment Analysis
+        const analysis = buildStockInvestmentAnalysis(selHolding, d, selReport);
+        const f = d.fundamentals || {};
+
+        let reportHtml = "";
+        if (selReport) {
+          const rMax = Math.max(1, ...selReport.rev, ...selReport.net.map(Math.abs));
+          const rBars = selReport.years.map((yr, i) => {
+            const x = 22 + i * 86;
+            const rh = Math.max(5, (selReport.rev[i] / rMax) * 76);
+            const nh = Math.max(5, (Math.abs(selReport.net[i]) / rMax) * 76);
+            return `
+              <rect x="${x}" y="${96 - rh}" width="22" height="${rh}" rx="2" fill="#24486E" />
+              <text x="${x + 11}" y="${91 - rh}" text-anchor="middle" font-size="9" class="mono" fill="var(--ink-primary)">${selReport.rev[i]}</text>
+              <rect x="${x + 26}" y="${96 - nh}" width="22" height="${nh}" rx="2" fill="${selReport.net[i] >= 0 ? "var(--accent-gold)" : "var(--down)"}" />
+              <text x="${x + 37}" y="${91 - nh}" text-anchor="middle" font-size="9" class="mono" fill="var(--ink-primary)">${selReport.net[i]}</text>
+              <text x="${x + 24}" y="112" text-anchor="middle" font-size="9.5" class="mono" fill="var(--ink-muted)">${yr}</text>
+            `;
+          }).join("");
+          reportHtml = `
+            <div style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-left:3px solid var(--accent-ai);padding:9px 11px;border-radius:3px;margin-bottom:10px;">
+              ${selReport.summary}
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:10px;align-items:center;margin-bottom:10px;">
+              <div>
+                <div style="font-size:11px;color:var(--ink-muted);margin-bottom:4px;">三年营收 / 净利 (${selReport.unit}) · <span style="color:#24486E;">■营收</span> <span style="color:var(--accent-gold);">■净利</span></div>
+                <svg viewBox="0 0 280 120" style="width:100%;height:auto;background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:4px;">
+                  <line x1="14" y1="96" x2="268" y2="96" stroke="var(--border-hairline)" />
+                  ${rBars}
+                </svg>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                ${selReport.kpis.map(k => `<div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:6px 8px;"><div style="font-size:10px;color:var(--ink-muted);">${k.zh}</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${k.val}</div></div>`).join("")}
+              </div>
+            </div>
+            <div style="margin-bottom:8px;">
+              <div style="font-size:11px;color:var(--ink-muted);margin-bottom:4px;">主营业务营收构成</div>
+              <div style="height:9px;border-radius:4px;overflow:hidden;display:flex;">${selReport.segments.map(s => `<div style="width:${s.pct}%;background:${s.col};"></div>`).join("")}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:10.5px;margin-top:4px;color:var(--ink-secondary);">${selReport.segments.map(s => `<span>■ ${s.zh} ${s.pct}%</span>`).join("")}</div>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-secondary);line-height:1.55;">
+              ${selReport.excerpts.slice(0, 2).map((ex, i) => `<div style="margin-top:4px;"><strong>0${i + 1}.</strong> ${ex}</div>`).join("")}
+            </div>
+          `;
+        } else {
+          reportHtml = `
+            <div style="font-size:12.5px;line-height:1.6;background:var(--bg-subtle);border-left:3px solid var(--accent-ai);padding:9px 11px;border-radius:3px;margin-bottom:10px;">
+              <strong>${d.zh} (${d.ticker})</strong> 所属赛道为 <strong>${d.sector}</strong>（${d.exchange}）。${f.roe ? `最新财报周期净资产收益率 ROE 约 ${f.roe}%，综合毛利率 ${f.grossMargin ?? "—"}%，营收同比增速 ${f.revGrowth ? `+${f.revGrowth}%` : "稳健"}。` : "已接入实时量价与技术结构跟踪，建议结合最新季报/年报关注营收增速、毛利率与自由现金流兑现度。"}
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-bottom:10px;">
+              <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:7px 9px;"><div style="font-size:10.5px;color:var(--ink-muted);">盈利能力 (ROE / 毛利率)</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${f.roe ? f.roe + "%" : "—"} / ${f.grossMargin ? f.grossMargin + "%" : "—"}</div></div>
+              <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:7px 9px;"><div style="font-size:10.5px;color:var(--ink-muted);">估值水平 (PE / PB)</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${f.pe ? f.pe + "x" : "—"} / ${f.pb ? f.pb + "x" : "—"}</div></div>
+              <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:7px 9px;"><div style="font-size:10.5px;color:var(--ink-muted);">成长与分红 (营收增速 / 股息率)</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${f.revGrowth ? "+" + f.revGrowth + "%" : "—"} / ${f.divYield !== null && f.divYield !== undefined ? f.divYield + "%" : "—"}</div></div>
+              <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:7px 9px;"><div style="font-size:10.5px;color:var(--ink-muted);">52 周价格区间分位</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${w52Pct.toFixed(0)}% (${d.cur}${fmt(d.low52w, 1)}–${fmt(d.high52w, 1)})</div></div>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-secondary);line-height:1.6;">
+              <div><strong>01. 财报核心观察：</strong>重点追踪 ${d.sector} 景气度传导、主营毛利率稳定性及研发/资本开支回报效率。</div>
+              <div style="margin-top:3px;"><strong>02. 股东回报与现金流：</strong>${f.divYield && f.divYield >= 2 ? `股息率约 ${f.divYield}% 具备现金回报优势，` : ""}建议持续核对经营性现金流净额与净利润比值。</div>
+            </div>
+          `;
+        }
+
+        detailHtml = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--border-hairline);padding-bottom:10px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+                <strong class="serif" style="font-size:22px;">${d.zh}</strong>
+                <span class="mono" style="font-size:12px;padding:2px 7px;border-radius:3px;background:var(--border-strong);color:var(--bg-card);font-weight:700;">${d.ticker}</span>
+                <span class="macro-badge-emde">${d.exchange} · ${d.sector}</span>
+                ${selHolding.isDemo ? `<span class="macro-badge-adv">示例持仓</span>` : ""}
+              </div>
+              <div class="mono" style="font-size:11px;color:var(--ink-muted);margin-top:3px;">${d.en} · 更新：${d.updatedAt} ${isLoading ? "· 同步中..." : ""}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <div style="text-align:right;">
+                <div class="mono" style="font-size:24px;font-weight:700;line-height:1.1;">${d.cur}${fmt(d.price, 2)}</div>
+                <div class="mono ${cls(d.changePct)}" style="font-size:12.5px;font-weight:700;">${d.change >= 0 ? "+" : ""}${fmt(d.change, 2)} (${d.changePct >= 0 ? "+" : ""}${d.changePct.toFixed(2)}%)</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <button class="btn-mini" onclick="loadStockDetailLive('${selHolding.ticker}',state.myStockRange,true)">🔄 刷新实时</button>
+                <button class="btn-mini" onclick="editMyStock('${selHolding.ticker}')">✎ 编辑持仓</button>
+              </div>
+            </div>
+          </div>
+
+          ${hasPos ? `
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;background:var(--accent-gold-soft);border:1px solid var(--accent-gold);border-radius:4px;padding:9px 11px;">
+              <div><div style="font-size:10.5px;color:var(--ink-muted);">我的持仓 / 成本价</div><div class="mono" style="font-size:13.5px;font-weight:700;">${selHolding.shares} 股 · ${d.cur}${fmt(selHolding.costPrice, 2)}</div></div>
+              <div><div style="font-size:10.5px;color:var(--ink-muted);">持仓当前市值</div><div class="mono" style="font-size:13.5px;font-weight:700;">${d.cur}${fmt(posMktVal, 0)}</div></div>
+              <div><div style="font-size:10.5px;color:var(--ink-muted);">累计浮动盈亏</div><div class="mono ${cls(posPnl)}" style="font-size:13.5px;font-weight:700;">${posPnl >= 0 ? "+" : ""}${d.cur}${fmt(posPnl, 0)} (${posRet >= 0 ? "+" : ""}${posRet.toFixed(2)}%)</div></div>
+              <div><div style="font-size:10.5px;color:var(--ink-muted);">个人目标 / 止损线</div><div class="mono" style="font-size:12.5px;font-weight:700;">${selHolding.targetPrice > 0 ? `${d.cur}${fmt(selHolding.targetPrice, 1)}` : "模型"} / ${selHolding.stopLoss > 0 ? `${d.cur}${fmt(selHolding.stopLoss, 1)}` : "未设"}</div></div>
+            </div>
+          ` : ""}
+
+          <div class="stock-metric-strip">
+            <div class="kpi-box"><div style="font-size:10.5px;color:var(--ink-muted);">市盈率 PE / 市净率 PB</div><div class="mono" style="font-size:14px;font-weight:700;margin-top:2px;">${f.pe ? f.pe + "x" : "—"} <span style="font-size:11.5px;color:var(--ink-muted);">/ ${f.pb ? f.pb + "x" : "—"}</span></div></div>
+            <div class="kpi-box"><div style="font-size:10.5px;color:var(--ink-muted);">${f.mcap ? "总市值 / ROE" : "ROE / 毛利率"}</div><div class="mono" style="font-size:14px;font-weight:700;margin-top:2px;">${f.mcap ? `${d.cur}${f.mcap}亿` : (f.roe ? f.roe + "%" : "—")} <span style="font-size:11.5px;color:var(--ink-muted);">/ ${f.mcap ? (f.roe ? f.roe + "%" : "—") : (f.grossMargin ? f.grossMargin + "%" : "—")}</span></div></div>
+            <div class="kpi-box"><div style="font-size:10.5px;color:var(--ink-muted);">52周区间 (${w52Pct.toFixed(0)}%分位)</div><div class="mono" style="font-size:12px;font-weight:700;margin-top:3px;">${d.cur}${fmt(d.low52w, 1)} – ${fmt(d.high52w, 1)}</div></div>
+            <div class="kpi-box"><div style="font-size:10.5px;color:var(--ink-muted);">RSI-14 / 量比 / ${f.turnover ? "换手率" : "股息率"}</div><div class="mono" style="font-size:13px;font-weight:700;margin-top:2px;">${d.tech.rsi14} · ${d.tech.volRatio}x · ${f.turnover ? f.turnover + "%" : (f.divYield !== null && f.divYield !== undefined ? f.divYield + "%" : "—")}</div></div>
+          </div>
+
+          <div class="stock-sub-box">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+              <div>
+                <strong style="font-size:13.5px;">📈 多周期走势与持仓参考线</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-left:8px;"><span style="color:var(--accent-gold);">━ MA5</span> · <span style="color:#3A6B7C;">━ MA20</span> · 悬停查看每日 OHLCV</span>
+              </div>
+              <div style="display:flex;gap:4px;">
+                ${[["1mo","近1月"],["3mo","近3月"],["6mo","近6月"],["1y","近1年"]].map(([rk, rl]) => `
+                  <button class="btn-mini ${state.myStockRange === rk ? "active" : ""}" style="${state.myStockRange === rk ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="setMyStockRange('${rk}')">${rl}</button>
+                `).join("")}
+              </div>
+            </div>
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:4px;">
+              <defs>
+                <linearGradient id="myStockArea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="${d.changePct >= 0 ? "var(--up)" : "var(--down)"}" stop-opacity="0.24" />
+                  <stop offset="100%" stop-color="${d.changePct >= 0 ? "var(--up)" : "var(--down)"}" stop-opacity="0.01" />
+                </linearGradient>
+              </defs>
+              ${[0, 0.33, 0.66, 1].map(fr => {
+                const yy = pT + plotH * fr;
+                const val = maxP - spanP * fr;
+                return `<line x1="${pL}" y1="${yy.toFixed(1)}" x2="${W - pR}" y2="${yy.toFixed(1)}" stroke="var(--border-hairline)" stroke-dasharray="2 3" />
+                        <text x="${pL - 6}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="9.5" class="mono" fill="var(--ink-muted)">${fmt(val, 1)}</text>`;
+              }).join("")}
+              <path d="${priceAreaD}" fill="url(#myStockArea)" />
+              <path d="${priceLineD}" fill="none" stroke="${d.changePct >= 0 ? "var(--up)" : "var(--down)"}" stroke-width="2.1" />
+              ${ma20D ? `<path d="${ma20D}" fill="none" stroke="#3A6B7C" stroke-width="1.3" opacity="0.85" />` : ""}
+              ${ma5D ? `<path d="${ma5D}" fill="none" stroke="var(--accent-gold)" stroke-width="1.3" opacity="0.9" />` : ""}
+              ${refLine(selHolding.costPrice, "成本", "#24486E")}
+              ${refLine(activeTarget, selHolding.targetPrice > 0 ? "目标" : "一致目标", "#2E6B5E")}
+              ${refLine(selHolding.stopLoss, "止损", "#C84B4B")}
+              ${volBarsSvg}
+              ${bars.length ? `
+                <text x="${pL}" y="${H - 5}" font-size="9.5" class="mono" fill="var(--ink-muted)">${bars[0].date}</text>
+                <text x="${(pL + plotW / 2).toFixed(1)}" y="${H - 5}" text-anchor="middle" font-size="9.5" class="mono" fill="var(--ink-muted)">${bars[Math.floor(bars.length / 2)].date}</text>
+                <text x="${W - pR}" y="${H - 5}" text-anchor="end" font-size="9.5" class="mono" fill="var(--ink-muted)">${bars[bars.length - 1].date}</text>
+              ` : ""}
+              ${hitTargetsSvg}
+            </svg>
+          </div>
+
+          <div class="grid-2">
+            <div class="stock-sub-box">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+                <div>
+                  <strong style="font-size:13.5px;">🎯 目标股价与综合评级</strong>
+                  <div style="font-size:11px;color:var(--ink-muted);margin-top:2px;">${d.target.basis}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="stock-score-ring">${d.target.score}</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                <span class="macro-badge-adv" style="font-size:12px;padding:3px 9px;">${d.target.rating}</span>
+                <span class="mono" style="font-size:13px;">一致目标均价 <strong style="color:var(--accent-gold-text);">${d.cur}${fmt(tMean, 2)}</strong> (<span class="${cls(d.target.upsidePct)}">${d.target.upsidePct >= 0 ? "+" : ""}${d.target.upsidePct}%</span>)</span>
+              </div>
+              <div class="stock-target-track">
+                <div class="stock-target-marker" style="left:${tPct(tLow)}%;background:#C84B4B;" title="保守目标 ${d.cur}${fmt(tLow,2)}"></div>
+                <div class="stock-target-marker" style="left:${tPct(d.price)}%;background:var(--ink-primary);width:16px;height:16px;" title="现价 ${d.cur}${fmt(d.price,2)}"></div>
+                <div class="stock-target-marker" style="left:${tPct(tMean)}%;background:var(--accent-gold);" title="一致目标均价 ${d.cur}${fmt(tMean,2)}"></div>
+                <div class="stock-target-marker" style="left:${tPct(tHigh)}%;background:#2E6B5E;" title="乐观目标 ${d.cur}${fmt(tHigh,2)}"></div>
+                ${selHolding.targetPrice > 0 ? `<div class="stock-target-marker" style="left:${tPct(selHolding.targetPrice)}%;background:#4B3F72;border-radius:3px;" title="我的目标价 ${d.cur}${fmt(selHolding.targetPrice,2)}"></div>` : ""}
+              </div>
+              <div class="mono" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:11px;text-align:center;">
+                <div style="background:var(--bg-canvas);padding:5px;border-radius:3px;">保守目标<br/><strong>${d.cur}${fmt(tLow, 2)}</strong></div>
+                <div style="background:var(--bg-canvas);padding:5px;border-radius:3px;">一致目标<br/><strong style="color:var(--accent-gold-text);">${d.cur}${fmt(tMean, 2)}</strong></div>
+                <div style="background:var(--bg-canvas);padding:5px;border-radius:3px;">乐观目标<br/><strong style="color:var(--accent-fx);">${d.cur}${fmt(tHigh, 2)}</strong></div>
+              </div>
+              ${userUpside !== null ? `<div class="mono" style="font-size:11.5px;margin-top:8px;color:var(--ink-secondary);">★ 你的个人目标价 <strong>${d.cur}${fmt(selHolding.targetPrice, 2)}</strong>（距现价 <strong class="${cls(Number(userUpside))}">${Number(userUpside) >= 0 ? "+" : ""}${userUpside}%</strong>）</div>` : ""}
+            </div>
+
+            <div class="stock-sub-box">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:6px;">
+                <strong style="font-size:13.5px;">💸 资金进出监测 (近10日)</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">${cf?.source || ""}</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;">
+                <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:6px 7px;">
+                  <div style="font-size:10px;color:var(--ink-muted);white-space:nowrap;">5日主力净流向</div>
+                  <div class="mono ${cls(cf?.sum5Main || 0)}" style="font-size:12.5px;font-weight:700;white-space:nowrap;">${(cf?.sum5Main || 0) >= 0 ? "+" : ""}${cf?.sum5Main ?? 0}${cf?.unit || ""}</div>
+                </div>
+                <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:6px 7px;">
+                  <div style="font-size:10px;color:var(--ink-muted);white-space:nowrap;">10日主力累计</div>
+                  <div class="mono ${cls(cf?.sum10Main || 0)}" style="font-size:12.5px;font-weight:700;white-space:nowrap;">${(cf?.sum10Main || 0) >= 0 ? "+" : ""}${cf?.sum10Main ?? 0}${cf?.unit || ""}</div>
+                </div>
+                <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:3px;padding:6px 7px;">
+                  <div style="font-size:10px;color:var(--ink-muted);white-space:nowrap;">MFI-14 资金强度</div>
+                  <div class="mono" style="font-size:12.5px;font-weight:700;white-space:nowrap;">${d.tech.mfi14} <span style="font-size:10px;font-weight:400;">${d.tech.mfi14 >= 65 ? "强流入" : (d.tech.mfi14 <= 35 ? "偏弱" : "均衡")}</span></div>
+                </div>
+              </div>
+              <svg viewBox="0 0 ${cfW} ${cfH}" style="width:100%;height:auto;background:var(--bg-canvas);border:1px solid var(--border-hairline);border-radius:4px;">
+                <line x1="16" y1="${cfZeroY}" x2="${cfW - 16}" y2="${cfZeroY}" stroke="var(--border-strong)" stroke-width="0.9" />
+                ${cfBarsSvg}
+              </svg>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="stock-sub-box">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong style="font-size:13.5px;">📑 年报解读与财报质量</strong>
+                ${selReport ? `<button class="btn-mini" onclick="jumpToCompanyReport('${selReport.id}')">完整年报中心 →</button>` : `<span class="mono" style="font-size:10.5px;color:var(--ink-muted);">智能财报摘要</span>`}
+              </div>
+              ${reportHtml}
+            </div>
+
+            <div class="stock-sub-box">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong style="font-size:13.5px;">🧠 投资分析与个人复盘笔记</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">支撑 ${d.cur}${fmt(d.tech.support, 1)} · 阻力 ${d.cur}${fmt(d.tech.resistance, 1)}</span>
+              </div>
+              <div style="font-size:12px;line-height:1.6;color:var(--ink-secondary);margin-bottom:8px;">
+                <div><strong>• 技术面：</strong>${analysis.techSummary}</div>
+                <div style="margin-top:4px;"><strong>• 资金面：</strong>${analysis.flowSummary}</div>
+              </div>
+              <div style="background:rgba(46,107,94,0.08);border:1px solid rgba(46,107,94,0.28);border-radius:4px;padding:8px 10px;margin-bottom:8px;font-size:11.5px;line-height:1.55;">
+                <strong style="color:var(--accent-fx);">▲ 核心看多逻辑 (Bull Case)</strong>
+                ${analysis.bulls.map(b => `<div style="margin-top:3px;">· ${b}</div>`).join("")}
+              </div>
+              <div style="background:rgba(200,75,75,0.08);border:1px solid rgba(200,75,75,0.28);border-radius:4px;padding:8px 10px;margin-bottom:9px;font-size:11.5px;line-height:1.55;">
+                <strong style="color:var(--down);">▼ 风险提示 (Risk Factors)</strong>
+                ${analysis.risks.map(r => `<div style="margin-top:3px;">· ${r}</div>`).join("")}
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--ink-muted);margin-bottom:4px;">📝 我的买入逻辑与复盘笔记（自动保存至本地）</div>
+                <textarea class="inp" rows="2" style="width:100%;box-sizing:border-box;padding:7px 9px;font-size:12px;resize:vertical;" placeholder="记录你的建仓理由、加减仓计划或财报跟踪要点..." oninput="updateMyStockNote('${selHolding.ticker}', this.value)">${escAttr(selHolding.note || "")}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      root.innerHTML = `
+        <div class="grid-4" style="margin-bottom:12px;">
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">我的总持仓市值（折合人民币）</div>
+            <div class="mono" style="font-size:19px;font-weight:700;margin-top:2px;">¥${fmt(totalValCny, 0)}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">约 $${fmt(totalValCny / usdRate, 0)} USD · ${list.length} 只标的</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">累计浮动盈亏与收益率</div>
+            <div class="mono ${cls(totalPnlCny)}" style="font-size:19px;font-weight:700;margin-top:2px;">${totalPnlCny >= 0 ? "+" : ""}¥${fmt(totalPnlCny, 0)}</div>
+            <div class="mono ${cls(totalRetPct)}" style="font-size:11px;font-weight:700;margin-top:2px;">${totalRetPct >= 0 ? "+" : ""}${totalRetPct.toFixed(2)}%</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">当日预估组合盈亏</div>
+            <div class="mono ${cls(totalDayPnlCny)}" style="font-size:19px;font-weight:700;margin-top:2px;">${totalDayPnlCny >= 0 ? "+" : ""}¥${fmt(totalDayPnlCny, 0)}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">按当前实时汇率自动汇总</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">目标价与风控状态</div>
+            <div class="mono" style="font-size:15px;font-weight:700;margin-top:4px;">🎯 达目标 ${hitTargetCnt} 只 · ⚠ 止损预警 ${hitStopCnt} 只</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">本地加密存储 · 换页不丢失</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:${state.myStockFormOpen ? "0" : "12px"};">
+          <div class="stock-search-wrap">
+            <input type="text" class="inp" style="width:100%;box-sizing:border-box;padding:8px 12px;font-size:13px;"
+              placeholder="🔍 模糊查询并添加股票：中文名 / 拼音简写 / 股票代码 / 关键字（如 华光环能、hghn、华光、600475、0700、NVDA）..."
+              value="${escAttr(state.myStockQuery)}"
+              oninput="onMyStockSearchInput(this.value)"
+              onfocus="if(this.value.trim()) onMyStockSearchInput(this.value)"
+              onkeydown="if(event.key==='Enter' && state.myStockSearchResults.length){pickSearchStockCandidate(0);}" />
+            <div class="stock-search-dropdown" id="my-stock-search-dd"></div>
+          </div>
+          <button class="btn primary" onclick="openAddStockForm()">+ 手动录入持仓</button>
+          <button class="btn" onclick="if(state.myStockSelected) loadStockDetailLive(state.myStockSelected, state.myStockRange, true)">🔄 刷新当前股</button>
+        </div>
+
+        ${formHtml}
+
+        <div class="stock-workbench-grid" style="margin-top:12px;">
+          <div class="stock-list-panel">
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              ${[["all","全部"],["cn","A股"],["hk","港股"],["us","美股"]].map(([fid, fl]) => `
+                <button class="btn-mini ${state.myStockFilter === fid ? "active" : ""}" style="${state.myStockFilter === fid ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.myStockFilter='${fid}';renderMyStocks()">${fl}</button>
+              `).join("")}
+            </div>
+            ${filteredList.length ? filteredList.map(h => {
+              const d = getStockDetailFor(h, state.myStockRange);
+              const active = h.ticker === state.myStockSelected;
+              const sh = Number(h.shares || 0);
+              const ret = sh > 0 && h.costPrice > 0 ? ((d.price - h.costPrice) / h.costPrice) * 100 : null;
+              const pnl = sh > 0 && h.costPrice > 0 ? (d.price - h.costPrice) * sh : null;
+              return `
+                <div class="stock-holding-card ${active ? "active" : ""}" onclick="selectMyStock('${h.ticker}')">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+                    <div>
+                      <strong style="font-size:14px;">${h.zh}</strong>
+                      <span class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-left:4px;">${h.ticker}</span>
+                    </div>
+                    <div style="display:flex;gap:4px;align-items:center;">
+                      <span class="badge-pct ${cls(d.changePct)}" style="font-size:10.5px;padding:1px 5px;">${d.changePct >= 0 ? "+" : ""}${d.changePct.toFixed(2)}%</span>
+                      <button class="btn-mini" style="padding:0 5px;font-size:10.5px;" title="编辑" onclick="event.stopPropagation();editMyStock('${h.ticker}')">✎</button>
+                      <button class="btn-mini" style="padding:0 5px;font-size:10.5px;color:var(--down);" title="删除" onclick="event.stopPropagation();removeMyStock('${h.ticker}')">×</button>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:6px;">
+                    <span class="mono" style="font-size:16px;font-weight:700;">${d.cur}${fmt(d.price, 2)}</span>
+                    ${ret !== null ? `<span class="mono ${cls(ret)}" style="font-size:11.5px;font-weight:700;">${pnl >= 0 ? "+" : ""}${d.cur}${fmt(pnl, 0)} (${ret >= 0 ? "+" : ""}${ret.toFixed(1)}%)</span>` : `<span class="mono" style="font-size:11px;color:var(--ink-muted);">自选观察</span>`}
+                  </div>
+                  <div class="mono" style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-muted);margin-top:4px;">
+                    <span>${sh > 0 ? `${sh}股 · 成本${d.cur}${fmt(h.costPrice, 1)}` : h.sector}</span>
+                    <span>目标 ${h.targetPrice > 0 ? `${d.cur}${fmt(h.targetPrice, 1)}` : `${d.cur}${fmt(d.target.mean, 1)}`}</span>
+                  </div>
+                </div>
+              `;
+            }).join("") : `<div style="padding:18px;text-align:center;font-size:12px;color:var(--ink-muted);">当前筛选下暂无股票，可在上方搜索添加</div>`}
+          </div>
+
+          <div class="stock-detail-panel">${detailHtml}</div>
+        </div>
+      `;
+    }
+
     function renderAiLeaders() {
       const grid = document.getElementById("ai-grid");
       if (!grid) return;
@@ -5504,7 +6665,10 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             </div>
             <div class="mono" style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed var(--border-hairline);font-size:11px;color:var(--ink-muted);">
               <span>${isZh ? "市值" : "MCap"}: ${c.mcap}</span>
-              <span style="color:var(--accent-ai);font-weight:600;">${isZh ? "年报摘要 →" : "Filing →"}</span>
+              <span style="display:inline-flex;gap:8px;align-items:center;">
+                <button class="btn-mini" style="padding:1px 6px;font-size:10.5px;" onclick="event.stopPropagation();quickAddLeaderToMyStocks('${c.id}')">+ ${isZh ? "加入持仓" : "Add"}</button>
+                <span style="color:var(--accent-ai);font-weight:600;">${isZh ? "年报 →" : "Filing →"}</span>
+              </span>
             </div>
           </div>
         `;
@@ -12582,6 +13746,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       renderMetals();
       renderEquities();
       renderFx();
+      renderMyStocks();
       renderAiLeaders();
       renderMainChart();
       renderSandbox();
@@ -12605,11 +13770,19 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       if (state.macroTab === "gdp") renderMacroGdpTab();
     });
 
+    document.addEventListener("click", (ev) => {
+      if (!ev.target.closest(".stock-search-wrap")) {
+        const dd = document.getElementById("my-stock-search-dd");
+        if (dd) dd.classList.remove("open");
+      }
+    });
+
     window.onload = function () {
       initScrollSpy();
       renderAll();
       ensureMacroDynamicAssets();
       ensureChinaMacroAssets();
+      if (state.myStockSelected) loadStockDetailLive(state.myStockSelected, state.myStockRange, false);
       syncAllData(false);
     };
   </script>
