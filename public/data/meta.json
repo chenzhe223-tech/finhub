@@ -1,0 +1,44 @@
+{
+  "title": "世界宏观经济动态看板",
+  "titleEn": "World Macroeconomic Interactive Dashboard",
+  "source": "IMF WEO / World Bank WDI (基准示例快照，接入 /api/macro 世界银行实时接口后自动替换)",
+  "sourceEn": "IMF WEO / World Bank WDI (Baseline snapshot; auto-updates via /api/macro World Bank API)",
+  "isDemo": true,
+  "asOfYear": 2026,
+  "actualThroughYear": 2025,
+  "years": [
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "yearLabels": [
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026E"
+  ],
+  "updatedAt": "2026-11-26",
+  "countryCount": 58,
+  "methodology": {
+    "gdp": "名义 GDP 为现价美元（万亿美元 $T），对应世界银行 NY.GDP.MKTP.CD",
+    "gdpPerCapita": "人均 GDP 为现价美元（$），对应世界银行 NY.GDP.PCAP.CD",
+    "growth": "GDP 增速为年度同比变化（%），对应世界银行 NY.GDP.MKTP.KD.ZG",
+    "pppPerCapita": "PPP 人均 GDP 为购买力平价口径（现价国际元 Int$），对应世界银行 NY.GDP.PCAP.PP.CD"
+  },
+  "methodologyNote": "口径：GDP 与人均 GDP 为现价美元；增速为年度同比（%）；PPP 人均为购买力平价口径。数据来源与截至年份由 meta.json 提供，接入世界银行真实数据后自动替换。"
+}

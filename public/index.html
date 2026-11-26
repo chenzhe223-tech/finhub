@@ -1869,6 +1869,315 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       gap: 8px;
     }
 
+    /* 世界宏观经济动态地图看板样式 */
+    .macro-map-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+    }
+    .macro-timeline-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+    }
+    .macro-year-badge {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent-gold-text);
+      min-width: 78px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .macro-slider-wrap {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .macro-slider-wrap input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-gold);
+      cursor: pointer;
+    }
+    .macro-year-ticks {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-muted);
+    }
+    .macro-year-tick {
+      cursor: pointer;
+      padding: 1px 3px;
+      border-radius: 2px;
+    }
+    .macro-year-tick.active {
+      color: var(--accent-gold-text);
+      font-weight: 700;
+      background: var(--accent-gold-soft);
+    }
+    .macro-map-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+    .macro-map-stage {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .macro-map-svg-wrap {
+      width: 100%;
+      aspect-ratio: 960 / 470;
+      background: radial-gradient(circle at 50% 45%, var(--bg-card) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .macro-map-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .map-country-path {
+      transition: fill 0.25s ease, opacity 0.2s ease, stroke-width 0.15s ease;
+      cursor: pointer;
+    }
+    .map-country-path:hover {
+      opacity: 0.9;
+      stroke: var(--ink-primary) !important;
+      stroke-width: 1.3 !important;
+    }
+    .map-country-path.selected {
+      stroke: var(--accent-gold) !important;
+      stroke-width: 2.1 !important;
+    }
+    .map-country-path.no-data {
+      cursor: default;
+    }
+    .macro-legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--ink-secondary);
+    }
+    .macro-legend-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .macro-legend-gradient {
+      width: 150px;
+      height: 10px;
+      border-radius: 2px;
+      border: 1px solid var(--border-hairline);
+    }
+    .macro-detail-panel {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 13px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .macro-country-stats-4 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .macro-mini-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      padding: 7px 9px;
+    }
+    .macro-mini-stat.active-metric {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+    }
+    .macro-rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .macro-rank-item {
+      display: grid;
+      grid-template-columns: 22px 76px 1fr 74px;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 11.5px;
+      transition: background 0.15s ease;
+    }
+    .macro-rank-item:hover {
+      background: var(--bg-subtle);
+    }
+    .macro-rank-item.selected {
+      background: var(--accent-gold-soft);
+      font-weight: 700;
+    }
+    .macro-rank-bar-bg {
+      height: 8px;
+      background: var(--bg-subtle);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .macro-rank-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.28s ease;
+    }
+    .macro-meta-banner {
+      margin-top: 12px;
+      padding: 10px 13px;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 4px;
+      font-size: 11.5px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+    }
+    .poster-anim-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+    }
+    .poster-export-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-subtle);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .poster-export-progress-fill {
+      height: 100%;
+      background: var(--accent-gold);
+      width: 0%;
+      transition: width 0.12s linear;
+    }
+    @media (max-width: 980px) {
+      .macro-map-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 中国区域经济全景 (含港澳台 34 省) 专属样式 */
+    .china-map-svg-wrap {
+      width: 100%;
+      aspect-ratio: 960 / 700;
+      background: radial-gradient(circle at 48% 46%, var(--bg-card) 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-hairline);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .china-stack-bar {
+      display: flex;
+      width: 100%;
+      height: 11px;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--bg-subtle);
+      gap: 1px;
+    }
+    .china-geo-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hairline);
+      border-left: 3px solid var(--accent-cn);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      line-height: 1.55;
+    }
+    .china-pillar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .china-pillar-tag {
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-hairline);
+      color: var(--ink-secondary);
+    }
+    .china-ind-row {
+      display: grid;
+      grid-template-columns: 26px 82px 1fr 132px;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-hairline);
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .china-ind-row:hover { background: var(--bg-subtle); }
+    .china-pk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .china-cluster-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .china-cluster-card {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-hairline);
+      border-top: 3px solid var(--accent-cn);
+      border-radius: 4px;
+      padding: 14px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    @media (max-width: 980px) {
+      .china-pk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .china-cluster-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .china-pk-grid { grid-template-columns: 1fr; }
+      .china-ind-row { grid-template-columns: 24px 66px 1fr 102px; font-size: 11px; }
+    }
+
     .footer {
       margin-top: 44px;
       padding-top: 14px;
@@ -3760,13 +4069,15 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
     </div>
   </div>
 
-  <!-- 弹窗 3：6风格高清信息海报工作室 -->
+  <!-- 弹窗 3：6风格高清静态 & 动态信息海报工作室 -->
   <div class="modal-backdrop" id="poster-modal">
     <div class="modal" id="poster-modal-dialog" style="max-width:860px;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-        <strong class="serif" style="font-size:18px;">🎨 高清信息海报工作室（6种商业财经风格）</strong>
-        <div style="display:flex;gap:6px;">
-          <button class="btn primary" onclick="downloadPosterPNG()">⬇ 下载高清 PNG 海报</button>
+        <strong class="serif" style="font-size:18px;">🎨 高清静态与动态信息海报工作室（6种商业财经风格）</strong>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="poster-header-actions">
+          <button class="btn primary" id="btn-export-png" onclick="downloadPosterPNG()">⬇ 下载高清 PNG</button>
+          <button class="btn" id="btn-export-video" style="display:none;background:var(--accent-gold);color:#fff;border-color:var(--accent-gold);" onclick="exportAnimatedPosterVideo()">🎬 导出动态视频</button>
+          <button class="btn" id="btn-export-gif" style="display:none;" onclick="exportAnimatedPosterGIF()">🎞 导出 GIF 动图</button>
           <button class="btn" onclick="closeModal('poster-modal')">关闭</button>
         </div>
       </div>
@@ -3775,6 +4086,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       <div class="poster-studio-body" id="poster-studio-body">
         <div class="poster-custom-panel" id="poster-custom-panel" style="display:none;"></div>
         <div style="background:var(--bg-subtle);padding:12px;border-radius:6px;text-align:center;overflow-x:auto;">
+          <div id="poster-anim-preview-bar" class="poster-anim-bar" style="display:none;"></div>
           <canvas id="poster-canvas" width="750" height="1100" style="max-width:100%;height:auto;border-radius:4px;box-shadow:0 8px 24px rgba(0,0,0,0.18);"></canvas>
         </div>
       </div>
@@ -3857,6 +4169,7 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       { id: "sec-chart",      group: "macro",   zh: "深度走势与对比",     en: "Deep Charts",       visible: true },
       { id: "sec-sandbox",    group: "macro",   zh: "情绪与组合沙盒",     en: "Portfolio Sandbox", visible: true },
       { id: "sec-macro-econ",  group: "macro",   zh: "世界经济宏观全景",   en: "World Economy",      visible: true },
+      { id: "sec-macro-china", group: "macro",   zh: "中国区域经济全景",   en: "China Regional Econ",visible: true },
       { id: "sec-macro-trade", group: "macro",   zh: "世界贸易往来格局",   en: "Global Trade Flows", visible: true },
       { id: "sec-macro-fx",    group: "macro",   zh: "世界货币与储备",     en: "World Currencies",   visible: true },
       { id: "sec-topics",     group: "studio",  zh: "资讯集采与12选题池", en: "Intel & 12 Topics", visible: true },
@@ -4447,7 +4760,30 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       showMa: true,
       sandboxCapital: 100000,
       weights: { xau: 30, xag: 10, csi300: 30, spx: 30 },
-      macroTab: "gdp",
+      macroTab: "map",
+      macroMapYearIdx: 9,
+      macroMapMetric: "gdp",
+      macroMapSelectedIso3: "CHN",
+      macroMapRegion: "all",
+      macroMapSearch: "",
+      macroMapPlaying: false,
+      macroMapSpeed: 1000,
+      chinaTab: "map",
+      chinaCurrency: "CNY",
+      chinaYearIdx: 9,
+      chinaMetric: "gdp",
+      chinaSelectedCode: "440000",
+      chinaFilter: "all",
+      chinaSearch: "",
+      chinaPlaying: false,
+      chinaSpeed: 1000,
+      chinaIndustrySort: "tertiary",
+      chinaCompareCodes: ["440000", "320000", "310000", "110000", "810000", "710000"],
+      chinaPopXAxis: "pop",
+      chinaTableSort: "gdp",
+      chinaTableDir: "desc",
+      chinaTableRegion: "all",
+      chinaTableQuery: "",
       gdpMetric: "nom",
       gdpSelected: ["us", "cn", "de", "jp", "in"],
       gdpSearch: "",
@@ -4471,6 +4807,41 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       settingsTab: "appearance",
       posterMode: "corp",
       posterStyle: "paper",
+      animPoster: {
+        title: "世界宏观经济十年格局演进",
+        subtitle: "名义 GDP · 人均产出 · 经济增速 · PPP 购买力 (2016–2026E)",
+        footerNote: "DAVYLAB · GLOBAL FINANCIAL INTELLIGENCE & STUDIO",
+        metric: "gdp",
+        focusIso3: "CHN",
+        startIdx: 0,
+        endIdx: 10,
+        durationSec: 8,
+        aspect: "poster",
+        showMap: true,
+        showRace: true,
+        showSparkline: true,
+        showWatermark: true,
+        progress: 1,
+        playing: false,
+        exporting: false,
+        exportStatus: ""
+      },
+      chinaAnimPoster: {
+        title: "中国区域经济十年格局演进（含港澳台）",
+        subtitle: "34 省级行政区 GDP · 人均产出 · 产业结构与人口版图 (2016–2025)",
+        footerNote: "DAVYLAB · CHINA REGIONAL MACRO INTELLIGENCE",
+        metric: "gdp",
+        currency: "CNY",
+        focusCode: "440000",
+        startIdx: 0,
+        endIdx: 9,
+        durationSec: 8,
+        aspect: "poster",
+        showMap: true,
+        showRace: true,
+        showSparkline: true,
+        showWatermark: true
+      },
       tradePoster: (() => {
         const def = {
           title: "世界贸易往来格局专题报告",
@@ -4822,14 +5193,35 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
           <section class="section" id="sec-macro-econ">
             <div class="section-head macro">
               <div class="sec-title-box"><span class="sec-tag">WORLD ECONOMY</span><h2 class="sec-title">${isZh ? "世界经济宏观全景" : "World Economy Macro Panorama"}</h2></div>
-              <div style="display:flex;gap:8px;align-items:center;">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <span class="sec-sub mono mobile-hide">${state.macroSource}</span>
-                <button class="btn primary" onclick="openPosterModal('macro')">🎨 ${isZh ? "宏观专题海报" : "Macro Poster"}</button>
+                <button class="btn" onclick="openPosterModal('macro')">🖼 ${isZh ? "静态宏观海报" : "Static Poster"}</button>
+                <button class="btn primary" onclick="openAnimatedMacroPosterFromMap()">🎬 ${isZh ? "生成动态海报" : "Animated Poster"}</button>
               </div>
             </div>
             <div class="card">
               <div class="scroll-strip" id="macro-tabs"></div>
               <div id="macro-tab-content"></div>
+            </div>
+          </section>`,
+        "sec-macro-china": `
+          <section class="section" id="sec-macro-china">
+            <div class="section-head macro" style="border-bottom-color:var(--accent-cn);">
+              <div class="sec-title-box">
+                <span class="sec-tag" style="background:var(--accent-cn);color:#fff;">CHINA REGIONAL ECONOMY</span>
+                <h2 class="sec-title">${isZh ? "中国区域经济全景（含港澳台 34 省级行政区）" : "China Regional Economy (34 Divisions incl. HK, Macao & TW)"}</h2>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                <div style="display:inline-flex;border:1px solid var(--border-hairline);border-radius:4px;overflow:hidden;">
+                  <button class="btn-mini" style="border:none;border-radius:0;${state.chinaCurrency === "CNY" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="state.chinaCurrency='CNY';renderAll()">¥ 人民币</button>
+                  <button class="btn-mini" style="border:none;border-radius:0;${state.chinaCurrency === "USD" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="state.chinaCurrency='USD';renderAll()">$ 美元</button>
+                </div>
+                <button class="btn primary" onclick="openChinaAnimatedPoster()">🎬 ${isZh ? "中国区域动态海报" : "China Animated Poster"}</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="scroll-strip" id="china-tabs"></div>
+              <div id="china-tab-content"></div>
             </div>
           </section>`,
         "sec-macro-trade": `
@@ -5476,21 +5868,657 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
       if (tip) tip.style.display = "none";
     }
 
+    /* =========================================================================
+       世界宏观经济动态看板数据引擎 (world-map.json + macro-dashboard.json + meta.json)
+       ========================================================================= */
+    const MACRO_METRICS = {
+      gdp: {
+        id: "gdp", zh: "名义 GDP", en: "Nominal GDP", unit: "$T",
+        descZh: "现价美元（万亿美元）", descEn: "Current USD (Trillions)",
+        gradient: "linear-gradient(90deg, #EFE3C8 0%, #DFB56A 38%, #B56933 72%, #6E2B1E 100%)",
+        stops: [[239,227,200],[223,181,106],[181,105,51],[110,43,30]]
+      },
+      gdpPerCapita: {
+        id: "gdpPerCapita", zh: "人均 GDP", en: "GDP Per Capita", unit: "$",
+        descZh: "现价美元（人均）", descEn: "Current USD per capita",
+        gradient: "linear-gradient(90deg, #E2ECF5 0%, #8CB5D9 38%, #346899 72%, #132F4C 100%)",
+        stops: [[226,236,245],[140,181,217],[52,104,153],[19,47,76]]
+      },
+      growth: {
+        id: "growth", zh: "GDP 增速", en: "GDP Growth", unit: "%",
+        descZh: "年度同比变化（%）", descEn: "Annual YoY Change (%)",
+        gradient: "linear-gradient(90deg, #C84B4B 0%, #E7A99A 28%, #EAE4D8 48%, #6FA898 72%, #1A5C4B 100%)",
+        stops: [[200,75,75],[234,228,216],[26,92,75]]
+      },
+      pppPerCapita: {
+        id: "pppPerCapita", zh: "PPP 人均", en: "PPP Per Capita", unit: "Int$",
+        descZh: "购买力平价现价国际元", descEn: "PPP Current Int$",
+        gradient: "linear-gradient(90deg, #E2F1E9 0%, #7CC0A3 38%, #287D5F 72%, #0E4231 100%)",
+        stops: [[226,241,233],[124,192,163],[40,125,95],[14,66,49]]
+      }
+    };
+
+    const macroDynamicStore = {
+      loaded: false,
+      loading: false,
+      worldMap: null,
+      path2dCache: null,
+      meta: {
+        title: "世界宏观经济动态看板",
+        titleEn: "World Macroeconomic Interactive Dashboard",
+        source: "IMF WEO / World Bank WDI (基准示例快照，接入世界银行实时接口后自动替换)",
+        sourceEn: "IMF WEO / World Bank WDI (Baseline snapshot; auto-updates via World Bank API)",
+        isDemo: true,
+        asOfYear: 2026,
+        actualThroughYear: 2025,
+        years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        yearLabels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026E"],
+        updatedAt: "2026-11-26",
+        methodologyNote: "口径：GDP 与人均 GDP 为现价美元；增速为年度同比（%）；PPP 人均为购买力平价口径。数据来源与截至年份由 meta.json 提供，接入世界银行真实数据后自动替换。"
+      },
+      data: null
+    };
+
+    let macroMapPlayTimer = null;
+
+    function buildFallbackMacroData() {
+      const idToIso3 = {
+        us:"USA", cn:"CHN", de:"DEU", jp:"JPN", in:"IND", uk:"GBR", fr:"FRA", it:"ITA",
+        br:"BRA", ca:"CAN", ru:"RUS", kr:"KOR", au:"AUS", mx:"MEX", id:"IDN", sa:"SAU"
+      };
+      const countries = {};
+      MACRO_GDP_10Y.forEach(c => {
+        const iso3 = idToIso3[c.id];
+        if (!iso3) return;
+        const pppRow = MACRO_PPP_DATA.find(p => p.code.toLowerCase() === c.id || (c.id === "uk" && p.code === "UK"));
+        const ratio = pppRow ? (pppRow.pcPpp / Math.max(1, pppRow.pcNom)) : 1.3;
+        countries[iso3] = {
+          iso3, iso2: c.id.toUpperCase(), zh: c.zh, en: c.en,
+          region: pppRow?.region || "apac", imfClass: pppRow?.imfClass || "adv", color: c.color,
+          gdp: c.nom.slice(),
+          gdpPerCapita: c.pc10y.slice(),
+          growth: c.gr.slice(),
+          pppPerCapita: c.pc10y.map(v => Math.round(v * ratio))
+        };
+      });
+      return {
+        years: macroDynamicStore.meta.years.slice(),
+        yearLabels: MACRO_YEARS.slice(),
+        globalGdp: GLOBAL_GDP_TOTAL.slice(),
+        countries
+      };
+    }
+
+    async function ensureMacroDynamicAssets() {
+      if (macroDynamicStore.loaded || macroDynamicStore.loading) return;
+      macroDynamicStore.loading = true;
+      if (!macroDynamicStore.data) macroDynamicStore.data = buildFallbackMacroData();
+      try {
+        const [mapRes, dataRes, metaRes] = await Promise.allSettled([
+          fetch("/data/world-map.json"),
+          fetch("/data/macro-dashboard.json"),
+          fetch("/data/meta.json")
+        ]);
+        if (mapRes.status === "fulfilled" && mapRes.value.ok) {
+          macroDynamicStore.worldMap = await mapRes.value.json();
+          macroDynamicStore.path2dCache = null;
+        }
+        if (dataRes.status === "fulfilled" && dataRes.value.ok) {
+          macroDynamicStore.data = await dataRes.value.json();
+        }
+        if (metaRes.status === "fulfilled" && metaRes.value.ok) {
+          const m = await metaRes.value.json();
+          macroDynamicStore.meta = { ...macroDynamicStore.meta, ...m };
+        }
+        macroDynamicStore.loaded = true;
+      } catch (e) {
+        console.warn("Macro dynamic assets load fallback:", e);
+      } finally {
+        macroDynamicStore.loading = false;
+        if (state.macroTab === "map") renderMacroMapTab();
+        if (document.getElementById("poster-modal")?.classList.contains("open") && state.posterMode === "macro_anim") {
+          drawPosterCanvas();
+        }
+      }
+    }
+
+    function mergeRemoteWorldBankMacro(mRemote) {
+      if (!mRemote || !mRemote.countries) return;
+      if (!macroDynamicStore.data) macroDynamicStore.data = buildFallbackMacroData();
+      const target = macroDynamicStore.data.countries;
+      Object.entries(mRemote.countries).forEach(([iso3, remoteSeries]) => {
+        const local = target[iso3];
+        if (!local) return;
+        ["gdp", "gdpPerCapita", "growth", "pppPerCapita"].forEach(k => {
+          if (Array.isArray(remoteSeries[k])) {
+            remoteSeries[k].forEach((val, idx) => {
+              if (val !== null && val !== undefined && !isNaN(val) && idx < local[k].length) {
+                local[k][idx] = val;
+              }
+            });
+          }
+        });
+      });
+      if (mRemote.meta) {
+        macroDynamicStore.meta = { ...macroDynamicStore.meta, ...mRemote.meta };
+      }
+    }
+
+    function getMacroCountriesDict() {
+      if (!macroDynamicStore.data) macroDynamicStore.data = buildFallbackMacroData();
+      return macroDynamicStore.data.countries || {};
+    }
+
+    function formatMacroVal(val, metric, compact = false) {
+      if (val === null || val === undefined || isNaN(val)) return "—";
+      if (metric === "gdp") {
+        if (val < 1 && compact) return `$${Math.round(val * 1000)}B`;
+        return val < 0.2 ? `$${val.toFixed(3)}T` : `$${val.toFixed(2)}T`;
+      }
+      if (metric === "gdpPerCapita") {
+        return compact && val >= 10000 ? `$${(val / 1000).toFixed(1)}k` : `$${Math.round(val).toLocaleString("en-US")}`;
+      }
+      if (metric === "pppPerCapita") {
+        return compact && val >= 10000 ? `Int$${(val / 1000).toFixed(1)}k` : `Int$${Math.round(val).toLocaleString("en-US")}`;
+      }
+      if (metric === "growth") {
+        return `${val >= 0 ? "+" : ""}${Number(val).toFixed(1)}%`;
+      }
+      return String(val);
+    }
+
+    function lerpRgb(c1, c2, t) {
+      const k = Math.max(0, Math.min(1, t));
+      const r = Math.round(c1[0] + (c2[0] - c1[0]) * k);
+      const g = Math.round(c1[1] + (c2[1] - c1[1]) * k);
+      const b = Math.round(c1[2] + (c2[2] - c1[2]) * k);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function sampleRamp(stops, t) {
+      const k = Math.max(0, Math.min(1, t));
+      if (stops.length === 2) return lerpRgb(stops[0], stops[1], k);
+      const seg = k * (stops.length - 1);
+      const i = Math.min(stops.length - 2, Math.floor(seg));
+      return lerpRgb(stops[i], stops[i + 1], seg - i);
+    }
+
+    function getMacroMapColor(val, metric) {
+      if (val === null || val === undefined || isNaN(val)) return null;
+      const m = MACRO_METRICS[metric] || MACRO_METRICS.gdp;
+      if (metric === "gdp") {
+        // Log scale across $0.03T .. $32T so mid-size economies are richly distinguished
+        const norm = Math.log10(Math.max(0.03, val) / 0.03) / Math.log10(32 / 0.03);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "gdpPerCapita") {
+        const norm = Math.pow(Math.max(0, Math.min(1, val / 110000)), 0.72);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "pppPerCapita") {
+        const norm = Math.pow(Math.max(0, Math.min(1, val / 135000)), 0.75);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "growth") {
+        // Diverging: -8% -> red, 0% -> neutral, +9% -> deep emerald
+        if (val < 0) {
+          const norm = Math.max(0, Math.min(1, (val + 8) / 8));
+          return lerpRgb(m.stops[0], m.stops[1], norm);
+        }
+        const norm = Math.max(0, Math.min(1, val / 8.5));
+        return lerpRgb(m.stops[1], m.stops[2], norm);
+      }
+      return sampleRamp(m.stops, 0.5);
+    }
+
+    function getMacroMetricRangeLabels(metric) {
+      if (metric === "gdp") return ["$0.05T", "$2.0T", "$30T+"];
+      if (metric === "gdpPerCapita") return ["$1,500", "$35,000", "$110k+"];
+      if (metric === "pppPerCapita") return ["$5,000", "$50,000", "$135k+"];
+      return ["-8%", "0%", "+8.5%"];
+    }
+
+    function getMacroRankedList(metric, yearIdx, region = "all") {
+      const dict = getMacroCountriesDict();
+      const list = Object.values(dict)
+        .filter(c => region === "all" || c.region === region)
+        .map(c => ({
+          ...c,
+          val: Array.isArray(c[metric]) ? c[metric][yearIdx] : null
+        }))
+        .filter(c => c.val !== null && c.val !== undefined && !isNaN(c.val));
+      list.sort((a, b) => b.val - a.val);
+      return list;
+    }
+
+    function stopMacroMapPlay() {
+      state.macroMapPlaying = false;
+      if (macroMapPlayTimer) {
+        clearInterval(macroMapPlayTimer);
+        macroMapPlayTimer = null;
+      }
+    }
+
+    function toggleMacroMapPlay() {
+      if (state.macroMapPlaying) {
+        stopMacroMapPlay();
+        renderMacroMapTab();
+        return;
+      }
+      state.macroMapPlaying = true;
+      const maxIdx = (macroDynamicStore.meta.yearLabels || MACRO_YEARS).length - 1;
+      if (state.macroMapYearIdx >= maxIdx) state.macroMapYearIdx = 0;
+      renderMacroMapTab();
+      macroMapPlayTimer = setInterval(() => {
+        if (state.macroTab !== "map") {
+          stopMacroMapPlay();
+          return;
+        }
+        if (state.macroMapYearIdx >= maxIdx) {
+          stopMacroMapPlay();
+          renderMacroMapTab();
+          return;
+        }
+        state.macroMapYearIdx += 1;
+        renderMacroMapTab();
+      }, state.macroMapSpeed || 1000);
+    }
+
+    function setMacroMapSpeed(ms) {
+      state.macroMapSpeed = ms;
+      if (state.macroMapPlaying) {
+        stopMacroMapPlay();
+        toggleMacroMapPlay();
+      } else {
+        renderMacroMapTab();
+      }
+    }
+
+    function setMacroMapYear(idx) {
+      const maxIdx = (macroDynamicStore.meta.yearLabels || MACRO_YEARS).length - 1;
+      state.macroMapYearIdx = Math.max(0, Math.min(maxIdx, Number(idx)));
+      renderMacroMapTab();
+    }
+
+    function setMacroMapMetric(metric) {
+      state.macroMapMetric = metric;
+      renderMacroMapTab();
+    }
+
+    function selectMacroMapCountry(iso3) {
+      const dict = getMacroCountriesDict();
+      if (!dict[iso3]) return;
+      state.macroMapSelectedIso3 = iso3;
+      renderMacroMapTab();
+    }
+
+    function showMacroMapTip(evt, iso3) {
+      const tip = document.getElementById("tooltip");
+      if (!tip) return;
+      const isZh = state.lang === "zh";
+      const dict = getMacroCountriesDict();
+      const mapC = macroDynamicStore.worldMap?.countries?.find(x => x.iso3 === iso3);
+      const c = dict[iso3];
+      const yIdx = state.macroMapYearIdx;
+      const yLabel = (macroDynamicStore.meta.yearLabels || MACRO_YEARS)[yIdx] || "2025";
+      const m = MACRO_METRICS[state.macroMapMetric] || MACRO_METRICS.gdp;
+
+      if (!c) {
+        tip.innerHTML = `<div style="font-weight:700;">${mapC ? (isZh ? mapC.zh : mapC.en) : iso3}</div><div style="opacity:0.75;margin-top:2px;">${isZh ? "暂无该经济体统计数据" : "No dataset coverage"}</div>`;
+      } else {
+        const ranked = getMacroRankedList(state.macroMapMetric, yIdx, "all");
+        const rank = ranked.findIndex(x => x.iso3 === iso3) + 1;
+        const val = c[state.macroMapMetric]?.[yIdx];
+        const firstVal = c[state.macroMapMetric]?.[0];
+        let deltaStr = "";
+        if (state.macroMapMetric === "growth") {
+          const avg = c.growth.reduce((a, b) => a + b, 0) / c.growth.length;
+          deltaStr = isZh ? `10年均值 ${avg >= 0 ? "+" : ""}${avg.toFixed(1)}%` : `10Y Avg ${avg >= 0 ? "+" : ""}${avg.toFixed(1)}%`;
+        } else if (firstVal > 0 && val !== null) {
+          const chg = ((val - firstVal) / firstVal) * 100;
+          deltaStr = isZh ? `较2016年 ${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%` : `vs 2016 ${chg >= 0 ? "+" : ""}${chg.toFixed(1)}%`;
+        }
+        tip.innerHTML = `
+          <div style="font-weight:700;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:3px;">
+            ${isZh ? c.zh : c.en} <span style="opacity:0.75;font-weight:400;">(${c.iso3} · ${yLabel})</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:14px;">
+            <span>${isZh ? m.zh : m.en}</span>
+            <strong class="mono">${formatMacroVal(val, state.macroMapMetric)}</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:14px;margin-top:2px;font-size:11px;opacity:0.88;">
+            <span>${isZh ? "榜单排名" : "Rank"} #${rank || "—"}</span>
+            <span>${deltaStr}</span>
+          </div>
+          <div style="font-size:10.5px;opacity:0.7;margin-top:4px;">${isZh ? "点击查看 10 年完整走势" : "Click to inspect 10Y trend"}</div>
+        `;
+      }
+      tip.style.left = Math.min(window.innerWidth - 260, evt.clientX + 14) + "px";
+      tip.style.top = Math.max(12, evt.clientY - 12) + "px";
+      tip.style.display = "block";
+    }
+
+    function openAnimatedMacroPosterFromMap() {
+      state.animPoster.metric = state.macroMapMetric || "gdp";
+      state.animPoster.focusIso3 = state.macroMapSelectedIso3 || "CHN";
+      const m = MACRO_METRICS[state.animPoster.metric] || MACRO_METRICS.gdp;
+      const isZh = state.lang === "zh";
+      state.animPoster.title = isZh ? `世界宏观经济十年演进 · ${m.zh}` : `World Macro 10Y Evolution · ${m.en}`;
+      state.animPoster.subtitle = isZh ? `${m.descZh} · 2016–2026E 动态排名与地理格局` : `${m.descEn} · 2016–2026E Map & Rankings`;
+      openPosterModal("macro_anim");
+    }
+
+    function renderMacroMapTab() {
+      const box = document.getElementById("macro-tab-content");
+      if (!box) return;
+      ensureMacroDynamicAssets();
+
+      const isZh = state.lang === "zh";
+      const meta = macroDynamicStore.meta;
+      const years = meta.yearLabels || MACRO_YEARS;
+      const yIdx = Math.max(0, Math.min(years.length - 1, state.macroMapYearIdx));
+      const yLabel = years[yIdx];
+      const metric = state.macroMapMetric || "gdp";
+      const mInfo = MACRO_METRICS[metric] || MACRO_METRICS.gdp;
+      const dict = getMacroCountriesDict();
+      if (!dict[state.macroMapSelectedIso3]) state.macroMapSelectedIso3 = "CHN";
+      const selC = dict[state.macroMapSelectedIso3] || Object.values(dict)[0];
+
+      const allRanked = getMacroRankedList(metric, yIdx, "all");
+      const regionRanked = getMacroRankedList(metric, yIdx, state.macroMapRegion || "all");
+      const top1 = allRanked[0];
+      const selRank = allRanked.findIndex(x => x.iso3 === selC.iso3) + 1;
+      const globalTot = (macroDynamicStore.data?.globalGdp || GLOBAL_GDP_TOTAL)[yIdx] || GLOBAL_GDP_TOTAL[yIdx];
+      const globalPrev = yIdx > 0 ? ((macroDynamicStore.data?.globalGdp || GLOBAL_GDP_TOTAL)[yIdx - 1] || globalTot) : globalTot;
+      const globalYoY = yIdx > 0 ? (((globalTot - globalPrev) / globalPrev) * 100) : null;
+
+      // Build SVG World Map Paths
+      const worldMap = macroDynamicStore.worldMap;
+      const noDataFill = (state.theme === "evening" || state.theme === "wallstreet" || state.theme === "obsidian") ? "#232934" : "#E6E2D8";
+      const borderStroke = (state.theme === "evening" || state.theme === "wallstreet" || state.theme === "obsidian") ? "rgba(255,255,255,0.16)" : "rgba(35,33,30,0.28)";
+
+      let mapSvgInner = "";
+      if (worldMap && Array.isArray(worldMap.countries)) {
+        // Graticule grid for editorial look
+        const gratLines = [90, 165, 240, 315, 390].map(gy =>
+          `<line x1="20" y1="${gy}" x2="940" y2="${gy}" stroke="var(--border-hairline)" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.6" />`
+        ).join("") + [160, 320, 480, 640, 800].map(gx =>
+          `<line x1="${gx}" y1="16" x2="${gx}" y2="454" stroke="var(--border-hairline)" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.5" />`
+        ).join("");
+
+        const paths = worldMap.countries.map(mc => {
+          const cData = dict[mc.iso3];
+          const val = cData ? cData[metric]?.[yIdx] : null;
+          const inRegion = !cData || state.macroMapRegion === "all" || cData.region === state.macroMapRegion;
+          const fill = (cData && inRegion) ? (getMacroMapColor(val, metric) || noDataFill) : noDataFill;
+          const isSel = mc.iso3 === selC.iso3;
+          const opacity = (cData && !inRegion) ? "0.28" : "1";
+          const clsName = `map-country-path${isSel ? " selected" : ""}${cData ? "" : " no-data"}`;
+          return `<path class="${clsName}" d="${mc.d}" fill="${fill}" fill-opacity="${opacity}" stroke="${borderStroke}" stroke-width="0.6"
+            onmousemove="showMacroMapTip(event,'${mc.iso3}')" onmouseleave="hideMacroTip()"
+            onclick="${cData ? `selectMacroMapCountry('${mc.iso3}')` : ""}" />`;
+        }).join("");
+
+        // Highlight beacon on selected country centroid
+        const selGeo = worldMap.countries.find(x => x.iso3 === selC.iso3);
+        const beacon = selGeo ? `
+          <g pointer-events="none">
+            <circle cx="${selGeo.c[0]}" cy="${selGeo.c[1]}" r="9" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" opacity="0.75">
+              <animate attributeName="r" values="6;15;6" dur="2.2s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.85;0.1;0.85" dur="2.2s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="${selGeo.c[0]}" cy="${selGeo.c[1]}" r="3.6" fill="var(--accent-gold)" stroke="#fff" stroke-width="1.2" />
+            <rect x="${Math.min(820, Math.max(12, selGeo.c[0] + 8))}" y="${Math.max(16, selGeo.c[1] - 24)}" width="118" height="22" rx="3" fill="rgba(18,20,24,0.86)" stroke="var(--accent-gold)" stroke-width="0.9" />
+            <text x="${Math.min(820, Math.max(12, selGeo.c[0] + 8)) + 7}" y="${Math.max(16, selGeo.c[1] - 24) + 14.5}" fill="#F6F2EA" font-size="11" font-family="var(--font-mono)" font-weight="700">${isZh ? selC.zh : selC.iso3} ${formatMacroVal(selC[metric]?.[yIdx], metric, true)}</text>
+          </g>
+        ` : "";
+
+        mapSvgInner = `
+          <svg class="macro-map-svg" viewBox="0 0 960 470" preserveAspectRatio="xMidYMid meet">
+            <rect x="8" y="8" width="944" height="454" rx="14" fill="none" stroke="var(--border-hairline)" stroke-width="0.8" />
+            ${gratLines}
+            ${paths}
+            ${beacon}
+          </svg>
+        `;
+      } else {
+        mapSvgInner = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:13px;color:var(--ink-muted);">${isZh ? "正在加载世界地图矢量底图 (Robinson 投影)..." : "Loading Robinson world map geometry..."}</div>`;
+      }
+
+      // Build 10-Year Trend SVG for Selected Country
+      const series = selC[metric] || [];
+      const sMin = Math.min(...series, metric === "growth" ? 0 : Infinity);
+      const sMax = Math.max(...series, metric === "growth" ? 2 : 0.1);
+      const padLo = metric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
+      const padHi = metric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
+      const span = Math.max(0.001, padHi - padLo);
+      const Wc = 360, Hc = 152, pL = 44, pR = 14, pT = 16, pB = 26;
+      const plotW = Wc - pL - pR, plotH = Hc - pT - pB;
+      const pts = series.map((v, i) => ({
+        x: pL + (i / Math.max(1, series.length - 1)) * plotW,
+        y: pT + plotH - ((v - padLo) / span) * plotH,
+        v, i
+      }));
+      const lineD = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+      const baseZeroY = metric === "growth"
+        ? (pT + plotH - ((0 - padLo) / span) * plotH)
+        : (pT + plotH);
+      const areaD = pts.length
+        ? `${lineD} L${pts[pts.length - 1].x.toFixed(1)},${baseZeroY.toFixed(1)} L${pts[0].x.toFixed(1)},${baseZeroY.toFixed(1)} Z`
+        : "";
+      const activePt = pts[yIdx] || pts[pts.length - 1];
+      const trendColor = selC.color || "var(--accent-gold)";
+      const cFirst = series[0], cLast = series[series.length - 1];
+      const tenYearNote = metric === "growth"
+        ? `${isZh ? "10年均速" : "10Y Avg"} ${(series.reduce((a, b) => a + b, 0) / Math.max(1, series.length)).toFixed(1)}%`
+        : (cFirst > 0 ? `${isZh ? "10年变化" : "10Y Chg"} ${((cLast - cFirst) / cFirst * 100) >= 0 ? "+" : ""}${((cLast - cFirst) / cFirst * 100).toFixed(1)}%` : "");
+
+      const rangeLabels = getMacroMetricRangeLabels(metric);
+      const searchQ = (state.macroMapSearch || "").trim().toLowerCase();
+      const quickCountries = Object.values(dict)
+        .filter(c => (state.macroMapRegion === "all" || c.region === state.macroMapRegion) && (!searchQ || c.zh.toLowerCase().includes(searchQ) || c.en.toLowerCase().includes(searchQ) || c.iso3.toLowerCase().includes(searchQ)))
+        .sort((a, b) => (b[metric]?.[yIdx] ?? -999) - (a[metric]?.[yIdx] ?? -999))
+        .slice(0, searchQ ? 18 : 12);
+
+      const top8 = regionRanked.slice(0, 8);
+      const topMaxVal = Math.max(0.001, ...top8.map(x => Math.abs(x.val)));
+
+      box.innerHTML = `
+        <div class="grid-4" style="margin-bottom:12px;">
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `全球名义 GDP (${yLabel})` : `Global Nominal GDP (${yLabel})`}</div>
+            <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;color:var(--accent-gold-text);">$${globalTot.toFixed(1)}T ${globalYoY !== null ? `<span style="font-size:11px;color:${globalYoY >= 0 ? "var(--accent-fx)" : "var(--down)"};">${globalYoY >= 0 ? "+" : ""}${globalYoY.toFixed(1)}%</span>` : ""}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `${yLabel} ${mInfo.zh}全球榜首` : `${yLabel} #1 (${mInfo.en})`}</div>
+            <div class="mono" style="font-size:16px;font-weight:700;margin-top:3px;">${top1 ? `${isZh ? top1.zh : top1.en} · ${formatMacroVal(top1.val, metric, true)}` : "—"}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `当前选中：${selC.zh} (${yLabel})` : `Selected: ${selC.en} (${yLabel})`}</div>
+            <div class="mono" style="font-size:16px;font-weight:700;margin-top:3px;">#${selRank || "—"} · ${formatMacroVal(selC[metric]?.[yIdx], metric)}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? "数据覆盖与状态 (meta.json)" : "Coverage & Status (meta.json)"}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;">
+              <strong class="mono" style="font-size:14px;">${Object.keys(dict).length} ${isZh ? "国" : "Economies"}</strong>
+              <span class="${meta.isDemo ? "macro-badge-emde" : "macro-badge-adv"}">${meta.isDemo ? (isZh ? "基准示例数据" : "Baseline Demo") : (isZh ? "World Bank 实时" : "World Bank Live")}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="macro-map-toolbar">
+          <div class="scroll-strip" style="margin-bottom:0;">
+            ${Object.values(MACRO_METRICS).map(m => `
+              <button class="btn ${metric === m.id ? "active" : ""}" onclick="setMacroMapMetric('${m.id}')">${isZh ? `${m.zh} (${m.unit})` : `${m.en} (${m.unit})`}</button>
+            `).join("")}
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <select class="inp" style="padding:4px 8px;font-size:12px;" onchange="state.macroMapRegion=this.value;renderMacroMapTab()">
+              <option value="all" ${state.macroMapRegion === "all" ? "selected" : ""}>${isZh ? "全球视角 (全部)" : "Global (All)"}</option>
+              <option value="apac" ${state.macroMapRegion === "apac" ? "selected" : ""}>${isZh ? "亚太地区" : "Asia-Pacific"}</option>
+              <option value="europe" ${state.macroMapRegion === "europe" ? "selected" : ""}>${isZh ? "欧洲地区" : "Europe"}</option>
+              <option value="americas" ${state.macroMapRegion === "americas" ? "selected" : ""}>${isZh ? "美洲地区" : "Americas"}</option>
+              <option value="mea" ${state.macroMapRegion === "mea" ? "selected" : ""}>${isZh ? "中东与非洲" : "MEA"}</option>
+            </select>
+            <button class="btn primary" onclick="openAnimatedMacroPosterFromMap()">🎬 ${isZh ? "生成动态海报" : "Animated Poster"}</button>
+          </div>
+        </div>
+
+        <div class="macro-timeline-bar">
+          <button class="btn ${state.macroMapPlaying ? "primary" : ""}" style="min-width:96px;" onclick="toggleMacroMapPlay()">
+            ${state.macroMapPlaying ? (isZh ? "⏸ 暂停演进" : "⏸ Pause") : (isZh ? "▶ 播放年份" : "▶ Play")}
+          </button>
+          <div class="macro-year-badge">${yLabel}</div>
+          <div class="macro-slider-wrap">
+            <input type="range" min="0" max="${years.length - 1}" step="1" value="${yIdx}" oninput="stopMacroMapPlay();setMacroMapYear(this.value)" />
+            <div class="macro-year-ticks">
+              ${years.map((yl, i) => `<span class="macro-year-tick ${i === yIdx ? "active" : ""}" onclick="stopMacroMapPlay();setMacroMapYear(${i})">${yl}</span>`).join("")}
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <button class="btn-mini ${state.macroMapSpeed === 1400 ? "active" : ""}" onclick="setMacroMapSpeed(1400)">0.7x</button>
+            <button class="btn-mini ${state.macroMapSpeed === 1000 ? "active" : ""}" onclick="setMacroMapSpeed(1000)">1x</button>
+            <button class="btn-mini ${state.macroMapSpeed === 550 ? "active" : ""}" onclick="setMacroMapSpeed(550)">2x</button>
+          </div>
+        </div>
+
+        <div class="macro-map-grid">
+          <div class="macro-map-stage">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <strong style="font-size:13px;">${isZh ? `全球${mInfo.zh}分布热力图 · ${yLabel}` : `Global ${mInfo.en} Choropleth · ${yLabel}`}</strong>
+              <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? "悬停看排名 · 点击国家查看 10 年走势" : "Hover for rank · Click country for 10Y trend"}</span>
+            </div>
+            <div class="macro-map-svg-wrap">${mapSvgInner}</div>
+            <div class="macro-legend-row">
+              <div class="macro-legend-bar">
+                <span class="mono">${rangeLabels[0]}</span>
+                <span class="macro-legend-gradient" style="background:${mInfo.gradient};"></span>
+                <span class="mono">${rangeLabels[2]}</span>
+                <span style="margin-left:8px;display:inline-flex;align-items:center;gap:4px;">
+                  <span style="width:10px;height:10px;border-radius:2px;background:${noDataFill};border:1px solid var(--border-hairline);display:inline-block;"></span>
+                  ${isZh ? "暂无数据" : "No Data"}
+                </span>
+              </div>
+              <span class="mono" style="color:var(--ink-muted);">${isZh ? mInfo.descZh : mInfo.descEn}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:6px;border-top:1px dashed var(--border-hairline);">
+              <input type="text" class="inp" style="width:155px;padding:3px 8px;font-size:11.5px;" placeholder="${isZh ? "快速定位国家..." : "Find country..."}" value="${escAttr(state.macroMapSearch || "")}" oninput="state.macroMapSearch=this.value;renderMacroMapTab()" />
+              ${quickCountries.map(c => `
+                <button class="btn-mini" style="${c.iso3 === selC.iso3 ? "background:var(--accent-gold);color:#fff;border-color:var(--accent-gold);font-weight:700;" : ""}" onclick="selectMacroMapCountry('${c.iso3}')">${isZh ? c.zh : c.iso3}</button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="macro-detail-panel">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;border-bottom:1px solid var(--border-hairline);padding-bottom:8px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                  <span class="mono" style="font-size:11px;padding:2px 6px;border-radius:3px;background:var(--border-strong);color:var(--bg-card);font-weight:700;">${selC.iso3}</span>
+                  <strong class="serif" style="font-size:18px;">${isZh ? selC.zh : selC.en}</strong>
+                  <span class="${selC.imfClass === "adv" ? "macro-badge-adv" : "macro-badge-emde"}">${selC.imfClass === "adv" ? (isZh ? "发达经济体" : "Advanced") : (isZh ? "新兴市场" : "EMDE")}</span>
+                </div>
+                <div style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">${selC.en} · ${tenYearNote}</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="mono" style="font-size:18px;font-weight:700;color:var(--accent-gold-text);">${formatMacroVal(selC[metric]?.[yIdx], metric)}</div>
+                <div class="mono" style="font-size:11px;color:var(--ink-muted);">${yLabel} · #${selRank || "—"}</div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;margin-bottom:4px;">
+                <strong>${isZh ? `${selC.zh} 10年${mInfo.zh}走势 (2016–2026E)` : `${selC.en} 10Y ${mInfo.en}`}</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">${isZh ? "点击节点切换年份" : "Click node for year"}</span>
+              </div>
+              <svg viewBox="0 0 ${Wc} ${Hc}" style="width:100%;height:auto;background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;">
+                <defs>
+                  <linearGradient id="macroTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="${trendColor}" stop-opacity="0.32" />
+                    <stop offset="100%" stop-color="${trendColor}" stop-opacity="0.02" />
+                  </linearGradient>
+                </defs>
+                ${[0, 0.5, 1].map(f => {
+                  const gy = pT + plotH * f;
+                  const gv = padHi - span * f;
+                  return `<line x1="${pL}" y1="${gy.toFixed(1)}" x2="${Wc - pR}" y2="${gy.toFixed(1)}" stroke="var(--border-hairline)" stroke-dasharray="2 3" />
+                          <text x="${pL - 5}" y="${(gy + 3.5).toFixed(1)}" text-anchor="end" font-size="9.5" fill="var(--ink-muted)" font-family="var(--font-mono)">${formatMacroVal(gv, metric, true)}</text>`;
+                }).join("")}
+                ${metric === "growth" ? `<line x1="${pL}" y1="${baseZeroY.toFixed(1)}" x2="${Wc - pR}" y2="${baseZeroY.toFixed(1)}" stroke="var(--border-strong)" stroke-width="0.9" stroke-dasharray="3 2" />` : ""}
+                <path d="${areaD}" fill="url(#macroTrendGrad)" />
+                <path d="${lineD}" fill="none" stroke="${trendColor}" stroke-width="2.2" />
+                ${activePt ? `<line x1="${activePt.x.toFixed(1)}" y1="${pT}" x2="${activePt.x.toFixed(1)}" y2="${pT + plotH}" stroke="var(--accent-gold)" stroke-width="1.4" stroke-dasharray="3 2" />` : ""}
+                ${pts.map(p => `
+                  <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.i === yIdx ? 4.8 : 2.8}"
+                    fill="${p.i === yIdx ? "var(--accent-gold)" : trendColor}" stroke="var(--bg-card)" stroke-width="1.3"
+                    style="cursor:pointer;" onclick="stopMacroMapPlay();setMacroMapYear(${p.i})">
+                    <title>${years[p.i]}: ${formatMacroVal(p.v, metric)}</title>
+                  </circle>
+                  ${(p.i === 0 || p.i === 5 || p.i === pts.length - 1) ? `<text x="${p.x.toFixed(1)}" y="${Hc - 7}" text-anchor="middle" font-size="9.5" fill="var(--ink-muted)" font-family="var(--font-mono)">${years[p.i]}</text>` : ""}
+                `).join("")}
+              </svg>
+            </div>
+
+            <div class="macro-country-stats-4">
+              ${Object.values(MACRO_METRICS).map(m => `
+                <div class="macro-mini-stat ${m.id === metric ? "active-metric" : ""}" style="cursor:pointer;" onclick="setMacroMapMetric('${m.id}')">
+                  <div style="font-size:10.5px;color:var(--ink-muted);">${isZh ? m.zh : m.en} (${yLabel})</div>
+                  <div class="mono" style="font-size:13.5px;font-weight:700;margin-top:2px;">${formatMacroVal(selC[m.id]?.[yIdx], m.id)}</div>
+                </div>
+              `).join("")}
+            </div>
+
+            <div style="border-top:1px solid var(--border-hairline);padding-top:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;margin-bottom:5px;">
+                <strong>${isZh ? `${yLabel} ${mInfo.zh} Top 8 排行` : `${yLabel} Top 8 (${mInfo.en})`}</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">${isZh ? "点击切换聚焦国" : "Click to focus"}</span>
+              </div>
+              <div class="macro-rank-list">
+                ${top8.map((item, idx) => {
+                  const pctW = Math.max(4, (Math.abs(item.val) / topMaxVal) * 100);
+                  const barCol = metric === "growth" && item.val < 0 ? "#C84B4B" : (item.iso3 === selC.iso3 ? "var(--accent-gold)" : (item.color || "var(--accent-macro)"));
+                  return `
+                    <div class="macro-rank-item ${item.iso3 === selC.iso3 ? "selected" : ""}" onclick="selectMacroMapCountry('${item.iso3}')">
+                      <span class="mono" style="color:var(--ink-muted);">${String(idx + 1).padStart(2, "0")}</span>
+                      <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${isZh ? item.zh : item.en}</span>
+                      <div class="macro-rank-bar-bg"><div class="macro-rank-bar-fill" style="width:${pctW.toFixed(1)}%;background:${barCol};"></div></div>
+                      <span class="mono" style="text-align:right;font-weight:700;">${formatMacroVal(item.val, metric, true)}</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="macro-meta-banner">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:3px;">
+            <strong>📌 ${isZh ? "数据来源与统计口径（由 meta.json 提供）" : "Data Source & Methodology (meta.json)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? `截至年份：${meta.asOfYear || 2026}（实际统计截至 ${meta.actualThroughYear || 2025}） · 更新：${meta.updatedAt || "2026-11-26"}` : `Through ${meta.asOfYear || 2026} (Actual ${meta.actualThroughYear || 2025})`}</span>
+          </div>
+          <div>${isZh ? (meta.methodologyNote || "") : (meta.sourceEn || meta.source || "")}</div>
+          <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:3px;">${isZh ? `当前数据源：${meta.source}` : `Source: ${meta.sourceEn || meta.source}`}</div>
+        </div>
+      `;
+    }
+
     function renderWorldMacro() {
       const tabsBox = document.getElementById("macro-tabs");
       if (!tabsBox) return;
       const isZh = state.lang === "zh";
       const tabs = [
+        { id: "map",    zh: "🗺 动态世界宏观看板",          en: "🗺 Interactive World Map" },
         { id: "gdp",    zh: "近10年 GDP 走势 (2016–2026E)", en: "10Y GDP Trends (2016–2026E)" },
         { id: "ppp",    zh: "人均 GDP 与购买力 (PPP)",      en: "Per Capita & PPP" },
         { id: "cities", zh: "核心城市 GDP 排名 Top 20",     en: "Top 20 Global Cities" }
       ];
-      if (!tabs.some(tb => tb.id === state.macroTab)) state.macroTab = "gdp";
+      if (!tabs.some(tb => tb.id === state.macroTab)) state.macroTab = "map";
+      if (state.macroTab !== "map") stopMacroMapPlay();
       tabsBox.innerHTML = tabs.map(tb =>
         `<button class="btn ${state.macroTab === tb.id ? "active" : ""}" onclick="state.macroTab='${tb.id}';renderWorldMacro()">${isZh ? tb.zh : tb.en}</button>`
       ).join("");
 
-      if (state.macroTab === "gdp") renderMacroGdpTab();
+      if (state.macroTab === "map") renderMacroMapTab();
+      else if (state.macroTab === "gdp") renderMacroGdpTab();
       else if (state.macroTab === "ppp") renderMacroPppTab();
       else renderMacroCitiesTab();
     }
@@ -5980,6 +7008,1037 @@ url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMExce
             : "All entries strictly follow single municipal administrative boundaries (City Proper / County-equivalent) rather than multi-county Metropolitan Statistical Areas (MSA)."}
           <a href="https://www.bea.gov/data/gdp/gdp-county-metro-and-other-areas" target="_blank" rel="noopener noreferrer">US BEA Regional GDP</a> ·
           <a href="https://data.stats.gov.cn/" target="_blank" rel="noopener noreferrer">中国国家统计局 NBS</a>
+        </div>
+      `;
+    }
+
+    /* =========================================================================
+       7.5 中国区域经济全景引擎 (含港澳台 34 省级行政区: 地图 / 产业与GDP构成 / 人口地理 / 经济圈)
+       ========================================================================= */
+    const CHINA_METRICS = {
+      gdp: {
+        id: "gdp", zh: "名义 GDP", en: "Nominal GDP",
+        gradient: "linear-gradient(90deg, #F3E4D2 0%, #DF9D64 38%, #B84A39 72%, #6E1C1A 100%)",
+        stops: [[243,228,210],[223,157,100],[184,74,57],[110,28,26]]
+      },
+      pc: {
+        id: "pc", zh: "人均 GDP", en: "GDP Per Capita",
+        gradient: "linear-gradient(90deg, #E2ECF5 0%, #8CB5D9 38%, #346899 72%, #132F4C 100%)",
+        stops: [[226,236,245],[140,181,217],[52,104,153],[19,47,76]]
+      },
+      growth: {
+        id: "growth", zh: "GDP 增速", en: "Real Growth",
+        gradient: "linear-gradient(90deg, #C84B4B 0%, #E7A99A 28%, #EAE4D8 48%, #6FA898 72%, #1A5C4B 100%)",
+        stops: [[200,75,75],[234,228,216],[26,92,75]]
+      },
+      pop: {
+        id: "pop", zh: "常住人口", en: "Population",
+        gradient: "linear-gradient(90deg, #ECE7F2 0%, #A997C4 40%, #6A538E 75%, #372459 100%)",
+        stops: [[236,231,242],[169,151,196],[106,83,142],[55,36,89]]
+      },
+      tertiary: {
+        id: "tertiary", zh: "第三产业占比", en: "Tertiary Share",
+        gradient: "linear-gradient(90deg, #E2F1E9 0%, #7CC0A3 40%, #287D5F 75%, #0E4231 100%)",
+        stops: [[226,241,233],[124,192,163],[40,125,95],[14,66,49]]
+      },
+      urban: {
+        id: "urban", zh: "城镇化率", en: "Urbanization",
+        gradient: "linear-gradient(90deg, #F5ECDA 0%, #D9B467 42%, #9C7228 76%, #593E11 100%)",
+        stops: [[245,236,218],[217,180,103],[156,114,40],[89,62,17]]
+      }
+    };
+
+    const chinaMacroStore = {
+      loaded: false,
+      loading: false,
+      map: null,
+      path2dCache: null,
+      data: null,
+      meta: {
+        title: "中国区域经济宏观全景（含港澳台 34 省级行政区）",
+        source: "国家统计局 (NBS) · 各省区市统计公报 · 香港 C&SD · 澳门 DSEC · 台湾 DGBAS",
+        asOfYear: 2025,
+        actualThroughYear: 2025,
+        provinceCount: 34,
+        updatedAt: "2026-11-26",
+        methodologyNote: "口径说明：覆盖全国 34 个省级行政区（内地 31 省区市 + 香港 + 澳门 + 台湾）。内地以人民币现价核算，港澳台按对应年度平均汇率折算同币种对比。"
+      }
+    };
+
+    let chinaPlayTimer = null;
+
+    async function ensureChinaMacroAssets() {
+      if (chinaMacroStore.loaded || chinaMacroStore.loading) return;
+      chinaMacroStore.loading = true;
+      try {
+        const [mapRes, dataRes, metaRes] = await Promise.allSettled([
+          fetch("/data/china-map.json"),
+          fetch("/data/china-macro.json"),
+          fetch("/data/china-meta.json")
+        ]);
+        if (mapRes.status === "fulfilled" && mapRes.value.ok) {
+          chinaMacroStore.map = await mapRes.value.json();
+          chinaMacroStore.path2dCache = null;
+        }
+        if (dataRes.status === "fulfilled" && dataRes.value.ok) {
+          chinaMacroStore.data = await dataRes.value.json();
+        }
+        if (metaRes.status === "fulfilled" && metaRes.value.ok) {
+          const m = await metaRes.value.json();
+          chinaMacroStore.meta = { ...chinaMacroStore.meta, ...m };
+        }
+        chinaMacroStore.loaded = true;
+      } catch (e) {
+        console.warn("China macro assets load error:", e);
+      } finally {
+        chinaMacroStore.loading = false;
+        renderChinaMacro();
+        if (document.getElementById("poster-modal")?.classList.contains("open") && state.posterMode === "china_anim") {
+          drawPosterCanvas();
+        }
+      }
+    }
+
+    function getChinaProvincesDict() {
+      return chinaMacroStore.data?.provinces || {};
+    }
+
+    function getChinaMetricValue(p, metric, yIdx, cur = state.chinaCurrency) {
+      if (!p) return null;
+      if (metric === "gdp") return cur === "USD" ? (p.gdpUsd?.[yIdx] ?? null) : (p.gdpCny?.[yIdx] ?? null);
+      if (metric === "pc") return cur === "USD" ? (p.pcUsd?.[yIdx] ?? null) : (p.pcCny?.[yIdx] ?? null);
+      if (metric === "growth") return p.growth?.[yIdx] ?? null;
+      if (metric === "pop") return p.popWan?.[yIdx] ?? null;
+      if (metric === "tertiary") return p.industry?.tertiary ?? null;
+      if (metric === "urban") return p.urbanPct ?? null;
+      return null;
+    }
+
+    function formatChinaVal(val, metric, cur = state.chinaCurrency, compact = false) {
+      if (val === null || val === undefined || isNaN(val)) return "—";
+      if (metric === "gdp") {
+        if (cur === "USD") {
+          return val >= 1000 ? `$${(val / 1000).toFixed(2)}T` : `$${Number(val).toFixed(compact ? 0 : 1)}B`;
+        }
+        if (val >= 10000) return `¥${(val / 10000).toFixed(2)}万亿`;
+        return `¥${Math.round(val).toLocaleString("en-US")}亿`;
+      }
+      if (metric === "pc") {
+        if (cur === "USD") {
+          return compact && val >= 10000 ? `$${(val / 1000).toFixed(1)}k` : `$${Math.round(val).toLocaleString("en-US")}`;
+        }
+        return `¥${Number(val).toFixed(compact ? 1 : 2)}万`;
+      }
+      if (metric === "growth") return `${val >= 0 ? "+" : ""}${Number(val).toFixed(1)}%`;
+      if (metric === "pop") return val >= 10000 ? `${(val / 10000).toFixed(2)}亿` : `${Math.round(val).toLocaleString("en-US")}万`;
+      if (metric === "tertiary" || metric === "urban") return `${Number(val).toFixed(1)}%`;
+      return String(val);
+    }
+
+    function getChinaMapColor(val, metric, cur = state.chinaCurrency) {
+      if (val === null || val === undefined || isNaN(val)) return null;
+      const m = CHINA_METRICS[metric] || CHINA_METRICS.gdp;
+      if (metric === "gdp") {
+        const hi = cur === "USD" ? 2100 : 150000;
+        const lo = cur === "USD" ? 35 : 2500;
+        const norm = Math.log10(Math.max(lo, val) / lo) / Math.log10(hi / lo);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "pc") {
+        const hi = cur === "USD" ? 65000 : 45;
+        const lo = cur === "USD" ? 7000 : 5;
+        const norm = Math.pow(Math.max(0, Math.min(1, (val - lo) / (hi - lo))), 0.65);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "growth") {
+        if (val < 0) return lerpRgb(m.stops[0], m.stops[1], Math.max(0, Math.min(1, (val + 8) / 8)));
+        return lerpRgb(m.stops[1], m.stops[2], Math.max(0, Math.min(1, val / 9.5)));
+      }
+      if (metric === "pop") {
+        const norm = Math.pow(Math.max(0, Math.min(1, val / 13000)), 0.72);
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "tertiary") {
+        const norm = Math.max(0, Math.min(1, (val - 42) / 52));
+        return sampleRamp(m.stops, norm);
+      }
+      if (metric === "urban") {
+        const norm = Math.max(0, Math.min(1, (val - 38) / 62));
+        return sampleRamp(m.stops, norm);
+      }
+      return sampleRamp(m.stops, 0.5);
+    }
+
+    function getChinaRangeLabels(metric, cur = state.chinaCurrency) {
+      if (metric === "gdp") return cur === "USD" ? ["$40B", "$400B", "$2.1T+"] : ["¥0.3万亿", "¥3.5万亿", "¥15万亿"];
+      if (metric === "pc") return cur === "USD" ? ["$7k", "$20k", "$65k+"] : ["¥5万", "¥15万", "¥45万+"];
+      if (metric === "growth") return ["-8%", "0%", "+9.5%"];
+      if (metric === "pop") return ["70万", "4500万", "1.3亿"];
+      if (metric === "tertiary") return ["42%", "65%", "95%"];
+      return ["38%", "68%", "100%"];
+    }
+
+    function matchesChinaFilter(p, filterId) {
+      if (!filterId || filterId === "all") return true;
+      if (["east","south","north","central","southwest","northwest","northeast","hmt"].includes(filterId)) {
+        return p.region === filterId;
+      }
+      return Array.isArray(p.clusters) && p.clusters.includes(filterId);
+    }
+
+    function getChinaRankedList(metric, yIdx, filterId = "all", cur = state.chinaCurrency) {
+      const dict = getChinaProvincesDict();
+      return Object.values(dict)
+        .filter(p => matchesChinaFilter(p, filterId))
+        .map(p => ({ ...p, val: getChinaMetricValue(p, metric, yIdx, cur) }))
+        .filter(p => p.val !== null && p.val !== undefined && !isNaN(p.val))
+        .sort((a, b) => b.val - a.val);
+    }
+
+    function stopChinaPlay() {
+      state.chinaPlaying = false;
+      if (chinaPlayTimer) {
+        clearInterval(chinaPlayTimer);
+        chinaPlayTimer = null;
+      }
+    }
+
+    function toggleChinaPlay() {
+      if (state.chinaPlaying) {
+        stopChinaPlay();
+        renderChinaMapTab();
+        return;
+      }
+      state.chinaPlaying = true;
+      const maxIdx = (chinaMacroStore.data?.yearLabels || []).length - 1 || 9;
+      if (state.chinaYearIdx >= maxIdx) state.chinaYearIdx = 0;
+      renderChinaMapTab();
+      chinaPlayTimer = setInterval(() => {
+        if (state.chinaTab !== "map") { stopChinaPlay(); return; }
+        if (state.chinaYearIdx >= maxIdx) { stopChinaPlay(); renderChinaMapTab(); return; }
+        state.chinaYearIdx += 1;
+        renderChinaMapTab();
+      }, state.chinaSpeed || 1000);
+    }
+
+    function setChinaSpeed(ms) {
+      state.chinaSpeed = ms;
+      if (state.chinaPlaying) { stopChinaPlay(); toggleChinaPlay(); }
+      else renderChinaMapTab();
+    }
+
+    function setChinaYear(idx) {
+      const maxIdx = (chinaMacroStore.data?.yearLabels || []).length - 1 || 9;
+      state.chinaYearIdx = Math.max(0, Math.min(maxIdx, Number(idx)));
+      renderChinaMapTab();
+    }
+
+    function selectChinaProvince(code, jumpToMap = false) {
+      const dict = getChinaProvincesDict();
+      if (!dict[code]) return;
+      state.chinaSelectedCode = code;
+      if (jumpToMap) {
+        state.chinaTab = "map";
+        renderChinaMacro();
+      } else {
+        renderChinaMapTab();
+      }
+    }
+
+    function showChinaMapTip(evt, code) {
+      const tip = document.getElementById("tooltip");
+      if (!tip) return;
+      const isZh = state.lang === "zh";
+      const dict = getChinaProvincesDict();
+      const p = dict[code];
+      if (!p) return;
+      const yIdx = state.chinaYearIdx;
+      const yLabel = chinaMacroStore.data?.yearLabels?.[yIdx] || "2025";
+      const metric = state.chinaMetric || "gdp";
+      const mInfo = CHINA_METRICS[metric] || CHINA_METRICS.gdp;
+      const ranked = getChinaRankedList(metric, yIdx, "all", state.chinaCurrency);
+      const rank = ranked.findIndex(x => x.code === code) + 1;
+      const val = getChinaMetricValue(p, metric, yIdx, state.chinaCurrency);
+      const regInfo = chinaMacroStore.data?.regions?.[p.region];
+
+      tip.innerHTML = `
+        <div style="font-weight:700;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:3px;">
+          ${isZh ? p.fullZh : p.en} <span style="opacity:0.75;font-weight:400;">(${yLabel} · ${regInfo ? (isZh ? regInfo.zh : regInfo.en) : ""})</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:14px;">
+          <span>${isZh ? mInfo.zh : mInfo.en}</span>
+          <strong class="mono">${formatChinaVal(val, metric, state.chinaCurrency)}</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:14px;margin-top:2px;font-size:11px;opacity:0.88;">
+          <span>${isZh ? "全国排名" : "Rank"} #${rank || "—"}/34</span>
+          <span>${isZh ? "三产" : "Ind"} ${p.industry.primary}/${p.industry.secondary}/${p.industry.tertiary}%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;gap:14px;margin-top:2px;font-size:11px;opacity:0.82;">
+          <span>${isZh ? "人口" : "Pop"} ${formatChinaVal(p.popWan[yIdx], "pop")}</span>
+          <span>${isZh ? "城镇化" : "Urban"} ${p.urbanPct}%</span>
+        </div>
+        <div style="font-size:10.5px;opacity:0.68;margin-top:4px;">${isZh ? "点击查看完整省级深度档案" : "Click for full provincial profile"}</div>
+      `;
+      tip.style.left = Math.min(window.innerWidth - 270, evt.clientX + 14) + "px";
+      tip.style.top = Math.max(12, evt.clientY - 12) + "px";
+      tip.style.display = "block";
+    }
+
+    function openChinaAnimatedPoster() {
+      const m = CHINA_METRICS[state.chinaMetric] || CHINA_METRICS.gdp;
+      const isZh = state.lang === "zh";
+      state.chinaAnimPoster.metric = state.chinaMetric || "gdp";
+      state.chinaAnimPoster.currency = state.chinaCurrency || "CNY";
+      state.chinaAnimPoster.focusCode = state.chinaSelectedCode || "440000";
+      state.chinaAnimPoster.title = isZh ? `中国区域经济十年演进 · ${m.zh}` : `China Regional 10Y · ${m.en}`;
+      state.chinaAnimPoster.subtitle = isZh ? `含港澳台 34 省级行政区 · ${m.zh}动态地图与排名格局 (2016–2025)` : `34 Divisions incl. HK, Macao & Taiwan (2016–2025)`;
+      openPosterModal("china_anim");
+    }
+
+    function renderChinaMacro() {
+      const tabsBox = document.getElementById("china-tabs");
+      if (!tabsBox) return;
+      const isZh = state.lang === "zh";
+      const tabs = [
+        { id: "map",      zh: "🗺 中国区域动态地图",    en: "🗺 Regional Interactive Map" },
+        { id: "industry", zh: "🏭 GDP构成与产业结构",   en: "🏭 Composition & Industry" },
+        { id: "pop",      zh: "👥 人口、城镇化与地理",  en: "👥 Population & Geography" },
+        { id: "clusters", zh: "🧭 核心区域经济圈",      en: "🧭 Economic Clusters" }
+      ];
+      if (!tabs.some(tb => tb.id === state.chinaTab)) state.chinaTab = "map";
+      if (state.chinaTab !== "map") stopChinaPlay();
+
+      tabsBox.innerHTML = tabs.map(tb =>
+        `<button class="btn ${state.chinaTab === tb.id ? "active" : ""}" onclick="state.chinaTab='${tb.id}';renderChinaMacro()">${isZh ? tb.zh : tb.en}</button>`
+      ).join("");
+
+      if (!chinaMacroStore.data) {
+        ensureChinaMacroAssets();
+        const box = document.getElementById("china-tab-content");
+        if (box) box.innerHTML = `<div style="padding:36px;text-align:center;color:var(--ink-muted);font-size:13px;">${isZh ? "正在加载中国 34 省级行政区矢量底图与 10 年宏观经济数据..." : "Loading China 34-division map & 10Y macroeconomic dataset..."}</div>`;
+        return;
+      }
+
+      if (state.chinaTab === "map") renderChinaMapTab();
+      else if (state.chinaTab === "industry") renderChinaIndustryTab();
+      else if (state.chinaTab === "pop") renderChinaPopGeoTab();
+      else renderChinaClustersTab();
+    }
+
+    function renderChinaMapTab() {
+      const box = document.getElementById("china-tab-content");
+      if (!box || !chinaMacroStore.data) return;
+      const isZh = state.lang === "zh";
+      const data = chinaMacroStore.data;
+      const meta = chinaMacroStore.meta;
+      const dict = getChinaProvincesDict();
+      const years = data.yearLabels || [];
+      const yIdx = Math.max(0, Math.min(years.length - 1, state.chinaYearIdx));
+      const yLabel = years[yIdx] || "2025";
+      const cur = state.chinaCurrency || "CNY";
+      const fx = data.fxUsdCny?.[yIdx] || 7.20;
+      const metric = state.chinaMetric || "gdp";
+      const mInfo = CHINA_METRICS[metric] || CHINA_METRICS.gdp;
+
+      if (!dict[state.chinaSelectedCode]) state.chinaSelectedCode = "440000";
+      const selP = dict[state.chinaSelectedCode];
+      const regInfo = data.regions?.[selP.region] || { zh: "", en: "" };
+
+      const allRanked = getChinaRankedList(metric, yIdx, "all", cur);
+      const filtRanked = getChinaRankedList(metric, yIdx, state.chinaFilter, cur);
+      const top1 = allRanked[0];
+      const selRank = allRanked.findIndex(x => x.code === selP.code) + 1;
+
+      // National Totals (Mainland 31 primary + All 34 incl. HK/MO/TW alongside)
+      const mlGdpCny = data.totals.mainlandGdpCny[yIdx];
+      const allGdpCny = data.totals.all34GdpCny[yIdx];
+      const mlPop = data.totals.mainlandPopWan[yIdx];
+      const allPop = data.totals.all34PopWan[yIdx];
+      const mlGdpDisp = cur === "USD" ? `$${(mlGdpCny / fx / 10000).toFixed(2)}T` : `¥${(mlGdpCny / 10000).toFixed(2)}万亿`;
+      const allGdpDisp = cur === "USD" ? `$${(allGdpCny / fx / 10000).toFixed(2)}T` : `¥${(allGdpCny / 10000).toFixed(2)}万亿`;
+      const mlPcCny = mlGdpCny / mlPop;
+      const mlPcDisp = cur === "USD" ? `$${Math.round((mlPcCny * 10000) / fx).toLocaleString("en-US")}` : `¥${mlPcCny.toFixed(2)}万`;
+      const selGdpShare = ((selP.gdpCny[yIdx] / allGdpCny) * 100).toFixed(1);
+
+      // Build China 34-Province Albers Map SVG
+      const cmap = chinaMacroStore.map;
+      const isDark = (state.theme === "evening" || state.theme === "wallstreet" || state.theme === "obsidian");
+      const emptyFill = isDark ? "#232934" : "#E6E2D8";
+      const strokeCol = isDark ? "rgba(255,255,255,0.22)" : "rgba(35,33,30,0.34)";
+
+      let mapSvg = "";
+      if (cmap && Array.isArray(cmap.provinces)) {
+        const paths = cmap.provinces.map(mp => {
+          const p = dict[mp.code];
+          const val = getChinaMetricValue(p, metric, yIdx, cur);
+          const inFilt = matchesChinaFilter(p, state.chinaFilter);
+          const fill = (p && inFilt) ? (getChinaMapColor(val, metric, cur) || emptyFill) : emptyFill;
+          const isSel = mp.code === selP.code;
+          const op = (p && !inFilt) ? "0.24" : "1";
+          return `<path class="map-country-path${isSel ? " selected" : ""}" d="${mp.d}" fill="${fill}" fill-opacity="${op}" stroke="${strokeCol}" stroke-width="0.75"
+            onmousemove="showChinaMapTip(event,'${mp.code}')" onmouseleave="hideMacroTip()"
+            onclick="selectChinaProvince('${mp.code}')" />`;
+        }).join("");
+
+        // Subtle province short labels for major provinces (skip cramped Jing-Jin / HK-MO handled cleanly)
+        const labels = cmap.provinces.filter(mp => !["810000","820000","120000","310000"].includes(mp.code)).map(mp => {
+          const p = dict[mp.code];
+          if (!p || !matchesChinaFilter(p, state.chinaFilter)) return "";
+          const isSel = mp.code === selP.code;
+          return `<text x="${mp.c[0]}" y="${mp.c[1] + 3}" text-anchor="middle" pointer-events="none" font-size="${isSel ? 11.5 : 9.5}" font-weight="${isSel ? "700" : "600"}" fill="${isDark ? "#F5F2EB" : "#1F1D1A"}" stroke="${isDark ? "rgba(15,18,24,0.85)" : "rgba(255,255,255,0.82)"}" stroke-width="2.4" paint-order="stroke">${isZh ? mp.zh : p.abbr}</text>`;
+        }).join("");
+
+        // Enlarged clickable callout badges for Hong Kong (810000), Macao (820000), Shanghai (310000), Tianjin (120000)
+        const hkGeo = cmap.provinces.find(x => x.code === "810000");
+        const moGeo = cmap.provinces.find(x => x.code === "820000");
+        const hkP = dict["810000"], moP = dict["820000"];
+        const hkFill = getChinaMapColor(getChinaMetricValue(hkP, metric, yIdx, cur), metric, cur) || "#A63A3A";
+        const moFill = getChinaMapColor(getChinaMetricValue(moP, metric, yIdx, cur), metric, cur) || "#A63A3A";
+
+        const hmtCallouts = (hkGeo && moGeo) ? `
+          <g>
+            <line x1="${hkGeo.c[0]}" y1="${hkGeo.c[1]}" x2="${hkGeo.c[0] + 40}" y2="${hkGeo.c[1] + 18}" stroke="var(--ink-secondary)" stroke-width="1" stroke-dasharray="2 2" />
+            <g style="cursor:pointer;" onmousemove="showChinaMapTip(event,'810000')" onmouseleave="hideMacroTip()" onclick="selectChinaProvince('810000')">
+              <rect x="${hkGeo.c[0] + 38}" y="${hkGeo.c[1] + 8}" width="54" height="21" rx="3" fill="${hkFill}" stroke="${selP.code === "810000" ? "var(--accent-gold)" : strokeCol}" stroke-width="${selP.code === "810000" ? 2.2 : 1}" />
+              <text x="${hkGeo.c[0] + 65}" y="${hkGeo.c[1] + 22}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" stroke="rgba(0,0,0,0.45)" stroke-width="1.8" paint-order="stroke">${isZh ? "香港" : "HK"}</text>
+            </g>
+            <line x1="${moGeo.c[0]}" y1="${moGeo.c[1]}" x2="${moGeo.c[0] - 8}" y2="${moGeo.c[1] + 36}" stroke="var(--ink-secondary)" stroke-width="1" stroke-dasharray="2 2" />
+            <g style="cursor:pointer;" onmousemove="showChinaMapTip(event,'820000')" onmouseleave="hideMacroTip()" onclick="selectChinaProvince('820000')">
+              <rect x="${moGeo.c[0] - 40}" y="${moGeo.c[1] + 34}" width="54" height="21" rx="3" fill="${moFill}" stroke="${selP.code === "820000" ? "var(--accent-gold)" : strokeCol}" stroke-width="${selP.code === "820000" ? 2.2 : 1}" />
+              <text x="${moGeo.c[0] - 13}" y="${moGeo.c[1] + 48}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#fff" stroke="rgba(0,0,0,0.45)" stroke-width="1.8" paint-order="stroke">${isZh ? "澳门" : "MO"}</text>
+            </g>
+          </g>
+        ` : "";
+
+        // Standard South China Sea Inset Box (南海诸岛)
+        const [ix, iy, iw, ih] = cmap.insetBox || [778, 492, 160, 190];
+        const scsInset = `
+          <g>
+            <rect x="${ix}" y="${iy}" width="${iw}" height="${ih}" rx="4" fill="${isDark ? "rgba(18,22,29,0.92)" : "rgba(247,244,237,0.94)"}" stroke="var(--border-strong)" stroke-width="1.1" />
+            <path d="${cmap.scsLand || ""}" fill="${emptyFill}" stroke="${strokeCol}" stroke-width="0.6" />
+            <path d="${cmap.scsDash || ""}" fill="none" stroke="var(--accent-cn)" stroke-width="1.6" stroke-linecap="round" />
+            <text x="${ix + iw - 8}" y="${iy + ih - 8}" text-anchor="end" font-size="11" font-weight="700" fill="var(--ink-secondary)">${isZh ? "南海诸岛" : "South China Sea"}</text>
+          </g>
+        `;
+
+        // Pulsing beacon on selected province
+        const selGeo = cmap.provinces.find(x => x.code === selP.code);
+        const beacon = selGeo ? `
+          <g pointer-events="none">
+            <circle cx="${selGeo.c[0]}" cy="${selGeo.c[1]}" r="9" fill="none" stroke="var(--accent-gold)" stroke-width="2">
+              <animate attributeName="r" values="6;17;6" dur="2.1s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.9;0.1;0.9" dur="2.1s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="${selGeo.c[0]}" cy="${selGeo.c[1]}" r="3.8" fill="var(--accent-gold)" stroke="#fff" stroke-width="1.2" />
+          </g>
+        ` : "";
+
+        mapSvg = `
+          <svg class="macro-map-svg" viewBox="0 0 960 700" preserveAspectRatio="xMidYMid meet">
+            ${paths}
+            ${labels}
+            ${hmtCallouts}
+            ${scsInset}
+            ${beacon}
+          </svg>
+        `;
+      }
+
+      // Build 10-Year Trend SVG for Selected Province (for GDP / PC / Growth / Pop; fallback to GDP if static metric)
+      const trendMetric = ["gdp","pc","growth","pop"].includes(metric) ? metric : "gdp";
+      const tmInfo = CHINA_METRICS[trendMetric];
+      const series = years.map((_, i) => getChinaMetricValue(selP, trendMetric, i, cur));
+      const sMin = Math.min(...series, trendMetric === "growth" ? 0 : Infinity);
+      const sMax = Math.max(...series, trendMetric === "growth" ? 2 : 0.1);
+      const padLo = trendMetric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
+      const padHi = trendMetric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
+      const span = Math.max(0.001, padHi - padLo);
+      const Wc = 360, Hc = 136, pL = 52, pR = 14, pT = 14, pB = 24;
+      const plotW = Wc - pL - pR, plotH = Hc - pT - pB;
+      const pts = series.map((v, i) => ({
+        x: pL + (i / Math.max(1, series.length - 1)) * plotW,
+        y: pT + plotH - ((v - padLo) / span) * plotH,
+        v, i
+      }));
+      const lineD = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+      const zeroY = trendMetric === "growth" ? (pT + plotH - ((0 - padLo) / span) * plotH) : (pT + plotH);
+      const areaD = pts.length ? `${lineD} L${pts[pts.length - 1].x.toFixed(1)},${zeroY.toFixed(1)} L${pts[0].x.toFixed(1)},${zeroY.toFixed(1)} Z` : "";
+      const activePt = pts[yIdx] || pts[pts.length - 1];
+      const lineCol = selP.color || "var(--accent-cn)";
+
+      const rangeLabels = getChinaRangeLabels(metric, cur);
+      const top8 = filtRanked.slice(0, 8);
+      const topMax = Math.max(0.001, ...top8.map(x => Math.abs(x.val)));
+      const searchQ = (state.chinaSearch || "").trim().toLowerCase();
+      const quickList = Object.values(dict)
+        .filter(p => matchesChinaFilter(p, state.chinaFilter) && (!searchQ || p.zh.includes(searchQ) || p.fullZh.includes(searchQ) || p.en.toLowerCase().includes(searchQ) || p.abbr.includes(searchQ)))
+        .sort((a, b) => (getChinaMetricValue(b, metric, yIdx, cur) ?? -999) - (getChinaMetricValue(a, metric, yIdx, cur) ?? -999))
+        .slice(0, searchQ ? 18 : 11);
+
+      const comp = selP.composition;
+      const consW = Math.max(5, comp.consumption);
+      const invW = Math.max(5, comp.investment);
+      const netW = Math.max(0, comp.netExport);
+      const compTot = Math.max(1, consW + invW + netW);
+
+      box.innerHTML = `
+        <div class="grid-4" style="margin-bottom:12px;">
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `全国名义 GDP · 内地31省 (${yLabel})` : `Mainland 31 GDP (${yLabel})`}</div>
+            <div class="mono" style="font-size:18px;font-weight:700;margin-top:2px;color:var(--accent-cn);">${mlGdpDisp}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? `含港澳台 34 省总计：${allGdpDisp}` : `All 34 incl. HMT: ${allGdpDisp}`}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `内地人均 GDP · 当前榜首 (${yLabel})` : `Per Capita & #1 (${yLabel})`}</div>
+            <div class="mono" style="font-size:17px;font-weight:700;margin-top:2px;">${mlPcDisp}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">${top1 ? `${mInfo.zh}#1：${isZh ? top1.zh : top1.en} ${formatChinaVal(top1.val, metric, cur, true)}` : ""}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `全国常住人口 (${yLabel})` : `Total Population (${yLabel})`}</div>
+            <div class="mono" style="font-size:17px;font-weight:700;margin-top:2px;">${(mlPop / 10000).toFixed(2)}${isZh ? "亿" : "00M"}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? `含港澳台 ${(allPop / 10000).toFixed(2)}亿 · 34 省全覆盖` : `All 34: ${(allPop / 10000).toFixed(2)}00M`}</div>
+          </div>
+          <div class="kpi-box">
+            <div style="font-size:11px;color:var(--ink-muted);">${isZh ? `当前聚焦：${selP.fullZh} (${yLabel})` : `Focus: ${selP.en} (${yLabel})`}</div>
+            <div class="mono" style="font-size:17px;font-weight:700;margin-top:2px;color:var(--accent-gold-text);">#${selRank || "—"} · ${formatChinaVal(getChinaMetricValue(selP, metric, yIdx, cur), metric, cur, true)}</div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? `占大中华区 GDP ${selGdpShare}%` : `Share of 34-div GDP: ${selGdpShare}%`}</div>
+          </div>
+        </div>
+
+        <div class="macro-map-toolbar">
+          <div class="scroll-strip" style="margin-bottom:0;">
+            ${Object.values(CHINA_METRICS).map(m => `
+              <button class="btn ${metric === m.id ? "active" : ""}" onclick="state.chinaMetric='${m.id}';renderChinaMapTab()">${isZh ? m.zh : m.en}</button>
+            `).join("")}
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <select class="inp" style="padding:4px 8px;font-size:12px;" onchange="state.chinaFilter=this.value;renderChinaMapTab()">
+              <option value="all" ${state.chinaFilter === "all" ? "selected" : ""}>${isZh ? "全部 34 省级行政区" : "All 34 Divisions"}</option>
+              <optgroup label="${isZh ? "重点经济圈" : "Economic Clusters"}">
+                <option value="yrd" ${state.chinaFilter === "yrd" ? "selected" : ""}>长三角 (沪苏浙皖)</option>
+                <option value="gba" ${state.chinaFilter === "gba" ? "selected" : ""}>粤港澳大湾区 (粤港澳)</option>
+                <option value="bth" ${state.chinaFilter === "bth" ? "selected" : ""}>京津冀协同圈</option>
+                <option value="cy" ${state.chinaFilter === "cy" ? "selected" : ""}>成渝双城经济圈</option>
+                <option value="strait" ${state.chinaFilter === "strait" ? "selected" : ""}>海峡两岸暨港澳</option>
+              </optgroup>
+              <optgroup label="${isZh ? "地理大区" : "Geographic Regions"}">
+                ${Object.entries(data.regions).map(([rk, rv]) => `<option value="${rk}" ${state.chinaFilter === rk ? "selected" : ""}>${isZh ? rv.zh : rv.en}</option>`).join("")}
+              </optgroup>
+            </select>
+            <button class="btn primary" onclick="openChinaAnimatedPoster()">🎬 ${isZh ? "动态海报" : "Animated Poster"}</button>
+          </div>
+        </div>
+
+        <div class="macro-timeline-bar">
+          <button class="btn ${state.chinaPlaying ? "primary" : ""}" style="min-width:96px;" onclick="toggleChinaPlay()">
+            ${state.chinaPlaying ? (isZh ? "⏸ 暂停演进" : "⏸ Pause") : (isZh ? "▶ 播放年份" : "▶ Play")}
+          </button>
+          <div class="macro-year-badge">${yLabel}</div>
+          <div class="macro-slider-wrap">
+            <input type="range" min="0" max="${years.length - 1}" step="1" value="${yIdx}" oninput="stopChinaPlay();setChinaYear(this.value)" />
+            <div class="macro-year-ticks">
+              ${years.map((yl, i) => `<span class="macro-year-tick ${i === yIdx ? "active" : ""}" onclick="stopChinaPlay();setChinaYear(${i})">${yl}</span>`).join("")}
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <button class="btn-mini ${state.chinaSpeed === 1400 ? "active" : ""}" onclick="setChinaSpeed(1400)">0.7x</button>
+            <button class="btn-mini ${state.chinaSpeed === 1000 ? "active" : ""}" onclick="setChinaSpeed(1000)">1x</button>
+            <button class="btn-mini ${state.chinaSpeed === 550 ? "active" : ""}" onclick="setChinaSpeed(550)">2x</button>
+          </div>
+        </div>
+
+        <div class="macro-map-grid">
+          <div class="macro-map-stage">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+              <strong style="font-size:13px;">${isZh ? `中国 34 省区市${mInfo.zh}分布图 · ${yLabel}` : `China 34-Division ${mInfo.en} Map · ${yLabel}`}</strong>
+              <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? "含香港、澳门、台湾与南海诸岛 · 点击省份查看深度档案" : "Incl. HK, Macao, Taiwan & SCS · Click to inspect"}</span>
+            </div>
+            <div class="china-map-svg-wrap">${mapSvg}</div>
+            <div class="macro-legend-row">
+              <div class="macro-legend-bar">
+                <span class="mono">${rangeLabels[0]}</span>
+                <span class="macro-legend-gradient" style="background:${mInfo.gradient};"></span>
+                <span class="mono">${rangeLabels[2]}</span>
+              </div>
+              <span class="mono" style="color:var(--ink-muted);">${isZh ? `币种：${cur === "CNY" ? "人民币 (¥)" : `美元 ($ · 汇率 ${fx})`}` : `Currency: ${cur}`}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:6px;border-top:1px dashed var(--border-hairline);">
+              <input type="text" class="inp" style="width:142px;padding:3px 8px;font-size:11.5px;" placeholder="${isZh ? "定位省/港/澳/台..." : "Find division..."}" value="${escAttr(state.chinaSearch || "")}" oninput="state.chinaSearch=this.value;renderChinaMapTab()" />
+              <button class="btn-mini" style="${selP.code === "810000" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="selectChinaProvince('810000')">香港</button>
+              <button class="btn-mini" style="${selP.code === "820000" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="selectChinaProvince('820000')">澳门</button>
+              <button class="btn-mini" style="${selP.code === "710000" ? "background:var(--accent-cn);color:#fff;font-weight:700;" : ""}" onclick="selectChinaProvince('710000')">台湾</button>
+              ${quickList.filter(p => !["810000","820000","710000"].includes(p.code)).slice(0, 8).map(p => `
+                <button class="btn-mini" style="${p.code === selP.code ? "background:var(--accent-gold);color:#fff;border-color:var(--accent-gold);font-weight:700;" : ""}" onclick="selectChinaProvince('${p.code}')">${isZh ? p.zh : p.en}</button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="macro-detail-panel">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;border-bottom:1px solid var(--border-hairline);padding-bottom:8px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                  <span class="mono" style="font-size:12px;padding:2px 7px;border-radius:3px;background:var(--accent-cn);color:#fff;font-weight:700;">${selP.abbr}</span>
+                  <strong class="serif" style="font-size:18px;">${isZh ? selP.fullZh : selP.en}</strong>
+                  <span class="${selP.isHmt ? "macro-badge-adv" : "macro-badge-emde"}">${isZh ? regInfo.zh : regInfo.en}</span>
+                </div>
+                <div style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">${selP.en} · ${isZh ? `省会/首府：${selP.capital}` : `Capital: ${selP.capital}`} · ${selP.geo.coastalType}</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="mono" style="font-size:17px;font-weight:700;color:var(--accent-cn);">${formatChinaVal(getChinaMetricValue(selP, metric, yIdx, cur), metric, cur)}</div>
+                <div class="mono" style="font-size:11px;color:var(--ink-muted);">${yLabel} · #${selRank || "—"}/34</div>
+              </div>
+            </div>
+
+            <div class="china-geo-box">
+              <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:4px;">
+                <strong>📍 ${isZh ? "地理信息与人口概览" : "Geography & Demographics"}</strong>
+                <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? `面积 ${selP.areaWanKm2}万km² · 密度 ${selP.density.toLocaleString()}人/km²` : `${selP.areaWanKm2}×10⁴ km² · ${selP.density}/km²`}</span>
+              </div>
+              <div style="color:var(--ink-secondary);">${selP.geo.terrainZh}</div>
+              <div class="mono" style="font-size:11px;color:var(--ink-muted);margin-top:4px;">
+                ${isZh ? `常住人口 ${formatChinaVal(selP.popWan[yIdx], "pop")}（近10年 ${selP.popChg10y >= 0 ? "+" : ""}${selP.popChg10y}万） · 城镇化率 ${selP.urbanPct}%` : `Pop: ${selP.popWan[yIdx]}0k · Urban: ${selP.urbanPct}%`}
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;margin-bottom:4px;">
+                <strong>${isZh ? `${selP.zh} 10年${tmInfo.zh}走势 (2016–2025)` : `${selP.en} 10Y ${tmInfo.en}`}</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">${isZh ? "点击节点切换年份" : "Click node"}</span>
+              </div>
+              <svg viewBox="0 0 ${Wc} ${Hc}" style="width:100%;height:auto;background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;">
+                <defs>
+                  <linearGradient id="chinaTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="${lineCol}" stop-opacity="0.30" />
+                    <stop offset="100%" stop-color="${lineCol}" stop-opacity="0.02" />
+                  </linearGradient>
+                </defs>
+                ${[0, 0.5, 1].map(f => {
+                  const gy = pT + plotH * f;
+                  const gv = padHi - span * f;
+                  return `<line x1="${pL}" y1="${gy.toFixed(1)}" x2="${Wc - pR}" y2="${gy.toFixed(1)}" stroke="var(--border-hairline)" stroke-dasharray="2 3" />
+                          <text x="${pL - 5}" y="${(gy + 3.5).toFixed(1)}" text-anchor="end" font-size="9" fill="var(--ink-muted)" font-family="var(--font-mono)">${formatChinaVal(gv, trendMetric, cur, true)}</text>`;
+                }).join("")}
+                ${trendMetric === "growth" ? `<line x1="${pL}" y1="${zeroY.toFixed(1)}" x2="${Wc - pR}" y2="${zeroY.toFixed(1)}" stroke="var(--border-strong)" stroke-width="0.9" stroke-dasharray="3 2" />` : ""}
+                <path d="${areaD}" fill="url(#chinaTrendGrad)" />
+                <path d="${lineD}" fill="none" stroke="${lineCol}" stroke-width="2.2" />
+                ${activePt ? `<line x1="${activePt.x.toFixed(1)}" y1="${pT}" x2="${activePt.x.toFixed(1)}" y2="${pT + plotH}" stroke="var(--accent-gold)" stroke-width="1.4" stroke-dasharray="3 2" />` : ""}
+                ${pts.map(p => `
+                  <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.i === yIdx ? 4.6 : 2.7}"
+                    fill="${p.i === yIdx ? "var(--accent-gold)" : lineCol}" stroke="var(--bg-card)" stroke-width="1.2"
+                    style="cursor:pointer;" onclick="stopChinaPlay();setChinaYear(${p.i})">
+                    <title>${years[p.i]}: ${formatChinaVal(p.v, trendMetric, cur)}</title>
+                  </circle>
+                  ${(p.i === 0 || p.i === 4 || p.i === pts.length - 1) ? `<text x="${p.x.toFixed(1)}" y="${Hc - 6}" text-anchor="middle" font-size="9.5" fill="var(--ink-muted)" font-family="var(--font-mono)">${years[p.i]}</text>` : ""}
+                `).join("")}
+              </svg>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;padding:9px 10px;">
+              <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:5px;">
+                <strong>🏭 ${isZh ? "产业结构（一 / 二 / 三产占比）" : "Industrial Structure"}</strong>
+                <span class="mono" style="font-size:11px;">${selP.industry.primary}% / ${selP.industry.secondary}% / <strong style="color:var(--accent-fx);">${selP.industry.tertiary}%</strong></span>
+              </div>
+              <div class="china-stack-bar">
+                <div style="width:${selP.industry.primary}%;background:#8C6D46;" title="第一产业 ${selP.industry.primary}%"></div>
+                <div style="width:${selP.industry.secondary}%;background:#24486E;" title="第二产业 ${selP.industry.secondary}%"></div>
+                <div style="width:${selP.industry.tertiary}%;background:#2E6B5E;" title="第三产业 ${selP.industry.tertiary}%"></div>
+              </div>
+              <div class="china-pillar-row">
+                ${selP.geo.pillars.map(tag => `<span class="china-pillar-tag">${tag}</span>`).join("")}
+              </div>
+
+              <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:9px 0 5px;padding-top:8px;border-top:1px dashed var(--border-hairline);">
+                <strong>📊 ${isZh ? "GDP 构成（消费 / 投资 / 净出口）" : "GDP Expenditure Mix"}</strong>
+                <span class="mono" style="font-size:11px;">${comp.consumption}% / ${comp.investment}% / ${comp.netExport >= 0 ? "+" : ""}${comp.netExport}%</span>
+              </div>
+              <div class="china-stack-bar">
+                <div style="width:${(consW / compTot * 100).toFixed(1)}%;background:#A63A3A;" title="最终消费 ${comp.consumption}%"></div>
+                <div style="width:${(invW / compTot * 100).toFixed(1)}%;background:#B8862D;" title="资本形成 ${comp.investment}%"></div>
+                ${netW > 0 ? `<div style="width:${(netW / compTot * 100).toFixed(1)}%;background:#3A6B7C;" title="净出口 +${comp.netExport}%"></div>` : ""}
+              </div>
+              <div class="mono" style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-muted);margin-top:5px;">
+                <span>${isZh ? `社零消费：¥${comp.retailYi.toLocaleString()}亿` : `Retail: ¥${comp.retailYi}00M`}</span>
+                <span>${isZh ? `外贸进出口：$${comp.tradeUsdB}B` : `Trade: $${comp.tradeUsdB}B`}</span>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--border-hairline);padding-top:7px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;margin-bottom:5px;">
+                <strong>${isZh ? `${yLabel} ${mInfo.zh} Top 8 省区市` : `${yLabel} Top 8 (${mInfo.en})`}</strong>
+                <span class="mono" style="font-size:10.5px;color:var(--ink-muted);">${isZh ? "点击切换聚焦" : "Click to focus"}</span>
+              </div>
+              <div class="macro-rank-list">
+                ${top8.map((item, idx) => {
+                  const pctW = Math.max(4, (Math.abs(item.val) / topMax) * 100);
+                  const barCol = metric === "growth" && item.val < 0 ? "#C84B4B" : (item.code === selP.code ? "var(--accent-gold)" : item.color);
+                  return `
+                    <div class="macro-rank-item ${item.code === selP.code ? "selected" : ""}" onclick="selectChinaProvince('${item.code}')">
+                      <span class="mono" style="color:var(--ink-muted);">${String(idx + 1).padStart(2, "0")}</span>
+                      <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${isZh ? item.zh : item.en}</span>
+                      <div class="macro-rank-bar-bg"><div class="macro-rank-bar-fill" style="width:${pctW.toFixed(1)}%;background:${barCol};"></div></div>
+                      <span class="mono" style="text-align:right;font-weight:700;">${formatChinaVal(item.val, metric, cur, true)}</span>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="macro-meta-banner" style="border-left-color:var(--accent-cn);">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:3px;">
+            <strong>📌 ${isZh ? "统计来源与港澳台口径说明（china-meta.json）" : "Methodology & HMT Conversion (china-meta.json)"}</strong>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted);">${isZh ? `截至年份：${meta.asOfYear} · 覆盖 34 省级行政区 · 汇率基准 ${fx}` : `Through ${meta.asOfYear} · 34 Divisions`}</span>
+          </div>
+          <div>${isZh ? meta.methodologyNote : meta.sourceEn}</div>
+          <div class="mono" style="font-size:10.5px;color:var(--ink-muted);margin-top:3px;">${isZh ? `数据源：${meta.source}` : `Sources: ${meta.sourceEn}`}</div>
+        </div>
+      `;
+    }
+
+    function applyChinaComparePreset(preset) {
+      if (preset === "top5") state.chinaCompareCodes = ["440000","320000","370000","330000","310000","110000"];
+      else if (preset === "gba") state.chinaCompareCodes = ["440000","810000","820000"];
+      else if (preset === "hmt") state.chinaCompareCodes = ["310000","110000","440000","810000","820000","710000"];
+      else if (preset === "central") state.chinaCompareCodes = ["410000","420000","430000","340000","360000","140000"];
+      else if (preset === "west") state.chinaCompareCodes = ["510000","500000","610000","530000","650000","150000"];
+      renderChinaIndustryTab();
+    }
+
+    function toggleChinaCompareCode(code) {
+      if (state.chinaCompareCodes.includes(code)) {
+        if (state.chinaCompareCodes.length > 1) state.chinaCompareCodes = state.chinaCompareCodes.filter(x => x !== code);
+      } else {
+        if (state.chinaCompareCodes.length >= 6) state.chinaCompareCodes.shift();
+        state.chinaCompareCodes.push(code);
+      }
+      renderChinaIndustryTab();
+    }
+
+    function renderChinaIndustryTab() {
+      const box = document.getElementById("china-tab-content");
+      if (!box || !chinaMacroStore.data) return;
+      const isZh = state.lang === "zh";
+      const dict = getChinaProvincesDict();
+      const yIdx = state.chinaYearIdx;
+      const yLabel = chinaMacroStore.data.yearLabels?.[yIdx] || "2025";
+      const cur = state.chinaCurrency || "CNY";
+      const pkList = state.chinaCompareCodes.map(c => dict[c]).filter(Boolean);
+
+      const sortBy = state.chinaIndustrySort || "tertiary";
+      const allSorted = Object.values(dict).sort((a, b) => {
+        if (sortBy === "tertiary") return b.industry.tertiary - a.industry.tertiary;
+        if (sortBy === "secondary") return b.industry.secondary - a.industry.secondary;
+        if (sortBy === "primary") return b.industry.primary - a.industry.primary;
+        if (sortBy === "consumption") return b.composition.consumption - a.composition.consumption;
+        return b.gdpCny[yIdx] - a.gdpCny[yIdx];
+      });
+
+      box.innerHTML = `
+        <div class="macro-sub-head" style="margin-top:0;">
+          <div>
+            <strong style="font-size:14px;">🏭 ${isZh ? `多省区市 GDP 构成与产业结构横向对比 (${yLabel})` : `Multi-Province Industry & GDP Composition (${yLabel})`}</strong>
+            <div style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? "同屏拆解生产侧（第一/二/三产业）与需求侧（最终消费/资本形成/净出口）结构差异" : "Side-by-side production (3-sector) & expenditure (C/I/NX) mix"}</div>
+          </div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn-mini" onclick="applyChinaComparePreset('top5')">${isZh ? "京沪粤苏鲁浙" : "Top 6"}</button>
+            <button class="btn-mini" onclick="applyChinaComparePreset('gba')">${isZh ? "粤港澳大湾区" : "GBA"}</button>
+            <button class="btn-mini" onclick="applyChinaComparePreset('hmt')">${isZh ? "两岸暨港澳对比" : "Cross-Strait & HMT"}</button>
+            <button class="btn-mini" onclick="applyChinaComparePreset('central')">${isZh ? "中部六省" : "Central 6"}</button>
+            <button class="btn-mini" onclick="applyChinaComparePreset('west')">${isZh ? "西部增长极" : "Western Hubs"}</button>
+          </div>
+        </div>
+
+        <div class="china-pk-grid">
+          ${pkList.map(p => {
+            const c = p.composition;
+            const cTot = Math.max(1, c.consumption + c.investment + Math.max(0, c.netExport));
+            return `
+              <div style="background:var(--bg-canvas);border:1px solid var(--border-hairline);border-top:3px solid ${p.color};border-radius:4px;padding:11px 12px;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+                  <div><strong style="font-size:14px;">${isZh ? p.fullZh : p.en}</strong> <span class="mono" style="font-size:11px;color:var(--ink-muted);">${p.abbr}</span></div>
+                  <strong class="mono" style="font-size:13px;color:var(--accent-cn);">${formatChinaVal(getChinaMetricValue(p, "gdp", yIdx, cur), "gdp", cur, true)}</strong>
+                </div>
+                <div class="mono" style="font-size:11px;color:var(--ink-muted);margin-bottom:8px;">
+                  ${isZh ? `人均 ${formatChinaVal(getChinaMetricValue(p, "pc", yIdx, cur), "pc", cur, true)} · 增速 ${formatChinaVal(p.growth[yIdx], "growth")} · 人口 ${formatChinaVal(p.popWan[yIdx], "pop")}` : `PC ${formatChinaVal(getChinaMetricValue(p, "pc", yIdx, cur), "pc", cur, true)}`}
+                </div>
+                <div style="font-size:11px;display:flex;justify-content:space-between;margin-bottom:3px;">
+                  <span>${isZh ? "三产结构" : "3-Sector"}</span>
+                  <span class="mono">${p.industry.primary} / ${p.industry.secondary} / <strong>${p.industry.tertiary}%</strong></span>
+                </div>
+                <div class="china-stack-bar" style="margin-bottom:7px;">
+                  <div style="width:${p.industry.primary}%;background:#8C6D46;"></div>
+                  <div style="width:${p.industry.secondary}%;background:#24486E;"></div>
+                  <div style="width:${p.industry.tertiary}%;background:#2E6B5E;"></div>
+                </div>
+                <div style="font-size:11px;display:flex;justify-content:space-between;margin-bottom:3px;">
+                  <span>${isZh ? "消费/投资/净出口" : "C / I / NX"}</span>
+                  <span class="mono">${c.consumption} / ${c.investment} / ${c.netExport >= 0 ? "+" : ""}${c.netExport}%</span>
+                </div>
+                <div class="china-stack-bar" style="margin-bottom:7px;">
+                  <div style="width:${(c.consumption / cTot * 100).toFixed(1)}%;background:#A63A3A;"></div>
+                  <div style="width:${(c.investment / cTot * 100).toFixed(1)}%;background:#B8862D;"></div>
+                  ${c.netExport > 0 ? `<div style="width:${(c.netExport / cTot * 100).toFixed(1)}%;background:#3A6B7C;"></div>` : ""}
+                </div>
+                <div class="china-pillar-row">${p.geo.pillars.slice(0, 3).map(t => `<span class="china-pillar-tag">${t}</span>`).join("")}</div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;">
+          ${Object.values(dict).map(p => {
+            const on = state.chinaCompareCodes.includes(p.code);
+            return `<button class="btn-mini" style="${on ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="toggleChinaCompareCode('${p.code}')">${isZh ? p.zh : p.abbr}</button>`;
+          }).join("")}
+        </div>
+
+        <div class="macro-sub-card" style="margin-top:0;">
+          <div class="macro-sub-head">
+            <div>
+              <strong style="font-size:13.5px;">${isZh ? "全国 34 省区市产业结构全景排名" : "All 34 Divisions Industrial Structure"}</strong>
+              <span style="margin-left:10px;font-size:11px;color:var(--ink-muted);">
+                <span style="display:inline-block;width:9px;height:9px;background:#8C6D46;border-radius:2px;"></span> 一产农业 &nbsp;
+                <span style="display:inline-block;width:9px;height:9px;background:#24486E;border-radius:2px;"></span> 二产工业制造 &nbsp;
+                <span style="display:inline-block;width:9px;height:9px;background:#2E6B5E;border-radius:2px;"></span> 三产现代服务业
+              </span>
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <button class="btn-mini ${sortBy === "tertiary" ? "active" : ""}" onclick="state.chinaIndustrySort='tertiary';renderChinaIndustryTab()">按第三产业</button>
+              <button class="btn-mini ${sortBy === "secondary" ? "active" : ""}" onclick="state.chinaIndustrySort='secondary';renderChinaIndustryTab()">按第二产业</button>
+              <button class="btn-mini ${sortBy === "primary" ? "active" : ""}" onclick="state.chinaIndustrySort='primary';renderChinaIndustryTab()">按第一产业</button>
+              <button class="btn-mini ${sortBy === "consumption" ? "active" : ""}" onclick="state.chinaIndustrySort='consumption';renderChinaIndustryTab()">按消费占比</button>
+              <button class="btn-mini ${sortBy === "gdp" ? "active" : ""}" onclick="state.chinaIndustrySort='gdp';renderChinaIndustryTab()">按 GDP 总量</button>
+            </div>
+          </div>
+          <div>
+            ${allSorted.map((p, idx) => `
+              <div class="china-ind-row" onclick="selectChinaProvince('${p.code}', true)">
+                <span class="mono" style="color:var(--ink-muted);">${String(idx + 1).padStart(2, "0")}</span>
+                <strong>${isZh ? p.zh : p.en}</strong>
+                <div class="china-stack-bar" style="height:13px;">
+                  <div style="width:${p.industry.primary}%;background:#8C6D46;" title="第一产业 ${p.industry.primary}%"></div>
+                  <div style="width:${p.industry.secondary}%;background:#24486E;" title="第二产业 ${p.industry.secondary}%"></div>
+                  <div style="width:${p.industry.tertiary}%;background:#2E6B5E;" title="第三产业 ${p.industry.tertiary}%"></div>
+                </div>
+                <span class="mono" style="text-align:right;font-size:11px;">${p.industry.primary.toFixed(1)} / ${p.industry.secondary.toFixed(1)} / <strong>${p.industry.tertiary.toFixed(1)}%</strong></span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function setChinaTableSort(col) {
+      if (state.chinaTableSort === col) {
+        state.chinaTableDir = state.chinaTableDir === "desc" ? "asc" : "desc";
+      } else {
+        state.chinaTableSort = col;
+        state.chinaTableDir = "desc";
+      }
+      renderChinaPopGeoTab();
+    }
+
+    function renderChinaPopGeoTab() {
+      const box = document.getElementById("china-tab-content");
+      if (!box || !chinaMacroStore.data) return;
+      const isZh = state.lang === "zh";
+      const data = chinaMacroStore.data;
+      const dict = getChinaProvincesDict();
+      const yIdx = state.chinaYearIdx;
+      const yLabel = data.yearLabels?.[yIdx] || "2025";
+      const cur = state.chinaCurrency || "CNY";
+      const xMode = state.chinaPopXAxis || "pop";
+
+      const all = Object.values(dict);
+      const W = 860, H = 310, pL = 62, pR = 26, pT = 22, pB = 38;
+      const pw = W - pL - pR, ph = H - pT - pB;
+
+      const getXVal = (p) => xMode === "area" ? p.areaWanKm2 : (xMode === "urban" ? p.urbanPct : p.popWan[yIdx]);
+      const getYVal = (p) => getChinaMetricValue(p, "pc", yIdx, cur);
+      const maxX = Math.max(1, ...all.map(getXVal)) * 1.06;
+      const minX = xMode === "urban" ? 35 : 0;
+      const maxY = Math.max(1, ...all.map(getYVal)) * 1.08;
+      const maxGdp = Math.max(1, ...all.map(p => p.gdpCny[yIdx]));
+
+      const xAxisTitle = xMode === "area" ? (isZh ? "陆地面积 (万 km²)" : "Area (10⁴ km²)") : (xMode === "urban" ? (isZh ? "城镇化率 (%)" : "Urbanization (%)") : (isZh ? "常住人口 (万人)" : "Population (10k)"));
+
+      const bubbles = all.map(p => {
+        const xv = getXVal(p), yv = getYVal(p);
+        const cx = pL + ((xv - minX) / Math.max(1, maxX - minX)) * pw;
+        const cy = pT + ph - (yv / maxY) * ph;
+        const r = 5.5 + Math.sqrt(p.gdpCny[yIdx] / maxGdp) * 20;
+        const showLbl = p.gdpCny[yIdx] > 48000 || p.isHmt || p.areaWanKm2 > 65 || p.code === "110000" || p.code === "310000";
+        return `
+          <g style="cursor:pointer;" onmousemove="showChinaMapTip(event,'${p.code}')" onmouseleave="hideMacroTip()" onclick="selectChinaProvince('${p.code}', true)">
+            <circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r.toFixed(1)}" fill="${p.color}" fill-opacity="0.72" stroke="var(--bg-card)" stroke-width="1.4" />
+            ${showLbl ? `<text x="${cx.toFixed(1)}" y="${(cy - r - 3).toFixed(1)}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink-primary)">${isZh ? p.zh : p.abbr}</text>` : ""}
+          </g>
+        `;
+      }).join("");
+
+      const q = (state.chinaTableQuery || "").trim().toLowerCase();
+      const rows = all
+        .filter(p => (state.chinaTableRegion === "all" || p.region === state.chinaTableRegion) && (!q || p.zh.includes(q) || p.fullZh.includes(q) || p.en.toLowerCase().includes(q) || p.geo.terrainZh.includes(q)))
+        .sort((a, b) => {
+          const getSortVal = (p) => {
+            const s = state.chinaTableSort;
+            if (s === "gdp") return getChinaMetricValue(p, "gdp", yIdx, cur);
+            if (s === "pc") return getChinaMetricValue(p, "pc", yIdx, cur);
+            if (s === "growth") return p.growth[yIdx];
+            if (s === "tertiary") return p.industry.tertiary;
+            if (s === "consumption") return p.composition.consumption;
+            if (s === "pop") return p.popWan[yIdx];
+            if (s === "urban") return p.urbanPct;
+            if (s === "area") return p.areaWanKm2;
+            if (s === "density") return p.density;
+            return p.gdpCny[yIdx];
+          };
+          const diff = (getSortVal(b) ?? 0) - (getSortVal(a) ?? 0);
+          return state.chinaTableDir === "asc" ? -diff : diff;
+        });
+
+      const thSort = (id, lbl) => `<th style="cursor:pointer;white-space:nowrap;" onclick="setChinaTableSort('${id}')">${lbl}${state.chinaTableSort === id ? (state.chinaTableDir === "desc" ? " ↓" : " ↑") : ""}</th>`;
+
+      box.innerHTML = `
+        <div class="macro-sub-card" style="margin-top:0;">
+          <div class="macro-sub-head">
+            <div>
+              <strong style="font-size:13.5px;">👥 ${isZh ? `人口、地理面积与人均产出分布气泡图 (${yLabel})` : `Population, Area vs Per Capita GDP (${yLabel})`}</strong>
+              <div style="font-size:11px;color:var(--ink-muted);margin-top:2px;">${isZh ? "气泡大小代表 GDP 总量，颜色区分八大区域，点击任意气泡可跳转该省地图深度档案" : "Bubble size = GDP; click bubble to open map profile"}</div>
+            </div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <button class="btn-mini ${xMode === "pop" ? "active" : ""}" onclick="state.chinaPopXAxis='pop';renderChinaPopGeoTab()">X轴：常住人口</button>
+              <button class="btn-mini ${xMode === "urban" ? "active" : ""}" onclick="state.chinaPopXAxis='urban';renderChinaPopGeoTab()">X轴：城镇化率</button>
+              <button class="btn-mini ${xMode === "area" ? "active" : ""}" onclick="state.chinaPopXAxis='area';renderChinaPopGeoTab()">X轴：地理面积</button>
+            </div>
+          </div>
+          <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;">
+            ${[0, 0.25, 0.5, 0.75, 1].map(f => {
+              const gy = pT + ph * f;
+              const gv = maxY * (1 - f);
+              return `<line x1="${pL}" y1="${gy.toFixed(1)}" x2="${W - pR}" y2="${gy.toFixed(1)}" stroke="var(--border-hairline)" stroke-dasharray="2 3" />
+                      <text x="${pL - 6}" y="${(gy + 3.5).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-muted)" font-family="var(--font-mono)">${formatChinaVal(gv, "pc", cur, true)}</text>`;
+            }).join("")}
+            ${[0, 0.25, 0.5, 0.75, 1].map(f => {
+              const gx = pL + pw * f;
+              const gv = minX + (maxX - minX) * f;
+              return `<line x1="${gx.toFixed(1)}" y1="${pT}" x2="${gx.toFixed(1)}" y2="${pT + ph}" stroke="var(--border-hairline)" stroke-dasharray="2 3" opacity="0.6" />
+                      <text x="${gx.toFixed(1)}" y="${H - 18}" text-anchor="middle" font-size="10" fill="var(--ink-muted)" font-family="var(--font-mono)">${Math.round(gv)}</text>`;
+            }).join("")}
+            <text x="${W / 2}" y="${H - 4}" text-anchor="middle" font-size="10.5" fill="var(--ink-secondary)">${xAxisTitle}</text>
+            ${bubbles}
+          </svg>
+        </div>
+
+        <div class="macro-sub-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+            <strong style="font-size:13.5px;">📋 ${isZh ? `全国 34 省级行政区全维度数据总表 (${yLabel})` : `34 Divisions Master Table (${yLabel})`}</strong>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <input type="text" class="inp" style="padding:4px 9px;font-size:12px;width:180px;" placeholder="${isZh ? "搜索省份 / 地形特征..." : "Search division..."}" value="${escAttr(state.chinaTableQuery || "")}" oninput="state.chinaTableQuery=this.value;renderChinaPopGeoTab()" />
+              <select class="inp" style="padding:4px 8px;font-size:12px;" onchange="state.chinaTableRegion=this.value;renderChinaPopGeoTab()">
+                <option value="all" ${state.chinaTableRegion === "all" ? "selected" : ""}>全部大区 (34)</option>
+                ${Object.entries(data.regions).map(([rk, rv]) => `<option value="${rk}" ${state.chinaTableRegion === rk ? "selected" : ""}>${isZh ? rv.zh : rv.en}</option>`).join("")}
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table" style="width:100%;font-size:12px;">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>${isZh ? "省级行政区" : "Division"}</th>
+                  <th>${isZh ? "大区" : "Region"}</th>
+                  ${thSort("gdp", isZh ? `GDP (${cur === "CNY" ? "¥" : "$"})` : "GDP")}
+                  ${thSort("pc", isZh ? "人均 GDP" : "Per Capita")}
+                  ${thSort("growth", isZh ? "增速" : "Growth")}
+                  ${thSort("tertiary", isZh ? "三产结构 (一/二/三)" : "Industry")}
+                  ${thSort("consumption", isZh ? "消费/投资/净出口" : "C/I/NX")}
+                  ${thSort("pop", isZh ? "常住人口" : "Pop")}
+                  ${thSort("urban", isZh ? "城镇化率" : "Urban")}
+                  ${thSort("area", isZh ? "面积(万km²)" : "Area")}
+                  ${thSort("density", isZh ? "密度(人/km²)" : "Density")}
+                </tr>
+              </thead>
+              <tbody>
+                ${rows.map((p, idx) => `
+                  <tr style="cursor:pointer;" onclick="selectChinaProvince('${p.code}', true)">
+                    <td class="mono">${idx + 1}</td>
+                    <td><strong>${isZh ? p.fullZh : p.en}</strong> <span style="font-size:10.5px;color:var(--ink-muted);">(${p.capital})</span></td>
+                    <td><span style="font-size:11px;color:${p.color};font-weight:600;">${isZh ? data.regions[p.region]?.zh : data.regions[p.region]?.en}</span></td>
+                    <td class="mono" style="font-weight:700;">${formatChinaVal(getChinaMetricValue(p, "gdp", yIdx, cur), "gdp", cur, true)}</td>
+                    <td class="mono">${formatChinaVal(getChinaMetricValue(p, "pc", yIdx, cur), "pc", cur, true)}</td>
+                    <td class="mono" style="color:${p.growth[yIdx] >= 0 ? "var(--accent-fx)" : "var(--down)"};">${formatChinaVal(p.growth[yIdx], "growth")}</td>
+                    <td class="mono">${p.industry.primary}/${p.industry.secondary}/<strong>${p.industry.tertiary}%</strong></td>
+                    <td class="mono">${p.composition.consumption}/${p.composition.investment}/${p.composition.netExport >= 0 ? "+" : ""}${p.composition.netExport}%</td>
+                    <td class="mono">${formatChinaVal(p.popWan[yIdx], "pop")}</td>
+                    <td class="mono">${p.urbanPct}%</td>
+                    <td class="mono">${p.areaWanKm2}</td>
+                    <td class="mono">${p.density.toLocaleString()}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChinaClustersTab() {
+      const box = document.getElementById("china-tab-content");
+      if (!box || !chinaMacroStore.data) return;
+      const isZh = state.lang === "zh";
+      const data = chinaMacroStore.data;
+      const dict = getChinaProvincesDict();
+      const yIdx = state.chinaYearIdx;
+      const yLabel = data.yearLabels?.[yIdx] || "2025";
+      const cur = state.chinaCurrency || "CNY";
+      const fx = data.fxUsdCny?.[yIdx] || 7.20;
+      const allGdpCny = data.totals.all34GdpCny[yIdx];
+      const allPop = data.totals.all34PopWan[yIdx];
+
+      box.innerHTML = `
+        <div class="macro-sub-head" style="margin-top:0;">
+          <div>
+            <strong style="font-size:14px;">🧭 ${isZh ? `中国五大核心区域经济圈聚合对比 (${yLabel})` : `Major Regional Economic Clusters (${yLabel})`}</strong>
+            <div style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">${isZh ? "按省级口径聚合经济总量、人口比重、加权人均产出与产业协同特征；点击成员省市可直达地图档案" : "Aggregated GDP, population share & industrial synergy by cluster"}</div>
+          </div>
+        </div>
+        <div class="china-cluster-grid">
+          ${data.clusters.map(cl => {
+            const members = cl.codes.map(c => dict[c]).filter(Boolean);
+            const sumGdpCny = members.reduce((s, p) => s + p.gdpCny[yIdx], 0);
+            const sumPop = members.reduce((s, p) => s + p.popWan[yIdx], 0);
+            const sumArea = members.reduce((s, p) => s + p.areaWanKm2, 0);
+            const wPcCny = sumGdpCny / Math.max(1, sumPop);
+            const wTert = members.reduce((s, p) => s + p.industry.tertiary * p.gdpCny[yIdx], 0) / Math.max(1, sumGdpCny);
+            const gdpDisp = cur === "USD" ? `$${(sumGdpCny / fx / 10000).toFixed(2)}T` : `¥${(sumGdpCny / 10000).toFixed(2)}万亿`;
+            const pcDisp = cur === "USD" ? `$${Math.round((wPcCny * 10000) / fx).toLocaleString()}` : `¥${wPcCny.toFixed(1)}万`;
+            const gdpShare = ((sumGdpCny / allGdpCny) * 100).toFixed(1);
+            const popShare = ((sumPop / allPop) * 100).toFixed(1);
+            return `
+              <div class="china-cluster-card">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+                  <strong class="serif" style="font-size:17px;">${isZh ? cl.zh : cl.en}</strong>
+                  <span class="mono" style="font-size:17px;font-weight:700;color:var(--accent-cn);">${gdpDisp}</span>
+                </div>
+                <div style="font-size:12px;color:var(--ink-secondary);line-height:1.55;">${cl.descZh}</div>
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;background:var(--bg-card);border:1px solid var(--border-hairline);border-radius:4px;padding:8px;">
+                  <div><div style="font-size:10px;color:var(--ink-muted);">大中华占比</div><div class="mono" style="font-size:13px;font-weight:700;">${gdpShare}%</div></div>
+                  <div><div style="font-size:10px;color:var(--ink-muted);">加权人均</div><div class="mono" style="font-size:13px;font-weight:700;">${pcDisp}</div></div>
+                  <div><div style="font-size:10px;color:var(--ink-muted);">常住人口</div><div class="mono" style="font-size:13px;font-weight:700;">${(sumPop / 10000).toFixed(2)}亿 <span style="font-size:10px;color:var(--ink-muted);">(${popShare}%)</span></div></div>
+                  <div><div style="font-size:10px;color:var(--ink-muted);">三产 / 面积</div><div class="mono" style="font-size:12.5px;font-weight:700;">${wTert.toFixed(1)}% · ${sumArea.toFixed(1)}万km²</div></div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;">
+                  ${members.map(p => `
+                    <button class="btn-mini" onclick="selectChinaProvince('${p.code}', true)">
+                      <strong>${p.zh}</strong> ${formatChinaVal(getChinaMetricValue(p, "gdp", yIdx, cur), "gdp", cur, true)}
+                    </button>
+                  `).join("")}
+                </div>
+              </div>
+            `;
+          }).join("")}
         </div>
       `;
     }
@@ -6992,7 +9051,12 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       document.getElementById("settings-modal").classList.add("open");
       renderSettingsModal();
     }
-    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+    function closeModal(id) {
+      if (id === "poster-modal" && typeof stopPosterAnimation === "function") {
+        stopPosterAnimation();
+      }
+      document.getElementById(id).classList.remove("open");
+    }
 
     function renderSettingsModal() {
       const isZh = state.lang === "zh";
@@ -7494,10 +9558,12 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     function renderPosterStudio() {
       const isZh = state.lang === "zh";
       document.getElementById("poster-mode-tabs").innerHTML = [
-        { id: "corp",  zh: "企业年报研报海报",     en: "Corporate Filing Poster" },
-        { id: "macro", zh: "世界经济宏观专题海报", en: "World Economy Macro Poster" },
-        { id: "trade", zh: "世界贸易往来专题海报", en: "Global Trade Poster" }
-      ].map(m => `<button class="modal-tab-btn ${state.posterMode === m.id ? "active" : ""}" onclick="state.posterMode='${m.id}';renderPosterStudio()">${isZh ? m.zh : m.en}</button>`).join("");
+        { id: "macro_anim", zh: "🎬 世界宏观动态海报",         en: "🎬 World Animated Poster" },
+        { id: "china_anim", zh: "🇨🇳 中国区域动态海报",         en: "🇨🇳 China Animated Poster" },
+        { id: "corp",       zh: "企业年报研报海报",           en: "Corporate Filing Poster" },
+        { id: "macro",      zh: "世界经济宏观专题海报",       en: "World Economy Macro Poster" },
+        { id: "trade",      zh: "世界贸易往来专题海报",       en: "Global Trade Poster" }
+      ].map(m => `<button class="modal-tab-btn ${state.posterMode === m.id ? "active" : ""}" onclick="if(state.posterMode!== '${m.id}'){stopPosterAnimation();state.posterMode='${m.id}';renderPosterStudio();}">${isZh ? m.zh : m.en}</button>`).join("");
 
       document.getElementById("poster-style-tabs").innerHTML = POSTER_STYLES.map(st =>
         `<button class="btn-mini" style="${state.posterStyle === st.id ? "background:var(--border-strong);color:var(--bg-card);font-weight:700;" : ""}" onclick="state.posterStyle='${st.id}';drawPosterCanvas();renderPosterStudio()">${isZh ? st.zh : st.en}</button>`
@@ -7506,15 +9572,39 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const dialog = document.getElementById("poster-modal-dialog");
       const body = document.getElementById("poster-studio-body");
       const panel = document.getElementById("poster-custom-panel");
+      const btnVid = document.getElementById("btn-export-video");
+      const btnGif = document.getElementById("btn-export-gif");
+      const animBar = document.getElementById("poster-anim-preview-bar");
+
       if (state.posterMode === "trade") {
+        stopPosterAnimation();
         if (dialog) dialog.style.maxWidth = "1120px";
         if (body) body.classList.add("with-custom");
         if (panel) panel.style.display = "block";
+        if (btnVid) btnVid.style.display = "none";
+        if (btnGif) btnGif.style.display = "none";
+        if (animBar) animBar.style.display = "none";
         renderTradePosterControls();
+      } else if (state.posterMode === "macro_anim" || state.posterMode === "china_anim") {
+        if (state.posterMode === "china_anim") ensureChinaMacroAssets();
+        else ensureMacroDynamicAssets();
+        if (dialog) dialog.style.maxWidth = "1160px";
+        if (body) body.classList.add("with-custom");
+        if (panel) panel.style.display = "block";
+        if (btnVid) btnVid.style.display = "inline-flex";
+        if (btnGif) btnGif.style.display = "inline-flex";
+        if (animBar) animBar.style.display = "flex";
+        if (state.posterMode === "china_anim") renderChinaAnimPosterControls();
+        else renderAnimPosterControls();
+        renderAnimPreviewBar();
       } else {
+        stopPosterAnimation();
         if (dialog) dialog.style.maxWidth = "860px";
         if (body) body.classList.remove("with-custom");
         if (panel) { panel.style.display = "none"; panel.innerHTML = ""; }
+        if (btnVid) btnVid.style.display = "none";
+        if (btnGif) btnGif.style.display = "none";
+        if (animBar) animBar.style.display = "none";
       }
 
       drawPosterCanvas();
@@ -8028,11 +10118,1422 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       return Math.max(820, Math.ceil(y + 44));
     }
 
+    /* =========================================================================
+       12.5 动态世界宏观海报引擎 (逐帧插值动画 + MP4/WebM 视频录制 + 纯前端 GIF89a 编码)
+       ========================================================================= */
+    let posterAnimRaf = null;
+    let posterAnimLastTs = 0;
+
+    function getAnimPosterDimensions(aspect) {
+      if (aspect === "reel") return { W: 720, H: 1280 };
+      if (aspect === "landscape") return { W: 1280, H: 720 };
+      return { W: 750, H: 1160 };
+    }
+
+    function updateAnimPosterField(key, val, rerenderPanel = false) {
+      state.animPoster[key] = val;
+      if (key === "startIdx" && state.animPoster.startIdx >= state.animPoster.endIdx) {
+        state.animPoster.endIdx = Math.min(10, state.animPoster.startIdx + 1);
+      }
+      if (key === "endIdx" && state.animPoster.endIdx <= state.animPoster.startIdx) {
+        state.animPoster.startIdx = Math.max(0, state.animPoster.endIdx - 1);
+      }
+      if (rerenderPanel) renderAnimPosterControls();
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+    }
+
+    function applyAnimPosterPreset(preset) {
+      const ap = state.animPoster;
+      if (preset === "gdp_race") {
+        ap.metric = "gdp"; ap.focusIso3 = "CHN"; ap.aspect = "poster"; ap.durationSec = 8;
+        ap.title = "世界名义 GDP 十年格局演进"; ap.subtitle = "全球 58 国现价美元 GDP 地图与 Top 排名动态追赶 (2016–2026E)";
+        ap.showMap = true; ap.showRace = true; ap.showSparkline = true;
+      } else if (preset === "reel_916") {
+        ap.metric = "gdp"; ap.focusIso3 = "USA"; ap.aspect = "reel"; ap.durationSec = 10;
+        ap.title = "全球经济版图 10 年变迁"; ap.subtitle = "视频号 / 抖音 / 小红书 9:16 竖屏动态数据海报";
+        ap.showMap = true; ap.showRace = true; ap.showSparkline = true;
+      } else if (preset === "growth_wave") {
+        ap.metric = "growth"; ap.focusIso3 = "IND"; ap.aspect = "landscape"; ap.durationSec = 8;
+        ap.title = "全球经济增速周期与复苏格局"; ap.subtitle = "16:9 横屏演示 · 2016–2026E 年度增速热力演进";
+        ap.showMap = true; ap.showRace = true; ap.showSparkline = true;
+      } else if (preset === "ppp_wealth") {
+        ap.metric = "pppPerCapita"; ap.focusIso3 = "SGP"; ap.aspect = "poster"; ap.durationSec = 8;
+        ap.title = "全球购买力平价 (PPP) 人均富裕度演进"; ap.subtitle = "World Bank PPP 现价国际元口径 (2016–2026E)";
+        ap.showMap = true; ap.showRace = true; ap.showSparkline = true;
+      }
+      ap.progress = 1;
+      renderAnimPosterControls();
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+      showToast("已切换动态海报模板");
+    }
+
+    function renderAnimPosterControls() {
+      const panel = document.getElementById("poster-custom-panel");
+      if (!panel) return;
+      const isZh = state.lang === "zh";
+      const ap = state.animPoster;
+      const dict = getMacroCountriesDict();
+      const years = macroDynamicStore.meta.yearLabels || MACRO_YEARS;
+      const countryOpts = Object.values(dict)
+        .sort((a, b) => (b.gdp?.[9] || 0) - (a.gdp?.[9] || 0))
+        .map(c => `<option value="${c.iso3}" ${ap.focusIso3 === c.iso3 ? "selected" : ""}>${isZh ? c.zh : c.en} (${c.iso3})</option>`)
+        .join("");
+      const chk = (key, label) => `
+        <label class="poster-chk-pill ${ap[key] ? "checked" : ""}">
+          <input type="checkbox" ${ap[key] ? "checked" : ""} onchange="updateAnimPosterField('${key}', this.checked, true)" />
+          <span>${label}</span>
+        </label>
+      `;
+
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <strong style="font-size:13px;">🎬 ${isZh ? "动态宏观海报参数配置" : "Animated Poster Settings"}</strong>
+          <button class="btn-mini" onclick="togglePosterAnimPlay()">${ap.playing ? (isZh ? "⏸ 暂停" : "⏸ Pause") : (isZh ? "▶ 预览" : "▶ Play")}</button>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "一键场景模板" : "Scene Presets"}</span></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn-mini" onclick="applyAnimPosterPreset('gdp_race')">${isZh ? "GDP 十年竞速" : "GDP Race"}</button>
+            <button class="btn-mini" onclick="applyAnimPosterPreset('reel_916')">${isZh ? "9:16 短视频" : "9:16 Reel"}</button>
+            <button class="btn-mini" onclick="applyAnimPosterPreset('growth_wave')">${isZh ? "16:9 增速周期" : "16:9 Growth"}</button>
+            <button class="btn-mini" onclick="applyAnimPosterPreset('ppp_wealth')">${isZh ? "PPP 购买力" : "PPP Wealth"}</button>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "标题与署名" : "Title & Attribution"}</span></div>
+          <input type="text" class="inp poster-field-inp" value="${escAttr(ap.title)}" placeholder="${isZh ? "海报主标题" : "Title"}" oninput="updateAnimPosterField('title', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(ap.subtitle)}" placeholder="${isZh ? "副标题与口径" : "Subtitle"}" oninput="updateAnimPosterField('subtitle', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(ap.footerNote)}" placeholder="${isZh ? "底部署名" : "Footer Note"}" oninput="updateAnimPosterField('footerNote', this.value, false)" />
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "核心指标与聚焦国家" : "Metric & Focus Country"}</span></div>
+          <select class="inp poster-field-inp" onchange="updateAnimPosterField('metric', this.value, true)">
+            ${Object.values(MACRO_METRICS).map(m => `<option value="${m.id}" ${ap.metric === m.id ? "selected" : ""}>${isZh ? `${m.zh} (${m.descZh})` : `${m.en} (${m.descEn})`}</option>`).join("")}
+          </select>
+          <select class="inp poster-field-inp" onchange="updateAnimPosterField('focusIso3', this.value, true)">
+            ${countryOpts}
+          </select>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "画幅比例与动画时长" : "Aspect & Duration"}</span></div>
+          <select class="inp poster-field-inp" onchange="updateAnimPosterField('aspect', this.value, true)">
+            <option value="poster" ${ap.aspect === "poster" ? "selected" : ""}>${isZh ? "竖版信息海报 (750×1160 · 公众号/小红书)" : "Editorial Poster (750×1160)"}</option>
+            <option value="reel" ${ap.aspect === "reel" ? "selected" : ""}>${isZh ? "短视频竖屏 (720×1280 · 9:16 视频号/抖音)" : "Vertical Video (720×1280 · 9:16)"}</option>
+            <option value="landscape" ${ap.aspect === "landscape" ? "selected" : ""}>${isZh ? "横屏宽幅 (1280×720 · 16:9 B站/演示)" : "Widescreen (1280×720 · 16:9)"}</option>
+          </select>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateAnimPosterField('startIdx', Number(this.value), true)">
+              ${years.slice(0, -1).map((yl, i) => `<option value="${i}" ${ap.startIdx === i ? "selected" : ""}>${isZh ? "起 " : ""}${yl}</option>`).join("")}
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateAnimPosterField('endIdx', Number(this.value), true)">
+              ${years.map((yl, i) => i > 0 ? `<option value="${i}" ${ap.endIdx === i ? "selected" : ""}>${isZh ? "止 " : ""}${yl}</option>` : "").join("")}
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateAnimPosterField('durationSec', Number(this.value), true)">
+              <option value="6" ${ap.durationSec === 6 ? "selected" : ""}>6s</option>
+              <option value="8" ${ap.durationSec === 8 ? "selected" : ""}>8s</option>
+              <option value="12" ${ap.durationSec === 12 ? "selected" : ""}>12s</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group" style="margin-bottom:0;">
+          <div class="poster-cfg-title"><span>${isZh ? "动态画面组件" : "Animated Components"}</span></div>
+          <div class="poster-chk-grid">
+            ${chk("showMap", isZh ? "世界热力地图" : "World Map")}
+            ${chk("showRace", isZh ? "动态排名竞速" : "Bar Race")}
+            ${chk("showSparkline", isZh ? "聚焦国10年曲线" : "10Y Sparkline")}
+            ${chk("showWatermark", isZh ? "口径与水印" : "Source & Mark")}
+          </div>
+        </div>
+      `;
+    }
+
+    function isAnimatedPosterMode() {
+      return state.posterMode === "macro_anim" || state.posterMode === "china_anim";
+    }
+
+    function getActiveAnimConfig() {
+      return state.posterMode === "china_anim" ? state.chinaAnimPoster : state.animPoster;
+    }
+
+    function updateChinaAnimField(key, val, rerenderPanel = false) {
+      const cp = state.chinaAnimPoster;
+      cp[key] = val;
+      if (key === "startIdx" && cp.startIdx >= cp.endIdx) cp.endIdx = Math.min(9, cp.startIdx + 1);
+      if (key === "endIdx" && cp.endIdx <= cp.startIdx) cp.startIdx = Math.max(0, cp.endIdx - 1);
+      if (rerenderPanel) renderChinaAnimPosterControls();
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+    }
+
+    function applyChinaAnimPreset(preset) {
+      const cp = state.chinaAnimPoster;
+      if (preset === "gdp_race") {
+        cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCode = "440000"; cp.aspect = "poster"; cp.durationSec = 8;
+        cp.title = "中国34省区市 GDP 十年格局演进"; cp.subtitle = "含香港、澳门、台湾 · 省际经济总量动态热力与排名追赶 (2016–2025)";
+        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+      } else if (preset === "gba_hmt") {
+        cp.metric = "pc"; cp.currency = "USD"; cp.focusCode = "810000"; cp.aspect = "poster"; cp.durationSec = 8;
+        cp.title = "中国地区（含港澳台）人均 GDP 演进"; cp.subtitle = "美元同口径 · 港澳台与内地核心省市十年对比 (2016–2025)";
+        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+      } else if (preset === "reel_916") {
+        cp.metric = "gdp"; cp.currency = "CNY"; cp.focusCode = "320000"; cp.aspect = "reel"; cp.durationSec = 10;
+        cp.title = "中国各省经济十年变迁"; cp.subtitle = "9:16 短视频竖屏 · 34省级行政区动态数据海报";
+        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+      } else if (preset === "landscape_169") {
+        cp.metric = "tertiary"; cp.currency = "CNY"; cp.focusCode = "310000"; cp.aspect = "landscape"; cp.durationSec = 8;
+        cp.title = "中国区域产业结构与现代服务业格局"; cp.subtitle = "16:9 横屏演示 · 34省区市三产结构与地理分布";
+        cp.showMap = true; cp.showRace = true; cp.showSparkline = true;
+      }
+      state.animPoster.progress = 1;
+      renderChinaAnimPosterControls();
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+      showToast("已切换中国区域动态海报模板");
+    }
+
+    function renderChinaAnimPosterControls() {
+      const panel = document.getElementById("poster-custom-panel");
+      if (!panel) return;
+      const isZh = state.lang === "zh";
+      const cp = state.chinaAnimPoster;
+      const dict = getChinaProvincesDict();
+      const years = chinaMacroStore.data?.yearLabels || ["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+      const provOpts = Object.values(dict)
+        .sort((a, b) => (b.gdpCny?.[9] || 0) - (a.gdpCny?.[9] || 0))
+        .map(p => `<option value="${p.code}" ${cp.focusCode === p.code ? "selected" : ""}>${isZh ? p.fullZh : p.en} (${p.abbr})</option>`)
+        .join("");
+      const chk = (key, label) => `
+        <label class="poster-chk-pill ${cp[key] ? "checked" : ""}">
+          <input type="checkbox" ${cp[key] ? "checked" : ""} onchange="updateChinaAnimField('${key}', this.checked, true)" />
+          <span>${label}</span>
+        </label>
+      `;
+
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+          <strong style="font-size:13px;">🇨🇳 ${isZh ? "中国区域动态海报配置" : "China Animated Poster"}</strong>
+          <button class="btn-mini" onclick="togglePosterAnimPlay()">${state.animPoster.playing ? (isZh ? "⏸ 暂停" : "⏸ Pause") : (isZh ? "▶ 预览" : "▶ Play")}</button>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "一键场景模板" : "Scene Presets"}</span></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button class="btn-mini" onclick="applyChinaAnimPreset('gdp_race')">GDP 十年竞速</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('gba_hmt')">港澳台人均对比</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('reel_916')">9:16 短视频</button>
+            <button class="btn-mini" onclick="applyChinaAnimPreset('landscape_169')">16:9 横屏</button>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "标题与署名" : "Header & Footer"}</span></div>
+          <input type="text" class="inp poster-field-inp" value="${escAttr(cp.title)}" oninput="updateChinaAnimField('title', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(cp.subtitle)}" oninput="updateChinaAnimField('subtitle', this.value, false)" />
+          <input type="text" class="inp poster-field-inp" value="${escAttr(cp.footerNote)}" oninput="updateChinaAnimField('footerNote', this.value, false)" />
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "核心指标、币种与聚焦省份" : "Metric, Currency & Province"}</span></div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:6px;margin-bottom:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('metric', this.value, true)">
+              ${Object.values(CHINA_METRICS).map(m => `<option value="${m.id}" ${cp.metric === m.id ? "selected" : ""}>${isZh ? m.zh : m.en}</option>`).join("")}
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:12px;" onchange="updateChinaAnimField('currency', this.value, true)">
+              <option value="CNY" ${cp.currency === "CNY" ? "selected" : ""}>¥ 人民币</option>
+              <option value="USD" ${cp.currency === "USD" ? "selected" : ""}>$ 美元</option>
+            </select>
+          </div>
+          <select class="inp poster-field-inp" onchange="updateChinaAnimField('focusCode', this.value, true)">
+            ${provOpts}
+          </select>
+        </div>
+
+        <div class="poster-cfg-group">
+          <div class="poster-cfg-title"><span>${isZh ? "画幅比例与动画时长" : "Aspect & Duration"}</span></div>
+          <select class="inp poster-field-inp" onchange="updateChinaAnimField('aspect', this.value, true)">
+            <option value="poster" ${cp.aspect === "poster" ? "selected" : ""}>竖版信息海报 (750×1160 · 公众号/小红书)</option>
+            <option value="reel" ${cp.aspect === "reel" ? "selected" : ""}>短视频竖屏 (720×1280 · 9:16 视频号/抖音)</option>
+            <option value="landscape" ${cp.aspect === "landscape" ? "selected" : ""}>横屏宽幅 (1280×720 · 16:9 B站/演示)</option>
+          </select>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateChinaAnimField('startIdx', Number(this.value), true)">
+              ${years.slice(0, -1).map((yl, i) => `<option value="${i}" ${cp.startIdx === i ? "selected" : ""}>起 ${yl}</option>`).join("")}
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateChinaAnimField('endIdx', Number(this.value), true)">
+              ${years.map((yl, i) => i > 0 ? `<option value="${i}" ${cp.endIdx === i ? "selected" : ""}>止 ${yl}</option>` : "").join("")}
+            </select>
+            <select class="inp" style="padding:4px 6px;font-size:11.5px;" onchange="updateChinaAnimField('durationSec', Number(this.value), true)">
+              <option value="6" ${cp.durationSec === 6 ? "selected" : ""}>6s</option>
+              <option value="8" ${cp.durationSec === 8 ? "selected" : ""}>8s</option>
+              <option value="12" ${cp.durationSec === 12 ? "selected" : ""}>12s</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="poster-cfg-group" style="margin-bottom:0;">
+          <div class="poster-cfg-title"><span>${isZh ? "动态画面组件" : "Components"}</span></div>
+          <div class="poster-chk-grid">
+            ${chk("showMap", "中国34省地图")}
+            ${chk("showRace", "Top 省份竞速")}
+            ${chk("showSparkline", "聚焦省曲线+三产")}
+            ${chk("showWatermark", "口径与水印")}
+          </div>
+        </div>
+      `;
+    }
+
+    function ensureChinaMapPath2D() {
+      if (!chinaMacroStore.map?.provinces) return null;
+      if (chinaMacroStore.path2dCache) return chinaMacroStore.path2dCache;
+      const cache = {
+        provinces: chinaMacroStore.map.provinces.map(p => ({ code: p.code, c: p.c, zh: p.zh, path: new Path2D(p.d) })),
+        insetBox: chinaMacroStore.map.insetBox || [778, 492, 160, 190],
+        scsLand: chinaMacroStore.map.scsLand ? new Path2D(chinaMacroStore.map.scsLand) : null,
+        scsDash: chinaMacroStore.map.scsDash ? new Path2D(chinaMacroStore.map.scsDash) : null
+      };
+      chinaMacroStore.path2dCache = cache;
+      return cache;
+    }
+
+    function getInterpolatedChinaSnapshot(metric, fIdx, cur) {
+      const data = chinaMacroStore.data;
+      const dict = getChinaProvincesDict();
+      const maxI = (data?.yearLabels?.length || 10) - 1;
+      const clamped = Math.max(0, Math.min(maxI, fIdx));
+      const i0 = Math.floor(clamped);
+      const i1 = Math.min(maxI, i0 + 1);
+      const frac = clamped - i0;
+
+      const list0 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i0, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+      const list1 = Object.values(dict).map(p => ({ code: p.code, v: getChinaMetricValue(p, metric, i1, cur) ?? 0 })).sort((a, b) => b.v - a.v);
+      const rank0 = {}; list0.forEach((x, idx) => { rank0[x.code] = idx; });
+      const rank1 = {}; list1.forEach((x, idx) => { rank1[x.code] = idx; });
+
+      const byCode = {};
+      const items = Object.values(dict).map(p => {
+        const v0 = getChinaMetricValue(p, metric, i0, cur) ?? 0;
+        const v1 = getChinaMetricValue(p, metric, i1, cur) ?? v0;
+        const val = v0 + (v1 - v0) * frac;
+        const rPos = (rank0[p.code] ?? 20) + ((rank1[p.code] ?? 20) - (rank0[p.code] ?? 20)) * frac;
+        const entry = { ...p, val, rPos };
+        byCode[p.code] = entry;
+        return entry;
+      });
+      items.sort((a, b) => a.rPos - b.rPos);
+
+      const ml0 = data?.totals?.mainlandGdpCny?.[i0] || 1340000;
+      const ml1 = data?.totals?.mainlandGdpCny?.[i1] || ml0;
+      const all0 = data?.totals?.all34GdpCny?.[i0] || 1430000;
+      const all1 = data?.totals?.all34GdpCny?.[i1] || all0;
+      const fx0 = data?.fxUsdCny?.[i0] || 7.15;
+      const fx1 = data?.fxUsdCny?.[i1] || fx0;
+
+      return {
+        items, byCode, clamped,
+        mlGdpCny: ml0 + (ml1 - ml0) * frac,
+        allGdpCny: all0 + (all1 - all0) * frac,
+        fx: fx0 + (fx1 - fx0) * frac
+      };
+    }
+
+    function renderAnimatedChinaPosterFrame(ctx, st, progressOverride = null) {
+      const isZh = state.lang === "zh";
+      const cp = state.chinaAnimPoster;
+      const { W, H } = getAnimPosterDimensions(cp.aspect);
+      const isLandscape = cp.aspect === "landscape";
+      const p = Math.max(0, Math.min(1, progressOverride !== null ? progressOverride : state.animPoster.progress));
+      const data = chinaMacroStore.data;
+      if (!data) {
+        ctx.fillStyle = st.bg; ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = st.sub; ctx.font = "16px sans-serif";
+        ctx.fillText("正在加载中国 34 省数据与矢量底图...", 48, 120);
+        return;
+      }
+      const years = data.yearLabels || [];
+      const metric = cp.metric || "gdp";
+      const cur = cp.currency || "CNY";
+      const mInfo = CHINA_METRICS[metric] || CHINA_METRICS.gdp;
+      const fIdx = cp.startIdx + (cp.endIdx - cp.startIdx) * p;
+      const snap = getInterpolatedChinaSnapshot(metric, fIdx, cur);
+      const curYearLabel = years[Math.round(fIdx)] || years[cp.endIdx];
+      const focusP = snap.byCode[cp.focusCode] || snap.items[0];
+      const focusRank = snap.items.findIndex(x => x.code === focusP.code) + 1;
+
+      // Background & frame
+      ctx.fillStyle = st.bg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = st.border;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(20, 20, W - 40, H - 40);
+
+      const padX = 44;
+      const innerW = W - padX * 2;
+      ctx.fillStyle = st.accent;
+      ctx.font = "bold 14px monospace";
+      ctx.fillText("DAVYLAB · CHINA REGIONAL MACRO INTELLIGENCE (34 DIVISIONS)", padX, 54);
+
+      const mlDisp = cur === "USD" ? `$${(snap.mlGdpCny / snap.fx / 10000).toFixed(2)}T` : `¥${(snap.mlGdpCny / 10000).toFixed(1)}万亿`;
+      ctx.textAlign = "right";
+      ctx.fillStyle = st.accent;
+      ctx.font = `bold ${isLandscape ? 44 : 46}px Georgia, serif`;
+      ctx.fillText(curYearLabel, W - padX, 78);
+      ctx.fillStyle = st.sub;
+      ctx.font = "12.5px monospace";
+      ctx.fillText(`${isZh ? "内地GDP" : "CN GDP"} ${mlDisp}`, W - padX, 100);
+      ctx.textAlign = "left";
+
+      ctx.fillStyle = st.ink;
+      const chinaTitleText = cp.title || "中国区域经济十年演进";
+      const chinaTitleSize = isLandscape ? 28 : (chinaTitleText.length > 13 ? 25 : 29);
+      ctx.font = `bold ${chinaTitleSize}px Georgia, serif`;
+      ctx.fillText(fitCanvasText(ctx, chinaTitleText, innerW - 180), padX, 92);
+      ctx.fillStyle = st.sub;
+      ctx.font = "14px sans-serif";
+      ctx.fillText(fitCanvasText(ctx, cp.subtitle || "", innerW - 195), padX, 116);
+
+      ctx.fillStyle = st.card;
+      ctx.fillRect(padX, 128, innerW, 6);
+      ctx.fillStyle = st.accent;
+      ctx.fillRect(padX, 128, Math.max(8, innerW * p), 6);
+
+      const drawChinaMapBox = (mx, my, mw, mh) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(mx, my, mw, mh);
+        ctx.strokeStyle = st.border;
+        ctx.globalAlpha = 0.26;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(mx, my, mw, mh);
+        ctx.globalAlpha = 1;
+
+        ctx.fillStyle = st.sub;
+        ctx.font = "bold 12px sans-serif";
+        ctx.fillText(`${isZh ? `中国 34 省区市（含港澳台）${mInfo.zh}分布` : `China 34 Divisions ${mInfo.en}`} (${curYearLabel})`, mx + 14, my + 22);
+
+        const cache = ensureChinaMapPath2D();
+        if (cache) {
+          const areaX = mx + 10, areaY = my + 28, areaW = mw - 20, areaH = mh - 52;
+          const sc = Math.min(areaW / 960, areaH / 700);
+          const ox = areaX + (areaW - 960 * sc) / 2;
+          const oy = areaY + (areaH - 700 * sc) / 2;
+          const isDark = (st.id === "obsidian" || st.id === "wallstreet" || st.id === "emerald" || st.id === "crimson");
+          const emptyFill = isDark ? "rgba(255,255,255,0.10)" : "rgba(35,33,30,0.09)";
+          const strokeCol = isDark ? "rgba(255,255,255,0.22)" : "rgba(35,33,30,0.28)";
+
+          ctx.save();
+          ctx.translate(ox, oy);
+          ctx.scale(sc, sc);
+          let focusCenter = null;
+          for (const item of cache.provinces) {
+            const pSnap = snap.byCode[item.code];
+            const fillCol = pSnap ? (getChinaMapColor(pSnap.val, metric, cur) || emptyFill) : emptyFill;
+            ctx.fillStyle = fillCol;
+            ctx.fill(item.path);
+            ctx.strokeStyle = item.code === focusP.code ? st.accent : strokeCol;
+            ctx.lineWidth = item.code === focusP.code ? 2.6 / sc : 0.8 / sc;
+            ctx.stroke(item.path);
+            if (item.code === focusP.code) focusCenter = item.c;
+          }
+          // South China Sea inset box on Canvas
+          const [ix, iy, iw, ih] = cache.insetBox;
+          ctx.fillStyle = isDark ? "rgba(16,20,28,0.88)" : "rgba(247,244,237,0.92)";
+          ctx.fillRect(ix, iy, iw, ih);
+          ctx.strokeStyle = strokeCol;
+          ctx.lineWidth = 1.4;
+          ctx.strokeRect(ix, iy, iw, ih);
+          if (cache.scsLand) { ctx.fillStyle = emptyFill; ctx.fill(cache.scsLand); }
+          if (cache.scsDash) { ctx.strokeStyle = "#B84A39"; ctx.lineWidth = 2.2; ctx.stroke(cache.scsDash); }
+          ctx.fillStyle = st.sub;
+          ctx.font = "bold 14px sans-serif";
+          ctx.textAlign = "right";
+          ctx.fillText("南海诸岛", ix + iw - 8, iy + ih - 10);
+          ctx.textAlign = "left";
+
+          if (focusCenter) {
+            const pulse = 0.5 + 0.5 * Math.sin(p * Math.PI * 12);
+            ctx.beginPath();
+            ctx.arc(focusCenter[0], focusCenter[1], 10 + pulse * 14, 0, Math.PI * 2);
+            ctx.strokeStyle = st.accent;
+            ctx.lineWidth = 3;
+            ctx.globalAlpha = 0.85 - pulse * 0.6;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+            ctx.beginPath();
+            ctx.arc(focusCenter[0], focusCenter[1], 5.5, 0, Math.PI * 2);
+            ctx.fillStyle = st.accent;
+            ctx.fill();
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        const lgW = Math.min(180, mw * 0.4), lgX = mx + 14, lgY = my + mh - 18;
+        const grad = ctx.createLinearGradient(lgX, lgY, lgX + lgW, lgY);
+        mInfo.stops.forEach((rgb, i) => grad.addColorStop(i / Math.max(1, mInfo.stops.length - 1), `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`));
+        ctx.fillStyle = grad;
+        ctx.fillRect(lgX, lgY, lgW, 8);
+        const rLbls = getChinaRangeLabels(metric, cur);
+        ctx.fillStyle = st.sub;
+        ctx.font = "11px monospace";
+        ctx.fillText(`${rLbls[0]}  →  ${rLbls[2]}`, lgX + lgW + 10, lgY + 8);
+      };
+
+      const drawChinaRaceBox = (rx, ry, rw, rh, count) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(rx, ry, rw, rh);
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 13px sans-serif";
+        ctx.fillText(`■ ${curYearLabel} 全国 ${mInfo.zh} Top ${count} 动态竞速`, rx + 16, ry + 26);
+
+        const visible = snap.items.slice(0, count);
+        const maxVal = Math.max(0.01, ...visible.map(x => Math.abs(x.val)));
+        const rowH = (rh - 46) / count;
+        const nameW = 86;
+        const valW = 88;
+        const barMaxW = Math.max(60, rw - 32 - nameW - valW - 12);
+
+        visible.forEach((item, idx) => {
+          const slotY = ry + 38 + Math.min(count - 0.6, item.rPos) * rowH;
+          const isFocus = item.code === focusP.code;
+          ctx.fillStyle = isFocus ? st.accent : st.ink;
+          ctx.font = `${isFocus ? "bold " : ""}13px sans-serif`;
+          ctx.fillText(fitCanvasText(ctx, `${idx + 1}. ${isZh ? item.zh : item.en}`, nameW), rx + 16, slotY + rowH * 0.56);
+
+          const bx = rx + 16 + nameW + 6;
+          const bh = Math.max(11, Math.min(18, rowH * 0.48));
+          const by = slotY + (rowH - bh) * 0.42;
+          ctx.fillStyle = st.bg;
+          ctx.fillRect(bx, by, barMaxW, bh);
+
+          const bw = Math.max(4, (Math.abs(item.val) / maxVal) * barMaxW);
+          ctx.fillStyle = (metric === "growth" && item.val < 0) ? "#C84B4B" : (isFocus ? st.accent : item.color);
+          ctx.fillRect(bx, by, bw, bh);
+
+          ctx.textAlign = "right";
+          ctx.fillStyle = isFocus ? st.accent : st.ink;
+          ctx.font = "bold 12.5px monospace";
+          ctx.fillText(formatChinaVal(item.val, metric, cur, true), rx + rw - 16, slotY + rowH * 0.56);
+          ctx.textAlign = "left";
+        });
+      };
+
+      const drawChinaSparkBox = (sx, sy, sw, sh) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(sx, sy, sw, sh);
+        ctx.strokeStyle = st.accent;
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(sx, sy, sw, sh);
+
+        ctx.fillStyle = st.ink;
+        ctx.font = "bold 15px sans-serif";
+        ctx.fillText(`聚焦地区：${focusP.fullZh} · 人口 ${formatChinaVal(focusP.popWan[Math.round(fIdx)], "pop")}`, sx + 16, sy + 26);
+
+        ctx.textAlign = "right";
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 19px monospace";
+        ctx.fillText(`${formatChinaVal(focusP.val, metric, cur, true)}  #${focusRank}`, sx + sw - 16, sy + 27);
+        ctx.textAlign = "left";
+
+        // 3-Sector Industry mini stacked bar right under header
+        const indY = sy + 36;
+        const indW = sw - 32;
+        const p1w = (focusP.industry.primary / 100) * indW;
+        const p2w = (focusP.industry.secondary / 100) * indW;
+        ctx.fillStyle = "#8C6D46"; ctx.fillRect(sx + 16, indY, p1w, 7);
+        ctx.fillStyle = "#24486E"; ctx.fillRect(sx + 16 + p1w, indY, p2w, 7);
+        ctx.fillStyle = "#2E6B5E"; ctx.fillRect(sx + 16 + p1w + p2w, indY, Math.max(0, indW - p1w - p2w), 7);
+        ctx.fillStyle = st.sub;
+        ctx.font = "11px monospace";
+        ctx.fillText(`三产 ${focusP.industry.primary}/${focusP.industry.secondary}/${focusP.industry.tertiary}% · 消费${focusP.composition.consumption}% · 城镇化${focusP.urbanPct}%`, sx + 16, indY + 20);
+
+        const trMetric = ["gdp","pc","growth","pop"].includes(metric) ? metric : "gdp";
+        const rawSeries = years.map((_, i) => getChinaMetricValue(focusP, trMetric, i, cur));
+        if (rawSeries.length >= 2) {
+          const sMin = Math.min(...rawSeries, trMetric === "growth" ? 0 : Infinity);
+          const sMax = Math.max(...rawSeries, trMetric === "growth" ? 2 : 0.1);
+          const lo = trMetric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
+          const hi = trMetric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
+          const sp = Math.max(0.001, hi - lo);
+          const px0 = sx + 20, py0 = sy + 64, pw = sw - 40, ph = Math.max(36, sh - 92);
+
+          ctx.strokeStyle = st.sub; ctx.globalAlpha = 0.25; ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          rawSeries.forEach((v, i) => {
+            const x = px0 + (i / (rawSeries.length - 1)) * pw;
+            const y = py0 + ph - ((v - lo) / sp) * ph;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke(); ctx.globalAlpha = 1;
+
+          const wholeEnd = Math.floor(fIdx);
+          const i0 = wholeEnd, i1 = Math.min(rawSeries.length - 1, i0 + 1);
+          const curVal = rawSeries[i0] + (rawSeries[i1] - rawSeries[i0]) * (fIdx - i0);
+          const curX = px0 + (fIdx / (rawSeries.length - 1)) * pw;
+          const curY = py0 + ph - ((curVal - lo) / sp) * ph;
+
+          ctx.strokeStyle = st.accent; ctx.lineWidth = 3;
+          ctx.beginPath();
+          for (let i = 0; i <= wholeEnd; i++) {
+            const x = px0 + (i / (rawSeries.length - 1)) * pw;
+            const y = py0 + ph - ((rawSeries[i] - lo) / sp) * ph;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.lineTo(curX, curY);
+          ctx.stroke();
+
+          ctx.beginPath(); ctx.arc(curX, curY, 5, 0, Math.PI * 2);
+          ctx.fillStyle = st.accent; ctx.fill();
+          ctx.strokeStyle = st.bg; ctx.lineWidth = 2; ctx.stroke();
+
+          ctx.fillStyle = st.sub; ctx.font = "11px monospace";
+          ctx.fillText(years[0], px0, sy + sh - 8);
+          ctx.textAlign = "right";
+          ctx.fillText(years[rawSeries.length - 1], px0 + pw, sy + sh - 8);
+          ctx.textAlign = "left";
+        }
+      };
+
+      const contentTop = 148;
+      const footerH = cp.showWatermark ? 64 : 24;
+      const contentH = H - contentTop - footerH;
+
+      if (isLandscape) {
+        const leftW = cp.showMap ? Math.round(innerW * 0.54) : 0;
+        const rightX = cp.showMap ? (padX + leftW + 16) : padX;
+        const rightW = cp.showMap ? (innerW - leftW - 16) : innerW;
+        if (cp.showMap) drawChinaMapBox(padX, contentTop, leftW, contentH);
+        if (cp.showRace && cp.showSparkline) {
+          const raceH = Math.round(contentH * 0.54);
+          drawChinaRaceBox(rightX, contentTop, rightW, raceH, 6);
+          drawChinaSparkBox(rightX, contentTop + raceH + 14, rightW, contentH - raceH - 14);
+        } else if (cp.showRace) drawChinaRaceBox(rightX, contentTop, rightW, contentH, 8);
+        else if (cp.showSparkline) drawChinaSparkBox(rightX, contentTop, rightW, contentH);
+      } else {
+        const blocks = [];
+        if (cp.showMap) blocks.push({ type: "map", weight: 1.48 });
+        if (cp.showRace) blocks.push({ type: "race", weight: 1.0 });
+        if (cp.showSparkline) blocks.push({ type: "spark", weight: 0.78 });
+        const totW = blocks.reduce((a, b) => a + b.weight, 0) || 1;
+        const gap = 14;
+        const availH = contentH - gap * Math.max(0, blocks.length - 1);
+        let cy = contentTop;
+        blocks.forEach(b => {
+          const bh = Math.round((b.weight / totW) * availH);
+          if (b.type === "map") drawChinaMapBox(padX, cy, innerW, bh);
+          else if (b.type === "race") drawChinaRaceBox(padX, cy, innerW, bh, cp.aspect === "reel" ? 7 : 6);
+          else if (b.type === "spark") drawChinaSparkBox(padX, cy, innerW, bh);
+          cy += bh + gap;
+        });
+      }
+
+      if (cp.showWatermark) {
+        const fy = H - 54;
+        ctx.fillStyle = st.border; ctx.fillRect(padX, fy - 14, innerW, 1);
+        ctx.fillStyle = st.sub; ctx.font = "11.5px monospace";
+        ctx.fillText(fitCanvasText(ctx, `${cp.footerNote || "DAVYLAB"} · 国家统计局 / 港澳台官方统计口径`, innerW - 190), padX, fy + 6);
+        ctx.textAlign = "right"; ctx.fillStyle = st.accent;
+        ctx.fillText("finhub.chenzhe223.workers.dev", W - padX, fy + 6);
+        ctx.textAlign = "left";
+      }
+    }
+
+    function renderActiveAnimFrame(ctx, st, pOverride = null) {
+      if (state.posterMode === "china_anim") renderAnimatedChinaPosterFrame(ctx, st, pOverride);
+      else renderAnimatedMacroPosterFrame(ctx, st, pOverride);
+    }
+
+    function renderAnimPreviewBar() {
+      const bar = document.getElementById("poster-anim-preview-bar");
+      if (!bar || !isAnimatedPosterMode()) return;
+      const isZh = state.lang === "zh";
+      const ap = state.animPoster;
+      const cfg = getActiveAnimConfig();
+      const years = state.posterMode === "china_anim"
+        ? (chinaMacroStore.data?.yearLabels || ["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"])
+        : (macroDynamicStore.meta.yearLabels || MACRO_YEARS);
+      const curFloat = cfg.startIdx + (cfg.endIdx - cfg.startIdx) * Math.max(0, Math.min(1, ap.progress));
+      const curYrLabel = years[Math.round(curFloat)] || years[cfg.endIdx];
+      bar.innerHTML = `
+        <button class="btn-mini" style="min-width:74px;font-weight:700;" onclick="togglePosterAnimPlay()" ${ap.exporting ? "disabled" : ""}>
+          ${ap.playing ? (isZh ? "⏸ 暂停" : "⏸ Pause") : (isZh ? "▶ 预览动画" : "▶ Preview")}
+        </button>
+        <span class="mono" style="font-size:12px;font-weight:700;color:var(--accent-gold-text);min-width:48px;">${curYrLabel}</span>
+        <input type="range" min="0" max="1000" step="2" value="${Math.round(ap.progress * 1000)}" style="flex:1;min-width:140px;accent-color:var(--accent-gold);"
+          oninput="scrubPosterAnim(this.value / 1000)" ${ap.exporting ? "disabled" : ""} />
+        <span class="mono" style="font-size:11px;color:var(--ink-muted);">${Math.round(ap.progress * 100)}%</span>
+        ${ap.exporting ? `
+          <div style="width:100%;text-align:left;">
+            <div class="mono" style="font-size:11px;color:var(--accent-gold-text);">${ap.exportStatus}</div>
+            <div class="poster-export-progress"><div class="poster-export-progress-fill" id="poster-export-bar-fill" style="width:${Math.round(ap.exportPct || 0)}%;"></div></div>
+          </div>
+        ` : ""}
+      `;
+    }
+
+    function stopPosterAnimation() {
+      state.animPoster.playing = false;
+      if (posterAnimRaf) {
+        cancelAnimationFrame(posterAnimRaf);
+        posterAnimRaf = null;
+      }
+    }
+
+    function scrubPosterAnim(p) {
+      stopPosterAnimation();
+      state.animPoster.progress = Math.max(0, Math.min(1, Number(p)));
+      drawPosterCanvas();
+      renderAnimPreviewBar();
+    }
+
+    function togglePosterAnimPlay() {
+      if (state.animPoster.exporting || !isAnimatedPosterMode()) return;
+      const rerenderCtrl = () => state.posterMode === "china_anim" ? renderChinaAnimPosterControls() : renderAnimPosterControls();
+      if (state.animPoster.playing) {
+        stopPosterAnimation();
+        renderAnimPreviewBar();
+        rerenderCtrl();
+        return;
+      }
+      state.animPoster.playing = true;
+      if (state.animPoster.progress >= 0.995) state.animPoster.progress = 0;
+      posterAnimLastTs = performance.now();
+      renderAnimPreviewBar();
+      rerenderCtrl();
+
+      const step = (now) => {
+        if (!state.animPoster.playing || !isAnimatedPosterMode()) {
+          stopPosterAnimation();
+          return;
+        }
+        const dt = Math.min(0.1, (now - posterAnimLastTs) / 1000);
+        posterAnimLastTs = now;
+        const dur = Math.max(2, getActiveAnimConfig().durationSec || 8);
+        state.animPoster.progress += dt / dur;
+        if (state.animPoster.progress >= 1) {
+          state.animPoster.progress = 1;
+          drawPosterCanvas();
+          stopPosterAnimation();
+          renderAnimPreviewBar();
+          rerenderCtrl();
+          return;
+        }
+        drawPosterCanvas();
+        const barRange = document.querySelector("#poster-anim-preview-bar input[type='range']");
+        if (barRange) barRange.value = Math.round(state.animPoster.progress * 1000);
+        posterAnimRaf = requestAnimationFrame(step);
+      };
+      posterAnimRaf = requestAnimationFrame(step);
+    }
+
+    function ensureWorldMapPath2D() {
+      if (!macroDynamicStore.worldMap?.countries) return null;
+      if (macroDynamicStore.path2dCache) return macroDynamicStore.path2dCache;
+      const cache = macroDynamicStore.worldMap.countries.map(c => ({
+        iso3: c.iso3,
+        c: c.c,
+        path: new Path2D(c.d)
+      }));
+      macroDynamicStore.path2dCache = cache;
+      return cache;
+    }
+
+    function getInterpolatedMacroSnapshot(metric, fIdx) {
+      const dict = getMacroCountriesDict();
+      const maxI = (macroDynamicStore.meta.yearLabels || MACRO_YEARS).length - 1;
+      const clamped = Math.max(0, Math.min(maxI, fIdx));
+      const i0 = Math.floor(clamped);
+      const i1 = Math.min(maxI, i0 + 1);
+      const frac = clamped - i0;
+
+      const list0 = Object.values(dict).map(c => ({ iso3: c.iso3, v: c[metric]?.[i0] ?? 0 })).sort((a, b) => b.v - a.v);
+      const list1 = Object.values(dict).map(c => ({ iso3: c.iso3, v: c[metric]?.[i1] ?? 0 })).sort((a, b) => b.v - a.v);
+      const rank0 = {}; list0.forEach((x, idx) => { rank0[x.iso3] = idx; });
+      const rank1 = {}; list1.forEach((x, idx) => { rank1[x.iso3] = idx; });
+
+      const byIso = {};
+      const items = Object.values(dict).map(c => {
+        const v0 = c[metric]?.[i0] ?? 0;
+        const v1 = c[metric]?.[i1] ?? v0;
+        const val = v0 + (v1 - v0) * frac;
+        const rPos = (rank0[c.iso3] ?? 20) + ((rank1[c.iso3] ?? 20) - (rank0[c.iso3] ?? 20)) * frac;
+        const entry = { ...c, val, rPos };
+        byIso[c.iso3] = entry;
+        return entry;
+      });
+      items.sort((a, b) => a.rPos - b.rPos);
+
+      const gArr = macroDynamicStore.data?.globalGdp || GLOBAL_GDP_TOTAL;
+      const globalGdp = (gArr[i0] ?? 100) + ((gArr[i1] ?? gArr[i0] ?? 100) - (gArr[i0] ?? 100)) * frac;
+
+      return { items, byIso, globalGdp, i0, i1, frac, clamped };
+    }
+
+    function renderAnimatedMacroPosterFrame(ctx, st, progressOverride = null) {
+      const isZh = state.lang === "zh";
+      const ap = state.animPoster;
+      const { W, H } = getAnimPosterDimensions(ap.aspect);
+      const isLandscape = ap.aspect === "landscape";
+      const p = Math.max(0, Math.min(1, progressOverride !== null ? progressOverride : ap.progress));
+      const years = macroDynamicStore.meta.yearLabels || MACRO_YEARS;
+      const metric = ap.metric || "gdp";
+      const mInfo = MACRO_METRICS[metric] || MACRO_METRICS.gdp;
+
+      const fIdx = ap.startIdx + (ap.endIdx - ap.startIdx) * p;
+      const snap = getInterpolatedMacroSnapshot(metric, fIdx);
+      const curYearLabel = years[Math.round(fIdx)] || years[ap.endIdx];
+      const focusC = snap.byIso[ap.focusIso3] || snap.items[0];
+      const focusRank = snap.items.findIndex(x => x.iso3 === focusC.iso3) + 1;
+
+      // Background & editorial frame
+      ctx.fillStyle = st.bg;
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = st.border;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(20, 20, W - 40, H - 40);
+
+      const padX = isLandscape ? 44 : 44;
+      const innerW = W - padX * 2;
+
+      // Header Masthead
+      ctx.fillStyle = st.accent;
+      ctx.font = "bold 14px monospace";
+      ctx.fillText("DAVYLAB · ANIMATED MACRO INTELLIGENCE", padX, 54);
+
+      // Right-aligned live year & global GDP badge
+      ctx.textAlign = "right";
+      ctx.fillStyle = st.accent;
+      ctx.font = `bold ${isLandscape ? 44 : 46}px Georgia, serif`;
+      ctx.fillText(curYearLabel, W - padX, 78);
+      ctx.fillStyle = st.sub;
+      ctx.font = "13px monospace";
+      ctx.fillText(`${isZh ? "全球 GDP" : "GLOBAL GDP"} $${snap.globalGdp.toFixed(1)}T`, W - padX, 100);
+      ctx.textAlign = "left";
+
+      // Title & Subtitle
+      ctx.fillStyle = st.ink;
+      const worldTitleText = ap.title || "世界宏观经济十年演进";
+      const worldTitleSize = isLandscape ? 28 : (worldTitleText.length > 13 ? 25 : 30);
+      ctx.font = `bold ${worldTitleSize}px Georgia, serif`;
+      ctx.fillText(fitCanvasText(ctx, worldTitleText, innerW - 180), padX, 92);
+      ctx.fillStyle = st.sub;
+      ctx.font = "14px sans-serif";
+      ctx.fillText(fitCanvasText(ctx, ap.subtitle || mInfo.descZh, innerW - 190), padX, 116);
+
+      // Timeline Progress Bar
+      ctx.fillStyle = st.card;
+      ctx.fillRect(padX, 128, innerW, 6);
+      ctx.fillStyle = st.accent;
+      ctx.fillRect(padX, 128, Math.max(8, innerW * p), 6);
+
+      const drawMapBox = (mx, my, mw, mh) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(mx, my, mw, mh);
+        ctx.strokeStyle = st.border;
+        ctx.globalAlpha = 0.28;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(mx, my, mw, mh);
+        ctx.globalAlpha = 1;
+
+        ctx.fillStyle = st.sub;
+        ctx.font = "bold 12px sans-serif";
+        ctx.fillText(`${isZh ? `全球${mInfo.zh}地理热力分布` : `Global ${mInfo.en} Map`} (${curYearLabel})`, mx + 14, my + 22);
+
+        const paths = ensureWorldMapPath2D();
+        if (paths) {
+          const mapAreaX = mx + 10, mapAreaY = my + 30, mapAreaW = mw - 20, mapAreaH = mh - 56;
+          const sc = Math.min(mapAreaW / 960, mapAreaH / 470);
+          const ox = mapAreaX + (mapAreaW - 960 * sc) / 2;
+          const oy = mapAreaY + (mapAreaH - 470 * sc) / 2;
+          const isDark = (st.id === "obsidian" || st.id === "wallstreet" || st.id === "emerald" || st.id === "crimson");
+          const emptyFill = isDark ? "rgba(255,255,255,0.09)" : "rgba(35,33,30,0.09)";
+          const strokeCol = isDark ? "rgba(255,255,255,0.18)" : "rgba(35,33,30,0.24)";
+
+          ctx.save();
+          ctx.translate(ox, oy);
+          ctx.scale(sc, sc);
+          let focusCenter = null;
+          for (const item of paths) {
+            const cSnap = snap.byIso[item.iso3];
+            const fillCol = cSnap ? (getMacroMapColor(cSnap.val, metric) || emptyFill) : emptyFill;
+            ctx.fillStyle = fillCol;
+            ctx.fill(item.path);
+            ctx.strokeStyle = item.iso3 === focusC.iso3 ? st.accent : strokeCol;
+            ctx.lineWidth = item.iso3 === focusC.iso3 ? 2.4 / sc : 0.7 / sc;
+            ctx.stroke(item.path);
+            if (item.iso3 === focusC.iso3) focusCenter = item.c;
+          }
+          // Animated pulsing beacon on focused country
+          if (focusCenter) {
+            const pulse = 0.5 + 0.5 * Math.sin(p * Math.PI * 12);
+            ctx.beginPath();
+            ctx.arc(focusCenter[0], focusCenter[1], (8 + pulse * 12), 0, Math.PI * 2);
+            ctx.strokeStyle = st.accent;
+            ctx.lineWidth = 2.4;
+            ctx.globalAlpha = 0.85 - pulse * 0.6;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            ctx.beginPath();
+            ctx.arc(focusCenter[0], focusCenter[1], 4.5, 0, Math.PI * 2);
+            ctx.fillStyle = st.accent;
+            ctx.fill();
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.lineWidth = 1.6;
+            ctx.stroke();
+          }
+          ctx.restore();
+        } else {
+          ctx.fillStyle = st.sub;
+          ctx.font = "13px sans-serif";
+          ctx.fillText(isZh ? "世界地图底图加载中..." : "Loading world map...", mx + 18, my + mh / 2);
+        }
+
+        // Color legend bar at bottom of map card
+        const lgW = Math.min(200, mw * 0.42), lgX = mx + 14, lgY = my + mh - 18;
+        const grad = ctx.createLinearGradient(lgX, lgY, lgX + lgW, lgY);
+        const stops = mInfo.stops;
+        stops.forEach((rgb, i) => {
+          grad.addColorStop(i / Math.max(1, stops.length - 1), `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
+        });
+        ctx.fillStyle = grad;
+        ctx.fillRect(lgX, lgY, lgW, 8);
+        const rLbls = getMacroMetricRangeLabels(metric);
+        ctx.fillStyle = st.sub;
+        ctx.font = "11px monospace";
+        ctx.fillText(`${rLbls[0]}  →  ${rLbls[2]}`, lgX + lgW + 10, lgY + 8);
+      };
+
+      const drawRaceBox = (rx, ry, rw, rh, count) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(rx, ry, rw, rh);
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 13px sans-serif";
+        ctx.fillText(`■ ${isZh ? `${curYearLabel} 全球 ${mInfo.zh} Top ${count} 动态竞速` : `${curYearLabel} Top ${count} ${mInfo.en} Race`}`, rx + 16, ry + 26);
+
+        const visible = snap.items.slice(0, count);
+        const maxVal = Math.max(0.01, ...visible.map(x => Math.abs(x.val)));
+        const rowH = (rh - 46) / count;
+        const nameW = 92;
+        const valW = 84;
+        const barMaxW = Math.max(60, rw - 32 - nameW - valW - 14);
+
+        visible.forEach((item, idx) => {
+          const slotY = ry + 38 + Math.min(count - 0.6, item.rPos) * rowH;
+          const isFocus = item.iso3 === focusC.iso3;
+          ctx.fillStyle = isFocus ? st.accent : st.ink;
+          ctx.font = `${isFocus ? "bold " : ""}13px sans-serif`;
+          ctx.fillText(fitCanvasText(ctx, `${idx + 1}. ${isZh ? item.zh : item.iso3}`, nameW), rx + 16, slotY + rowH * 0.56);
+
+          const bx = rx + 16 + nameW + 6;
+          const bh = Math.max(11, Math.min(18, rowH * 0.48));
+          const by = slotY + (rowH - bh) * 0.42;
+          ctx.fillStyle = st.bg;
+          ctx.fillRect(bx, by, barMaxW, bh);
+
+          const bw = Math.max(4, (Math.abs(item.val) / maxVal) * barMaxW);
+          ctx.fillStyle = (metric === "growth" && item.val < 0) ? "#C84B4B" : (isFocus ? st.accent : (item.color || st.accent));
+          ctx.fillRect(bx, by, bw, bh);
+
+          ctx.textAlign = "right";
+          ctx.fillStyle = isFocus ? st.accent : st.ink;
+          ctx.font = "bold 13px monospace";
+          ctx.fillText(formatMacroVal(item.val, metric, true), rx + rw - 16, slotY + rowH * 0.56);
+          ctx.textAlign = "left";
+        });
+      };
+
+      const drawSparkBox = (sx, sy, sw, sh) => {
+        ctx.fillStyle = st.card;
+        ctx.fillRect(sx, sy, sw, sh);
+        ctx.strokeStyle = st.accent;
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(sx, sy, sw, sh);
+
+        ctx.fillStyle = st.ink;
+        ctx.font = "bold 15px sans-serif";
+        ctx.fillText(`${isZh ? "聚焦经济体" : "Focus"}：${isZh ? focusC.zh : focusC.en} (${focusC.iso3})`, sx + 16, sy + 26);
+
+        ctx.textAlign = "right";
+        ctx.fillStyle = st.accent;
+        ctx.font = "bold 20px monospace";
+        ctx.fillText(`${formatMacroVal(focusC.val, metric)}  #${focusRank}`, sx + sw - 16, sy + 28);
+        ctx.textAlign = "left";
+
+        const rawSeries = focusC[metric] || [];
+        const sliceLen = rawSeries.length;
+        if (sliceLen >= 2) {
+          const sMin = Math.min(...rawSeries, metric === "growth" ? 0 : Infinity);
+          const sMax = Math.max(...rawSeries, metric === "growth" ? 2 : 0.1);
+          const lo = metric === "growth" ? Math.min(-2, Math.floor(sMin - 1)) : Math.max(0, sMin * 0.85);
+          const hi = metric === "growth" ? Math.ceil(sMax + 1) : sMax * 1.08;
+          const sp = Math.max(0.001, hi - lo);
+          const px0 = sx + 22, py0 = sy + 44, pw = sw - 44, ph = sh - 74;
+
+          // Subtle baseline & grid
+          ctx.strokeStyle = st.sub;
+          ctx.globalAlpha = 0.22;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(px0, py0 + ph); ctx.lineTo(px0 + pw, py0 + ph);
+          ctx.moveTo(px0, py0 + ph * 0.5); ctx.lineTo(px0 + pw, py0 + ph * 0.5);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+
+          // Faint full trajectory preview
+          ctx.strokeStyle = st.sub;
+          ctx.globalAlpha = 0.28;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          rawSeries.forEach((v, i) => {
+            const x = px0 + (i / (sliceLen - 1)) * pw;
+            const y = py0 + ph - ((v - lo) / sp) * ph;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+
+          // Animated progressive trajectory up to fIdx
+          const wholeEnd = Math.floor(fIdx);
+          const curX = px0 + (fIdx / (sliceLen - 1)) * pw;
+          const curY = py0 + ph - ((focusC.val - lo) / sp) * ph;
+
+          ctx.strokeStyle = st.accent;
+          ctx.lineWidth = 3.2;
+          ctx.beginPath();
+          for (let i = 0; i <= wholeEnd && i < sliceLen; i++) {
+            const x = px0 + (i / (sliceLen - 1)) * pw;
+            const y = py0 + ph - ((rawSeries[i] - lo) / sp) * ph;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.lineTo(curX, curY);
+          ctx.stroke();
+
+          // Glowing head dot
+          ctx.beginPath();
+          ctx.arc(curX, curY, 5.5, 0, Math.PI * 2);
+          ctx.fillStyle = st.accent;
+          ctx.fill();
+          ctx.strokeStyle = st.bg;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // X-axis labels
+          ctx.fillStyle = st.sub;
+          ctx.font = "11px monospace";
+          ctx.fillText(years[0], px0, sy + sh - 10);
+          ctx.textAlign = "center";
+          ctx.fillText(years[Math.floor(sliceLen / 2)], px0 + pw / 2, sy + sh - 10);
+          ctx.textAlign = "right";
+          ctx.fillText(years[sliceLen - 1], px0 + pw, sy + sh - 10);
+          ctx.textAlign = "left";
+        }
+      };
+
+      // Layout composition by aspect
+      const contentTop = 148;
+      const footerH = ap.showWatermark ? 66 : 26;
+      const contentH = H - contentTop - footerH;
+
+      if (isLandscape) {
+        const leftW = ap.showMap ? Math.round(innerW * 0.56) : 0;
+        const rightX = ap.showMap ? (padX + leftW + 16) : padX;
+        const rightW = ap.showMap ? (innerW - leftW - 16) : innerW;
+        if (ap.showMap) drawMapBox(padX, contentTop, leftW, contentH);
+        if (ap.showRace && ap.showSparkline) {
+          const raceH = Math.round(contentH * 0.58);
+          drawRaceBox(rightX, contentTop, rightW, raceH, 6);
+          drawSparkBox(rightX, contentTop + raceH + 14, rightW, contentH - raceH - 14);
+        } else if (ap.showRace) {
+          drawRaceBox(rightX, contentTop, rightW, contentH, 8);
+        } else if (ap.showSparkline) {
+          drawSparkBox(rightX, contentTop, rightW, contentH);
+        }
+      } else {
+        // Vertical Poster or 9:16 Reel
+        const blocks = [];
+        if (ap.showMap) blocks.push({ type: "map", weight: 1.35 });
+        if (ap.showRace) blocks.push({ type: "race", weight: 1.05 });
+        if (ap.showSparkline) blocks.push({ type: "spark", weight: 0.72 });
+        const totalWgt = blocks.reduce((a, b) => a + b.weight, 0) || 1;
+        const gap = 14;
+        const availH = contentH - gap * Math.max(0, blocks.length - 1);
+        let cy = contentTop;
+        blocks.forEach(b => {
+          const bh = Math.round((b.weight / totalWgt) * availH);
+          if (b.type === "map") drawMapBox(padX, cy, innerW, bh);
+          else if (b.type === "race") drawRaceBox(padX, cy, innerW, bh, ap.aspect === "reel" ? 7 : 6);
+          else if (b.type === "spark") drawSparkBox(padX, cy, innerW, bh);
+          cy += bh + gap;
+        });
+      }
+
+      // Footer & Methodology Attribution
+      if (ap.showWatermark) {
+        const fy = H - 56;
+        ctx.fillStyle = st.border;
+        ctx.fillRect(padX, fy - 14, innerW, 1);
+        ctx.fillStyle = st.sub;
+        ctx.font = "12px monospace";
+        ctx.fillText(fitCanvasText(ctx, `${ap.footerNote || "DAVYLAB"} · ${macroDynamicStore.meta.source || "IMF / World Bank"}`, innerW - 190), padX, fy + 6);
+        ctx.textAlign = "right";
+        ctx.fillStyle = st.accent;
+        ctx.fillText("finhub.chenzhe223.workers.dev", W - padX, fy + 6);
+        ctx.textAlign = "left";
+      }
+    }
+
+    async function exportAnimatedPosterVideo() {
+      if (!isAnimatedPosterMode() || state.animPoster.exporting) return;
+      const canvas = document.getElementById("poster-canvas");
+      if (!canvas || typeof canvas.captureStream !== "function" || typeof MediaRecorder === "undefined") {
+        showToast("当前浏览器不支持视频录制，请改用「导出 GIF 动图」");
+        return;
+      }
+
+      stopPosterAnimation();
+      const ap = state.animPoster;
+      const cfg = getActiveAnimConfig();
+      const isChina = state.posterMode === "china_anim";
+      const st = POSTER_STYLES.find(x => x.id === state.posterStyle) || POSTER_STYLES[0];
+      const { W, H } = getAnimPosterDimensions(cfg.aspect);
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d");
+
+      const mimeCandidates = [
+        { mime: "video/mp4;codecs=avc1.42E01E", ext: "mp4" },
+        { mime: "video/mp4", ext: "mp4" },
+        { mime: "video/webm;codecs=vp9", ext: "webm" },
+        { mime: "video/webm;codecs=vp8", ext: "webm" },
+        { mime: "video/webm", ext: "webm" }
+      ];
+      const chosen = mimeCandidates.find(c => MediaRecorder.isTypeSupported(c.mime)) || { mime: "", ext: "webm" };
+
+      ap.exporting = true;
+      ap.exportPct = 0;
+      ap.exportStatus = `正在录制高清动态海报 (${chosen.ext.toUpperCase()})... 0%`;
+      renderAnimPreviewBar();
+
+      const fps = 30;
+      const animDurMs = Math.max(3000, (cfg.durationSec || 8) * 1000);
+      const holdMs = 1200;
+      const totalMs = animDurMs + holdMs;
+      const stream = canvas.captureStream(fps);
+      const chunks = [];
+      let recorder;
+      try {
+        recorder = new MediaRecorder(stream, chosen.mime ? { mimeType: chosen.mime, videoBitsPerSecond: 5000000 } : { videoBitsPerSecond: 5000000 });
+      } catch (e) {
+        recorder = new MediaRecorder(stream);
+      }
+
+      recorder.ondataavailable = (ev) => {
+        if (ev.data && ev.data.size > 0) chunks.push(ev.data);
+      };
+
+      const donePromise = new Promise((resolve) => {
+        recorder.onstop = () => {
+          const blob = new Blob(chunks, { type: chosen.mime || "video/webm" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = isChina
+            ? `DAVYLAB-ChinaAnim-${cfg.metric}-${cfg.focusCode}-${state.posterStyle}.${chosen.ext}`
+            : `DAVYLAB-MacroAnim-${cfg.metric}-${cfg.focusIso3}-${state.posterStyle}.${chosen.ext}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
+          resolve();
+        };
+      });
+
+      renderActiveAnimFrame(ctx, st, 0);
+      recorder.start(200);
+      const startTs = performance.now();
+
+      await new Promise((resolve) => {
+        const tick = (now) => {
+          const elapsed = now - startTs;
+          const p = Math.min(1, elapsed / animDurMs);
+          renderActiveAnimFrame(ctx, st, p);
+          const pctDone = Math.min(100, Math.round((elapsed / totalMs) * 100));
+          ap.exportPct = pctDone;
+          const fillEl = document.getElementById("poster-export-bar-fill");
+          if (fillEl) fillEl.style.width = pctDone + "%";
+          if (elapsed < totalMs) {
+            requestAnimationFrame(tick);
+          } else {
+            resolve();
+          }
+        };
+        requestAnimationFrame(tick);
+      });
+
+      recorder.stop();
+      await donePromise;
+      stream.getTracks().forEach(t => t.stop());
+
+      ap.exporting = false;
+      ap.progress = 1;
+      ap.exportStatus = "";
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+      showToast(`高清动态海报已导出为 ${chosen.ext.toUpperCase()} 视频`);
+    }
+
+    // 零依赖纯前端 GIF89a (LZW) 编码器：6x6x6 均匀色立方体 + 主题精准色表，离线秒出动图
+    function buildPosterGifPalette(st, metric) {
+      const pal = [];
+      // 0..215: 6x6x6 uniform RGB cube
+      for (let r = 0; r < 6; r++) {
+        for (let g = 0; g < 6; g++) {
+          for (let b = 0; b < 6; b++) {
+            pal.push([r * 51, g * 51, b * 51]);
+          }
+        }
+      }
+      const hexToRgb = (hex) => {
+        const h = String(hex || "#000000").replace("#", "");
+        if (h.length !== 6) return [0, 0, 0];
+        return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+      };
+      // 216..255: Exact poster theme colors + metric gradient + grays
+      const extras = [
+        hexToRgb(st.bg), hexToRgb(st.card), hexToRgb(st.ink), hexToRgb(st.sub), hexToRgb(st.accent), hexToRgb(st.border),
+        [200, 75, 75], [255, 255, 255], [18, 20, 24]
+      ];
+      const stops = (state.posterMode === "china_anim" ? (CHINA_METRICS[metric] || CHINA_METRICS.gdp) : (MACRO_METRICS[metric] || MACRO_METRICS.gdp)).stops;
+      for (let i = 0; i < 16; i++) {
+        const t = i / 15;
+        const seg = t * (stops.length - 1);
+        const s0 = Math.min(stops.length - 2, Math.floor(seg));
+        const f = seg - s0;
+        extras.push([
+          Math.round(stops[s0][0] + (stops[s0 + 1][0] - stops[s0][0]) * f),
+          Math.round(stops[s0][1] + (stops[s0 + 1][1] - stops[s0][1]) * f),
+          Math.round(stops[s0][2] + (stops[s0 + 1][2] - stops[s0][2]) * f)
+        ]);
+      }
+      for (let i = 0; i < 15; i++) {
+        const v = Math.round((i / 14) * 255);
+        extras.push([v, v, v]);
+      }
+      for (let i = 0; i < 40; i++) {
+        pal.push(extras[i] || [0, 0, 0]);
+      }
+      return pal;
+    }
+
+    function quantizeFrameToPalette(rgba, pal) {
+      const n = rgba.length / 4;
+      const out = new Uint8Array(n);
+      // Pre-extract extra 40 exact colors for fast hybrid matching
+      for (let p = 0, q = 0; p < rgba.length; p += 4, q++) {
+        const r = rgba[p], g = rgba[p + 1], b = rgba[p + 2];
+        // Direct cube candidate
+        const cr = Math.round(r / 51), cg = Math.round(g / 51), cb = Math.round(b / 51);
+        let bestIdx = cr * 36 + cg * 6 + cb;
+        const dr0 = r - cr * 51, dg0 = g - cg * 51, db0 = b - cb * 51;
+        let bestDist = dr0 * dr0 + dg0 * dg0 + db0 * db0;
+        if (bestDist > 120) {
+          for (let i = 216; i < 256; i++) {
+            const dr = r - pal[i][0], dg = g - pal[i][1], db = b - pal[i][2];
+            const d = dr * dr + dg * dg + db * db;
+            if (d < bestDist) {
+              bestDist = d;
+              bestIdx = i;
+              if (d === 0) break;
+            }
+          }
+        }
+        out[q] = bestIdx;
+      }
+      return out;
+    }
+
+    function lzwEncodeGif(indices, minCodeSize) {
+      const clearCode = 1 << minCodeSize;
+      const eoiCode = clearCode + 1;
+      const outBytes = [];
+      let curByte = 0, bitCount = 0;
+
+      const emitCode = (code, size) => {
+        curByte |= (code << bitCount);
+        bitCount += size;
+        while (bitCount >= 8) {
+          outBytes.push(curByte & 0xff);
+          curByte >>= 8;
+          bitCount -= 8;
+        }
+      };
+
+      let codeSize = minCodeSize + 1;
+      let nextCode = eoiCode + 1;
+      const dict = new Map();
+
+      emitCode(clearCode, codeSize);
+      let prefix = indices[0];
+
+      for (let i = 1; i < indices.length; i++) {
+        const k = indices[i];
+        const key = (prefix << 8) | k;
+        const found = dict.get(key);
+        if (found !== undefined) {
+          prefix = found;
+        } else {
+          emitCode(prefix, codeSize);
+          if (nextCode < 4096) {
+            dict.set(key, nextCode++);
+            if (nextCode > (1 << codeSize) && codeSize < 12) {
+              codeSize++;
+            }
+          } else {
+            emitCode(clearCode, codeSize);
+            dict.clear();
+            codeSize = minCodeSize + 1;
+            nextCode = eoiCode + 1;
+          }
+          prefix = k;
+        }
+      }
+      emitCode(prefix, codeSize);
+      emitCode(eoiCode, codeSize);
+      if (bitCount > 0) outBytes.push(curByte & 0xff);
+
+      // Wrap in GIF sub-blocks (max 255 bytes each)
+      const blocks = [minCodeSize];
+      for (let i = 0; i < outBytes.length; i += 255) {
+        const len = Math.min(255, outBytes.length - i);
+        blocks.push(len);
+        for (let j = 0; j < len; j++) blocks.push(outBytes[i + j]);
+      }
+      blocks.push(0);
+      return blocks;
+    }
+
+    async function exportAnimatedPosterGIF() {
+      if (!isAnimatedPosterMode() || state.animPoster.exporting) return;
+      stopPosterAnimation();
+      const ap = state.animPoster;
+      const cfg = getActiveAnimConfig();
+      const isChina = state.posterMode === "china_anim";
+      const st = POSTER_STYLES.find(x => x.id === state.posterStyle) || POSTER_STYLES[0];
+      const { W, H } = getAnimPosterDimensions(cfg.aspect);
+      // Scale to crisp GIF size (~460px max width) for fast encoding & WeChat-friendly file size
+      const scale = Math.min(1, (cfg.aspect === "landscape" ? 560 : 450) / W);
+      const gw = Math.round(W * scale);
+      const gh = Math.round(H * scale);
+
+      const srcCanvas = document.createElement("canvas");
+      srcCanvas.width = W; srcCanvas.height = H;
+      const srcCtx = srcCanvas.getContext("2d");
+
+      const gifCanvas = document.createElement("canvas");
+      gifCanvas.width = gw; gifCanvas.height = gh;
+      const gifCtx = gifCanvas.getContext("2d", { willReadFrequently: true });
+
+      const pal = buildPosterGifPalette(st, cfg.metric);
+      const frameCount = Math.min(64, Math.max(36, Math.round((cfg.durationSec || 8) * 6)));
+      const delayCs = Math.max(8, Math.round(((cfg.durationSec || 8) * 100) / frameCount));
+
+      ap.exporting = true;
+      ap.exportPct = 0;
+      ap.exportStatus = `正在逐帧生成 GIF 动图 (${gw}×${gh})... 0%`;
+      renderAnimPreviewBar();
+
+      const chunks = [];
+      const header = [
+        0x47,0x49,0x46,0x38,0x39,0x61,
+        gw & 0xff, (gw >> 8) & 0xff, gh & 0xff, (gh >> 8) & 0xff,
+        0xF7, 0x00, 0x00
+      ];
+      for (let i = 0; i < 256; i++) {
+        header.push(pal[i][0], pal[i][1], pal[i][2]);
+      }
+      header.push(0x21, 0xFF, 0x0B, 0x4E,0x45,0x54,0x53,0x43,0x41,0x50,0x45,0x32,0x2E,0x30, 0x03, 0x01, 0x00, 0x00, 0x00);
+      chunks.push(new Uint8Array(header));
+
+      const mainCanvas = document.getElementById("poster-canvas");
+      const mainCtx = mainCanvas?.getContext("2d");
+
+      for (let i = 0; i <= frameCount; i++) {
+        const p = i / frameCount;
+        renderActiveAnimFrame(srcCtx, st, p);
+        if (mainCanvas && mainCtx) {
+          if (mainCanvas.width !== W || mainCanvas.height !== H) { mainCanvas.width = W; mainCanvas.height = H; }
+          mainCtx.drawImage(srcCanvas, 0, 0);
+        }
+        gifCtx.drawImage(srcCanvas, 0, 0, gw, gh);
+        const rgba = gifCtx.getImageData(0, 0, gw, gh).data;
+        const indexed = quantizeFrameToPalette(rgba, pal);
+        const lzw = lzwEncodeGif(indexed, 8);
+        const frameDelay = (i === frameCount) ? 140 : delayCs;
+
+        const gce = [
+          0x21, 0xF9, 0x04, 0x00,
+          frameDelay & 0xff, (frameDelay >> 8) & 0xff,
+          0x00, 0x00,
+          0x2C, 0x00, 0x00, 0x00, 0x00,
+          gw & 0xff, (gw >> 8) & 0xff, gh & 0xff, (gh >> 8) & 0xff,
+          0x00
+        ];
+        chunks.push(new Uint8Array(gce));
+        chunks.push(new Uint8Array(lzw));
+
+        const pctDone = Math.round(((i + 1) / (frameCount + 1)) * 100);
+        ap.exportPct = pctDone;
+        ap.exportStatus = `正在编码 GIF 动图 (${i + 1}/${frameCount + 1} 帧)... ${pctDone}%`;
+        const fillEl = document.getElementById("poster-export-bar-fill");
+        if (fillEl) fillEl.style.width = pctDone + "%";
+        if (i % 3 === 0) await new Promise(r => setTimeout(r, 0));
+      }
+
+      chunks.push(new Uint8Array([0x3B]));
+      const blob = new Blob(chunks, { type: "image/gif" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = isChina
+        ? `DAVYLAB-ChinaAnim-${cfg.metric}-${cfg.focusCode}-${state.posterStyle}.gif`
+        : `DAVYLAB-MacroAnim-${cfg.metric}-${cfg.focusIso3}-${state.posterStyle}.gif`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+      ap.exporting = false;
+      ap.progress = 1;
+      ap.exportStatus = "";
+      renderAnimPreviewBar();
+      drawPosterCanvas();
+      showToast(`GIF 动图已导出（${(blob.size / 1024 / 1024).toFixed(2)} MB）`);
+    }
+
     function drawPosterCanvas() {
       const canvas = document.getElementById("poster-canvas");
       const ctx = canvas.getContext("2d");
       const st = POSTER_STYLES.find(x => x.id === state.posterStyle) || POSTER_STYLES[0];
+
+      if (isAnimatedPosterMode()) {
+        const cfg = getActiveAnimConfig();
+        const { W, H } = getAnimPosterDimensions(cfg.aspect);
+        if (canvas.width !== W) canvas.width = W;
+        if (canvas.height !== H) canvas.height = H;
+        renderActiveAnimFrame(ctx, st);
+        return;
+      }
+
       const W = 750;
+      if (canvas.width !== W) canvas.width = W;
 
       if (state.posterMode === "trade") {
         const H = renderTradePosterContent(ctx, st, W, true);
@@ -8213,7 +11714,11 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       const link = document.createElement("a");
       const slug = state.posterMode === "corp"
         ? state.selectedComp.ticker
-        : (state.posterMode === "trade" ? "WORLD-TRADE" : "WORLD-MACRO");
+        : (state.posterMode === "trade"
+          ? "WORLD-TRADE"
+          : (state.posterMode === "macro_anim"
+            ? `MACRO-ANIM-${state.animPoster.metric}`
+            : (state.posterMode === "china_anim" ? `CHINA-ANIM-${state.chinaAnimPoster.metric}` : "WORLD-MACRO")));
       link.download = `DAVYLAB-Poster-${slug}-${state.posterStyle}.png`;
       link.href = canvas.toDataURL("image/png");
       document.body.appendChild(link);
@@ -8267,12 +11772,16 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       if (macroRes.status === "fulfilled" && macroRes.value.ok) {
         try {
           const mRemote = await macroRes.value.json();
+          if (mRemote?.countries) {
+            mergeRemoteWorldBankMacro(mRemote);
+          }
           if (mRemote?.gdp10y && Array.isArray(mRemote.gdp10y)) {
             mRemote.gdp10y.forEach(item => {
               const local = MACRO_GDP_10Y.find(x => x.id === item.id);
-              if (local && Array.isArray(item.nom) && item.nom.length === local.nom.length) {
-                local.nom = item.nom;
-                if (Array.isArray(item.gr)) local.gr = item.gr;
+              if (local && Array.isArray(item.nom)) {
+                item.nom.forEach((v, idx) => { if (v !== null && idx < local.nom.length) local.nom[idx] = v; });
+                if (Array.isArray(item.gr)) item.gr.forEach((v, idx) => { if (v !== null && idx < local.gr.length) local.gr[idx] = v; });
+                if (Array.isArray(item.pc10y)) item.pc10y.forEach((v, idx) => { if (v !== null && idx < local.pc10y.length) local.pc10y[idx] = v; });
               }
             });
           }
@@ -8288,7 +11797,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
             });
           }
           if (mRemote?.source) state.macroSource = mRemote.source;
-          syncedAny = true;
+          if (mRemote?.countries || mRemote?.gdp10y) syncedAny = true;
         } catch (e) {}
       }
 
@@ -8316,6 +11825,7 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
       filterCompanyPills();
       renderCompanyDetail();
       renderWorldMacro();
+      renderChinaMacro();
       renderMacroTradeTab();
       renderCurrencyReserves();
     }
@@ -8328,6 +11838,8 @@ ${topic.title}！用 90 秒带你看透实时数据背后的宏观暗线：${top
     window.onload = function () {
       initScrollSpy();
       renderAll();
+      ensureMacroDynamicAssets();
+      ensureChinaMacroAssets();
       syncAllData(false);
     };
   </script>
