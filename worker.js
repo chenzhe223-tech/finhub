@@ -1565,6 +1565,29 @@ async function refreshMagazinesFeed(env) {
   return payload;
 }
 
+// Optional native research enrichment; market quotes remain independent.
+async function stockRecentEvidence(env, ticker) {
+  if (!env.INFO_SKILL_URL || !env.INFO_SKILL_TOKEN) return { status: 'unconfigured' };
+  if (!/^[A-Z0-9.^=\-]{1,24}$/i.test(ticker)) return { status: 'invalid_ticker' };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+  try {
+    const endpoint = new URL('/v1/research', env.INFO_SKILL_URL);
+    if (endpoint.protocol !== 'https:' || endpoint.username || endpoint.password) return { status: 'unconfigured' };
+    const response = await fetch(endpoint, {
+      method: 'POST', redirect: 'error', signal: controller.signal,
+      headers: { Authorization: 'Bearer ' + env.INFO_SKILL_TOKEN, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic: ticker + ' company technology business developments', days: 30, sources: ['github', 'hackernews'] })
+    });
+    if (!response.ok) return { status: 'unavailable' };
+    const data = await response.json();
+    if (data.engine !== 'last30days' || data.schema_version !== 1 || !Array.isArray(data.evidence)) return { status: 'unavailable' };
+    const evidence = data.evidence.filter(row => row && ['github', 'hackernews'].includes(row.source) && typeof row.url === 'string' && /^https?:\/\//i.test(row.url)).slice(0, 12).map(row => ({ source: row.source, url: row.url, title: String(row.title || '').slice(0, 300) }));
+    return { status: evidence.length ? 'ok' : 'no_evidence', engine: 'last30days', evidence, source_status: data.report?.source_status || {}, cache: data.cache };
+  } catch { return { status: 'unavailable' }; }
+  finally { clearTimeout(timer); }
+}
+
 export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil((async () => {
@@ -1655,6 +1678,9 @@ export default {
       }
       try {
         const detail = await fetchStockDetail(ticker, range, env);
+        if (url.searchParams.get('recentEvidence') === '1') {
+          detail.recentEvidence = await stockRecentEvidence(env, normalizeStockTicker(ticker));
+        }
         return new Response(JSON.stringify({ ok: true, data: detail }), {
           headers: {
             'Content-Type': 'application/json; charset=utf-8',
