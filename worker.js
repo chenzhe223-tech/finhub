@@ -5,33 +5,47 @@ const SYMBOLS = [
   { id: 'silver',    ticker: 'SI=F' },
   // 中美股指
   { id: 'sh',        ticker: '000001.SS' },
-  { id: 'csi300',    ticker: '000300.SS' },
+  { id: 'sz',        ticker: '399001.SZ' },
   { id: 'hsi',       ticker: '^HSI' },
   { id: 'spx',       ticker: '^GSPC' },
   { id: 'ixic',      ticker: '^IXIC' },
   { id: 'dji',       ticker: '^DJI' },
-  // 美股 AI 与互联网龙头
-  { id: 'aapl',      ticker: 'AAPL' },
+  // 美股 AI 全产业链（算力基建 / 供应链 / 上游原材料电力 / 大模型云 / 终端应用）
   { id: 'nvda',      ticker: 'NVDA' },
+  { id: 'avgo',      ticker: 'AVGO' },
+  { id: 'amd',       ticker: 'AMD' },
+  { id: 'tsm',       ticker: 'TSM' },
+  { id: 'mu',        ticker: 'MU' },
+  { id: 'vrt',       ticker: 'VRT' },
+  { id: 'asml',      ticker: 'ASML' },
+  { id: 'ceg',       ticker: 'CEG' },
+  { id: 'fcx',       ticker: 'FCX' },
   { id: 'msft',      ticker: 'MSFT' },
   { id: 'googl',     ticker: 'GOOGL' },
-  { id: 'amzn',      ticker: 'AMZN' },
-  { id: 'tsm',       ticker: 'TSM' },
-  { id: 'meta',      ticker: 'META' },
   { id: 'anth',      ticker: 'ANT' },
+  { id: 'aapl',      ticker: 'AAPL' },
+  { id: 'meta',      ticker: 'META' },
+  { id: 'tsla',      ticker: 'TSLA' },
+  { id: 'amzn',      ticker: 'AMZN' },
   { id: 'baba',      ticker: 'BABA' },
-  // 港股龙头
+  // 港股 AI 与科技制造
   { id: 'tcehy',     ticker: '0700.HK' },
   { id: 'baba_hk',   ticker: '9988.HK' },
   { id: 'meituan',   ticker: '3690.HK' },
   { id: 'xiaomi',    ticker: '1810.HK' },
   { id: 'smic',      ticker: '0981.HK' },
-  // A 股核心资产与 AI 龙头
-  { id: 'moutai',    ticker: '600519.SS' },
+  // A 股 AI 全产业链与核心资产
+  { id: 'cambricon', ticker: '688256.SS' },
+  { id: 'hygon',     ticker: '688041.SS' },
+  { id: 'sugon',     ticker: '603019.SS' },
+  { id: 'innolight', ticker: '300308.SZ' },
+  { id: 'fii',       ticker: '601138.SS' },
+  { id: 'naura',     ticker: '002371.SZ' },
+  { id: 'zijin',     ticker: '601899.SS' },
   { id: 'catl',      ticker: '300750.SZ' },
   { id: 'byd',       ticker: '002594.SZ' },
-  { id: 'innolight', ticker: '300308.SZ' },
-  { id: 'cambricon', ticker: '688256.SS' }
+  { id: 'iflytek',   ticker: '002230.SZ' },
+  { id: 'moutai',    ticker: '600519.SS' }
 ];
 
 const FX_TICKERS = [
@@ -42,11 +56,15 @@ const FX_TICKERS = [
   { code: 'GBP', ticker: 'GBPCNY=X', unit: 1 },
   { code: 'AUD', ticker: 'AUDCNY=X', unit: 1 },
   { code: 'CAD', ticker: 'CADCNY=X', unit: 1 },
-  { code: 'SGD', ticker: 'SGDCNY=X', unit: 1 }
+  { code: 'SGD', ticker: 'SGDCNY=X', unit: 1 },
+  { code: 'THB', ticker: 'THBCNY=X', unit: 100 },
+  { code: 'KRW', ticker: 'KRWCNY=X', unit: 1000 },
+  { code: 'CHF', ticker: 'CHFCNY=X', unit: 1 },
+  { code: 'NZD', ticker: 'NZDCNY=X', unit: 1 }
 ];
 
 async function fetchYahooChart(ticker) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=1d&interval=15m`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=5d&interval=15m`;
   const res = await fetch(url, {
     headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
   });
@@ -56,11 +74,11 @@ async function fetchYahooChart(ticker) {
   if (!result) throw new Error(`Empty result for ${ticker}`);
 
   const meta = result.meta || {};
-  const closes = (result.indicators?.quote?.[0]?.close || []).filter(v => typeof v === 'number' && !isNaN(v));
+  const closes = (result.indicators?.quote?.[0]?.close || []).filter(v => typeof v === 'number' && !isNaN(v) && v > 0);
   const price = meta.regularMarketPrice ?? closes[closes.length - 1];
-  const prevClose = meta.chartPreviousClose ?? meta.previousClose ?? closes[0] ?? price;
-  const high = meta.regularMarketDayHigh ?? (closes.length ? Math.max(...closes, price) : price);
-  const low = meta.regularMarketDayLow ?? (closes.length ? Math.min(...closes, price) : price);
+  const prevClose = meta.previousClose ?? meta.chartPreviousClose ?? closes[0] ?? price;
+  const high = meta.regularMarketDayHigh ?? (closes.length ? Math.max(...closes.slice(-26), price) : price);
+  const low = meta.regularMarketDayLow ?? (closes.length ? Math.min(...closes.slice(-26), price) : price);
   const series = closes.length >= 4 ? closes.slice(-26) : [prevClose, price];
 
   return {
@@ -72,19 +90,102 @@ async function fetchYahooChart(ticker) {
   };
 }
 
+const TENCENT_CN_HK_QUOTES = [
+  { id: 'sh',        qt: 'sh000001' },
+  { id: 'sz',        qt: 'sz399001' },
+  { id: 'hsi',       qt: 'hkHSI' },
+  { id: 'tcehy',     qt: 'hk00700' },
+  { id: 'baba_hk',   qt: 'hk09988' },
+  { id: 'meituan',   qt: 'hk03690' },
+  { id: 'xiaomi',    qt: 'hk01810' },
+  { id: 'smic',      qt: 'hk00981' },
+  { id: 'cambricon', qt: 'sh688256' },
+  { id: 'hygon',     qt: 'sh688041' },
+  { id: 'sugon',     qt: 'sh603019' },
+  { id: 'innolight', qt: 'sz300308' },
+  { id: 'fii',       qt: 'sh601138' },
+  { id: 'naura',     qt: 'sz002371' },
+  { id: 'zijin',     qt: 'sh601899' },
+  { id: 'catl',      qt: 'sz300750' },
+  { id: 'byd',       qt: 'sz002594' },
+  { id: 'iflytek',   qt: 'sz002230' },
+  { id: 'moutai',    qt: 'sh600519' }
+];
+
+async function fetchTencentCnHkBatch() {
+  const map = {};
+  const codes = TENCENT_CN_HK_QUOTES.map(x => x.qt).join(',');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 5000);
+  try {
+    const res = await fetch(`https://qt.gtimg.cn/q=${codes}`, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+    });
+    if (!res.ok) return map;
+    const text = await res.text();
+    for (const item of TENCENT_CN_HK_QUOTES) {
+      const m = text.match(new RegExp(`v_${item.qt}="([^"]+)"`));
+      if (!m || !m[1]) continue;
+      const parts = m[1].split('~');
+      const price = Number(parts[3]);
+      const prevClose = Number(parts[4]);
+      const open = Number(parts[5]);
+      const high = Number(parts[33]);
+      const low = Number(parts[34]);
+      if (Number.isFinite(price) && price > 0 && Number.isFinite(prevClose) && prevClose > 0) {
+        map[item.id] = {
+          price: Number(price.toFixed(4)),
+          prevClose: Number(prevClose.toFixed(4)),
+          open: Number.isFinite(open) && open > 0 ? Number(open.toFixed(4)) : prevClose,
+          high: Number.isFinite(high) && high > 0 ? Number(high.toFixed(4)) : Math.max(price, prevClose),
+          low: Number.isFinite(low) && low > 0 ? Number(low.toFixed(4)) : Math.min(price, prevClose)
+        };
+      }
+    }
+  } catch (e) {
+    console.error('Tencent CN/HK batch quote failed:', e.message);
+  } finally {
+    clearTimeout(timer);
+  }
+  return map;
+}
+
 async function refreshAllMarketData(env) {
   const assets = {};
   const fx = {};
 
-  await Promise.allSettled(
-    SYMBOLS.map(async (item) => {
-      try {
-        assets[item.id] = await fetchYahooChart(item.ticker);
-      } catch (err) {
-        console.error(`Asset fetch failed [${item.id}]:`, err.message);
-      }
-    })
-  );
+  const [, tencentQuotes] = await Promise.all([
+    Promise.allSettled(
+      SYMBOLS.map(async (item) => {
+        try {
+          assets[item.id] = await fetchYahooChart(item.ticker);
+        } catch (err) {
+          console.error(`Asset fetch failed [${item.id}]:`, err.message);
+        }
+      })
+    ),
+    fetchTencentCnHkBatch()
+  ]);
+
+  // Authoritative exchange override for CN A-share & HK indices/stocks (fixes Yahoo stale previousClose)
+  for (const [id, tq] of Object.entries(tencentQuotes || {})) {
+    const existingSeries = assets[id]?.series;
+    let series;
+    if (Array.isArray(existingSeries) && existingSeries.length >= 2) {
+      series = existingSeries.slice();
+      series[series.length - 1] = tq.price;
+    } else {
+      series = [tq.prevClose, tq.open, tq.price];
+    }
+    assets[id] = {
+      price: tq.price,
+      prevClose: tq.prevClose,
+      high: tq.high,
+      low: tq.low,
+      series
+    };
+  }
 
   let frankfurterRates = null;
   try {
@@ -133,10 +234,13 @@ async function refreshAllMarketData(env) {
   const pad = n => String(n).padStart(2, '0');
   const updatedAt = `${nowBjt.getUTCFullYear()}-${pad(nowBjt.getUTCMonth() + 1)}-${pad(nowBjt.getUTCDate())} ${pad(nowBjt.getUTCHours())}:${pad(nowBjt.getUTCMinutes())} (GMT+8)`;
 
+  const mergedAssets = { ...(existing.assets || {}), ...assets };
+  delete mergedAssets.csi300;
+
   const payload = {
     updatedAt,
     source: 'Cloudflare Cron (08:30 / 15:00 BJT)',
-    assets: { ...(existing.assets || {}), ...assets },
+    assets: mergedAssets,
     fx: { ...(existing.fx || {}), ...fx }
   };
 
@@ -788,6 +892,154 @@ async function fetchStockDetail(rawTicker, range = '3mo', env = null) {
 }
 
 // ============================================================================
+// 人民币近 1 年各国汇率走势 & 个人出境游购买力/旅行建议引擎 (/api/fx-1y)
+// ============================================================================
+const FX_TRAVEL_CATALOG = [
+  { code: 'JPY', ticker: 'JPYCNY=X', unit: 100,  zh: '日元',     country: '日本',     flag: '🇯🇵', color: '#B8862D', visa: '电子签/五年签', costScore: 86, season: '樱花季(3–4月) / 红叶季(10–11月)', highlights: '免税购物(10%退税)、药妆动漫与温泉酒店性价比突出' },
+  { code: 'THB', ticker: 'THBCNY=X', unit: 100,  zh: '泰铢',     country: '泰国',     flag: '🇹🇭', color: '#2E6B5E', visa: '永久互免签证',  costScore: 94, season: '凉季(11–2月)',                   highlights: '免签说走就走，曼谷美食、普吉/清迈度假酒店综合花销极友好' },
+  { code: 'KRW', ticker: 'KRWCNY=X', unit: 1000, zh: '韩元',     country: '韩国',     flag: '🇰🇷', color: '#4B3F72', visa: '济州免签/首尔签',costScore: 84, season: '春秋两季(4–5月 / 9–10月)',        highlights: '免税店美妆、医美护肤与首尔潮流消费退税便捷' },
+  { code: 'USD', ticker: 'USDCNY=X', unit: 1,    zh: '美元',     country: '美国',     flag: '🇺🇸', color: '#24486E', visa: '十年B1/B2签',   costScore: 56, season: '国家公园(5–10月) / 暖冬夏威夷',   highlights: '奥莱折扣与科技数码具价差，住宿餐饮小费成本偏高' },
+  { code: 'EUR', ticker: 'EURCNY=X', unit: 1,    zh: '欧元',     country: '欧元区',   flag: '🇪🇺', color: '#3A6B7C', visa: '申根签证',      costScore: 66, season: '5–6月 / 9–10月错峰',             highlights: '法意西奢侈品退税(12%–15%)优势大，历史人文深度游体验佳' },
+  { code: 'HKD', ticker: 'HKDCNY=X', unit: 1,    zh: '港币',     country: '中国香港', flag: '🇭🇰', color: '#A63A3A', visa: '港澳通行证',    costScore: 82, season: '秋冬(10–2月) / 购物季',          highlights: '免税自由港，周末短途Citywalk、数码电子与演唱会消费便捷' },
+  { code: 'SGD', ticker: 'SGDCNY=X', unit: 1,    zh: '新加坡元', country: '新加坡',   flag: '🇸🇬', color: '#0A4B78', visa: '30天互免签证',  costScore: 76, season: '全年皆宜(避开11–1月雨季)',        highlights: '免签直飞+亲子游天花板，樟宜机场与环球影城体验一流' },
+  { code: 'AUD', ticker: 'AUDCNY=X', unit: 1,    zh: '澳元',     country: '澳大利亚', flag: '🇦🇺', color: '#7A4E2D', visa: '电子签(600)',   costScore: 74, season: '反季暖冬(11–3月)',               highlights: '大洋路自驾、大堡礁与反季避寒胜地，保健品羊毛制品性价比高' },
+  { code: 'NZD', ticker: 'NZDCNY=X', unit: 1,    zh: '新西兰元', country: '新西兰',   flag: '🇳🇿', color: '#1E6F5C', visa: '电子签',        costScore: 78, season: '南半球春夏(11–4月)',             highlights: '南岛湖光山色自驾天堂，汇率走低时租车与冰川项目省钱明显' },
+  { code: 'GBP', ticker: 'GBPCNY=X', unit: 1,    zh: '英镑',     country: '英国',     flag: '🇬🇧', color: '#6D28D9', visa: '两年多次签',    costScore: 54, season: '5–9月英伦夏季',                  highlights: '博物馆大多免费，但伦敦酒店与餐饮基数高且取消游客购物退税' },
+  { code: 'CAD', ticker: 'CADCNY=X', unit: 1,    zh: '加元',     country: '加拿大',   flag: '🇨🇦', color: '#B43B32', visa: '旅游签',        costScore: 70, season: '落基山(6–9月) / 枫叶季(10月)',    highlights: '班夫国家公园与枫叶大道自然景观壮丽，相对美国消费略友好' },
+  { code: 'CHF', ticker: 'CHFCNY=X', unit: 1,    zh: '瑞士法郎', country: '瑞士',     flag: '🇨🇭', color: '#991B1B', visa: '申根签证',      costScore: 46, season: '夏季徒步(6–9月) / 冬季滑雪',      highlights: '阿尔卑斯景观顶级但物价全球最高，瑞郎强势时建议控制住宿预算' }
+];
+
+async function fetchYahoo1YWeekly(ticker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?range=1y&interval=1wk`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${ticker}`);
+  const json = await res.json();
+  const r = json?.chart?.result?.[0];
+  if (!r) throw new Error(`Empty 1Y FX result for ${ticker}`);
+  const ts = r.timestamp || [];
+  const closes = r.indicators?.quote?.[0]?.close || [];
+  const pts = [];
+  for (let i = 0; i < ts.length; i++) {
+    const c = closes[i];
+    if (typeof c === 'number' && Number.isFinite(c) && c > 0) {
+      const d = new Date(ts[i] * 1000);
+      const iso = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}-${String(d.getUTCDate()).padStart(2, '0')}`;
+      pts.push({ date: iso, close: c });
+    }
+  }
+  const live = Number(r.meta?.regularMarketPrice || (pts.length ? pts[pts.length - 1].close : 0));
+  if (pts.length && live > 0) pts[pts.length - 1].close = live;
+  return { pts, live };
+}
+
+function buildFxTravelAssessment(meta, yoyRmbPct, percentile, savePer10k) {
+  // 50% 1Y RMB appreciation + 30% 1Y percentile + 20% destination cost/visa friendliness
+  const appScore = Math.max(10, Math.min(98, 56 + yoyRmbPct * 4.2));
+  const score = Math.round(appScore * 0.50 + percentile * 0.30 + meta.costScore * 0.20);
+
+  let tier = 'neutral', tierZh = '汇率平稳·按需出行', tierColor = '#B8862D';
+  let fxStrategy = '当前汇率处于近 1 年中枢区间，建议出发前 2–4 周逢低分 2–3 批购汇即可。';
+  if (score >= 72 || yoyRmbPct >= 4.0) {
+    tier = 'strong';
+    tierZh = '汇率红利·强推';
+    tierColor = '#2E6B5E';
+    fxStrategy = `人民币近 1 年对${meta.zh}升值 ${yoyRmbPct >= 0 ? '+' : ''}${yoyRmbPct.toFixed(1)}%（处于近 1 年 ${percentile}% 高性价比分位），每花 ¥1 万相当于省约 ¥${Math.max(0, Math.round(savePer10k))}，适合锁定机酒与提前换汇！`;
+  } else if (score < 54 || yoyRmbPct <= -3.5) {
+    tier = 'caution';
+    tierZh = '汇率承压·建议分批换汇';
+    tierColor = '#B43B32';
+    fxStrategy = `人民币近 1 年对${meta.zh}走弱 ${yoyRmbPct.toFixed(1)}%，每 ¥1 万预算折算成本增加约 ¥${Math.abs(Math.round(savePer10k))}，建议逢回调分批换汇、善用免税退税与早鸟套餐控制开支。`;
+  }
+
+  return { score, tier, tierZh, tierColor, fxStrategy };
+}
+
+async function refreshFx1YData(env) {
+  const results = await Promise.allSettled(
+    FX_TRAVEL_CATALOG.map(async (meta) => {
+      const data = await fetchYahoo1YWeekly(meta.ticker);
+      return { meta, data };
+    })
+  );
+
+  const currencies = [];
+  let masterDates = [];
+
+  for (const r of results) {
+    if (r.status !== 'fulfilled' || !r.value?.data?.pts?.length) continue;
+    const { meta, data } = r.value;
+    const pts = data.pts;
+    if (pts.length > masterDates.length) masterDates = pts.map(p => p.date);
+
+    const rates = pts.map(p => Number((p.close * meta.unit).toFixed(4)));
+    const cnyPer100 = rates.map(rt => Number(((100 / rt) * meta.unit).toFixed(meta.unit >= 100 ? 1 : 2)));
+    const baseInv = cnyPer100[0] || 1;
+    const ppIndex = cnyPer100.map(v => Number(((v / baseInv) * 100).toFixed(2)));
+
+    const curRate = rates[rates.length - 1];
+    const startRate = rates[0];
+    const curInv = cnyPer100[cnyPer100.length - 1];
+    const minInv = Math.min(...cnyPer100);
+    const maxInv = Math.max(...cnyPer100);
+    const percentile = maxInv > minInv ? Math.round(((curInv - minInv) / (maxInv - minInv)) * 100) : 50;
+    const yoyRmbPct = Number((((curInv - baseInv) / baseInv) * 100).toFixed(2));
+    // RMB saved (+) or extra cost (-) per 10,000 CNY equivalent basket vs 1 year ago
+    const savePer10k = Number((10000 * (1 - curRate / startRate)).toFixed(0));
+    const avgRate = Number((rates.reduce((a, b) => a + b, 0) / rates.length).toFixed(4));
+    const assess = buildFxTravelAssessment(meta, yoyRmbPct, percentile, savePer10k);
+
+    currencies.push({
+      code: meta.code,
+      zh: meta.zh,
+      country: meta.country,
+      flag: meta.flag,
+      unit: meta.unit,
+      color: meta.color,
+      visa: meta.visa,
+      season: meta.season,
+      highlights: meta.highlights,
+      dates: pts.map(p => p.date),
+      rates,
+      cnyPer100,
+      ppIndex,
+      curRate,
+      startRate,
+      avgRate,
+      minRate: Number(Math.min(...rates).toFixed(4)),
+      maxRate: Number(Math.max(...rates).toFixed(4)),
+      curPer10kFx: Number(((10000 / curRate) * meta.unit).toFixed(meta.unit >= 100 ? 0 : 1)),
+      yoyRmbPct,
+      percentile,
+      savePer10k,
+      ...assess
+    });
+  }
+
+  currencies.sort((a, b) => b.score - a.score);
+  const nowBjt = new Date(Date.now() + 8 * 3600 * 1000);
+  const pad = n => String(n).padStart(2, '0');
+  const updatedAt = `${nowBjt.getUTCFullYear()}-${pad(nowBjt.getUTCMonth() + 1)}-${pad(nowBjt.getUTCDate())} ${pad(nowBjt.getUTCHours())}:${pad(nowBjt.getUTCMinutes())} (GMT+8)`;
+
+  const payload = {
+    ok: true,
+    updatedAt,
+    fetchedAtMs: Date.now(),
+    count: currencies.length,
+    dates: masterDates,
+    currencies
+  };
+
+  if (env?.MARKET_KV && currencies.length > 0) {
+    try {
+      await env.MARKET_KV.put('latest_fx_1y_v1', JSON.stringify(payload), { expirationTtl: 3600 });
+    } catch (e) {}
+  }
+  return payload;
+}
+
+// ============================================================================
 // 贵金属 5 年走势 (国际 vs 中国市场克重价) & 国内各大黄金珠宝商日挂牌价 (/api/metals-5y)
 // ============================================================================
 const TROY_OZ_GRAMS = 31.1034768;
@@ -1416,6 +1668,35 @@ export default {
           headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
         });
       }
+    }
+    if (url.pathname === '/api/fx-1y') {
+      const force = url.searchParams.get('force') === '1';
+      let data = null;
+      if (!force && env.MARKET_KV) {
+        try {
+          const cached = await env.MARKET_KV.get('latest_fx_1y_v1', { type: 'json' });
+          if (cached && cached.fetchedAtMs && (Date.now() - cached.fetchedAtMs) < 30 * 60 * 1000 && cached.currencies?.length) {
+            data = cached;
+          }
+        } catch (e) {}
+      }
+      if (!data) {
+        try {
+          data = await refreshFx1YData(env);
+        } catch (err) {
+          return new Response(JSON.stringify({ ok: false, error: err.message || 'FX 1Y fetch failed' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
+          });
+        }
+      }
+      return new Response(JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=300'
+        }
+      });
     }
     if (url.pathname === '/api/metals-5y') {
       const force = url.searchParams.get('force') === '1';
